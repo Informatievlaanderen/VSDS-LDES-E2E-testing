@@ -1,0 +1,97 @@
+{
+    "@context": [
+        "https://private-api.gipod.beta-vlaanderen.be/api/v1/context/gipod.jsonld"
+    ],
+    "@id": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances",
+    "@type": "Node",
+    "viewOf": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances",
+    "collectionInfo": {
+        "@id": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances",
+        "@type": "EventStream",
+        "shape": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape",
+        "timestampPath": "prov:generatedAtTime",
+        "versionOfPath": "dct:isVersionOf"
+    },
+    "tree:relation": [
+    ],
+    "items": [
+        {
+            "@id": "https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10792930/1846647",
+            "@type": "MobilityHindrance",
+            "gipodId": 10792930,
+            "identifier": [
+                {
+                    "@type": "Identifier",
+                    "Identifier.identifier": {
+                        "value": "10792930",
+                        "type": "gipodId"
+                    },
+                    "assignedByName": "https://gipod.vlaanderen.be"
+                }
+            ],
+            "isConsequenceOf": [
+                {
+                    "@id": "/api/v1/works/10792929",
+                    "@type": "Work",
+                    "gipodId": 10792929
+                }
+            ],
+            "description": "8310 Brugge, Anselm de Boodtstraat: Parkeerverbod laad- en loszone",
+            "owner": {
+                "@id": "/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245",
+                "@type": "Organisation",
+                "preferredName": "EagleBe Smartcity"
+            },
+            "contactOrganisation": [],
+            "zone": [
+                {
+                    "@id": "/api/v1/mobility-hindrances/10792930/zones/17d17aa4-1fc4-460c-b1f9-3113c3a2c0f7",
+                    "@type": "Zone",
+                    "consequence": [
+                        {
+                            "@id": "/api/v1/taxonomies/mobility-hindrance/consequencetypes/5f8ff25a-87c7-47c8-9332-35d4fabf4b07",
+                            "prefLabel": "Versmalde rijstroken"
+                        }
+                    ],
+                    "geometry": {
+                        "@type": "Geometry",
+                        "wkt": "POLYGON ((72880.51 209487.37, 72882.51 209487.37, 72882.51 209493.37, 72880.51 209493.37, 72880.51 209487.37))"
+                    },
+                    "zoneType": {
+                        "@id": "/api/v1/taxonomies/zonetypes/0fb72ef7-6ac9-4a70-b295-a30ea215d250",
+                        "prefLabel": "HinderZone"
+                    }
+                }
+            ],
+            "period": [
+                {
+                    "@type": "Period",
+                    "start": "2022-05-13T00:00:00Z",
+                    "end": "2022-05-13T14:00:00Z"
+                }
+            ],
+            "timeSchedule": null,
+            "permittedBy": [],
+            "status": {
+                "@id": "/api/v1/taxonomies/statuses/0a4ee99b-8b8a-47c8-913f-117220febee0",
+                "prefLabel": "In opmaak"
+            },
+            "generatedAtTime": "2022-05-13T11:36:49.04Z",
+            "eventName": "MobilityHindranceZoneWasAdded",
+            "isVersionOf": "/api/v1/mobility-hindrances/10792930",
+            "memberOf": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances",
+            "lastModifiedOn": "2022-05-13T11:36:49.0445161Z",
+            "lastModifiedBy": {
+                "@id": "/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245",
+                "@type": "Organisation",
+                "preferredName": "EagleBe Smartcity"
+            },
+            "createdOn": "2022-05-13T11:36:49.0408817Z",
+            "createdBy": {
+                "@id": "/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245",
+                "@type": "Organisation",
+                "preferredName": "EagleBe Smartcity"
+            }
+        }
+    ]
+}

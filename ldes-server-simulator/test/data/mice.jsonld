@@ -1,0 +1,50 @@
+{
+    "@context": [
+        "http://schema.org/", 
+		{
+            "ldes": "https://w3id.org/ldes#",
+            "tree": "https://w3id.org/tree#",
+            "viewOf": {
+                "@reverse": "tree:view",
+                "@type": "@id"
+            },
+            "relation": "tree:relation",
+            "memberOf": {
+                "@reverse": "tree:member",
+                "@type": "@id"
+            },
+            "tree:node": {
+                "@type": "@id"
+            },
+            "tree:view": {
+                "@type": "@id"
+            },
+            "items": "@included",
+            "collection": "@included"
+        }
+    ],
+    "@id": "http://www.example.org/id/fragment/1",
+    "@type": "tree:Node",
+    "viewOf": "http://www.example.org/id/ldes/disney",
+    "collection": {
+        "@id": "http://www.example.org/id/ldes/disney",
+        "@type": "ldes:EventStream"
+    },
+    "tree:relation": [{
+            "tree:node": "http://www.example.org/id/fragment/2",
+            "@type": "tree:Relation"
+        }
+    ],
+    "items": [{
+            "@id": "http://www.example.org/id/cartoon-figure/mickey-mouse",
+            "@type": "Person",
+            "name": "Mickey Mouse",
+            "memberOf": "http://www.example.org/id/ldes/disney"
+        }, {
+            "@id": "http://www.example.org/id/cartoon-figure/minnie-mouse",
+            "@type": "Person",
+            "name": "Minnie Mouse",
+            "memberOf": "http://www.example.org/id/ldes/disney"
+        }
+    ]
+}

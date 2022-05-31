@@ -131,12 +131,12 @@ The simulator can be run as a docker container, after creating a docker image fo
 
 To create a docker image, run the following command:
 ```bash
-docker build --tag vsds/simulator .
+docker build --tag vsds/ldes-server-simulator .
 ```
 
 To run the simulator docker image mapped on port 9000, you can use:
 ```bash
-docker run -d -p 9000:80 vsds/simulator
+docker run -d -p 9000:80 vsds/ldes-server-simulator
 ```
 You can also pass the following arguments when running the container:
 * `SEED=<path-to-data-set>` to seed the simulator with an LDES data subset
@@ -144,7 +144,7 @@ You can also pass the following arguments when running the container:
 
 E.g.:
 ```bash
-docker run -e SEED=/tmp/gipod-data -v "$(pwd)"/data/gipod:/tmp/gipod-data:ro -e BASEURL=http://localhost:9000 -d -p 9000:80 vsds/simulator
+docker run -e SEED=/tmp/gipod-data -v "$(pwd)"/data/gipod:/tmp/gipod-data:ro -e BASEURL=http://localhost:9000 -d -p 9000:80 vsds/ldes-server-simulator
 ```
 
 **Note** that
@@ -157,7 +157,7 @@ The docker run command will return a container ID (e.g. `80ebecbd847b42ca359efd9
 
 Alternatively you can run `docker ps` to retrieve the (short version of the) container ID.
  ```
-CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS                  NAMES
-569053a527bd   vsds/simulator   "/usr/bin/dumb-init …"   5 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp   quizzical_bardeen
+CONTAINER ID   IMAGE                        COMMAND                  CREATED         STATUS         PORTS                  NAMES
+569053a527bd   vsds/ldes-server-simulator   "/usr/bin/dumb-init …"   5 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp   quizzical_bardeen
  ```
 To stop the container, you need to call the stop command with the (long or short) container ID, e.g. `docker stop 569053a527bd`

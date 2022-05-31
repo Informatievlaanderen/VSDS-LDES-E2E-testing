@@ -1,5 +1,5 @@
 import { Literal, NamedNode, Quad } from 'n3';
-import { MemberController } from '../src'
+import { MemberController } from '../src/member-controller';
 
 describe('Member controller tests', () => {
 

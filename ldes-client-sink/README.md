@@ -6,20 +6,20 @@ The sink can be run as a docker container, after creating a docker image for it.
 
 To create a docker image, run the following command:
 ```bash
-docker build --tag vsds/sink .
+docker build --tag vsds/ldes-client-sink .
 ```
 
 To run the sink docker image mapped on port 9000, you can use:
 ```bash
-docker run -d -p 9000:80 vsds/sink
+docker run -d -p 9000:80 vsds/ldes-client-sink
 ```
 
 The docker run command will return a container ID (e.g. `0cc5d65d8108f8e91778a0a4cdb6504a2b3926055ce10cb899dceb98db4c3eef`), which you need to stop the container.
 
 Alternatively you can run `docker ps` to retrieve the (short version of the) container ID.
  ```
-CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                    NAMES
-0cc5d65d8108   vsds/sink   "/usr/bin/dumb-init …"   12 seconds ago   Up 11 seconds   0.0.0.0:9000->80/tcp   intelligent_bell
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                  NAMES
+0cc5d65d8108   vsds/ldes-client-sink   "/usr/bin/dumb-init …"   12 seconds ago   Up 11 seconds   0.0.0.0:9000->80/tcp   intelligent_bell
  ```
 To stop the container, you need to call the stop command with the (long or short) container ID, e.g. `docker stop 0cc5d65d8108`
 

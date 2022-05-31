@@ -2,7 +2,7 @@
   "name": "e2e-test-sink",
   "version": "1.0.0",
   "description": "Small http server which receives the LDES members from the LDES client",
-  "main": "./dist/index.js",
+  "main": "./dist/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "npm run build && node dist/server.js",

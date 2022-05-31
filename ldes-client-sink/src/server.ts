@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import { MemberController } from '.';
+import { MemberController } from './member-controller';
 import minimist from 'minimist'
 import { Quad, Parser, Writer } from 'n3';
 

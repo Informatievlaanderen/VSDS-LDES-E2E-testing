@@ -1,0 +1,43 @@
+services:
+  ldes-client-sink:
+    image: vsds/ldes-client-sink
+    build:
+      context: ../../ldes-client-sink
+    ports:
+      - "9003:80"
+    networks:
+      - e2e-test
+  ldes-client-workflow:
+    image: vsds/ldes-client-workflow
+    # TODO: use pre-built image instead of relying on LDES client NiFi processor repo (https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor)
+    build:
+      context: ../../../VSDS-LDESClient-NifiProcessor
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - "8443:8443"
+      - "9002:8080"
+    # volumes:
+    #   - ./nifi/logs:/opt/nifi/nifi-current/logs:rw
+    #   - ./nifi/conf:/opt/nifi/nifi-current/conf:rw
+    networks:
+      - e2e-test
+  ldes-server-simulator:
+    image: vsds/ldes-server-simulator
+    build:
+      context: ../../ldes-server-simulator
+    ports:
+      - "9001:80"
+    environment:
+      - BASEURL=http://ldes-server-simulator
+      - SEED=/tmp/gipod-data
+    volumes:
+      - type: bind
+        source: ../../ldes-server-simulator/data/gipod
+        target: /tmp/gipod-data
+    networks:
+      - e2e-test
+
+networks:
+  e2e-test: {}

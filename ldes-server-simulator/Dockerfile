@@ -9,8 +9,8 @@ RUN npm run build
 FROM node:18.2.0-alpine3.15
 WORKDIR /usr/vsds/simulator
 ## setup to run as less-privileged user
-COPY --chown=node:node --from=builder /build/package*.json .
-COPY --chown=node:node --from=builder /build/dist .
+COPY --chown=node:node --from=builder /build/package*.json ./
+COPY --chown=node:node --from=builder /build/dist ./
 ## install dependancies
 ENV NODE_ENV production
 RUN npm ci --omit=dev

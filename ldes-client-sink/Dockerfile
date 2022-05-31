@@ -9,8 +9,8 @@ RUN npm run build
 FROM node:18.2.0-alpine3.15
 WORKDIR /usr/vsds/sink
 ## setup to run as less-privileged user
-COPY --chown=node:node --from=builder /build/package*.json .
-COPY --chown=node:node --from=builder /build/dist/*.js .
+COPY --chown=node:node --from=builder /build/package*.json ./
+COPY --chown=node:node --from=builder /build/dist/*.js ./
 ## install dependancies
 ENV NODE_ENV production
 RUN npm ci --omit=dev

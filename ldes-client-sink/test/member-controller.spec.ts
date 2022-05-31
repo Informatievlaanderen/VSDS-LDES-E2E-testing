@@ -91,4 +91,14 @@ describe('Member controller tests', () => {
         });
     });
 
+    describe('remove all members', () => {
+        it('should remove all members', () => {
+            sut.add(member(obama));
+            sut.add(member(trump));
+            expect(sut.count).toBe(2);
+            sut.clear();
+            expect(sut.count).toBe(0);
+        });
+    });
+
 });

@@ -41,8 +41,7 @@ server.get('/', (_request, reply) => {
 server.post('/member', (request, reply) => {
   const quads = request.body as Quad[];
   const id = controller.add(quads);
-  reply.statusCode = id ? 201 : 422;
-  reply.send(id || '');
+  reply.status(id ? 201 : 422).send(id || '');
 });
 
 function asLocalUrl(id: string) {
@@ -60,13 +59,17 @@ server.get('/member', { schema: { querystring: { id: { type: 'string' } } } }, (
       const payload = writer.quadsToString(quads);
       reply.header('Content-Type', 'application/n-quads').send(payload);
     } else {
-      reply.statusCode = 404;
-      reply.send('');
+      reply.status(404).send('');
     }
   }
   else {
     reply.send(controller.ids.map(x => asLocalUrl(x)));
   }
+});
+
+server.delete('/member', (_request, reply) => {
+  controller.clear();
+  reply.status(204).send('');
 });
 
 async function closeGracefully(signal: any) {

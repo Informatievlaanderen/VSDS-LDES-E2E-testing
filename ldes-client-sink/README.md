@@ -94,3 +94,10 @@ returns:
 <http://example.org/id/cartoon-figure/donald-duck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
 <http://example.org/id/ldes/disney> <https://w3id.org/tree#member> <http://example.org/id/cartoon-figure/donald-duck> .
 ```
+
+### `DELETE /member` -- Remove all members
+Removes all members, e.g.
+```bash
+curl -X DELETE http://localhost:8080/member
+```
+Returns nothing.

@@ -33,4 +33,8 @@ export class MemberController {
 
         return undefined;
     }
+
+    public clear(): void {
+        this.members = {};
+    }
 }

@@ -48,11 +48,11 @@ The GIPOD simulator and sink http-server are both a small http-server which are 
 
 The Apache NiFi server needs a couple of minutes to start.
 
-Once started, you can find the NiFi user interface at http://localhost:8443/nifi.
+Once started, you can find the NiFi user interface at https://localhost:8443/nifi.
 
 ## Upload NiFi workflow
 
-In order to upload the NiFi workflow you first need to log on to the [Apache NiFi user interface](http://localhost:8443/nifi) using the user credentials provided in the `.env` file (or the alternative file passed in by `--env-file`).
+In order to upload the NiFi workflow you first need to log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `.env` file (or the alternative file passed in by `--env-file`).
 
 Once logged in, you need to create a new process group based on a [pre-defined workflow](./data/replicate.nifi-workflow.json) (containing a LDES client and a InvokeHTTP processor):
 * drag-n-drop the process group icon on the NiFi workpace:

@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./ldes-client-sink
+        working-directory: ./ldes-server-simulator
 
     strategy:
       matrix:

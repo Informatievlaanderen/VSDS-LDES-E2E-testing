@@ -5,7 +5,7 @@ export interface IHeaders {
 export interface IResponse<TBody> {
     body: TBody;
     status: number;
-    headers?: IHeaders;
+    headers?: IHeaders | undefined;
 }
 
 export interface IGetRequest<TQuery> {
@@ -15,4 +15,7 @@ export interface IGetRequest<TQuery> {
 export interface IPostRequest<TBody, TQuery = void> {
     body: TBody;
     query?: TQuery;
+    headers?: IHeaders;
 }
+
+export const mimeJsonLd = 'application/json-ld';

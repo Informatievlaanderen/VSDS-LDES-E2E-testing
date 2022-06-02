@@ -8,6 +8,8 @@ This project implements a very small and basic LDES server (no support for accep
 
 The simulator is implemented as a node.js application. Currently, after cloning the repository, you need to build it before you can run it.
 
+> **Note**: you can also use Docker to automatically build and run the simulator, see [below](#docker).
+
 The only **prerequisite** to build the simulator is [node.js](https://nodejs.org/en/) (it includes [npm](https://www.npmjs.com/)). You need to download and install node.js manually or using something like [chocolatey](https://chocolatey.org/). See [choco node.js package](https://community.chocolatey.org/packages/nodejs) for installation instructions.
 
 Once node.js is installed, run the following commands from a (bash or powershell) terminal:
@@ -40,8 +42,10 @@ npm start
 node dist/server.js
 node dist/server.js --silent
 node dist/server.js --seed=./data/gipod --silent
-node dist/server.js --baseUrl=http://localhost:9000 --port=9000
+node dist/server.js --baseUrl=http://localhost:8080 --port=8080
 ```
+
+> **Note**: for the examples below please use `node dist/server.js --baseUrl=http://localhost:8080 --port=8080`
 
 ## Retrieve available fragments and aliases
 
@@ -49,7 +53,7 @@ You can use a regulator browser, [postman](https://www.postman.com/), [curl](htt
 
 To query the available fragments and aliases from the (bash) command line using curl:
 
-`curl http://localhost/` 
+`curl http://localhost:8080/` 
 
 This results initially in:
 ```json
@@ -62,14 +66,26 @@ To upload the LDES fragments, the simulator offers an `/ldes` endpoint to which 
 
 To upload an LDES fragment from the (bash) command line using curl:
 
-`curl -X POST http://localhost/ldes -H "Content-Type: application/json-ld" -d "@sample.jsonld"`
+`curl -X POST http://localhost:8080/ldes -H "Content-Type: application/json-ld" -d "@sample.jsonld"`
 
 where `sample.jsonld` is your fragment file located in the current working directory. This results in something like (depends on the file's content):
 ```json
-{"path":"/api/v1/ldes/mobility-hindrances"}
+{"id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 **Note**: you need to ensure that your collection of fragments does not contain a relation to a fragment outside of your collection (data subset). Obviously, the simulator will not contain such a fragment and return a HTTP code 404.
+
+Additionally, you can control the `Cache-Control` header that is returned for a fragment. By default, the header will be `public, max-age=604800, immutable` indicating that the (http) client only needs to retrieve the fragment once. If you have a fragment that needs updating, you need to set the `max-age` value to the number of seconds after which the fragment should be re-requested.
+
+To upload an LDES fragment and specify the `max-age` (e.g. 2 minutes / 120 seconds) using curl:
+
+`curl -X POST http://localhost:8080/ldes?max-age=120 -H "Content-Type: application/json-ld" -d "@sample.jsonld"`
+
+Response:
+
+```json
+{"id":"/api/v1/ldes/mobility-hindrances","maxAge":"120"}
+```
 
 ## Create an alias
 
@@ -79,11 +95,11 @@ Although it does not matter with which fragment you start retrieving a LDES data
 ```
 To create an alias for a fragment from the (bash) command line using curl:
 ```bash
-curl -X POST http://localhost/alias -H "Content-Type: application/json" -d '{"original": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances", "alias": "https://private-api.gipod.beta-vlaanderen.be/ldes/mobility-hindrances"}'
+curl -X POST http://localhost:8080/alias -H "Content-Type: application/json" -d '{"original": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances", "alias": "https://private-api.gipod.beta-vlaanderen.be/ldes/mobility-hindrances"}'
 ```
 and the simulator will respond with:
 ```json
-{"redirect":{"from":"/ldes/mobility-hindrances","to":"/api/v1/ldes/mobility-hindrances"}}
+{"from":"/ldes/mobility-hindrances","to":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 ## Retrieve a fragment
@@ -91,23 +107,25 @@ and the simulator will respond with:
 After uploading the fragments and optionally creating aliases, you can retrieve a fragment using your favorite http client directly or through the simulator home page.
 
 To request the simulator home page using curl:
-```text
-curl http://localhost
+```bash
+curl http://localhost:8080
 ```
-results in:
+now results in:
 ```json
 {"aliases":["/ldes/mobility-hindrances"],"fragments":["/api/v1/ldes/mobility-hindrances"]}
 ```
 
 To retrieve a fragment directly with curl:
-```text
-curl http://localhost/ldes/mobility-hindrances
+```bash
+curl http://localhost:8080/ldes/mobility-hindrances
 ```
 results in:
 ```json
 {
-  "@context": ["https://private-api.gipod.beta-vlaanderen.be/api/v1/context/gipod.jsonld"],
-  "@id": "http://localhost/api/v1/ldes/mobility-hindrances",
+  "@context": [
+    "https://private-api.gipod.beta-vlaanderen.be/api/v1/context/gipod.jsonld"
+  ],
+  "@id": "http://localhost:8080/api/v1/ldes/mobility-hindrances",
   "@type": "Node",
   "viewOf": "https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances",
   "collectionInfo": {
@@ -125,6 +143,25 @@ results in:
 
 ```
 **Note**: that the fragment ID (and, if available) the relation link) refers to the simulator instead of the original LDES server.
+
+To verify that the correct `Cache-Control` header is returned you need to use `curl -i`, e.g.:
+```bash
+curl -i http://localhost:8080/ldes/mobility-hindrances
+```
+results in:
+```http
+HTTP/1.1 200 OK
+cache-control: public, max-age=120
+content-type: application/json; charset=utf-8
+content-length: 2571
+Date: Thu, 02 Jun 2022 13:56:19 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  ... (omitted LDES content)
+}
+```
 
 ## Docker
 The simulator can be run as a docker container, after creating a docker image for it. The docker container will keep running until stopped.

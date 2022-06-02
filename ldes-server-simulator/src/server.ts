@@ -1,10 +1,10 @@
 import fastify, { FastifyReply } from 'fastify'
 import minimist from 'minimist'
 import { LdesFragmentRepository } from './ldes-fragment-repository';
-import { LdesFragmentService } from './ldes-fragment-service';
-import { ICreateFragmentOptions, LdesFragmentController } from "./ldes-fragment-controller";
+import { ICreateFragmentOptions, LdesFragmentService } from './ldes-fragment-service';
+import { LdesFragmentController } from "./ldes-fragment-controller";
 import { TreeNode } from './tree-specification';
-import { IResponse } from 'http-interfaces';
+import { IResponse } from './http-interfaces';
 import { RouteGenericInterface } from 'fastify/types/route';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { IAlias } from './fragment-interfaces';
@@ -31,10 +31,7 @@ server.addHook('onRequest', (request, _reply, done) => {
 });
 
 function respondWith<T>(reply: FastifyReply<Server, IncomingMessage, ServerResponse, RouteGenericInterface, unknown>, response: IResponse<T>) {
-  if (response.headers) {
-    reply.headers(response.headers);
-  }
-  reply.status(response.status).send(response.body);
+  reply.status(response.status).headers(response.headers || {}).send(response.body);
 }
 
 server.get('/', async (_request, reply) => {
@@ -46,7 +43,11 @@ server.get('/*', async (request, reply) => {
 });
 
 server.post('/ldes', {schema: {querystring: {seconds: {type:'number'}}}}, async (request, reply) => {
-  respondWith(reply, controller.postFragment({body: request.body as TreeNode, query: request.query as ICreateFragmentOptions}));
+  respondWith(reply, controller.postFragment({
+    body: request.body as TreeNode, 
+    query: request.query as ICreateFragmentOptions,
+    headers: {'content-type': request.headers['content-type']}
+  }));
 });
 
 server.post('/alias', async (request, reply) => {

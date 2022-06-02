@@ -1,8 +1,9 @@
-import { IFragmentInfo } from "fragment-interfaces";
+import { IHeaders } from "./http-interfaces";
 import { TreeNode } from "./tree-specification";
 
-export interface IFragment extends IFragmentInfo {
+export interface IFragment {
     content: TreeNode;
+    headers: IHeaders;
 }
 
 interface LdesFragmentsDatabase {
@@ -12,15 +13,15 @@ interface LdesFragmentsDatabase {
 export class LdesFragmentRepository {
     private _fragments: LdesFragmentsDatabase = {};
 
-    public save(id: string, node: TreeNode, maxAge: number | undefined) {
-        this._fragments[id] = {id: id, content: node, maxAge: maxAge};
+    public save(id: string, node: TreeNode, headers: IHeaders) {
+        this._fragments[id] = {content: node, headers: headers};
     }
 
     public get(id: string) : IFragment | undefined {
         return this._fragments[id];
     }
 
-    public get fragments(): string[] {
+    public get keys(): string[] {
         return Object.keys(this._fragments);
     }
 }

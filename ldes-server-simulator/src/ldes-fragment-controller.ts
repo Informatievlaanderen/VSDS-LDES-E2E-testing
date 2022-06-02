@@ -1,12 +1,8 @@
-import { LdesFragmentService } from "./ldes-fragment-service";
+import { ICreateFragmentOptions, LdesFragmentService } from "./ldes-fragment-service";
 import { TreeNode } from "./tree-specification";
 import { readdir, readFile } from 'node:fs/promises';
-import { IGetRequest, IHeaders, IPostRequest, IResponse } from "http-interfaces";
-import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics } from "fragment-interfaces";
-
-export interface ICreateFragmentOptions { 
-    'max-age': number;
-}
+import { IGetRequest, IPostRequest, IResponse, mimeJsonLd } from "./http-interfaces";
+import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics } from "./fragment-interfaces";
 
 export class LdesFragmentController {
     private redirections: any = {};
@@ -21,7 +17,7 @@ export class LdesFragmentController {
     public postFragment(request: IPostRequest<TreeNode, ICreateFragmentOptions>): IResponse<IFragmentInfo> {
         return {
             status: 201, 
-            body: this.service.save(request.body, request.query?.['max-age']),
+            body: this.service.save(request.body, request.query, request.headers),
         };
     }
 
@@ -39,12 +35,8 @@ export class LdesFragmentController {
         return {
             status: fragment === undefined ? 404 : 200,
             body: fragment?.content,
-            headers: this.asCacheControl(fragment?.maxAge),
+            headers: fragment?.headers,
         }
-    }
-
-    private asCacheControl(maxAge: number | undefined): IHeaders {
-        return { 'Cache-Control': maxAge ? `public, max-age=${maxAge}`: 'public, max-age=604800, immutable'};
     }
 
     /**
@@ -56,7 +48,7 @@ export class LdesFragmentController {
             status: 200, 
             body: { 
                 aliases: Object.keys(this.redirections), 
-                fragments: this.service.fragments,
+                fragments: this.service.fragmentIds,
             }
         };
     }
@@ -94,7 +86,7 @@ export class LdesFragmentController {
         const files = await readdir(directoryPath);
         for await (const file of files) {
             const content = await readFile(`${directoryPath}/${file}`, { encoding: 'utf-8' });
-            const fragment = this.service.save(JSON.parse(content), undefined);
+            const fragment = this.service.save(JSON.parse(content), undefined, {'content-type': mimeJsonLd});
             result.push({ file: file, fragment: fragment });
         }
         return result;

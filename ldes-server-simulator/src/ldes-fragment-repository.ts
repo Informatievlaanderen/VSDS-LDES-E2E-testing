@@ -12,8 +12,8 @@ interface LdesFragmentsDatabase {
 export class LdesFragmentRepository {
     private _fragments: LdesFragmentsDatabase = {};
 
-    public save(id: string, node: TreeNode, validity: number | undefined) {
-        this._fragments[id] = {id: id, content: node, maxAge: validity};
+    public save(id: string, node: TreeNode, maxAge: number | undefined) {
+        this._fragments[id] = {id: id, content: node, maxAge: maxAge};
     }
 
     public get(id: string) : IFragment | undefined {

@@ -1,6 +1,11 @@
+export interface IHeaders { 
+    [keyof: string]: any
+};
+
 export interface IResponse<TBody> {
     body: TBody;
     status: number;
+    headers?: IHeaders;
 }
 
 export interface IGetRequest<TQuery> {

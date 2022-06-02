@@ -1,5 +1,6 @@
 import { TreeNode } from "./tree-specification";
-import { LdesFragmentRepository } from "./ldes-fragment-repository";
+import { IFragment, LdesFragmentRepository } from "./ldes-fragment-repository";
+import { IFragmentInfo } from "fragment-interfaces";
 
 export class LdesFragmentService {
     constructor(private baseUrl: URL, private repository: LdesFragmentRepository) { }
@@ -10,17 +11,17 @@ export class LdesFragmentService {
         return url;
     }
 
-    public save(body: TreeNode): string {
-        const fragmentUrl: URL = this.changeOrigin(new URL(body['@id']), this.baseUrl);
-        body['@id'] = fragmentUrl.href;
-        body['tree:relation'].forEach(x => x['tree:node'] = this.changeOrigin(new URL(x['tree:node']), this.baseUrl).href);
+    public save(node: TreeNode, maxAge: number | undefined): IFragmentInfo {
+        const fragmentUrl: URL = this.changeOrigin(new URL(node['@id']), this.baseUrl);
+        node['@id'] = fragmentUrl.href;
+        node['tree:relation'].forEach(x => x['tree:node'] = this.changeOrigin(new URL(x['tree:node']), this.baseUrl).href);
 
-        const path = fragmentUrl.href.replace(this.baseUrl.href, '/');
-        this.repository.save(path, body);
-        return path;
+        const id = fragmentUrl.href.replace(this.baseUrl.href, '/');
+        this.repository.save(id, node, maxAge);
+        return {id: id, maxAge: maxAge};
     }
 
-    public get(fragmentId: string): TreeNode | undefined {
+    public get(fragmentId: string): IFragment | undefined {
         return this.repository.get(fragmentId);
     }
 

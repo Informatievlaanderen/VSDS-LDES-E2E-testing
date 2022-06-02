@@ -1,25 +1,11 @@
 import { LdesFragmentService } from "./ldes-fragment-service";
 import { TreeNode } from "./tree-specification";
 import { readdir, readFile } from 'node:fs/promises';
-import { IGetRequest, IPostRequest, IResponse } from "http-interfaces";
+import { IGetRequest, IHeaders, IPostRequest, IResponse } from "http-interfaces";
+import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics } from "fragment-interfaces";
 
-export interface IAlias {
-    original: string;
-    alias: string;
-}
-
-export interface IRedirection {
-    from: string;
-    to: string;
-}
-
-export interface IStatistics {
-    aliases: string[];
-    fragments: string[];
-}
-
-export interface IFragmentInfo { 
-    id: string;
+export interface ICreateFragmentOptions { 
+    'max-age': number;
 }
 
 export class LdesFragmentController {
@@ -32,12 +18,10 @@ export class LdesFragmentController {
      * @param request The request with its body containing the fragment which optionally contains relations to other fragments.
      * @returns An IFragmentInfo object with its id property containing the relative fragment path without the origin.
      */
-    public postFragment(request: IPostRequest<TreeNode>): IResponse<IFragmentInfo> {
+    public postFragment(request: IPostRequest<TreeNode, ICreateFragmentOptions>): IResponse<IFragmentInfo> {
         return {
             status: 201, 
-            body: {
-                id: this.service.save(request.body),
-            }
+            body: this.service.save(request.body, request.query?.['max-age']),
         };
     }
 
@@ -46,7 +30,7 @@ export class LdesFragmentController {
      * @param request A get request with the query containing the ID of the fragment to retrieve.
      * @returns The fragment or undefined.
      */
-    public getFragment(request: IGetRequest<IFragmentInfo>): IResponse<TreeNode | undefined> {
+    public getFragment(request: IGetRequest<IFragmentId>): IResponse<TreeNode | undefined> {
         let fragmentId = request.query.id;
         while (this.redirections[fragmentId] !== undefined) {
             fragmentId = this.redirections[fragmentId];
@@ -54,8 +38,13 @@ export class LdesFragmentController {
         const fragment = this.service.get(fragmentId);
         return {
             status: fragment === undefined ? 404 : 200,
-            body: fragment,
+            body: fragment?.content,
+            headers: this.asCacheControl(fragment?.maxAge),
         }
+    }
+
+    private asCacheControl(maxAge: number | undefined): IHeaders {
+        return { 'Cache-Control': maxAge ? `public, max-age=${maxAge}`: 'public, max-age=604800, immutable'};
     }
 
     /**
@@ -100,12 +89,12 @@ export class LdesFragmentController {
      * Seeds the simulator with the fragments found in the given directory location. Each file is assumed to contain a fragment and be encoded with UTF-8.
      * @param directoryPath The absolute or relative location of a directory containing fragment files.
      */
-    public async seed(directoryPath: string): Promise<{ file: string, fragment: string }[]> {
-        const result: { file: string, fragment: string }[] = [];
+    public async seed(directoryPath: string): Promise<{ file: string, fragment: IFragmentInfo }[]> {
+        const result: { file: string, fragment: IFragmentInfo }[] = [];
         const files = await readdir(directoryPath);
         for await (const file of files) {
             const content = await readFile(`${directoryPath}/${file}`, { encoding: 'utf-8' });
-            const fragment = this.service.save(JSON.parse(content));
+            const fragment = this.service.save(JSON.parse(content), undefined);
             result.push({ file: file, fragment: fragment });
         }
         return result;

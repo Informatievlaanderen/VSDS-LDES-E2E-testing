@@ -28,13 +28,13 @@ describe('controller tests', () => {
     });
 
     describe('get statistics tests', () => {
-        test('should initially return empty statistics', () => {
+        it('should initially return empty statistics', () => {
             const statistics = sut.getStatistics();
             expect(statistics.body).not.toBe(undefined);
             expect(statistics.body.aliases).toHaveLength(0);
             expect(statistics.body.fragments).toHaveLength(0);
         });
-        test('should return correct statistics', () => {
+        it('should return correct statistics', () => {
             sut.postFragment({body: body});
             sut.postAlias({body: queryIdAlias});
             const statistics = sut.getStatistics();
@@ -45,7 +45,7 @@ describe('controller tests', () => {
     });
 
     describe('store fragment tests', () => {
-        test('should store the fragment', () => {
+        it('should store the fragment', () => {
             const fragmentInfo = sut.postFragment({body: body});
             expect(fragmentInfo.body).not.toBe(undefined);
             expect(fragmentInfo.body.id).toBe(firstPartialId);
@@ -53,18 +53,19 @@ describe('controller tests', () => {
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
         });
-        test('should replace the fragment ID', () => {
+        it('should replace the fragment ID', () => {
             sut.postFragment({body: body});
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
-            expect(fragment?.['@id']).toBe(new URL(firstPartialId, controllerBaseUrl).href);
+            expect(fragment?.content).not.toBeUndefined();
+            expect(fragment?.content?.['@id']).toBe(new URL(firstPartialId, controllerBaseUrl).href);
         });
-        test("should replace the relation's node ID", () => {
+        it("should replace the relation's node ID", () => {
             sut.postFragment({body: body});
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
-            expect(fragment?.['tree:relation'].length).toBe(body['tree:relation'].length);
-            expect(fragment?.['tree:relation'].map(x => x['tree:node'])).toEqual([
+            expect(fragment?.content?.['tree:relation'].length).toBe(body['tree:relation'].length);
+            expect(fragment?.content?.['tree:relation'].map(x => x['tree:node'])).toEqual([
                 new URL(secondPartialId, controllerBaseUrl).href,
                 new URL(thirdPartialId, controllerBaseUrl).href
             ]);
@@ -72,13 +73,13 @@ describe('controller tests', () => {
     });
 
     describe('retrieve fragment tests', () => {
-        test('should return stored fragment on request', () => {
-            repository.save(firstPartialId, body);
+        it('should return stored fragment on request', () => {
+            repository.save(firstPartialId, body, undefined);
             const fragment = sut.getFragment({query: {id: firstPartialId}});
             expect(fragment.body).not.toBeUndefined();
             expect(fragment.body?.['@id']).toBe(body['@id']);
         });
-        test('should return 404 if fragment not found', () => {
+        it('should return 404 if fragment not found', () => {
             const fragment = sut.getFragment({query: {id: '/dummy/id'}});
             expect(fragment.body).toBeUndefined();
             expect(fragment.status).toBe(404);
@@ -86,19 +87,19 @@ describe('controller tests', () => {
     });
 
     describe('redirection tests', () => {
-        test('should store alias', () => {
+        it('should store alias', () => {
             const redirect = sut.postAlias({body: queryIdAlias});
             expect(redirect.body).not.toBeUndefined();
             expect(redirect.body).toEqual({from: partialWithQueryId, to: firstPartialId});
         });
-        test('should retrieve fragments by alias', () => {
+        it('should retrieve fragments by alias', () => {
             sut.postFragment({body: body});
             sut.postAlias({body: queryIdAlias});
             const fragment = sut.getFragment({query: {id: firstPartialId}});
             expect(fragment.body).not.toBeUndefined();
             expect(fragment.body?.['@id']).toBe(body['@id']);
         });
-        test('should retrieve fragments by alias, even recursively', () => {
+        it('should retrieve fragments by alias, even recursively', () => {
             sut.postFragment({body: body});
             sut.postAlias({body: queryIdAlias});
 
@@ -115,10 +116,43 @@ describe('controller tests', () => {
     });
 
     describe('seed tests', () => {
-        test('should serve seeded data', async () => {
+        it('should serve seeded data', async () => {
             await sut.seed('./test/data');
             expect(sut.getFragment({query: {id: '/id/fragment/1'}})).not.toBeUndefined();
             expect(sut.getFragment({query: {id: '/id/fragment/2'}})).not.toBeUndefined();
+        });
+    });
+
+    describe('Cache-Control tests', () => {
+        it('should return immutable by default', () => {
+            sut.postFragment({body: body});
+            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            expect(fragment.headers).not.toBeUndefined();
+
+            const cacheControl = fragment.headers && fragment.headers['Cache-Control'] as string;
+            expect(cacheControl).not.toBeUndefined();
+
+            const directives = cacheControl?.split(',').map(x => x.trim());
+            expect(directives).toContain('public');
+            expect(directives).toContain('immutable');
+            expect(directives).toContain('max-age=604800');
+        });
+        it('should return correct cache control when passing validity seconds (max-age)', () => {
+            const seconds = 5;
+            sut.postFragment({body: body, query: {'max-age': seconds}});
+            
+            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            const cacheControl = fragment.headers && fragment.headers['Cache-Control'] as string;
+            
+            const directives = cacheControl?.split(',').map(x => x.trim());
+            expect(directives).toContain('public');
+            expect(directives).not.toContain('immutable');
+            
+            const maxAge = directives?.find(x => x.startsWith('max-age='));
+            expect(maxAge).not.toBeUndefined();
+
+            const age = maxAge ? Number.parseInt(maxAge?.replace('max-age=', '')) : undefined;
+            expect(age).toBe(seconds);
         });
     });
 });

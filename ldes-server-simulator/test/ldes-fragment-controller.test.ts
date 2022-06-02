@@ -1,4 +1,4 @@
-import { LdesFragmentController, LdesFragmentRepository, LdesFragmentService, Redirection, TreeNode, TreeRelation } from '../src'
+import { LdesFragmentController, LdesFragmentRepository, LdesFragmentService, IAlias, TreeNode, TreeRelation } from '../src'
 
 describe('controller tests', () => {
     const originalBaseUrl = new URL('http://www.example.org');
@@ -14,7 +14,7 @@ describe('controller tests', () => {
         ]
     } as TreeNode;
     const partialWithQueryId = '/fragment?id=1';
-    const queryRedirection: Redirection = {
+    const queryIdAlias: IAlias = {
         alias: new URL(partialWithQueryId, originalBaseUrl).href,
         original: new URL(firstPartialId, originalBaseUrl).href
     };
@@ -30,33 +30,37 @@ describe('controller tests', () => {
     describe('get statistics tests', () => {
         test('should initially return empty statistics', () => {
             const statistics = sut.getStatistics();
-            expect(statistics.aliases).toHaveLength(0);
-            expect(statistics.fragments).toHaveLength(0);
+            expect(statistics.body).not.toBe(undefined);
+            expect(statistics.body.aliases).toHaveLength(0);
+            expect(statistics.body.fragments).toHaveLength(0);
         });
         test('should return correct statistics', () => {
-            sut.postFragment(body);
-            sut.postAlias(queryRedirection);
+            sut.postFragment({body: body});
+            sut.postAlias({body: queryIdAlias});
             const statistics = sut.getStatistics();
-            expect(statistics.aliases).toEqual([partialWithQueryId]);
-            expect(statistics.fragments).toEqual([firstPartialId]);
+            expect(statistics.body).not.toBe(undefined);
+            expect(statistics.body.aliases).toEqual([partialWithQueryId]);
+            expect(statistics.body.fragments).toEqual([firstPartialId]);
         });
     });
 
     describe('store fragment tests', () => {
         test('should store the fragment', () => {
-            const response = sut.postFragment(body);
-            expect(response.path).toBe(firstPartialId);
+            const fragmentInfo = sut.postFragment({body: body});
+            expect(fragmentInfo.body).not.toBe(undefined);
+            expect(fragmentInfo.body.id).toBe(firstPartialId);
+
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
         });
         test('should replace the fragment ID', () => {
-            sut.postFragment(body);
+            sut.postFragment({body: body});
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
             expect(fragment?.['@id']).toBe(new URL(firstPartialId, controllerBaseUrl).href);
         });
         test("should replace the relation's node ID", () => {
-            sut.postFragment(body);
+            sut.postFragment({body: body});
             const fragment = repository.get(firstPartialId);
             expect(fragment).not.toBeUndefined();
             expect(fragment?.['tree:relation'].length).toBe(body['tree:relation'].length);
@@ -70,45 +74,51 @@ describe('controller tests', () => {
     describe('retrieve fragment tests', () => {
         test('should return stored fragment on request', () => {
             repository.save(firstPartialId, body);
-            const fragment = sut.getFragment(firstPartialId);
-            expect(fragment).not.toBeUndefined();
-            expect(fragment?.['@id']).toBe(body['@id']);
+            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            expect(fragment.body).not.toBeUndefined();
+            expect(fragment.body?.['@id']).toBe(body['@id']);
+        });
+        test('should return 404 if fragment not found', () => {
+            const fragment = sut.getFragment({query: {id: '/dummy/id'}});
+            expect(fragment.body).toBeUndefined();
+            expect(fragment.status).toBe(404);
         });
     });
 
     describe('redirection tests', () => {
         test('should store alias', () => {
-            const response = sut.postAlias(queryRedirection);
-            expect(response).toEqual({ redirect: { from: partialWithQueryId, to: firstPartialId } });
+            const redirect = sut.postAlias({body: queryIdAlias});
+            expect(redirect.body).not.toBeUndefined();
+            expect(redirect.body).toEqual({from: partialWithQueryId, to: firstPartialId});
         });
         test('should retrieve fragments by alias', () => {
-            sut.postFragment(body);
-            sut.postAlias(queryRedirection);
-            const fragment = sut.getFragment(firstPartialId);
-            expect(fragment).not.toBeUndefined();
-            expect(fragment?.['@id']).toBe(body['@id']);
+            sut.postFragment({body: body});
+            sut.postAlias({body: queryIdAlias});
+            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            expect(fragment.body).not.toBeUndefined();
+            expect(fragment.body?.['@id']).toBe(body['@id']);
         });
         test('should retrieve fragments by alias, even recursively', () => {
-            sut.postFragment(body);
-            sut.postAlias(queryRedirection);
+            sut.postFragment({body: body});
+            sut.postAlias({body: queryIdAlias});
 
             const firstMemberId = '/fragment/first';
-            const firstMemberRedirection: Redirection = {
+            const firstMemberAlias: IAlias = {
                 alias: new URL(firstMemberId, originalBaseUrl).href,
                 original: new URL(partialWithQueryId, originalBaseUrl).href
             };
-            sut.postAlias(firstMemberRedirection);
-            const fragment = sut.getFragment(firstMemberId);
-            expect(fragment).not.toBeUndefined();
-            expect(fragment?.['@id']).toBe(body['@id']);
+            sut.postAlias({body: firstMemberAlias});
+            const fragment = sut.getFragment({query: {id: firstMemberId}});
+            expect(fragment.body).not.toBeUndefined();
+            expect(fragment.body?.['@id']).toBe(body['@id']);
         });
     });
 
     describe('seed tests', () => {
         test('should serve seeded data', async () => {
             await sut.seed('./test/data');
-            expect(sut.getFragment('/id/fragment/1')).not.toBeUndefined();
-            expect(sut.getFragment('/id/fragment/2')).not.toBeUndefined();
+            expect(sut.getFragment({query: {id: '/id/fragment/1'}})).not.toBeUndefined();
+            expect(sut.getFragment({query: {id: '/id/fragment/2'}})).not.toBeUndefined();
         });
     });
 });

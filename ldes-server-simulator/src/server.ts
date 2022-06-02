@@ -1,9 +1,12 @@
-import fastify from 'fastify'
+import fastify, { FastifyReply } from 'fastify'
 import minimist from 'minimist'
 import { LdesFragmentRepository } from './ldes-fragment-repository';
 import { LdesFragmentService } from './ldes-fragment-service';
-import { LdesFragmentController, Redirection } from "./ldes-fragment-controller";
+import { LdesFragmentController, IAlias } from "./ldes-fragment-controller";
 import { TreeNode } from './tree-specification';
+import { IResponse } from 'http-interfaces';
+import { RouteGenericInterface } from 'fastify/types/route';
+import { Server, IncomingMessage, ServerResponse } from 'http';
 
 const server = fastify();
 const args = minimist(process.argv.slice(2));
@@ -26,24 +29,24 @@ server.addHook('onRequest', (request, _reply, done) => {
   done();
 });
 
-server.get('/', async (_request, _reply) => {
-  return controller.getStatistics();
+function respondWith<T>(reply: FastifyReply<Server, IncomingMessage, ServerResponse, RouteGenericInterface, unknown>, response: IResponse<T>) {
+  reply.status(response.status).send(response.body);
+}
+
+server.get('/', async (_request, reply) => {
+  respondWith(reply, controller.getStatistics());
 });
 
 server.get('/*', async (request, reply) => {
-  const fragment = controller.getFragment(request.url);
-  reply.statusCode = fragment === undefined ? 404 : 200;
-  return reply.send(fragment);
+  respondWith(reply, controller.getFragment({ query: {id: request.url}}));
 });
 
 server.post('/ldes', async (request, reply) => {
-  reply.statusCode = 201;
-  return controller.postFragment(request.body as TreeNode);
+  respondWith(reply, controller.postFragment({body: request.body as TreeNode}));
 });
 
 server.post('/alias', async (request, reply) => {
-  reply.statusCode = 201;
-  return controller.postAlias(request.body as Redirection);
+  respondWith(reply, controller.postAlias({body: request.body as IAlias}));
 });
 
 async function closeGracefully(signal: any) {

@@ -1,4 +1,4 @@
-# Demo 1 - June, 10th 2022
+# Demo 1 - June, 7th 2022
 
 This test demonstrates user story **As a data intermediary I want to keep in sync with changes in the GIPOD LDES data set.** (VSDSPUB-60).
 

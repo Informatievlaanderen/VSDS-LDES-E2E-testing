@@ -1,0 +1,39 @@
+services:
+  ldes-server-simulator:
+    image: vsds/ldes-server-simulator
+    # TODO: use pre-built docker image
+    build:
+      context: ../../ldes-server-simulator
+    ports:
+      - "9001:80"
+    environment:
+      - BASEURL=http://ldes-server-simulator
+    networks:
+      - e2e-test
+  ldes-client-sink:
+    image: vsds/ldes-client-sink
+    # TODO: use pre-built docker image
+    build:
+      context: ../../ldes-client-sink
+    ports:
+      - "9003:80"
+    networks:
+      - e2e-test
+  ldes-client-workflow:
+    image: vsds/ldes-client-workflow
+    # TODO: use pre-built NAR (NiFi Jar) file & local Docker file
+    # instead of relying on LDES client NiFi processor repo 
+    # (https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor)
+    build:
+      context: ../../../VSDS-LDESClient-NifiProcessor
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - "8443:8443"
+      - "9002:8080"
+    networks:
+      - e2e-test
+
+networks:
+  e2e-test: {}

@@ -23,11 +23,11 @@ To demonstrate the correct working of the LDES client you need to:
 > **Note**: currently, we do not create and push artifacts to external repositories such as Maven central and Docker Hub so we need to build all the systems from code. Therefore, before building and running the simulator, sink and client demo (empty Apache NiFi) systems, please ensure the source code repositories are up to date (open a terminal at the location of this file and execute these commands):
 > ```bash
 > cd ../../../VSDS-LDESClient-NifiProcessor/
-> git checkout main
-> git pull
-> cd ../VSDS-LDES-E2E-testing/e2e-test/20220610.demo-1/
-> git checkout main
-> git pull
+> git switch main
+> git checkout a57c6173
+> cd ../VSDS-LDES-E2E-testing/e2e-test/20220607.demo-1/
+> git switch main
+> git checkout a165daa5
 >```
 
 To start all systems you need to [build and run the docker containers](../20220524.demo-1/README.md#start-docker-containers). E.g.

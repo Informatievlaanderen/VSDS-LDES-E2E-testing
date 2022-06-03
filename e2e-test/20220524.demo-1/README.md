@@ -24,6 +24,16 @@ To run the E2E test manually, you need to:
 
 ## Start docker containers
 
+> **Note**: currently, we do not create and push artifacts to external repositories such as Maven central and Docker Hub so we need to build all the systems from code. Therefore, before building and running the simulator, sink and client demo (empty Apache NiFi) systems, please retrieve the source code repositories at the time before the demo (open a terminal at the location of this file and execute these commands):
+> ```bash
+> cd ../../../VSDS-LDESClient-NifiProcessor/
+> git switch main
+> git checkout fa09efe6
+> cd ../VSDS-LDES-E2E-testing/e2e-test/20220425.demo-1/
+> git switch main
+> git checkout b658f2f8
+>```
+
 To start the docker containers, you need to use the `docker compose` command. This command will use the [docker-compose.yml](./docker-compose.yml) file found in this directory. It will also use a [.env](./.env) file containing environment variables passed to the docker containers when run. Before the Apache NifI container can be started you need to provide the single user credentials used for logging on to the Nifi instance. You can do this by editing this [.env](./.env) file and filling in the variables for the username and password. 
 
 > **Note**: if you leave the credentials empty, Apache NiFI will generated random user credentials. The [docker-compose.yml](./docker-compose.yml) file includes configuration to map the NiFi logs and conf directory to the host system, allowing to inspect these files. You can find the generated credentials in the [Nifi application log file](./nifi/logs/nifi-app.log).

@@ -1,0 +1,32 @@
+@startuml "LDES server demo - component diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title LDES client demo - component diagram
+
+Person(tester, "Tester")
+
+System_Ext(simulator, "GIPOD simulator", "Simple LDES fragment server (alternative for GIPOD LDES server which contains too much data)")
+System_Ext(workflow, "LDES server demo", "Apache NiFi with workflow containing LDES client processor")
+
+System_Boundary(server_system, "LDES server"){
+    Container_Boundary(server, "LDES server"){
+        Component(ingest, "Ingest", "Java", "Ingests individual LDES members")
+        Component(core, "Domain", "Java", "Business logic\n(all core functionality)")
+        Component(storage, "Storage", "Java", "Database or other repository")
+        Component(consume, "Publication", "Java", "Returns LDES fraglents on request")
+    }
+    Container_Ext(database, "Database", "MongoDB")
+}
+
+'Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, simulator, "view GIPOD fragments", "HTTP")
+Rel_D(tester, consume, "verify GIPOD data set replicated", "HTTP")
+Rel_L(workflow, simulator, "retrieves and follows LDES fragments", "HTTP (method GET)")
+Rel_R(workflow, ingest, "pushes LDES members", "HTTP (method POST)")
+Rel(storage, database, "stores LDES members and retrieves LDES fragments")
+Rel_R(ingest, core, "store member")
+Rel_D(core, storage, "store member")
+Rel_D(core, storage, "get fragment")
+Rel_L(consume, core, "get fragment")
+
+@enduml

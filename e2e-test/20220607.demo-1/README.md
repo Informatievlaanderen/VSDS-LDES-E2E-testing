@@ -24,10 +24,12 @@ To demonstrate the correct working of the LDES client you need to:
 > ```bash
 > cd ../../../VSDS-LDESClient-NifiProcessor/
 > git switch main
-> git checkout a57c6173
+> git pull
+> git checkout `git rev-list -n 1 --before="2022-06-07 09:30 +02:00" main`
 > cd ../VSDS-LDES-E2E-testing/e2e-test/20220607.demo-1/
 > git switch main
-> git checkout a165daa5
+> git pull
+> git checkout `git rev-list -n 1 --before="2022-06-08 18:00 +02:00" main` #Note: we moved the E2E tests and needed to redo the support files
 >```
 
 To start all systems you need to [build and run the docker containers](../20220524.demo-1/README.md#start-docker-containers). E.g.

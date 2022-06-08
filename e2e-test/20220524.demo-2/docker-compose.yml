@@ -1,0 +1,54 @@
+version: '3.3'
+services:
+  ldes-server:
+    env_file:
+      - ../../../VSDS-LDESServer4J/config.local.env
+    image: vsds/ldes-server
+    build:
+      context: ../../../VSDS-LDESServer4J
+    ports:
+      - "8080:8080"
+    networks:
+      - ldes
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: always
+    networks:
+      - ldes
+  ldes-server-simulator:
+    image: vsds/ldes-server-simulator
+    build:
+      context: ../../ldes-server-simulator
+    ports:
+      - "9001:80"
+    environment:
+      - BASEURL=http://ldes-server-simulator
+      - SEED=/tmp/gipod-data
+    volumes:
+      - type: bind
+        source: ../../ldes-server-simulator/data/gipod
+        target: /tmp/gipod-data
+    networks:
+      - ldes
+  replicate-workflow:
+    image: vsds/ldes-client-workflow
+    # TODO: use pre-built image instead of relying on LDES client NiFi processor repo (https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor)
+    build:
+      context: ../../../VSDS-LDESClient-NifiProcessor
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - "8443:8443"
+    #   - "9002:8080"
+    # volumes:
+    #   - ./nifi/logs:/opt/nifi/nifi-current/logs
+    #   - ./nifi/conf:/opt/nifi/nifi-current/conf
+    networks:
+      - ldes
+networks:
+  ldes: {}

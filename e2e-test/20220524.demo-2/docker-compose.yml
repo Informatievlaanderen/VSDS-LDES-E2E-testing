@@ -3,7 +3,6 @@ services:
   ldes-server:
     env_file:
       - ../../../VSDS-LDESServer4J/config.local.env
-    container_name: ldes-server
     image: vsds/ldes-server
     build:
       context: ../../../VSDS-LDESServer4J
@@ -15,7 +14,6 @@ services:
       - mongodb
   mongodb:
     image: mongo
-    container_name: mongodb
     ports:
       - 27017:27017
     restart: always
@@ -46,10 +44,10 @@ services:
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
     ports:
       - "8443:8443"
-      - "9002:8080"
-    volumes:
-      - ./nifi/logs:/opt/nifi/nifi-current/logs
-      - ./nifi/conf:/opt/nifi/nifi-current/conf
+    #   - "9002:8080"
+    # volumes:
+    #   - ./nifi/logs:/opt/nifi/nifi-current/logs
+    #   - ./nifi/conf:/opt/nifi/nifi-current/conf
     networks:
       - ldes
 networks:

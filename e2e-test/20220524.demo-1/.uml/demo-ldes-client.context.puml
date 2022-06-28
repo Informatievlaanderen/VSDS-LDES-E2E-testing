@@ -1,0 +1,18 @@
+@startuml "LDES client demo - context diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title LDES client demo - context diagram
+
+Person(tester, "Tester")
+
+System(client, "LDES client Demo")
+System_Ext(simulator, "GIPOD simulator", "Simple LDES fragment server (alternative for GIPOD LDES server which contains too much data)")
+System_Ext(sink, "LDES members sink", "Little HTTP server accepting LDES members from the LDES client")
+
+Rel_L(client, simulator, "retrieves and follows LDES fragments", "HTTP (method GET)")
+Rel_R(client, sink, "pushes LDES members", "HTTP (method POST)")
+Rel_D(tester, simulator, "view GIPOD fragments", "HTTP")
+Rel_D(tester, sink, "verify GIPOD data set replicated", "HTTP")
+Rel_D(tester, client, "create and run workflow", "HTTPS")
+
+@enduml

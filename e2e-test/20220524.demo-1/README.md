@@ -28,10 +28,12 @@ To run the E2E test manually, you need to:
 > ```bash
 > cd ../../../VSDS-LDESClient-NifiProcessor/
 > git switch main
-> git checkout fa09efe6
+> git pull
+> git checkout `git rev-list -n 1 --before="2022-05-24 09:30 +02:00" main`
 > cd ../VSDS-LDES-E2E-testing/e2e-test/20220425.demo-1/
 > git switch main
-> git checkout b658f2f8
+> git pull
+> git checkout `git rev-list -n 1 --before="2022-06-04 00:00 +02:00" main` #Note: we moved the E2E tests and needed to redo the support files
 >```
 
 To start the docker containers, you need to use the `docker compose` command. This command will use the [docker-compose.yml](./docker-compose.yml) file found in this directory. It will also use a [.env](./.env) file containing environment variables passed to the docker containers when run. Before the Apache NifI container can be started you need to provide the single user credentials used for logging on to the Nifi instance. You can do this by editing this [.env](./.env) file and filling in the variables for the username and password. 

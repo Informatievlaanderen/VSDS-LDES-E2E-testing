@@ -31,13 +31,13 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
-        tags: |
-          type=ref,event=branch
-          type=ref,event=tag
-          type=ref,event=pr
-          type=raw,value={{date 'YYYYMMDDThh:mmZ'}}
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=raw,value={{date 'YYYYMMDDThh:mmZ'}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3

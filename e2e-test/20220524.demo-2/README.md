@@ -1,5 +1,7 @@
 # Demo 2 - May, 24th 2022
 
+<span style="background-color: OrangeRed; color: white">**Note**: it is unfortunately not possible to replay this demo anymore due to a repo which was archived.</span>
+
 This test demonstrates user story **As a data intermediary I want to request the GIPOD LDES data set without fragmentation** (VSDSPUB-61).
 
 > **Note**: Currently, this LDES server E2E test is only available as a manual test, no automation yet.

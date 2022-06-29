@@ -26,11 +26,13 @@ To run the E2E test manually, you need to:
 
 > **Note**: currently, we do not create and push artifacts to external repositories such as Maven central and Docker Hub so we need to build all the systems from code. Therefore, before building and running the simulator, sink and client demo (empty Apache NiFi) systems, please retrieve the source code repositories at the time before the demo (open a terminal at the location of this file and execute these commands):
 > ```bash
-> cd ../../../VSDS-LDESClient-NifiProcessor/
+> cd ../../../
+> git clone https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor.git
+> cd VSDS-LDESClient-NifiProcessor/
 > git switch main
 > git pull
 > git checkout `git rev-list -n 1 --before="2022-05-24 09:30 +02:00" main`
-> cd ../VSDS-LDES-E2E-testing/e2e-test/20220425.demo-1/
+> cd ../VSDS-LDES-E2E-testing/e2e-test/20220524.demo-1/
 > git switch main
 > git pull
 > git checkout `git rev-list -n 1 --before="2022-06-04 00:00 +02:00" main` #Note: we moved the E2E tests and needed to redo the support files
@@ -83,7 +85,8 @@ Once logged in, you need to create a new process group based on a [pre-defined w
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink http-server.
 
-![ldes client config](./.artwork/ldes-client-config.png) ![invoke http config](./.artwork/invoke-http-config.png)
+* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z`
+* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
 To launch the workflow, ensure that no processor is selected (click in the workpace OR navigate back to the root process group and select the newly added process group) and click the start button.
 

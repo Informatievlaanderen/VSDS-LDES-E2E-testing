@@ -3,7 +3,7 @@ services:
   ldes-server:
     env_file:
       - ./ldes-server/config.local.env
-    image: ghcr.io/informatievlaanderen/ldes-server:20220701T1412
+    image: ghcr.io/informatievlaanderen/ldes-server:20220704t1516
     container_name: ldes-server
     ports:
       - "8080:8080"
@@ -23,7 +23,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-server-simulator:20220629t1521
     container_name: gipod-server-simulator
     ports:
-      - "9001:80"
+      - "9011:80"
     environment:
       - BASEURL=http://gipod-server-simulator
     networks:

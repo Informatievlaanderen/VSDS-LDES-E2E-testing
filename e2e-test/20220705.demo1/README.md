@@ -28,9 +28,9 @@ docker compose --env-file .env.user up
 ```
 
 This command will use the [docker-compose.yml](./docker-compose.yml) file found in this directory for building and running the following docker containers:
-* LDES server at http://localhost:8080/ (takes a few minutes)
+* LDES server at http://localhost:8080/mobility-hindrances (takes a few minutes)
 * mongo database (the underlying storage for the LDES server)
-* GIPOD simulator at http://localhost:9001/
+* GIPOD simulator at http://localhost:9011/
 * Apache NiFi (including LDES client processor) with user interface at https://localhost:8443/nifi (takes a few minutes)
 
 ## Setup demo
@@ -86,9 +86,9 @@ And the result contains no relations
 
 First we upload the [alfa.jsonld](./gipod-server-simulator/data/alfa.jsonld) file, then we start the [replication/synchronisation workflow](./replicate-workflow/replicate.nifi-workflow.json) and finally we request the collection repeatedly.
 
-Upload the `alfa.jsonld` file to the [GIPOD server simulator](http://localhost:9001/):
+Upload the `alfa.jsonld` file to the [GIPOD server simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario2/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario2/alfa.jsonld'
 ```
 
 To launch the workflow, ensure that no processor is selected (click in the workpace OR navigate back to the root process group and select the newly added process group) and click the start button.
@@ -107,10 +107,10 @@ And the last fragment contains a reverse link to the first fragment
 And the response of the last fragment should contain a Cache-Control header
 ```
 
-Upload the `alfa.jsonld` and `beta.jsonld` files to the [GIPOD server simulator](http://localhost:9001/):
+Upload the `alfa.jsonld` and `beta.jsonld` files to the [GIPOD server simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/alfa.jsonld'
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/beta.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/beta.jsonld'
 ```
 
 Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note the `GreaterThanRelation` (**no** `LessThanRelation`) and follow it to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree:relation`, note the `LessThanRelation` (**no** `GreaterThanRelation`) and follow it to the previous/first fragment.
@@ -130,11 +130,11 @@ And the last fragment contains a reverse link to the middle fragment
 And the response of the last fragment should contain a Cache-Control header
 ```
 
-Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [GIPOD server simulator](http://localhost:9001/):
+Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [GIPOD server simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/alfa.jsonld'
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/beta.jsonld'
-curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/epsilon.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/beta.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/epsilon.jsonld'
 ```
 
 Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note the `GreaterThanRelation` (**no** `LessThanRelation`) and follow it to the next/middle fragment. Validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note both the `LessThanRelation` and `GreaterThanRelation` and follow the latter to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree:relation`, note the `LessThanRelation` (**no** `GreaterThanRelation`) and follow it to the previous/middle fragment.

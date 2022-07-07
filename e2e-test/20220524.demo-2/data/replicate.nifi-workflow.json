@@ -43,8 +43,8 @@
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
-                    "Remote URL": "http://ldes-server:8080/ldes-member",
-                    "Content-Type": "text/plain",
+                    "Remote URL": "http://ldes-server:8080/mobility-hindrances",
+                    "Content-Type": "application/n-quads",
                     "form-body-form-name": null,
                     "flow-file-naming-strategy": "RANDOM",
                     "max-idle-connections": "5",
@@ -305,7 +305,9 @@
                 ],
                 "scheduledState": "ENABLED",
                 "retryCount": 10,
-                "retriedRelationships": [],
+                "retriedRelationships": [
+                    "Failure"
+                ],
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",

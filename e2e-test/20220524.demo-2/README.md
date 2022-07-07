@@ -1,7 +1,5 @@
 # Demo 2 - May, 24th 2022
 
-<span style="background-color: OrangeRed; color: white">**Note**: it is unfortunately not possible to replay this demo anymore due to a repo which was archived.</span>
-
 This test demonstrates user story **As a data intermediary I want to request the GIPOD LDES data set without fragmentation** (VSDSPUB-61).
 
 > **Note**: Currently, this LDES server E2E test is only available as a manual test, no automation yet.
@@ -26,35 +24,18 @@ To run the E2E test manually, you need to:
 
 ## Start systems
 
-> **Note**: currently, we do not create and push artifacts to external repositories such as Maven central and Docker Hub so we need to build all the systems from code. Therefore, before building and running the simulator, sink and client demo (empty Apache NiFi) systems, please ensure the source code repositories are up to date (open a terminal at the location of this file and execute these commands):
-> ```bash
-> cd ../../../
-> git clone https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor.git
-> cd VSDS-LDESClient-NifiProcessor/
-> git switch main
-> git pull
-> git checkout `git rev-list -n 1 --before="2022-05-24 09:30 +02:00" main`
-> cd ../
-> git clone https://github.com/Informatievlaanderen/VSDS-LDESServer4J.git
-> cd VSDS-LDESServer4J/
-> git switch main
-> git pull
-> git checkout `git rev-list -n 1 --before="2022-05-26 00:00 +02:00" main` #Note: we demo'ed from a branch and merged the day after
-> cd ../VSDS-LDES-E2E-testing/e2e-test/20220524.demo-2/
-> git switch main
-> git pull
-> git checkout `git rev-list -n 1 --before="2022-06-09 00:00 +02:00" main` #Note: we moved the E2E tests and needed to redo the support files
->```
-
-To start all systems you need to [build and run the docker containers](../20220524.demo-1/README.md#start-docker-containers). E.g.
-
+To start the docker containers, you need to:
+* create a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (for scope `read:packages`)
+* copy the [`.env.example`](./.env.example) file to `.env.user`
+* fill in the credentials for Apache NiFi and the personal access token
+* build and run the containers, passing your `.env.user` settings by executing in a bash shell:
 ```bash
 docker compose --env-file .env.user up
 ```
 
 After that, please verify all containers are ready:
 * GIPOD simulator: http://localhost:9001/
-* LDES server: http://localhost:8080/ldes-fragment
+* LDES server: http://localhost:8080/mobility-hindances
 
 The Apache NiFi server needs a couple of minutes to start.
 Once started, you can find the NiFi user interface at https://localhost:8443/nifi.
@@ -73,7 +54,7 @@ See [Upload NiFi workflow](../20220524.demo-1/README.md#upload-nifi-workflow) fo
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES server.
 
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z`
-* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/ldes-member` and the property `HTTP method` should be `POST`
+* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/mobility-hindrances` and the property `HTTP method` should be `POST`
 
 To launch the workflow, ensure that no processor is selected (click in the workpace OR navigate back to the root process group and select the newly added process group) and click the start button.
 
@@ -83,7 +64,7 @@ See [Start the workflow](../20220524.demo-1/README.md#start-the-workflow) for de
 
 The GIPOD simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served.
 
-You can verify that, after some time, all LDES members are received by the LDES server by visit the following pages: http://localhost:8080/ldes-fragment.
+You can verify that, after some time, all LDES members are received by the LDES server by visit the following pages: http://localhost:8080/mobility-hindrances.
 
 ## Stop docker containers
 

@@ -303,9 +303,11 @@
                     "Original",
                     "Failure"
                 ],
+                "retriedRelationships":[
+                    "Failure"
+                ],
                 "scheduledState": "ENABLED",
                 "retryCount": 10,
-                "retriedRelationships": [],
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",

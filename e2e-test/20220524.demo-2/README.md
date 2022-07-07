@@ -35,7 +35,7 @@ docker compose --env-file .env.user up
 
 After that, please verify all containers are ready:
 * GIPOD simulator: http://localhost:9001/
-* LDES server: http://localhost:8080/mobility-hindances
+* LDES server: http://localhost:8080/mobility-hindrances
 
 The Apache NiFi server needs a couple of minutes to start.
 Once started, you can find the NiFi user interface at https://localhost:8443/nifi.

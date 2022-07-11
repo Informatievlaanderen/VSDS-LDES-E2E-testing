@@ -3,7 +3,7 @@ services:
   ldes-server:
     env_file:
       - ./ldes-server/config.local.env
-    image: ghcr.io/informatievlaanderen/ldes-server:20220704T1516
+    image: ghcr.io/informatievlaanderen/ldes-server:20220711T1053
     ports:
       - "8080:8080"
     networks:

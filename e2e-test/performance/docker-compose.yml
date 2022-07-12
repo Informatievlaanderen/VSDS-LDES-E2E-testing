@@ -1,0 +1,47 @@
+services:
+  ldes-client-workflow:
+    image: ${NIFI_DOCKER_IMAGE_NAME}:${NIFI_DOCKER_IMAGE_VERSION}
+    container_name: ${NIFI_DOCKER_CONTAINER_NAME}
+    build:
+      context: ${NIFI_DOCKER_CONTEXT}
+      args:
+        - NIFI_STAGE_MAVEN=${NIFI_STAGE_MAVEN}
+        - NIFI_STAGE_NIFI=${NIFI_STAGE_NIFI}
+        - NIFI_BUILD_DIR=${NIFI_BUILD_DIR}
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - "8443:8443"
+      - "9002:8080"
+    volumes:
+      - ${NIFI_MOUNT_DIR}/logs:/opt/nifi/nifi-current/logs:rw
+      - ${NIFI_MOUNT_DIR}/conf:/opt/nifi/nifi-current/conf:rw
+      - ${NIFI_MOUNT_DIR}/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository:rw
+    networks:
+      - e2e-test
+  ldes-server-simulator:
+    image: ${SERVER_SIMULATOR_DOCKER_IMAGE_NAME}
+    container_name: ${SERVER_SIMULATOR_DOCKER_CONTAINER_NAME}
+    build:
+      context: ../../ldes-server-simulator
+    ports:
+      - "9001:80"
+    environment:
+      - BASEURL=http://ldes-server-simulator
+      - SEED=/tmp/gipod-data
+    volumes:
+      - ./data/gipod/initial:/tmp/gipod-data:ro
+    networks:
+      - e2e-test
+  ldes-client-sink:
+    image: ${CLIENT_SINK_DOCKER_IMAGE_NAME}
+    container_name: ${CLIENT_SINK_DOCKER_CONTAINER_NAME}
+    build:
+      context: ../../ldes-client-sink
+    ports:
+      - "9003:80"
+    networks:
+      - e2e-test
+networks:
+  e2e-test: {}

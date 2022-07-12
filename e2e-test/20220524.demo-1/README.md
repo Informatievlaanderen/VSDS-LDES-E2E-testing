@@ -24,34 +24,13 @@ To run the E2E test manually, you need to:
 
 ## Start docker containers
 
-> **Note**: currently, we do not create and push artifacts to external repositories such as Maven central and Docker Hub so we need to build all the systems from code. Therefore, before building and running the simulator, sink and client demo (empty Apache NiFi) systems, please retrieve the source code repositories at the time before the demo (open a terminal at the location of this file and execute these commands):
-> ```bash
-> cd ../../../
-> git clone https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor.git
-> cd VSDS-LDESClient-NifiProcessor/
-> git switch main
-> git pull
-> git checkout `git rev-list -n 1 --before="2022-05-24 09:30 +02:00" main`
-> cd ../VSDS-LDES-E2E-testing/e2e-test/20220524.demo-1/
-> git switch main
-> git pull
-> git checkout `git rev-list -n 1 --before="2022-06-04 00:00 +02:00" main` #Note: we moved the E2E tests and needed to redo the support files
->```
-
-To start the docker containers, you need to use the `docker compose` command. This command will use the [docker-compose.yml](./docker-compose.yml) file found in this directory. It will also use a [.env](./.env) file containing environment variables passed to the docker containers when run. Before the Apache NifI container can be started you need to provide the single user credentials used for logging on to the Nifi instance. You can do this by editing this [.env](./.env) file and filling in the variables for the username and password. 
-
-> **Note**: if you leave the credentials empty, Apache NiFI will generated random user credentials. The [docker-compose.yml](./docker-compose.yml) file includes configuration to map the NiFi logs and conf directory to the host system, allowing to inspect these files. You can find the generated credentials in the [Nifi application log file](./nifi/logs/nifi-app.log).
-
-To start all docker containers, you need to execute the following shell commands in a terminal:
+To start the docker containers, you need to:
+* create a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (for scope `read:packages`)
+* copy the [`.env.example`](./.env.example) file to `.env.user`
+* fill in the credentials for Apache NiFi and the personal access token
+* build and run the containers, passing your `.env.user` settings by executing in a bash shell:
 ```bash
-docker compose up
-```
-
-This will build the docker images if not available and then run them with the given environment variables. All container output will be shown interactively (for diagnostic purposes).
-
-Alternatively, you can provide a different file containing environment variables (including your credentials) by using the `--env-file` option. E.g.:
-```bash
-docker compose --env-file <your-env-file-location-and-name> up
+docker compose --env-file .env.user up
 ```
 
 ## Verify docker containers are started

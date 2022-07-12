@@ -2,20 +2,19 @@ version: '3.3'
 services:
   ldes-server:
     env_file:
-      - ../../../VSDS-LDESServer4J/config.local.env
-    image: vsds/ldes-server
-    build:
-      context: ../../../VSDS-LDESServer4J
+      - ./ldes-server/config.local.env
+    image: ghcr.io/informatievlaanderen/ldes-server:20220711T1053
     ports:
       - "8080:8080"
     networks:
       - ldes
     depends_on:
-      - mongodb
-  mongodb:
+      - ldes-mongodb
+  ldes-mongodb:
     image: mongo
+    container_name: ldes.mongodb
     ports:
-      - 27017:27017
+      - "27017:27017"
     restart: always
     networks:
       - ldes
@@ -35,19 +34,16 @@ services:
     networks:
       - ldes
   replicate-workflow:
-    image: vsds/ldes-client-workflow
-    # TODO: use pre-built image instead of relying on LDES client NiFi processor repo (https://github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor)
+    container_name: replicate-workflow
     build:
-      context: ../../../VSDS-LDESClient-NifiProcessor
+      context: ./replicate-workflow
+      args:
+        PAT_READ_PACKAGES: ${PAT_READ_PACKAGES}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
     ports:
       - "8443:8443"
-    #   - "9002:8080"
-    # volumes:
-    #   - ./nifi/logs:/opt/nifi/nifi-current/logs
-    #   - ./nifi/conf:/opt/nifi/nifi-current/conf
     networks:
       - ldes
 networks:

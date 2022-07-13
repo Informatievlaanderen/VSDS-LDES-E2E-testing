@@ -24,10 +24,11 @@ server.addHook('onRequest', (request, _reply, done) => {
 });
 
 
-server.addContentTypeParser('application/n-quads', { parseAs: 'string' }, function (_request, body, done) {
+server.addContentTypeParser(['application/n-quads', 'application/n-triples'], { parseAs: 'string' }, function (request, body, done) {
   try {
-    const parser = new Parser({ format: 'N-Quads' });
-    done(null, parser.parse(body as string));
+    const parser = new Parser({ format: request.headers['content-type'] });
+    const rdf = parser.parse(body as string);
+    done(null, rdf);
   } catch (error: any) {
     error.statusCode = 400;
     done(error, undefined);

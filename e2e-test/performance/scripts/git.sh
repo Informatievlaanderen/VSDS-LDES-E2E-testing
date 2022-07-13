@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 
 function git-clone() {
     CURRENT_DIR=`pwd`

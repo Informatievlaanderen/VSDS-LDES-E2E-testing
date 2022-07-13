@@ -64,42 +64,11 @@ function remove_directory() {
 
 function setup_nifi() {
     git-clone $NIFI_REPO $NIFI_REPO_NAME $WORK_DIR
+#     source ./scripts/maven.sh
+#     maven_build "$WORK_DIR/$NIFI_REPO_NAME"
 }
 
-function docker_clean() {
-    docker rm -f $NIFI_DOCKER_CONTAINER_NAME &>/dev/null || true
-    docker rm -f $SERVER_SIMULATOR_DOCKER_CONTAINER_NAME &>/dev/null || true
-    docker rm -f $CLIENT_SINK_DOCKER_CONTAINER_NAME &>/dev/null || true
-
-    docker image rm -f $NIFI_DOCKER_IMAGE_NAME &>/dev/null || true
-    # docker image rm -f $NIFI_STAGE_MAVEN &>/dev/null || true
-    # docker image rm -f $NIFI_STAGE_NIFI &>/dev/null || true
-    docker image rm -f $NIFI_STAGE_MAVEN 
-    docker image rm -f $NIFI_STAGE_NIFI 
-    docker image rm -f $SERVER_SIMULATOR_DOCKER_IMAGE_NAME &>/dev/null || true
-    docker image rm -f $CLIENT_SINK_DOCKER_IMAGE_NAME &>/dev/null || true
-
-    docker builder prune -f
-
-    remove_directory .
-    create_work_dir
-}
-
-function docker_build() {
-    source ./scripts/git.sh
-    setup_nifi
-
-    source ./scripts/docker-compose-dev.sh
-    prepare_environment $WORK_DIR
-    docker_compose build --no-cache
-}
-
-function docker_run() {
-    source ./scripts/docker-compose-dev.sh
-    docker_compose up --detach
-
-    ./scripts/wait-for-it.sh -h localhost -p 8443 -s -q
-
+function setup_nifi_process_group() {
     source ./scripts/nifi.sh
     RESULT=$(create_and_start_process_group)
 }
@@ -109,6 +78,7 @@ function docker_run() {
 CLEAN_ENVIRONMENT=1
 BUILD_ENVIRONMENT=1
 RUN_ENVIRONMENT=1
+SETUP_NIFI=1
 while :; do
     case $1 in
         help|-h|-\?|--help)
@@ -124,6 +94,9 @@ while :; do
         run|-r|--run)
             RUN_ENVIRONMENT=0
             ;;
+        nifi|-n|--nifi)
+            SETUP_NIFI=0
+            ;;
         *)
             break
             ;;
@@ -131,6 +104,8 @@ while :; do
 
     shift
 done
+
+source ./scripts/docker.sh
 
 if [ "$CLEAN_ENVIRONMENT" -eq "0" ]; then
     docker_clean
@@ -142,4 +117,8 @@ fi
 
 if [ "$RUN_ENVIRONMENT" -eq "0" ]; then
     docker_run
+fi
+
+if [ "$SETUP_NIFI" -eq "0" ]; then
+    setup_nifi_process_group
 fi

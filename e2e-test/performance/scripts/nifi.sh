@@ -42,7 +42,7 @@ function remove_process_group_if_exists() {
 }
 
 function load_flow_file() {
-    PROCESS_GROUP_DEFINITION=`cat $PROCESS_GROUP_JSON`
+    PROCESS_GROUP_DEFINITION=`cat $NIFI_PROCESS_GROUP_JSON`
     
     PROCESS_GROUP_DEFINITION=$(echo ${PROCESS_GROUP_DEFINITION} |\
         jq "(.versionedFlowSnapshot.flowContents.processors[] | select(.name==\"InvokeHTTP\")).properties.\"Remote URL\"|=\"${LDES_CLIENT_SINK_URL}\"" | \
@@ -51,7 +51,7 @@ function load_flow_file() {
 }
 
 function create_process_group() {
-    remove_process_group_if_exists $PROCESS_GROUP_NAME
+    remove_process_group_if_exists $NIFI_PROCESS_GROUP_NAME
 
     PROCESS_GROUP_DEFINITION=$(load_flow_file)
 

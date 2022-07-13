@@ -3,10 +3,12 @@ services:
     image: ${NIFI_DOCKER_IMAGE_NAME}:${NIFI_DOCKER_IMAGE_VERSION}
     container_name: ${NIFI_DOCKER_CONTAINER_NAME}
     build:
-      context: ${NIFI_DOCKER_CONTEXT}
+      context: .
+      dockerfile: ${NIFI_DOCKER_CONTEXT}/Dockerfile
       args:
         - NIFI_STAGE_MAVEN=${NIFI_STAGE_MAVEN}
         - NIFI_STAGE_NIFI=${NIFI_STAGE_NIFI}
+        - NIFI_CONF_DIR=${NIFI_CONF_DIR}
         - NIFI_BUILD_DIR=${NIFI_BUILD_DIR}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}

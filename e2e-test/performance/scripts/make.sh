@@ -27,6 +27,11 @@ fi
 echo "Using ENV file `realpath $ENV_FILE`"
 source $ENV_FILE
 
+# WARNING
+# The name of the work directory is defined here, not in configuration, to
+# ensure that an rm -rf command can't be configured to remove the
+# root directory for instance.
+# Change only if you understand what you are doing.
 WORK_DIR=`realpath ./work`
 function create_work_dir() {
     if [ ! -d "$WORK_DIR" ]; then
@@ -63,12 +68,15 @@ function remove_directory() {
 }
 
 function setup_nifi() {
+    source ./scripts/git.sh
     git-clone $NIFI_REPO $NIFI_REPO_NAME $WORK_DIR
 #     source ./scripts/maven.sh
 #     maven_build "$WORK_DIR/$NIFI_REPO_NAME"
 }
 
 function setup_nifi_process_group() {
+    ./scripts/wait-for-it.sh -h localhost -p 8443 -s -q
+
     source ./scripts/nifi.sh
     RESULT=$(create_and_start_process_group)
 }
@@ -112,6 +120,7 @@ if [ "$CLEAN_ENVIRONMENT" -eq "0" ]; then
 fi
 
 if [ "$BUILD_ENVIRONMENT" -eq "0" ]; then
+    setup_nifi
     docker_build
 fi
 

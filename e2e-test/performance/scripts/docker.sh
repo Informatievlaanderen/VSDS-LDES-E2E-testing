@@ -8,11 +8,12 @@ function docker_clean() {
     docker image rm -f $NIFI_DOCKER_IMAGE_NAME &>/dev/null || true
     # docker image rm -f $NIFI_STAGE_MAVEN &>/dev/null || true
     # docker image rm -f $NIFI_STAGE_NIFI &>/dev/null || true
-    docker image rm -f $NIFI_STAGE_MAVEN 
-    docker image rm -f $NIFI_STAGE_NIFI 
+    # docker image rm -f $NIFI_STAGE_MAVEN 
+    # docker image rm -f $NIFI_STAGE_NIFI 
     docker image rm -f $SERVER_SIMULATOR_DOCKER_IMAGE_NAME &>/dev/null || true
     docker image rm -f $CLIENT_SINK_DOCKER_IMAGE_NAME &>/dev/null || true
 
+    docker system prune -f
     docker builder prune -f
 
     remove_directory .
@@ -28,9 +29,4 @@ function docker_build() {
 function docker_run() {
     source ./scripts/docker-compose-dev.sh
     docker_compose up
-
-    ./scripts/wait-for-it.sh -h localhost -p 8443 -s -q
-
-    source ./scripts/nifi.sh
-    RESULT=$(create_and_start_process_group)
 }

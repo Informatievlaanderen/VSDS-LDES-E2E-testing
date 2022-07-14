@@ -340,7 +340,9 @@
                     },
                     "properties": {
                         "TREE_DIRECTION": null,
-                        "DATASOURCE_URL": "http://localhost:9001/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"
+                        "DATA_SOURCE_URL": "http://localhost:9001/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z",
+                        "DATA_SOURCE_FORMAT": "JSONLD11",
+                        "DATA_DESTINATION_FORMAT": "n-quads"
                     },
                     "propertyDescriptors": {
                         "TREE_DIRECTION": {
@@ -349,9 +351,21 @@
                             "identifiesControllerService": false,
                             "sensitive": false
                         },
-                        "DATASOURCE_URL": {
-                            "name": "DATASOURCE_URL",
-                            "displayName": "Datasource url",
+                        "DATA_SOURCE_URL": {
+                            "name": "DATA_SOURCE_URL",
+                            "displayName": "Data source url",
+                            "identifiesControllerService": false,
+                            "sensitive": false
+                        },
+                        "DATA_SOURCE_FORMAT": {
+                            "name": "DATA_SOURCE_FORMAT",
+                            "displayName": "Data source format",
+                            "identifiesControllerService": false,
+                            "sensitive": false
+                        },
+                        "DATA_DESTINATION_FORMAT": {
+                            "name": "DATA_DESTINATION_FORMAT",
+                            "displayName": "Data destination format",
                             "identifiesControllerService": false,
                             "sensitive": false
                         }

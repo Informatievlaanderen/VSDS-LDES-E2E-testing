@@ -46,7 +46,8 @@ function load_flow_file() {
     
     PROCESS_GROUP_DEFINITION=$(echo ${PROCESS_GROUP_DEFINITION} |\
         jq "(.versionedFlowSnapshot.flowContents.processors[] | select(.name==\"InvokeHTTP\")).properties.\"Remote URL\"|=\"${LDES_CLIENT_SINK_URL}\"" | \
-        jq "(.versionedFlowSnapshot.flowContents.processors[] | select(.name==\"LdesClient\")).properties.\"DATASOURCE_URL\"|=\"${LDES_SERVER_SIMULATOR_URL}\"")
+        jq "(.versionedFlowSnapshot.flowContents.processors[] | select(.name==\"LdesClient\")).properties.\"DATA_SOURCE_URL\"|=\"${LDES_SERVER_SIMULATOR_URL}\"" | \
+        jq "(.versionedFlowSnapshot.flowContents.processors[] | select(.name==\"LdesClient\")).properties.\"schedulingPeriod\"|=\"${NIFI_LDES_SERVER_SIMULATOR_RUN_SCHEDULE}\"")
     echo $(echo $PROCESS_GROUP_DEFINITION)
 }
 

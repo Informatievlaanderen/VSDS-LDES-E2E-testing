@@ -9,12 +9,12 @@ The same context applies.
 
 To demonstrate the correct working of the LDES client you need to:
 
-1. [Start systems](#start-systems).
-2. [Setup demo](#setup-demo).
-3. [Scenario: replication has not yet started](#TODO)
-4. [Scenario: replication has just started](#TODO)
-5. [Scenario: data set contains 2 fragments](#TODO)
-6. [Scenario: data set contains 3 fragments](#TODO)
+1. [Start systems](#start-systems)
+2. [Setup demo](#setup-demo)
+3. [Scenario replication has not yet started](#scenario-replication-has-not-yet-started)
+4. [Scenario replication has just started](#scenario-replication-has-just-started)
+5. [Scenario data set contains 2 fragments](#scenario-data-set-contains-2-fragments)
+6. [Scenario data set contains 3 fragments](#scenario-data-set-contains-3-fragments)
 7. [Stop systems](#stop-systems)
 
 ## Start systems
@@ -30,7 +30,7 @@ docker compose --env-file .env.user up
 This command will use the [docker-compose.yml](./docker-compose.yml) file found in this directory for building and running the following docker containers:
 * LDES server at http://localhost:8080/mobility-hindrances (takes a few minutes)
 * mongo database (the underlying storage for the LDES server)
-* GIPOD simulator at http://localhost:9011/
+* GIPOD simulator at http://localhost:9001/
 * Apache NiFi (including LDES client processor) with user interface at https://localhost:8443/nifi (takes a few minutes)
 
 ## Setup demo
@@ -57,7 +57,7 @@ So, the total data set contains 617 items. We have [configured our LDES server](
 * for testing the [third scenario](#scenario-data-set-contains-2-fragments) we need to send the [alfa.jsonld](./gipod-server-simulator/data/scenario3/alfa.jsonld) and [beta.jsonld](./gipod-server-simulator/data/scenario3/beta.jsonld) files and expect to see one *immutable* fragment complete with 300 members and one *mutable* fragment containing 200 members
 * for testing the [fourth scenario](#scenario-data-set-contains-3-fragments) we need to send the the [alfa.jsonld](./gipod-server-simulator/data/scenario4/alfa.jsonld), [beta.jsonld](./gipod-server-simulator/data/scenario4/beta.jsonld) and [epsilon.jsonld](./gipod-server-simulator/data/scenario4/epsilon.jsonld) files, resulting in 2 complete fragments with 300 members each and an incomplete/mutable one with the remaining 17 items.
 
-## Scenario: replication has not yet started
+## Scenario replication has not yet started
 ```gherkin
 Given an empty data set
 When we request it from the LDES server consumption endpoint
@@ -76,7 +76,7 @@ results in a valid but empty LDES:
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
 ```
 
-## Scenario: replication has just started
+## Scenario replication has just started
 ```gherkin
 Given a data set containing one fragment
 When we request it from the LDES server consumption endpoint
@@ -84,18 +84,18 @@ Then we receive a valid LDES containing all members
 And the result contains no relations
 ```
 
-First we upload the [alfa.jsonld](./gipod-server-simulator/data/alfa.jsonld) file, then we start the [replication/synchronisation workflow](./replicate-workflow/replicate.nifi-workflow.json) and finally we request the collection repeatedly.
+First we upload the [alfa.jsonld](./gipod-server-simulator/data/scenario2/alfa.jsonld) file, then we start the [replication/synchronisation workflow](./replicate-workflow/replicate.nifi-workflow.json) and finally we request the collection repeatedly.
 
-Upload the `alfa.jsonld` file to the [GIPOD server simulator](http://localhost:9011/):
+Upload the `alfa.jsonld` file to the [GIPOD server simulator](http://localhost:9001/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario2/alfa.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario2/alfa.jsonld'
 ```
 
 To launch the workflow, ensure that no processor is selected (click in the workpace OR navigate back to the root process group and select the newly added process group) and click the start button.
 
-Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/). The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanRelation` nor `LessThanRelation`.
+Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/). The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanOrEqualToRelation` nor `LessThanOrEqualToRelation`.
 
-## Scenario: data set contains 2 fragments
+## Scenario data set contains 2 fragments
 ```gherkin
 Given a data set containing two fragments
 When we request it from the LDES server consumption endpoint
@@ -107,15 +107,15 @@ And the last fragment contains a reverse link to the first fragment
 And the response of the last fragment should contain a Cache-Control header
 ```
 
-Upload the `alfa.jsonld` and `beta.jsonld` files to the [GIPOD server simulator](http://localhost:9011/):
+Upload the `alfa.jsonld` and `beta.jsonld` files to the [GIPOD server simulator](http://localhost:9001/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/beta.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/alfa.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario3/beta.jsonld'
 ```
 
-Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note the `GreaterThanRelation` (**no** `LessThanRelation`) and follow it to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree:relation`, note the `LessThanRelation` (**no** `GreaterThanRelation`) and follow it to the previous/first fragment.
+Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree#relation`, note the `LesserThanOrEqualToRelation` (**no** `GreaterThanOrEqualToRelation`) and follow it to the previous/first fragment.
 
-## Scenario: data set contains 3 fragments
+## Scenario data set contains 3 fragments
 ```gherkin
 Given a data set containing three fragments
 When we request it from the LDES server consumption endpoint
@@ -130,14 +130,14 @@ And the last fragment contains a reverse link to the middle fragment
 And the response of the last fragment should contain a Cache-Control header
 ```
 
-Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [GIPOD server simulator](http://localhost:9011/):
+Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [GIPOD server simulator](http://localhost:9001/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/beta.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/epsilon.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/alfa.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/beta.jsonld'
+curl -X POST http://localhost:9001/ldes -H 'Content-Type: application/json-ld' -d '@gipod-server-simulator/data/scenario4/epsilon.jsonld'
 ```
 
-Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note the `GreaterThanRelation` (**no** `LessThanRelation`) and follow it to the next/middle fragment. Validate the `Cache-Control` header (`immutable`), search for the `tree:relation`, note both the `LessThanRelation` and `GreaterThanRelation` and follow the latter to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree:relation`, note the `LessThanRelation` (**no** `GreaterThanRelation`) and follow it to the previous/middle fragment.
+Request the collection http://localhost:8080/mobility-hindrances. This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/middle fragment. Validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note both the `LesserThanOrEqualToRelation` and `GreaterThanOrEqualToRelation` and follow the latter to the next/last fragment. Validate the `Cache-Control` header (**not** `immutable`), search for the `tree#relation`, note the `LesserThanOrEqualToRelation` (**no** `GreaterThanOrEqualToRelation`) and follow it to the previous/middle fragment.
 
 ## Stop systems
 To stop all docker containers, you need to execute the following shell commands in a terminal:

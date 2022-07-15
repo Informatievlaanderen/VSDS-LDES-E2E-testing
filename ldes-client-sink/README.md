@@ -32,20 +32,40 @@ npm run build
 ```
 
 ## Run
-The sink takes the following command line arguments:
-* `--port=<port-number>` allows to set the port, defaults to 8080
-* `--host=<host-name>` allows to set the hostname, defaults to localhost
+The sink uses a MongoDB as permanent storage to allow for large data sets.
+It takes the following command line arguments:
+* `--member-type` defines the member type to use to determine the member's ID (subject value), no default
+* `--port=<port-number>` allows to set the port, defaults to `8080`
+* `--host=<host-name>` allows to set the hostname, defaults to `localhost`
 * `--silent` prevents any console debug output
+* `--connection-uri` allows to set the MongoDB connection URI, defaults to `mongodb://localhost:27017`
+* `--database-name` allows to set the MongoDB database name, defaults to `ldes_client_sink`
+* `--collection-name` allows to set the MongoDB collection name, defaults to `members`
 
 You can run it with one of the following command after building it:
 ```bash
-npm start
-node dist/server.js
-node dist/server.js --silent
-node dist/server.js --port=6789
-node dist/server.js --port=6789 --silent
+node dist/server.js --member-type "http://schema.org/Person" --collection-name cartoons
+```
+This results in:
+```
+Arguments:  {
+  _: [],
+  'member-type': 'http://schema.org/Person',
+  'collection-name': 'cartoons'
+}
+Sink listening at http://127.0.0.1:8080
 ```
 
+Alternatively launch it using other arguments, e.g.:
+
+GIPOD use case: 
+```bash
+node dist/server.js --member-type "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder" --collection-name hindrances --silent
+```
+GTFS/RT use case: 
+```bash
+node dist/server.js --member-type "http://semweb.mmlab.be/ns/linkedconnections#Connection" --collection-name connections --silent
+```
 ## Usage
 The sink server accepts the following REST calls.
 
@@ -56,9 +76,7 @@ curl http://localhost:8080/
 ```
 returns:
 ```json
-{
-    "count":0
-}
+{"cartoons":{"total":0}}
 ```
 
 ### `POST /member` -- Ingest members
@@ -76,27 +94,32 @@ http://example.org/id/cartoon-figure/donald-duck
 ```
 
 ### `GET /member` -- Get member list
-Returns the list of members (as local URLs), e.g.
+Returns the (limited) list of members (as local URLs), e.g.
 ```bash
 curl http://localhost:8080/member
 ```
-returns:
+returns (formatted for readability):
 ```json
-[
-    "/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
-]
+{
+  "cartoons": {
+    "total": 1,
+    "count": 1,
+    "members": [
+      "/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
+    ]
+  }
+}
 ```
 
 ### `GET /member?id=<url-encoded-member-id>` -- Get member content
-Returns the member content as quads (mime-type: `application/n-quads`), e.g.
+Returns the member content as quads (if ingested with mime-type: `application/n-quads`), e.g.
 ```bash
-curl http://localhost:8080/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck
+curl "http://localhost:8080/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
 ```
-returns:
+returns (formatted for readability):
 ```
-<http://example.org/id/cartoon-figure/donald-duck> <http://schema.org/name> "Donald Duck" .
-<http://example.org/id/cartoon-figure/donald-duck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://example.org/id/ldes/disney> <https://w3id.org/tree#member> <http://example.org/id/cartoon-figure/donald-duck> .
+<http://example.org/id/cartoon-figure/donald-duck> <http://schema.org/name> "Donald Duck" <http://example.org/disney>.
+<http://example.org/id/cartoon-figure/donald-duck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> <http://example.org/disney>.
 ```
 
 ### `DELETE /member` -- Remove all members
@@ -104,4 +127,7 @@ Removes all members, e.g.
 ```bash
 curl -X DELETE http://localhost:8080/member
 ```
-Returns nothing.
+Returns the amount of members deleted:
+```json
+{"count":1}
+```

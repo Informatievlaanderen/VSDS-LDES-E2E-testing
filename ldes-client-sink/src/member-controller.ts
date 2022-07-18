@@ -1,40 +1,72 @@
 import { Quad } from "n3";
+import { Member } from "./member";
+import { IStorage } from "./storage";
 
-interface MemberDatabase {
-    [key: string]: Quad[];
+const ns = {
+    rdf: {
+        type: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+    }
 }
 
 export class MemberController {
 
-    private members: MemberDatabase = {};
+    public constructor(private _memberType: string, private _storage: IStorage, private _maxGetMemberCount = 100) { }
 
-    public get count(): number {
-        return this.ids.length;
+    public init() {
+        return this._storage.initialize();
     }
 
-    public get ids(): string[] {
-        return Object.keys(this.members);
+    public dispose() {
+        return this._storage.terminate();
     }
 
-    public get(id: string): Quad[] | undefined {
-        return this.members[id];
+    public async getIndex() {
+        const total = await this._storage.count();
+        const response: any = {};
+        response[this._storage.memberTypeName] = { total: total };
+        return response;
     }
 
-    public add(quads: Quad[]): string | undefined {
-        const tree = 'https://w3id.org/tree#';
-        const tree_member = tree + 'member';
-        const ids = quads.filter(x => x.predicate.value === tree_member);
+    public getMember(id: string) {
+        return this._storage.member(id);
+    }
 
-        if (ids && ids.length === 1 && ids[0]) {
-            const id = ids[0].object.value;
-            this.members[id] = quads;
-            return id;
+    public async getMembers() {
+        function asLocalUrl(id: string) {
+            const params = new URLSearchParams();
+            params.append('id', id);
+            return '/member?' + params.toString();
         }
 
+        const total = await this._storage.count();
+        const ids = await this._storage.lastIds(this._maxGetMemberCount);
+        const response: any = {};
+        response[this._storage.memberTypeName] = {
+            total: total,
+            count: ids?.length,
+            members: ids?.map(x => asLocalUrl(x))
+        }
+        return response;
+    }
+
+    public async postMember(member: Member, quads: Quad[]) {
+        const ids = quads.filter(x => x.predicate.value === ns.rdf.type && x.object.value === this._memberType);
+
+        if (ids && ids.length === 1 && ids[0]) {
+            const id = ids[0].subject.value;
+            const exists = await this._storage.exists(id);
+            if (exists) {
+                console.warn(`overriding id '${id}'`);
+            }
+            return this._storage.insertOrUpdate(id, member);
+        }
+        
+        console.warn('missing unique id:\n', ids);
         return undefined;
     }
 
-    public clear(): void {
-        this.members = {};
+    public async deleteMembers() {
+        const count = await this._storage.deleteAll();
+        return { count: count };
     }
 }

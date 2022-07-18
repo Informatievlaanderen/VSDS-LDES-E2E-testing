@@ -1,7 +1,13 @@
 import fastify from 'fastify'
 import { MemberController } from './member-controller';
+import { Member } from "./member";
 import minimist from 'minimist'
-import { Quad, Parser, Writer } from 'n3';
+import { Parser, Quad } from 'n3';
+import { MongoStorage } from './mongo-storage';
+
+interface ParsedMember extends Member{
+  quads: Quad[];
+}
 
 const server = fastify();
 
@@ -13,64 +19,89 @@ if (!silent) {
 
 const port = args['port'] || 8080;
 const host = args['host'] || 'localhost';
+const connectionUri = args['connection-uri'] || 'mongodb://localhost:27017';
+const databaseName = args['database-name'] || 'ldes_client_sink';
+const collectionName = args['collection-name'] || 'members';
+const memberType = args['member-type'] || 'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder';
 
-const controller = new MemberController();
+const storage = new MongoStorage(connectionUri, databaseName, collectionName);
+const controller = new MemberController(memberType, storage);
 
-server.addHook('onRequest', (request, _reply, done) => {
+server.addHook('onReady', async () => {
+  await controller.init();
+});
+
+server.addHook('onClose', async () => {
+  await controller.dispose();
+})
+
+server.addHook('onResponse', (request, reply, done) => {
   if (!silent) {
-    console.debug(`${request.method} ${request.url}`);
+    const method = request.method;
+    const statusCode = reply.statusCode;
+    console.debug(method === 'POST' 
+      ? `${method} ${request.url} ${request.headers['content-type']} ${statusCode}` 
+      : `${method} ${request.url} ${statusCode}`);
   }
   done();
 });
 
-
 server.addContentTypeParser(['application/n-quads', 'application/n-triples'], { parseAs: 'string' }, function (request, body, done) {
   try {
-    const parser = new Parser({ format: request.headers['content-type'] });
+    const contentType = request.headers['content-type'];
+    const parser = new Parser({ format: contentType });
     const rdf = parser.parse(body as string);
-    done(null, rdf);
+    const member: ParsedMember = {
+      body: body as string,
+      contentType: contentType || '',
+      quads: rdf,
+    }
+    done(null, member);
   } catch (error: any) {
+    console.error(error);
     error.statusCode = 400;
     done(error, undefined);
   }
 })
 
-server.get('/', (_request, reply) => {
-  reply.send({ count: controller.count });
+server.get('/', async (_request, reply) => {
+  const response = await controller.getIndex();
+  reply.send(response);
 });
 
-server.post('/member', (request, reply) => {
-  const quads = request.body as Quad[];
-  const id = controller.add(quads);
-  reply.status(id ? 201 : 422).send(id || '');
+server.post('/member', async (request, reply) => {
+  try {
+    const member = request.body as ParsedMember;
+    const id = await controller.postMember({contentType: member.contentType, body: member.body} as Member, member.quads);
+    if (!silent && id) {
+      console.info(`ingested ${id}`);
+    }
+    reply.status(id ? 201 : 422).send(id || '');
+  } catch (error) {
+    console.error(error);
+    reply.status(500);
+  }
 });
 
-function asLocalUrl(id: string) {
-  const params = new URLSearchParams();
-  params.append('id', id);
-  return '/member?' + params.toString();
-}
-
-server.get('/member', { schema: { querystring: { id: { type: 'string' } } } }, (request, reply) => {
+server.get('/member', { schema: { querystring: { id: { type: 'string' } } } }, async (request, reply) => {
   const id = (request.query as { id: string }).id;
   if (id) {
-    const quads = controller.get(id);
-    if (quads) {
-      const writer = new Writer({ format: 'application/n-quads' });
-      const payload = writer.quadsToString(quads);
-      reply.header('Content-Type', 'application/n-quads').send(payload);
+    const member = await controller.getMember(id);
+    if (member) {
+      reply.header('Content-Type', member.contentType).send(member.body);
     } else {
       reply.status(404).send('');
     }
   }
   else {
-    reply.send(controller.ids.map(x => asLocalUrl(x)));
+    const response = await controller.getMembers();
+    reply.send(response);
   }
 });
 
-server.delete('/member', (_request, reply) => {
-  controller.clear();
-  reply.status(204).send('');
+server.delete('/member', async (_request, reply) => {
+  const response = await controller.deleteMembers();
+  reply.send(response);
 });
 
 async function closeGracefully(signal: any) {

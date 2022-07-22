@@ -1,0 +1,2 @@
+<http://example.org/id/cartoon-figure/donald-duck> <http://schema.org/name> "Donald Duck" .
+<http://example.org/id/cartoon-figure/donald-duck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .

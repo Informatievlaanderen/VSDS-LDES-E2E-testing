@@ -1,0 +1,27 @@
+@startuml "LDES client demo - component diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title LDES client demo - component diagram
+
+Person(tester, "Tester")
+
+System_Ext(simulator, "LDES server simulator", "Simple LDES fragment server")
+System_Ext(sink, "LDES members sink", "Little HTTP server accepting LDES members from the LDES client")
+
+System_Boundary(workflow_system, "LDES client Demo"){
+    Container_Boundary(workflow, "LDES client workflow"){
+        Component(client_processor, "LDES client processor", "Java", "custom Apache NiFi processor wrapper for LDES client SDK")
+        Component(queue, "queue", "Apache NiFi FlowFile")
+        Component(http_processor, "InvokeHTTP processor", "Java", "standard Apache NiFi processor for HTTP communication")
+    }
+}
+
+'Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_U(client_processor, simulator, "retrieves and follows LDES fragments", "HTTP (method GET)")
+Rel_R(client_processor, queue, "pushes individual LDES members")
+Rel_R(queue, http_processor, "forwards LDES members")
+Rel_U(http_processor, sink, "pushes LDES members", "HTTP (method POST)")
+Rel_L(tester, simulator, "view LDES fragments", "HTTP")
+Rel_R(tester, sink, "verify LDES data set replicated", "HTTP")
+
+@enduml

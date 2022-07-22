@@ -55,7 +55,7 @@ response:
 ### Stop the systems
 To stop all systems in the context:
 ```bash
-docker compose down
+docker compose --env-file env.user down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

@@ -14,7 +14,6 @@ Then the following members are retrieved: A, B, C, D, E, F, G and H
 
 ### Test setup
 For this scenario we can use the [simulator / workflow / sink](../../../support/context/simulator-workflow-sink/README.md) context. Please copy the [environment file (env.replicate)](./env.replicate) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
-
 ```bash
 docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user up
 ```
@@ -43,4 +42,7 @@ The GIPOD simulator (http://localhost:9011) is seeded by a subset of the GIPOD d
 You can verify that, after some time, all (1016) LDES members are received by the sink http-server by visit the following pages: http://localhost:9003 (count) and http://localhost:9003/member (LDES member IDs).
 
 ### Test teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems).
+First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+```bash
+docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user down
+```

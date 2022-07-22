@@ -1,4 +1,4 @@
-# LDES client can replicate an LDES
+# LDES server can ingest LDES members
 This test validates user story **As a data intermediary I want to request the GIPOD LDES data set without fragmentation** (VSDSPUB-61) and was shown during demo 2 on May, 24th 2022.
 
 ## Scenario: the server ingests N-quads
@@ -37,7 +37,6 @@ And the result contains no fragmentation
 
 ### Test setup
 For this scenario we can use the [simulator / workflow / server / mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.ingest)](./env.ingest) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
-
 ```bash
 docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user up
 ```
@@ -251,4 +250,7 @@ response:
 ```
 
 ### Test teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems).
+First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+```bash
+docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user down
+```

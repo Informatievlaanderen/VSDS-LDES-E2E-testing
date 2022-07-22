@@ -1,4 +1,4 @@
-# LDES client can replicate an LDES
+# LDES client can synchronize an LDES
 This test validates user story **As a data intermediary I want to keep in sync with changes in the GIPOD LDES data set.** (VSDSPUB-60) and was shown during demo 1 on June, 7th 2022.
 
 ## Scenario: data set has no changes
@@ -24,7 +24,6 @@ Then only the new LDES members are forwarded
 
 ### Test setup
 For this scenario we can use the [simulator / workflow / sink](../../../support/context/simulator-workflow-sink/README.md) context. Please copy the [environment file (env.synchronize)](./env.synchronize) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
-
 ```bash
 docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user up
 ```
@@ -128,4 +127,7 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 ```
 
 ### Test teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems).
+First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+```bash
+docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user down
+```

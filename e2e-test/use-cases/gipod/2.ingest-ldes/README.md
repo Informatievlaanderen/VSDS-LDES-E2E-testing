@@ -1,25 +1,33 @@
 # LDES client can replicate an LDES
 This test validates user story **As a data intermediary I want to request the GIPOD LDES data set without fragmentation** (VSDSPUB-61) and was shown during demo 2 on May, 24th 2022.
 
-## Scenario: a larger data set served using fragments
-This scenario verifies the LDES server ingesting a small number of members and offering them as an unfragmented LDES, in various formats.
+## Scenario: the server ingests N-quads
+This scenario verifies that the LDES server can ingest [N-Quads](https://www.w3.org/TR/n-quads/).
 ```gherkin
-Scenario: the server ingests N-quads
 Given an LDES member formatted as N-quads
 When we send it to the LDES server ingest endpoint
 Then the LDES server accepts it
+```
 
-Scenario: the server returns N-quads
+## Scenario: the server returns N-quads
+This scenario verifies the LDES server can return the unfragmented LDES as N-Quads.
+```gherkin
 Given a data set is already stored
 When we request it from the LDES server consumption endpoint, formatted as N-quads
 Then we receive the LDES formatted as N-quads
+```
 
-Scenario: the server returns Turtle format
+## Scenario: the server returns Turtle format
+This scenario verifies the LDES server can return the unfragmented LDES as other formats (such as [Turtle](https://www.w3.org/TR/turtle/), [N-triples](https://www.w3.org/TR/n-triples/), [JSON-LD](https://www.w3.org/TR/json-ld11/), etc.).
+```gherkin
 Given a data set is already stored
 When we request it from the LDES server consumption endpoint, formatted as Turtle
 Then we receive the LDES formatted as Turtle
+```
 
-Scenario: the server returns the data set in an unfragmented LDES
+## Scenario: the server returns the data set in an unfragmented LDES
+This scenario verifies the LDES server ingesting a small number of members and serves them as an unfragmented LDES.
+```gherkin
 Given a data set contains a (small) number of members, which fit in one response
 When we request it from the LDES server consumption endpoint
 Then we receive the LDES containing all members

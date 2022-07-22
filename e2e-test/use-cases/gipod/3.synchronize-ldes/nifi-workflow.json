@@ -2,7 +2,7 @@
     "flowContents": {
         "identifier": "6ba07159-ccde-3dc2-872b-e3475a472ed0",
         "instanceIdentifier": "d639639e-0180-1000-0a80-d621e8b92418",
-        "name": "E2E_test",
+        "name": "replicate and synchronize",
         "comments": "",
         "position": {
             "x": 526.2651249135986,
@@ -43,8 +43,8 @@
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
-                    "Remote URL": "http://ldes-server:8080/mobility-hindrances",
-                    "Content-Type": "application/n-quads",
+                    "Remote URL": "http://ldes-client-sink/member",
+                    "Content-Type": "${mime.type}",
                     "form-body-form-name": null,
                     "flow-file-naming-strategy": "RANDOM",
                     "max-idle-connections": "5",
@@ -330,7 +330,7 @@
                 },
                 "properties": {
                     "TREE_DIRECTION": null,
-                    "DATASOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z"
+                    "DATASOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"
                 },
                 "propertyDescriptors": {
                     "TREE_DIRECTION": {

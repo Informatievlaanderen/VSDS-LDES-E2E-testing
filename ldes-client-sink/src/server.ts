@@ -12,7 +12,7 @@ interface ParsedMember extends Member{
 const server = fastify();
 
 const args = minimist(process.argv.slice(2));
-const silent: boolean = args['silent'] !== undefined;
+const silent: boolean = (/true/i).test(args['silent']);
 if (!silent) {
   console.debug("Arguments: ", args);
 }
@@ -22,7 +22,11 @@ const host = args['host'] || 'localhost';
 const connectionUri = args['connection-uri'] || 'mongodb://localhost:27017';
 const databaseName = args['database-name'] || 'ldes_client_sink';
 const collectionName = args['collection-name'] || 'members';
-const memberType = args['member-type'] || 'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder';
+const memberType = args['member-type'];
+
+if (!memberType) {
+  exitWithError('missing value for mandatory argument "--member-type".');
+}
 
 const storage = new MongoStorage(connectionUri, databaseName, collectionName);
 const controller = new MemberController(memberType, storage);
@@ -114,11 +118,15 @@ async function closeGracefully(signal: any) {
 
 process.on('SIGINT', closeGracefully);
 
+function exitWithError(err: any) {
+  console.error(err);
+  process.exit(1);
+}
+
 const options = { port: port, host: host };
 server.listen(options, async (err: any, address: string) => {
   if (err) {
-    console.error(err);
-    process.exit(1);
+    exitWithError(err);
   }
   if (!silent) {
     console.debug(`Sink listening at ${address}`);

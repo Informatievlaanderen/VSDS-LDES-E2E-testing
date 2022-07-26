@@ -2,16 +2,20 @@
 The E2E test sink is a small http server used for E2E testing the LDES client NiFi processor.
 
 ## Docker
-The sink can be run as a docker container, after creating a docker image for it. The docker container will keep running until stopped.
+The sink can be run as a docker container, using a pre-built container or after creating a docker image for it locally. The docker container will keep running until stopped.
 
 To create a docker image, run the following command:
 ```bash
 docker build --tag vsds/ldes-client-sink .
 ```
 
+> **Note**: as of pre-built container [ldes-client-sink:20220718T1542](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/pkgs/container/ldes-client-sink/28801718?tag=20220718T1542) a MongoDB is used as a member store. Please ensure you run a MongoDB instance locally or use an online instance. Configure the docker container to use that instance or configure and use the [docker compose file](./docker-compose.yml) that has been provided.
+
 To run the sink docker image mapped on port 9000, you can use:
 ```bash
-docker run -d -p 9000:80 vsds/ldes-client-sink
+docker run -d -p 9000:80 --add-host=host.docker.internal:host-gateway \
+-e MEMBER_TYPE="http://schema.org/Person" -e CONNECTION_URI="mongodb://host.docker.internal:27017" \
+-e DATABASE_NAME="test" -e COLLECTION_NAME="cartoons" vsds/ldes-client-sink
 ```
 
 The docker run command will return a container ID (e.g. `0cc5d65d8108f8e91778a0a4cdb6504a2b3926055ce10cb899dceb98db4c3eef`), which you need to stop the container.
@@ -23,6 +27,17 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
  ```
 To stop the container, you need to call the stop command with the (long or short) container ID, e.g. `docker stop 0cc5d65d8108`
 
+## Docker compose
+For your convenience a [docker compose file](./docker-compose.yml) is provided containing the client sink and a MongoDB store, and 2 files containing environment variables used for building and running the containers:
+* [env.mongo](./env.mongo) contains the mongo specific variables and normally needs no changing
+* [env.sink](./env.sink) contains the client sink variables
+
+The sink variables typically need tuning for your use case. The easiest way to provide these is to copy both env files into a new `env.user` file and change the variables as required. Then you can run the following command to build and run the docker containers:
+
+```bash
+docker compose --env-file env.user up
+```
+
 ## Build
 The sink is implemented as a [node.js](https://nodejs.org/en/) application.
 You need to run the following commands to build it:
@@ -32,17 +47,18 @@ npm run build
 ```
 
 ## Run
-The sink uses a MongoDB as permanent storage to allow for large data sets.
-It takes the following command line arguments:
+The sink uses a MongoDB as permanent storage to allow for large data sets, so before running the sink, make sure your MongoDB instance is running.
+
+The sink takes the following command line arguments:
 * `--member-type` defines the member type to use to determine the member's ID (subject value), no default
 * `--port=<port-number>` allows to set the port, defaults to `8080`
 * `--host=<host-name>` allows to set the hostname, defaults to `localhost`
-* `--silent` prevents any console debug output
+* `--silent=<true|false>` prevents any console debug output if true, defaults to false (not silent, logging all debug info)
 * `--connection-uri` allows to set the MongoDB connection URI, defaults to `mongodb://localhost:27017`
 * `--database-name` allows to set the MongoDB database name, defaults to `ldes_client_sink`
 * `--collection-name` allows to set the MongoDB collection name, defaults to `members`
 
-You can run it with one of the following command after building it:
+You can run the sink with one of the following command after building it:
 ```bash
 node dist/server.js --member-type "http://schema.org/Person" --collection-name cartoons
 ```
@@ -60,11 +76,11 @@ Alternatively launch it using other arguments, e.g.:
 
 GIPOD use case: 
 ```bash
-node dist/server.js --member-type "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder" --collection-name hindrances --silent
+node dist/server.js --silent="true" --member-type="https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder" --database-name="GIPOD" --collection-name="mobility-hindrances"
 ```
 GTFS/RT use case: 
 ```bash
-node dist/server.js --member-type "http://semweb.mmlab.be/ns/linkedconnections#Connection" --collection-name connections --silent
+node dist/server.js --silent="true" --member-type="http://semweb.mmlab.be/ns/linkedconnections#Connection" --database-name="GTFS" --collection-name="connections"
 ```
 ## Usage
 The sink server accepts the following REST calls.

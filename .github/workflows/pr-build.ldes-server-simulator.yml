@@ -41,7 +41,13 @@ jobs:
         project: LDES Server Simulator
         path: ./ldes-server-simulator/src
         format: HTML
-      
+
+    - name: Upload Test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: Depcheck report ldes-server-simulator-${{ matrix.node-version }}
+        path: ${{ github.workspace }}/reports/
+          
     - name: Build
       run: npm run build
    

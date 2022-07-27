@@ -47,7 +47,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Depcheck report ldes-client-sink-${{ matrix.node-version }}
-        path: ${{ github.workspace }}/reports/ldes-client-sink-${{ matrix.node-version }}/
+        path: ${{ github.workspace }}/reports/
     
     - name: Build
       run: npm run build

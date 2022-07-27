@@ -39,9 +39,15 @@ jobs:
       uses: dependency-check/Dependency-Check_Action@1.1.0
       with:
         project: LDES Server Simulator
-        path: ./ldes-server-simulator/src
+        path: ./ldes-server-simulator
         format: HTML
-      
+
+    - name: Upload Test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: Depcheck report ldes-server-simulator-${{ matrix.node-version }}
+        path: ${{ github.workspace }}/reports/
+          
     - name: Build
       run: npm run build
    

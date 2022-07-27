@@ -1,18 +1,18 @@
-@startuml "LDES client demo - component diagram"
+@startuml "LDES Client Demo - Component Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title LDES client demo - component diagram
+title LDES Client Demo - Component Diagram
 
 Person(tester, "Tester")
 
-System_Ext(simulator, "LDES server simulator", "Simple LDES fragment server")
-System_Ext(sink, "LDES members sink", "Little HTTP server accepting LDES members from the LDES client")
+System_Ext(simulator, "LDES Server Simulator", "Simple LDES fragment server")
+System_Ext(sink, "LDES Client Sink", "Little HTTP server accepting LDES members from the LDES client")
 
-System_Boundary(workflow_system, "LDES client Demo"){
-    Container_Boundary(workflow, "LDES client workflow"){
-        Component(client_processor, "LDES client processor", "Java", "custom Apache NiFi processor wrapper for LDES client SDK")
-        Component(queue, "queue", "Apache NiFi FlowFile")
-        Component(http_processor, "InvokeHTTP processor", "Java", "standard Apache NiFi processor for HTTP communication")
+System_Boundary(workflow_system, "LDES Workflow"){
+    Container_Boundary(workflow, "LDES Client Workflow"){
+        Component(client_processor, "LDES Client Processor", "Java", "custom Apache NiFi processor wrapper for LDES client SDK")
+        Component(queue, "Queue", "Apache NiFi FlowFile")
+        Component(http_processor, "InvokeHTTP Processor", "Java", "standard Apache NiFi processor for HTTP communication")
     }
 }
 

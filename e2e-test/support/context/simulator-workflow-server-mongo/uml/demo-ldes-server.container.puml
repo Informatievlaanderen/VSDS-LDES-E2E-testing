@@ -1,15 +1,15 @@
-@startuml "LDES server demo - container diagram"
+@startuml "LDES Server Demo - Container Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title LDES server demo - container diagram
+title LDES Server Demo - Container Diagram
 
 Person(tester, "Tester")
 
-System_Ext(simulator, "LDES server simulator", "Simple LDES fragment server")
-System_Ext(workflow, "LDES server demo", "Workflow containing LDES client processor")
+System_Ext(simulator, "LDES Server Simulator", "Simple LDES fragment server")
+System_Ext(workflow, "LDES Workflow", "Workflow containing LDES client processor")
 
-System_Boundary(server_host, "LDES server"){
-    Container(server, "LDES server", "Java", "LDES server ingesting members and offering an endpoint for consumption")
+System_Boundary(server_host, "LDES Server"){
+    Container(server, "Server", "Java", "LDES server ingesting members and offering an endpoint for consumption")
     Container_Ext(database, "Storage", "MongoDB", "Contains LDES members and fragments")
 }
 

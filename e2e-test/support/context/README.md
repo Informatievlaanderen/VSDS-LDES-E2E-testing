@@ -1,5 +1,5 @@
-# E2E test contexts
+# E2E Test Contexts
 
 This folder contains a couple of system context examples used for the use cases.
-* the [simulator / workflow / sink](./simulator-workflow-sink/README.md) context is used for validating the LDES client
-* the [simulator / workflow / server / mongo](./simulator-workflow-server-mongo/README.md) context is used for validating the LDES server
+* the [Simulator / Workflow / Sink](./simulator-workflow-sink/README.md) context is used for validating the LDES client
+* the [Simulator / Workflow / Server / Mongo](./simulator-workflow-server-mongo/README.md) context is used for validating the LDES server

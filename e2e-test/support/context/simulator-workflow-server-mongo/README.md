@@ -1,9 +1,9 @@
-# Simulator / workflow / server / mongo context
+# Simulator / Workflow / Server / Mongo Context
 This context is used for validating the LDES server.
 
-We use an [LDES server simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and the LDES server configured to capture the LDES members emitted by the LDES client NiFi processor.
+We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and the LDES server configured to capture the LDES members emitted by the LDES client NiFi processor.
 
-## Setup the context
+## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
 * LDES_SERVER_SIMULATOR_TAG (e.g. 20220718T1542)
 * PAT_READ_PACKAGES (Github personal access token)
@@ -27,17 +27,17 @@ Optionally, you can also specify different (external) port numbers for the compo
 * MONGODB_TAG (default: 5.0.9)
 * MONGODB_PORT (default: 27017)
 
-## Run the systems
+## Run the Systems
 To create and start all systems in the context:
 ```bash
 docker compose --env-file env.user up
 ```
 
-## Verify context
+## Verify Context
 To verify that all systems in the context are available (please subsitute the correct ports if changed):
 
-### LDES server simulator
-Browse to http://localhost:9011 or run bash command:
+### LDES Server Simulator
+Browse to http://localhost:9011 or run Bash command:
 ```bash
 curl http://localhost:9011
 ```
@@ -46,11 +46,11 @@ response (if not seeded):
 {"aliases":[],"fragments":[]}
 ```
 
-### LDES client workflow
+### LDES Client Workflow
 The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at https://localhost:8443/nifi/login and use your credentials to login.
 
-### LDES server
-Browse to `http://localhost:8080/<ldes-collection-name>` (e.g. http://localhost:8080/mobility-hindrances) or run an equivalent bash command, e.g.:
+### LDES Server
+Browse to `http://localhost:8080/<ldes-collection-name>` (e.g. http://localhost:8080/mobility-hindrances) or run an equivalent Bash command, e.g.:
 ```bash
 curl http://localhost:8080/mobility-hindrances
 ```
@@ -71,8 +71,8 @@ response will be similar to:
 }
 ```
 
-### Mongo database
-Browse to http://localhost:27017 or use bash command:
+### Mongo Database
+Browse to http://localhost:27017 or use Bash command:
 ```bash
 curl http://localhost:27017
 ```
@@ -83,14 +83,14 @@ It looks like you are trying to access MongoDB over HTTP on the native driver po
 This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
 ![compass](./artwork/mongo-compass.png)
 
-### Stop the systems
+### Stop the Systems
 To stop all systems in the context:
 ```bash
 docker compose down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 
-## C4 diagrams
+## C4 Diagrams
 
 ### Context
 ![context](./artwork/demo-ldes-server.context.png)

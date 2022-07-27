@@ -1,7 +1,7 @@
 {
   "name": "e2e-test-sink",
   "version": "1.0.0",
-  "description": "Small http server which receives the LDES members from the LDES client",
+  "description": "Small HTTP server which receives the LDES members from the LDES client",
   "main": "./dist/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",

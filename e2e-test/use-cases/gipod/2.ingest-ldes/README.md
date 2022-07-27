@@ -1,7 +1,7 @@
-# LDES server can ingest LDES members
+# LDES Server Can Ingest LDES Members
 This test validates user story **As a data intermediary I want to request the GIPOD LDES data set without fragmentation** (VSDSPUB-61) and was shown during demo 2 on May, 24th 2022.
 
-## Scenario: the server ingests N-quads
+## Scenario: the Server Ingests N-quads
 This scenario verifies that the LDES server can ingest [N-Quads](https://www.w3.org/TR/n-quads/).
 ```gherkin
 Given an LDES member formatted as N-quads
@@ -9,7 +9,7 @@ When we send it to the LDES server ingest endpoint
 Then the LDES server accepts it
 ```
 
-## Scenario: the server returns N-quads
+## Scenario: the Server Returns N-quads
 This scenario verifies the LDES server can return the unfragmented LDES as N-Quads.
 ```gherkin
 Given a data set is already stored
@@ -17,7 +17,7 @@ When we request it from the LDES server consumption endpoint, formatted as N-qua
 Then we receive the LDES formatted as N-quads
 ```
 
-## Scenario: the server returns Turtle format
+## Scenario: the Server Returns Turtle Format
 This scenario verifies the LDES server can return the unfragmented LDES as other formats (such as [Turtle](https://www.w3.org/TR/turtle/), [N-triples](https://www.w3.org/TR/n-triples/), [JSON-LD](https://www.w3.org/TR/json-ld11/), etc.).
 ```gherkin
 Given a data set is already stored
@@ -25,7 +25,7 @@ When we request it from the LDES server consumption endpoint, formatted as Turtl
 Then we receive the LDES formatted as Turtle
 ```
 
-## Scenario: the server returns the data set in an unfragmented LDES
+## Scenario: the Server Returns the Data Set in an Unfragmented LDES
 This scenario verifies the LDES server ingesting a small number of members and serves them as an unfragmented LDES.
 ```gherkin
 Given a data set contains a (small) number of members, which fit in one response
@@ -35,19 +35,19 @@ And the result contains no fragmentation
 ```
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
-### Test setup
-For this scenario we can use the [simulator / workflow / server / mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.ingest)](./env.ingest) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
+### Test Setup
+For this scenario we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.ingest)](./env.ingest) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
 ```bash
 docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user up
 ```
 
-### Test execution
+### Test Execution
 To run the test, you need to:
 1. Upload a pre-defined NiFi workflow containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the LDES server).
 2. Start the NiFi workflow and wait for it to process all LDES members.
 3. Verify that all LDES members from the GIPOD simulator are received by the LDES-server.
 
-#### 1. Upload NiFi workflow
+#### 1. Upload NiFi Workflow
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
 Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
@@ -56,13 +56,13 @@ You can verify the LDES client processor properties to ensure the input source i
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z`
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/mobility-hindrances` and the property `HTTP method` should be `POST`
 
-#### 2. Start the workflow
+#### 2. Start the Workflow
 Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
 
-#### 3. Verify LDES members received
+#### 3. Verify LDES Members Received
 The GIPOD simulator (http://localhost:9011) is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served.
 
-You can verify that, after some time, all (1016) LDES members are received by the LDES-server by using the [Mongo compass](https://www.mongodb.com/products/compass) tool and verifying that the `test.ldesmember` document collection contains the LDES members (check the document count):
+You can verify that, after some time, all (1016) LDES members are received by the LDES-server by using the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `test.ldesmember` document collection contains the LDES members (check the document count):
 ![test.ldesmember document count](./artwork/test-ldesmember-document-count.png)
 
 In addition, you can request the members using various formats:
@@ -249,7 +249,7 @@ response:
 }
 ```
 
-### Test teardown
+### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
 docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user down

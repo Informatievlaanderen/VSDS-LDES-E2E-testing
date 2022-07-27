@@ -1,8 +1,8 @@
 # VSDS-LDES-E2E-testing
-End-to-end tests and tooling needed for testing LDES components build as part of VSDS. See [LDES E2E tests ReadMe](./e2e-test/README.md).
+End-to-end tests and tooling needed for testing LDES components build as part of VSDS. See [LDES E2E tests README](./e2e-test/README.md).
 
-## LDES server simulator
-A tool for simulating an LDES server *consumption* endpoint. See [LDES server simulator ReadMe](./ldes-server-simulator/README.md) for details.
+## LDES Server Simulator
+A tool for simulating an LDES Server *consumption* endpoint. See [LDES Server Simulator README](./ldes-server-simulator/README.md) for details.
 
-## LDES client sink
-A tool for simulating an LDES server *ingestion* endpoint. See [LDES client sink ReadMe](./ldes-client-sink/README.md) for details.
+## LDES Client Sink
+A tool for simulating an LDES Server *ingestion* endpoint. See [LDES Client Sink README](./ldes-client-sink/README.md) for details.

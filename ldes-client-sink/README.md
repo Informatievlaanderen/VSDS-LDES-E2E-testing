@@ -1,24 +1,24 @@
-# E2E Test Sink
-The E2E test sink is a small http server used for E2E testing the LDES client NiFi processor.
+# E2E Client Sink
+The E2E Client Sink is a small HTTP server used for E2E testing the LDES client NiFi processor.
 
 ## Docker
-The sink can be run as a docker container, using a pre-built container or after creating a docker image for it locally. The docker container will keep running until stopped.
+The sink can be run as a Docker container, using a pre-built container or after creating a Docker image for it locally. The Docker container will keep running until stopped.
 
-To create a docker image, run the following command:
+To create a Docker image, run the following command:
 ```bash
 docker build --tag vsds/ldes-client-sink .
 ```
 
-> **Note**: as of pre-built container [ldes-client-sink:20220718T1542](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/pkgs/container/ldes-client-sink/28801718?tag=20220718T1542) a MongoDB is used as a member store. Please ensure you run a MongoDB instance locally or use an online instance. Configure the docker container to use that instance or configure and use the [docker compose file](./docker-compose.yml) that has been provided.
+> **Note**: as of pre-built container [ldes-client-sink:20220718T1542](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/pkgs/container/ldes-client-sink/28801718?tag=20220718T1542) a MongoDB is used as a member store. Please ensure you run a MongoDB instance locally or use an online instance. Configure the Docker container to use that instance or configure and use the [Docker compose file](./docker-compose.yml) that has been provided.
 
-To run the sink docker image mapped on port 9000, you can use:
+To run the sink Docker image mapped on port 9000, you can use:
 ```bash
 docker run -d -p 9000:80 --add-host=host.docker.internal:host-gateway \
 -e MEMBER_TYPE="http://schema.org/Person" -e CONNECTION_URI="mongodb://host.docker.internal:27017" \
 -e DATABASE_NAME="test" -e COLLECTION_NAME="cartoons" vsds/ldes-client-sink
 ```
 
-The docker run command will return a container ID (e.g. `0cc5d65d8108f8e91778a0a4cdb6504a2b3926055ce10cb899dceb98db4c3eef`), which you need to stop the container.
+The Docker run command will return a container ID (e.g. `0cc5d65d8108f8e91778a0a4cdb6504a2b3926055ce10cb899dceb98db4c3eef`), which you need to stop the container.
 
 Alternatively you can run `docker ps` to retrieve the (short version of the) container ID.
  ```
@@ -28,18 +28,18 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 To stop the container, you need to call the stop command with the (long or short) container ID, e.g. `docker stop 0cc5d65d8108`
 
 ## Docker compose
-For your convenience a [docker compose file](./docker-compose.yml) is provided containing the client sink and a MongoDB store, and 2 files containing environment variables used for building and running the containers:
+For your convenience a [Docker compose file](./docker-compose.yml) is provided containing the client sink and a MongoDB store, and 2 files containing environment variables used for building and running the containers:
 * [env.mongo](./env.mongo) contains the mongo specific variables and normally needs no changing
 * [env.sink](./env.sink) contains the client sink variables
 
-The sink variables typically need tuning for your use case. The easiest way to provide these is to copy both env files into a new `env.user` file and change the variables as required. Then you can run the following command to build and run the docker containers:
+The sink variables typically need tuning for your use case. The easiest way to provide these is to copy both env files into a new `env.user` file and change the variables as required. Then you can run the following command to build and run the Docker containers:
 
 ```bash
 docker compose --env-file env.user up
 ```
 
 ## Build
-The sink is implemented as a [node.js](https://nodejs.org/en/) application.
+The sink is implemented as a [Node.js](https://nodejs.org/en/) application.
 You need to run the following commands to build it:
 ```bash
 npm i
@@ -85,7 +85,7 @@ node dist/server.js --silent="true" --member-type="http://semweb.mmlab.be/ns/lin
 ## Usage
 The sink server accepts the following REST calls.
 
-### `GET /` -- Retrieve number of ingested members
+### `GET /` -- Retrieve Number of Ingested Members
 Returns the number of members received, e.g.
 ```bash
 curl http://localhost:8080/
@@ -95,7 +95,7 @@ returns:
 {"cartoons":{"total":0}}
 ```
 
-### `POST /member` -- Ingest members
+### `POST /member` -- Ingest Members
 Ingests a member as quads (mime-type: `application/n-quads`) or as triples (mime-type: `application/n-triples`) and returns the member ID (URI), e.g.
 ```bash
 curl -X POST http://localhost:8080/member -H "Content-Type: application/n-quads" -d "@donald-duck.nq"
@@ -109,7 +109,7 @@ returns:
 http://example.org/id/cartoon-figure/donald-duck
 ```
 
-### `GET /member` -- Get member list
+### `GET /member` -- Get Member List
 Returns the (limited) list of members (as local URLs), e.g.
 ```bash
 curl http://localhost:8080/member
@@ -127,7 +127,7 @@ returns (formatted for readability):
 }
 ```
 
-### `GET /member?id=<url-encoded-member-id>` -- Get member content
+### `GET /member?id=<url-encoded-member-id>` -- Get Member Content
 Returns the member content as quads (if ingested with mime-type: `application/n-quads`), e.g.
 ```bash
 curl "http://localhost:8080/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
@@ -138,7 +138,7 @@ returns (formatted for readability):
 <http://example.org/id/cartoon-figure/donald-duck> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> <http://example.org/disney>.
 ```
 
-### `DELETE /member` -- Remove all members
+### `DELETE /member` -- Remove all Members
 Removes all members, e.g.
 ```bash
 curl -X DELETE http://localhost:8080/member

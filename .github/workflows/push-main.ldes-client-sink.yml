@@ -1,4 +1,4 @@
-name: Create and publish LDES client sink docker image
+name: Create and publish LDES Client Sink Docker image
 
 on:
   push:

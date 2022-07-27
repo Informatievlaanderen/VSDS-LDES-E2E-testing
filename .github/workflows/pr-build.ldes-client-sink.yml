@@ -40,7 +40,7 @@ jobs:
       id: Depcheck
       with:
         project: LDES Client Sink
-        path: ./ldes-client-sink/src
+        path: ./ldes-client-sink
         format: HTML
 
     - name: Upload Test results

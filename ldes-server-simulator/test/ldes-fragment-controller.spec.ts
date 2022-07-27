@@ -43,6 +43,26 @@ describe('controller tests', () => {
             expect(statistics.body).not.toBe(undefined);
             expect(statistics.body.aliases).toEqual([partialWithQueryId]);
             expect(statistics.body.fragments).toEqual([firstPartialId]);
+            expect(statistics.body.responses).toStrictEqual({});
+        });
+        it('should update response statistics', () => {
+            sut.postFragment({body: body, headers: headers});
+            sut.postAlias({body: queryIdAlias});
+            sut.getFragment({query: {id: queryIdAlias.original}});
+
+            const now = new Date();
+            const statistics = sut.getStatistics();
+            expect(statistics.body).not.toBe(undefined);
+            expect(statistics.body.responses).not.toBe(undefined);
+
+            const firstStatistics = statistics.body.responses[queryIdAlias.original];
+            expect(firstStatistics).not.toBe(undefined);
+            expect(firstStatistics?.count).toBe(1);
+            expect(firstStatistics?.at.length).toBe(1);
+
+            const expectedAtRoundedToSeconds = now.valueOf()/1000;
+            const actualAtRoundedToSeconds = (firstStatistics?.at?.[0]?.valueOf() ?? 0)/1000;
+            expect(actualAtRoundedToSeconds).toBeCloseTo(expectedAtRoundedToSeconds, 0);
         });
     });
 

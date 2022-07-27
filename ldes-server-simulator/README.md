@@ -49,7 +49,7 @@ node dist/server.js --baseUrl=http://localhost:8080 --port=8080
 
 ## Retrieve Available Fragments and Aliases
 
-You can use a regulator browser, [Postman](https://www.postman.com/), [curl](https://curl.se/) or any other HTTP client to query the simulator. The root url of the simulator allows to query for the available fragments (uploaded pages) and aliases (configured redirects). 
+You can use a regulator browser, [Postman](https://www.postman.com/), [curl](https://curl.se/) or any other HTTP client to query the simulator. The root url of the simulator allows to query for the available fragments (uploaded pages) and aliases (configured redirects), as well as the returned responses (count and an array of timestamps). 
 
 To query the available fragments and aliases from the (Bash) command line using curl:
 
@@ -57,7 +57,7 @@ To query the available fragments and aliases from the (Bash) command line using 
 
 This results initially in:
 ```json
-{"aliases":[],"fragments":[]}  
+{"aliases":[],"fragments":[],"responses":{}}  
 ```
 
 ## Upload a Fragment
@@ -70,7 +70,7 @@ To upload an LDES fragment from the (Bash) command line using curl:
 
 where `sample.jsonld` is your fragment file located in the current working directory. This results in something like (depends on the file's content):
 ```json
-{"id":"/api/v1/ldes/mobility-hindrances"}
+{"content-type":"application/json-ld","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 **Note**: you need to ensure that your collection of fragments does not contain a relation to a fragment outside of your collection (data subset). Obviously, the simulator will not contain such a fragment and return a HTTP code 404.
@@ -84,7 +84,7 @@ To upload an LDES fragment and specify the `max-age` (e.g. 2 minutes / 120 secon
 Response:
 
 ```json
-{"id":"/api/v1/ldes/mobility-hindrances","maxAge":"120"}
+{"content-type":"application/json-ld","cache-control":"public, max-age=120","id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 ## Create an Alias
@@ -112,7 +112,7 @@ curl http://localhost:8080
 ```
 now results in:
 ```json
-{"aliases":["/ldes/mobility-hindrances"],"fragments":["/api/v1/ldes/mobility-hindrances"]}
+{"aliases":["/ldes/mobility-hindrances"],"fragments":["/api/v1/ldes/mobility-hindrances"],"responses":{}}
 ```
 
 To retrieve a fragment directly with curl:
@@ -160,6 +160,27 @@ Keep-Alive: timeout=5
 
 {
   ... (omitted LDES content)
+}
+```
+
+Requesting the simulator home page using curl:
+```bash
+curl http://localhost:8080
+```
+now results in something similar to:
+```json
+{
+  "aliases":["/ldes/mobility-hindrances"],
+  "fragments":["/api/v1/ldes/mobility-hindrances"],
+  "responses":{
+    "/api/v1/ldes/mobility-hindrances": {
+      "count":2,
+      "at":[
+        "2022-07-27T18:01:28.133Z",
+        "2022-07-27T18:01:43.117Z"
+      ]
+    }
+  }
 }
 ```
 

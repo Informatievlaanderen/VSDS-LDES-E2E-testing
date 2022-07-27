@@ -40,9 +40,9 @@ jobs:
       id: Depcheck
       with:
         project: LDES Client Sink
-        path: ./ldes-client-sink/src
+        scan: ./src
+        path: ${{ github.workspace }}/reports/dependency-check-report.ldes-client-sink.${{ matrix.node-version }}.html
         format: HTML
-        out: ${{ github.workspace }}/reports/dependency-check-report.ldes-client-sink.${{ matrix.node-version }}.html
 
     - name: Upload Test results
       uses: actions/upload-artifact@v3

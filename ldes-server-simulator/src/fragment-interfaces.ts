@@ -10,9 +10,15 @@ export interface IRedirection {
     to: string;
 }
 
+export interface IStatisticsResponses {
+    count: number, 
+    at: Date[]
+}
+
 export interface IStatistics {
     aliases: string[];
     fragments: string[];
+    responses: {[key: string]: IStatisticsResponses};
 }
 
 export interface IFragmentId { 

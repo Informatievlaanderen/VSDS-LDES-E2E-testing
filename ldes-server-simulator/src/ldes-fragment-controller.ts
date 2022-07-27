@@ -2,10 +2,19 @@ import { ICreateFragmentOptions, LdesFragmentService } from "./ldes-fragment-ser
 import { TreeNode } from "./tree-specification";
 import { readdir, readFile } from 'node:fs/promises';
 import { IGetRequest, IPostRequest, IResponse, mimeJsonLd } from "./http-interfaces";
-import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics } from "./fragment-interfaces";
+import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics, IStatisticsResponses } from "./fragment-interfaces";
 
 export class LdesFragmentController {
-    private redirections: any = {};
+    private _redirections: {[key: string]: string} = {};
+    private _requests: {[key: string]: Date[]} = {};
+
+    private addStatistics(fragmentId: string) {
+        let responses = this._requests[fragmentId];
+        if (!responses) {
+            responses = this._requests[fragmentId] = [];
+        }
+        responses.push(new Date());
+    }
 
     constructor(private service: LdesFragmentService) { }
 
@@ -28,10 +37,11 @@ export class LdesFragmentController {
      */
     public getFragment(request: IGetRequest<IFragmentId>): IResponse<TreeNode | undefined> {
         let fragmentId = request.query.id;
-        while (this.redirections[fragmentId] !== undefined) {
-            fragmentId = this.redirections[fragmentId];
+        while (this._redirections[fragmentId] !== undefined) {
+            fragmentId = this._redirections[fragmentId] ?? '';
         }
-        const fragment = this.service.get(fragmentId);
+        const fragment = fragmentId ? this.service.get(fragmentId) : undefined;
+        this.addStatistics(fragmentId);
         return {
             status: fragment === undefined ? 404 : 200,
             body: fragment?.content,
@@ -44,11 +54,16 @@ export class LdesFragmentController {
      * @returns An object with the known aliases and known fragments.
      */
     public getStatistics(): IResponse<IStatistics> {
+        const responses: {[key: string]: IStatisticsResponses} = {};
+        Object.keys(this._requests).forEach(x => 
+            responses[x] = ({ count: this._requests[x]?.length, at: this._requests[x]} as IStatisticsResponses));
+
         return {
             status: 200, 
             body: { 
-                aliases: Object.keys(this.redirections), 
+                aliases: Object.keys(this._redirections), 
                 fragments: this.service.fragmentIds,
+                responses: responses,
             }
         };
     }
@@ -62,11 +77,11 @@ export class LdesFragmentController {
         const redirection = request.body;
         const original = this.withoutOrigin(redirection.original);
         const alias = this.withoutOrigin(redirection.alias);
-        this.redirections[alias] = original;
+        this._redirections[alias] = original;
 
-        let fragmentId = original;
-        while (this.redirections[fragmentId] !== undefined) {
-            fragmentId = this.redirections[fragmentId];
+        let fragmentId: string = original;
+        while (this._redirections[fragmentId]) {
+            fragmentId = this._redirections[fragmentId] ?? '';
         }
         return {
             status: 201,

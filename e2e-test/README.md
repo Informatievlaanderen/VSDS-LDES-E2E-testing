@@ -1,3 +1,3 @@
-# E2E tests
+# E2E Tests
 These following end-to-end tests currently exist:
-* [GIPOD tests](./use-cases/gipod/README.md)
+* [GIPOD Use Case Tests](./use-cases/gipod/README.md)

@@ -1,21 +1,21 @@
-@startuml "LDES server demo - component diagram"
+@startuml "LDES Server Demo - Component Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title LDES client demo - component diagram
+title LDES Server Demo - Component Diagram
 
 Person(tester, "Tester")
 
-System_Ext(simulator, "LDES server simulator", "Simple LDES fragment server")
-System_Ext(workflow, "LDES server demo", "Apache NiFi with workflow containing LDES client processor")
+System_Ext(simulator, "LDES Server Simulator", "Simple LDES fragment server")
+System_Ext(workflow, "LDES Workflow", "Apache NiFi with workflow containing LDES client processor")
 
-System_Boundary(server_system, "LDES server"){
-    Container_Boundary(server, "LDES server"){
+System_Boundary(server_system, "LDES Server"){
+    Container_Boundary(server, "Server"){
         Component(ingest, "Ingest", "Java", "Ingests individual LDES members")
         Component(core, "Domain", "Java", "Business logic\n(all core functionality)")
         Component(storage, "Storage", "Java", "Database or other repository")
         Component(consume, "Consume", "Java", "Returns LDES fragments on request")
     }
-    Container_Ext(database, "Database", "MongoDB")
+    Container_Ext(database, "Storage", "MongoDB")
 }
 
 'Rel_D(tester, workflow, "create and run workflow", "HTTPS")

@@ -12,7 +12,7 @@ export class LdesFragmentController {
     /**
      * Stores an LDES fragment, replacing the ID of the fragment and its relations with the local origin.
      * @param request The request with its body containing the fragment which optionally contains relations to other fragments.
-     * @returns An IFragmentInfo object with its id property containing the relative fragment path without the origin.
+     * @returns An IFragmentInfo object with its ID property containing the relative fragment path without the origin.
      */
     public postFragment(request: IPostRequest<TreeNode, ICreateFragmentOptions>): IResponse<IFragmentInfo> {
         return {

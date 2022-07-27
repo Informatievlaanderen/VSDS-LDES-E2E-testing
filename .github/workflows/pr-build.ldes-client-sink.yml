@@ -44,7 +44,7 @@ jobs:
         format: HTML
 
     - name: Upload Test results
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
            name: Depcheck report
            path: ${{ github.workspace }}/reports

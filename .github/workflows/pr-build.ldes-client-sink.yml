@@ -46,8 +46,8 @@ jobs:
     - name: Upload Test results
       uses: actions/upload-artifact@v3
       with:
-        name: Depcheck report
-        path: ${{ github.workspace }}/reports
+        name: Depcheck report ${{ matrix.node-version }}
+        path: ${{ github.workspace }}/reports/dependency-check-report.ldes-client-sink.${{ matrix.node-version }}.html
     
     - name: Build
       run: npm run build

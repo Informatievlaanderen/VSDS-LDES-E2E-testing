@@ -16,9 +16,13 @@ const host = args['host'] || 'localhost';
 
 const controller = new MemberController();
 
-server.addHook('onRequest', (request, _reply, done) => {
+server.addHook('onResponse', (request, reply, done) => {
   if (!silent) {
-    console.debug(`${request.method} ${request.url}`);
+    const method = request.method;
+    const statusCode = reply.statusCode;
+    console.debug(method === 'POST' 
+      ? `${method} ${request.url} ${request.headers['content-type']} ${statusCode}` 
+      : `${method} ${request.url} ${statusCode}`);
   }
   done();
 });

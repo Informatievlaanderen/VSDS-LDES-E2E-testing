@@ -326,13 +326,13 @@
                 {
                     "identifier": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                     "instanceIdentifier": "14412be5-8cb5-3214-d68b-92e2c9aa90c6",
-                    "name": "LdesClient",
+                    "name": "LdesClientProcessor",
                     "comments": "",
                     "position": {
                         "x": 240.0,
                         "y": 24.0
                     },
-                    "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
+                    "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClientProcessor",
                     "bundle": {
                         "group": "be.vlaanderen.informatievlaanderen",
                         "artifact": "ldes-processors",
@@ -400,7 +400,7 @@
                         "id": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                         "type": "PROCESSOR",
                         "groupId": "6ba07159-ccde-3dc2-872b-e3475a472ed0",
-                        "name": "LdesClient",
+                        "name": "LdesClientProcessor",
                         "comments": "",
                         "instanceIdentifier": "14412be5-8cb5-3214-d68b-92e2c9aa90c6"
                     },

@@ -13,6 +13,8 @@
 **/application-local.yml
 *.user
 *.local*
+work
+work/**
 
 ###
 ### Makefiles

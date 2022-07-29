@@ -1,0 +1,22 @@
+@startuml "GTFS to LDES Demo - Container Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title GTFS to LDES Demo - Container Diagram
+
+Person(tester, "Tester")
+
+System_Ext(gtfs2ldes, "GTFS to LDES", "GTFS to LDES convertor producing LD objects")
+System_Ext(workflow, "LDES Workflow", "Workflow containing LDES client processor")
+
+System_Boundary(server_host, "LDES Server"){
+    Container(server, "Server", "Java", "LDES server ingesting members and offering an endpoint for consumption")
+    Container_Ext(database, "Storage", "MongoDB", "Contains LDES members and fragments")
+}
+
+Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, server, "verify LDES data set replicated", "HTTP")
+Rel_R(gtfs2ldes, workflow, "pushes LDES members", "HTTP (method GET)")
+Rel_R(workflow, server, "pushes LDES members", "HTTP (method POST)")
+Rel_R(server, database, "stores and retrieves LDES members", "HTTP")
+
+@enduml

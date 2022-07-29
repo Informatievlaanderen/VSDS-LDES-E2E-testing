@@ -1,0 +1,62 @@
+version: '3.3'
+services:
+  gtfs2ldes-js:
+    container_name: gtfs2ldes-js
+    env_file:
+      - env.gtfs2ldes
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG}
+    environment:
+      - TARGET_URL=http://nifi-workflow:9005/gtfs
+      - GTFS_SOURCE=/data/${GTFS_SOURCE_FILE}
+    volumes:
+      - type: bind
+        source: ${GTFS2LDES_DATA_FOLDER}
+        target: /data
+    networks:
+      - ldes
+  nifi-workflow:
+    container_name: nifi-workflow
+    env_file:
+      - env.workflow
+    image: gtfs2ldes-workflow-server-mongo/nifi-workflow
+    build:
+      context: ../../workflow
+      args:
+        PAT_READ_PACKAGES: ${PAT_READ_PACKAGES}
+        LDES_CLIENT_NAR_TAG: ${LDES_CLIENT_NAR_TAG}
+        SINGLE_USER_CREDENTIALS_USERNAME: ${SINGLE_USER_CREDENTIALS_USERNAME}
+        SINGLE_USER_CREDENTIALS_PASSWORD: ${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - ${NIFI_UI_PORT}:8443
+      - ${NIFI_WORKFLOW_LISTEN_PORT}:9005
+    networks:
+      - ldes
+  ldes-server:
+    container_name: ldes-server
+    env_file:
+      - env.server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT}
+    ports:
+      - ${LDES_SERVER_PORT}:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+  ldes-mongodb:
+    env_file:
+      - env.mongo
+    image: mongo:${MONGODB_TAG}
+    container_name: ldes-mongodb
+    ports:
+      - ${MONGODB_PORT}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
+    networks:
+      - ldes
+networks:
+  ldes: {}

@@ -38,6 +38,7 @@ function create_work_dir() {
         mkdir -p $WORK_DIR
     fi
 }
+create_work_dir
 
 function create_directory() {
     DIRECTORY=$1

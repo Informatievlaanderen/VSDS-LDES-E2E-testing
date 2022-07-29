@@ -1,0 +1,17 @@
+@startuml "GTFS to LDES Demo - Context Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title GTFS to LDES Demo - Context Diagram
+
+Person(tester, "Tester")
+
+System_Ext(client, "LDES Workflow")
+System_Ext(gtfs2ldes, "GTFS to LDES", "GTFS to LDES convertor producing LD objects")
+System(server, "LDES Server", "LDES Server ingesting members and offering an endpoint for consumption")
+
+Rel_R(gtfs2ldes, client, "pushes LDES members", "HTTP (method GET)")
+Rel_R(client, server, "pushes LDES members", "HTTP (method POST)")
+Rel_D(tester, server, "verify LDES data set replicated", "HTTP")
+Rel_D(tester, client, "create and run workflow", "HTTPS")
+
+@enduml

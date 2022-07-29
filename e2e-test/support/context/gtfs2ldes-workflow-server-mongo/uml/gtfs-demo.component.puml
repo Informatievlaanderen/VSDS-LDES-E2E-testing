@@ -1,0 +1,31 @@
+@startuml "GTFS to LDES Demo - Component Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title GTFS to LDES Demo - Component Diagram
+
+Person(tester, "Tester")
+
+System_Ext(gtfs2ldes, "GTFS to LDES", "GTFS to LDES convertor producing LD objects")
+System_Ext(workflow, "LDES Workflow", "Apache NiFi with workflow containing LDES client processor")
+
+System_Boundary(server_system, "LDES Server"){
+    Container_Boundary(server, "Server"){
+        Component(ingest, "Ingest", "Java", "Ingests individual LDES members")
+        Component(core, "Domain", "Java", "Business logic\n(all core functionality)")
+        Component(storage, "Storage", "Java", "Database or other repository")
+        Component(consume, "Consume", "Java", "Returns LDES fragments on request")
+    }
+    Container_Ext(database, "Storage", "MongoDB")
+}
+
+'Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, consume, "verify LDES data set replicated", "HTTP")
+Rel_R(gtfs2ldes, workflow, "pushes LDES members", "HTTP (method GET)")
+Rel_R(workflow, ingest, "pushes LDES members", "HTTP (method POST)")
+Rel(storage, database, "stores LDES members and retrieves LDES fragments")
+Rel_R(ingest, core, "store member")
+Rel_D(core, storage, "store member")
+Rel_D(core, storage, "get fragment")
+Rel_L(consume, core, "get fragment")
+
+@enduml

@@ -2,12 +2,17 @@ version: '3.3'
 services:
   gtfs2ldes-js:
     container_name: gtfs2ldes-js
-    env_file:
-      - env.gtfs2ldes
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG}
     environment:
       - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_SOURCE=/data/${GTFS_SOURCE_FILE}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - RUN_ON_LAUNCH=${RUN_ON_LAUNCH}
+      - THROTTLE_RATE=${THROTTLE_RATE}
+      - GTFS_CRON=${GTFS_CRON}
+      - GTFSRT_CRON=${GTFSRT_CRON}
+      - AUTH_HEADER=${AUTH_HEADER}
+      - AUTH_HEADER_VALUE={AUTH_HEADER_VALUE}
     volumes:
       - type: bind
         source: ${GTFS2LDES_DATA_FOLDER}
@@ -24,8 +29,9 @@ services:
       args:
         PAT_READ_PACKAGES: ${PAT_READ_PACKAGES}
         LDES_CLIENT_NAR_TAG: ${LDES_CLIENT_NAR_TAG}
-        SINGLE_USER_CREDENTIALS_USERNAME: ${SINGLE_USER_CREDENTIALS_USERNAME}
-        SINGLE_USER_CREDENTIALS_PASSWORD: ${SINGLE_USER_CREDENTIALS_PASSWORD}
+    environment:
+      SINGLE_USER_CREDENTIALS_USERNAME: ${SINGLE_USER_CREDENTIALS_USERNAME}
+      SINGLE_USER_CREDENTIALS_PASSWORD: ${SINGLE_USER_CREDENTIALS_PASSWORD}
     ports:
       - ${NIFI_UI_PORT}:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT}:9005
@@ -39,6 +45,13 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT}
+      - SPRING_DATA_MONGODB_DATABASE=${LDES_COLLECTIONNAME}
+      - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME}
+      - LDES_MEMBERTYPE=${LDES_MEMBERTYPE}
+      - LDES_SHAPE=${LDES_SHAPE}
+      - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH}
+      - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH}
+      - TIMEBASED_MEMBERLIMIT=${TIMEBASED_MEMBERLIMIT}
     ports:
       - ${LDES_SERVER_PORT}:8080
     networks:

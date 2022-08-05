@@ -23,6 +23,8 @@ To setup the context, combine the contents of all the `env.<component>` files in
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * NIFI_UI_PORT (default: 8443)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: 9005)
+* NIFI_JVM_HEAP_INIT (initial JVM heap size, default=8g)
+* NIFI_JVM_HEAP_MAX (max JVM heap size, default=8g)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
@@ -30,11 +32,12 @@ Optionally, you can also specify different (external) port numbers for the compo
 * MONGODB_TAG (default: 5.0.9)
 * MONGODB_PORT (default: 27017)
 
+
 In addition, for the GTFS to LDES conversion, various other arguments are required (for more information see [here](https://github.com/julianrojas87/gtfs2ldes-js)):
 * RUN_ON_LAUNCH (`true` or `false`, default: `true`)
 * THROTTLE_RATE (default: 10)
 * GTFS2LDES_DATA_FOLDER (location of GTFS data permanent storage, no default)
-* GTFS_SOURCE_FILE (static GTFS file, no default)
+* GTFS_SOURCE (static GTFS file container path or URL, no default)
 * GTFS_CRON (cron for reading GTFS source, default: `0 0 3 * * *`)
 * GTFSRT_SOURCE (GTFS/RT URL, no default)
 * GTFSRT_CRON (cron for reading GTFS/RT source, default: `*/30 * * * * *`)

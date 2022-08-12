@@ -25,16 +25,15 @@ For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../.
 
 > **Note**: when using the GTFS data from NMBS you will encounter issues with the generated linked connections because the [URI templates from the gtfs2ldes-js system](https://github.com/julianrojas87/gtfs2ldes-js/blob/main/config.json) are currently fixed when creating the docker image.
 
-You can create a symbolic link to the [context](../../../support/context/gtfs2ldes-workflow-server-mongo/) so you can specify the [docker compose file](../../../support/context/gtfs2ldes-workflow-server-mongo/docker-compose.yml) easier in each docker compose command.
-
+> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/gtfs2ldes-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
-ln -s  ../../../support/context/gtfs2ldes-workflow-server-mongo/ context
+export COMPOSE_FILE="../../../support/context/gtfs2ldes-workflow-server-mongo/docker-compose.yml"
 ```
 
 Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
 ```bash
-docker compose -f ./context/docker-compose.yml --env-file env.user create
-docker compose -f ./context/docker-compose.yml --env-file env.user start nifi-workflow ldes-mongodb ldes-server
+docker compose --env-file env.user create
+docker compose --env-file env.user start nifi-workflow ldes-mongodb ldes-server
 ```
 
 ### Test Execution
@@ -61,7 +60,7 @@ Restart the GTFS to LDES convertor as described [here](../../../support/context/
 
 To restart the GTFS to LDES convertor:
 ```bash
-docker compose -f ./context/docker-compose.yml --env-file env.user start gtfs2ldes-js
+docker compose --env-file env.user start gtfs2ldes-js
 ```
 
 Verify that the GTFS to LDEs convertor is processing the GTFS or GTFS/RT source:
@@ -82,5 +81,5 @@ curl --location --header 'Accept: application/n-quads' http://localhost:8080/con
 ### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose -f ./context/docker-compose.yml --env-file env.user down
+docker compose --env-file env.user down
 ```

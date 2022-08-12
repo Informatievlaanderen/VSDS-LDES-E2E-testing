@@ -27,6 +27,19 @@ Optionally, you can also specify different (external) port numbers for the compo
 * MONGODB_TAG (default: 5.0.9)
 * MONGODB_PORT (default: 27017)
 
+### Geospatial Fragmentation
+
+> **Note**: as of tag `20220812T1227`, the LDES Server allows to choose between time-based and geospation fragmentation.
+
+The default fragmentation is time-based and its only property is still TIMEBASED_MEMBERLIMIT. To change this default fragmentation type to geospatial fragmentation set the FRAGMENTATION_TYPE:
+* FRAGMENTATION_TYPE (`timebased` or `geospatial`, default: `timebased`)
+
+and configure the geospatial fragmentation:
+
+* GEOSPATIAL_MAXZOOMLEVEL (the required [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels), no default)
+* GEOSPATIAL_BUCKETISERPROPERTY (defines which property will be used for bucketizing, e.g. `"http://www.opengis.net/ont/geosparql#asWKT"`)
+* GEOSPATIAL_PROJECTION (the projection type, currently only `lambert72` is allowed)
+
 ## Run the Systems
 To create and start all systems in the context:
 ```bash

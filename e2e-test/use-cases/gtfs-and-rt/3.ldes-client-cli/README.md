@@ -2,53 +2,55 @@
 To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it.
 
 ### Test Setup
-To demonstrate the LDES Client CLI, we again use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and fill in the following mandatory arguments:
-* PAT_READ_PACKAGES
-* SINGLE_USER_CREDENTIALS_USERNAME
-* SINGLE_USER_CREDENTIALS_PASSWORD
+To demonstrate the LDES Client CLI, we use the [Simulator / Client CLI](../../../support/context/simulator-clientcli/README.md) context. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and change the arguments as needed.
 
-> **`TODO`** tune the zoom level so the GIPOD hidrance spans more than one tile
+We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
 
-This time we do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
-
-> **`TODO`** describe the LDES Client CLI
-
-### Test Execution
-> **`TODO`** visualize the hindrance (extract hindrance wkt, paste to file, use converter, plot on wkt playground)
+The LDES Client CLI starts to follow the given data set url as soons as it starts. It requests the existing data set by getting the first fragment and following all relations contained in the fragment. All fragments marked as immutable are retrieved only once. All mutable fragments are re-requested based on the fragment expiration date.
 
 Set the docker compose file location:
 ```bash
-export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
+export COMPOSE_FILE="../../../support/context/simulator-clientcli/docker-compose.yml"
 export LDES_SERVER_SIMULATOR_SEED_FOLDER=$(pwd)/../../../support/data/empty
 ```
 
-Run the systems:
+Create both containers and run the simulator:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file env.user create
+docker compose --env-file env.user start ldes-server-simulator
 ```
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
-
+### Test Execution and Verification
 Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json):
 ```bash
 curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
-> **`TODO`** start the LDES Client CLI
+When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
+```bash
+docker compose --env-file env.user start ldes-client-cli
+```
 
-Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs:
+```bash
+docker logs -f ldes-client-cli
+```
 
-> **`TODO`** describe the LDES Client CLI verification, i.e. watch the LDES Client CLI receive and output the first member (the fragments all contain the one member) ONCE to the console
+Ingest the [data set update](./data/delta.jsonld) containing the additional members and see the LDES Client CLI output them as well:
+```bash
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/delta.jsonld'
+```
 
-> **`TODO`** restart the LDES Client CLI and capture to file
+Stop following the log file and output the log to a file:
+```bash
+docker logs ldes-client-cli > ./fragment.nq
+```
 
-> **`TODO`** upload the delta.jsonld containing the additional members and see the LDES Client CLI output them all to the file
-
-> **`TODO`** verify the file online to contain exactly 50 members
+Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
+Stop all systems, i.e.:
 ```bash
 docker compose --env-file env.user down
 ```

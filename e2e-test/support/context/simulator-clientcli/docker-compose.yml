@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  ldes-server-simulator:
+    container_name: ldes-server-simulator
+    env_file:
+      - env.simulator
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG}
+    environment:
+      - BASEURL=http://ldes-server-simulator
+      - SEED=/tmp/data
+    ports:
+      - ${LDES_SERVER_SIMULATOR_PORT}:80
+    volumes:
+      - type: bind
+        source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER}
+        target: /tmp/data
+    networks:
+      - ldes
+  ldes-client-cli:
+    container_name: ldes-client-cli
+    env_file:
+      - env.cli
+    image: ghcr.io/informatievlaanderen/ldes-client-cli:${LDES_CLIENT_CLI_TAG}
+    command: ${LDES_DATA_SET_URL}
+    networks:
+      - ldes
+networks:
+  ldes: {}

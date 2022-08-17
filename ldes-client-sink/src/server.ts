@@ -4,6 +4,8 @@ import { Member } from "./member";
 import minimist from 'minimist'
 import { Parser, Quad } from 'n3';
 import { MongoStorage } from './mongo-storage';
+import { MemoryStorage } from './memory-storage';
+import { IStorage } from 'storage';
 
 interface ParsedMember extends Member{
   quads: Quad[];
@@ -17,7 +19,7 @@ if (!silent) {
   console.debug("Arguments: ", args);
 }
 
-const port = args['port'] || 8080;
+const port = args['port'] || 9000;
 const host = args['host'] || 'localhost';
 const connectionUri = args['connection-uri'] || 'mongodb://localhost:27017';
 const databaseName = args['database-name'] || 'ldes_client_sink';
@@ -28,7 +30,14 @@ if (!memberType) {
   exitWithError('missing value for mandatory argument "--member-type".');
 }
 
-const storage = new MongoStorage(connectionUri, databaseName, collectionName);
+const useMemoryStorage: boolean = (/true/i).test(args['memory']);
+const storage: IStorage = useMemoryStorage
+  ? new MemoryStorage(collectionName) 
+  : new MongoStorage(connectionUri, databaseName, collectionName);
+
+if(!silent) {
+  console.log('using storage: ', storage.storageTypeName);
+}
 const controller = new MemberController(memberType, storage);
 
 server.addHook('onReady', async () => {

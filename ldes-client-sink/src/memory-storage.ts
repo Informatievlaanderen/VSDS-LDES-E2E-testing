@@ -1,5 +1,5 @@
-import { Member } from "../src/member";
-import { IStorage } from "../src/storage";
+import { Member } from "./member";
+import { IStorage } from "./storage";
 
 interface MemberWithId extends Member {
     _id: string;
@@ -10,6 +10,10 @@ export class MemoryStorage implements IStorage {
     private _db: MemberWithId[] = [];
 
     constructor(private _memberTypeName: string) {
+    }
+
+    get storageTypeName(): string {
+        return 'in-memory';
     }
 
     get memberTypeName(): string {

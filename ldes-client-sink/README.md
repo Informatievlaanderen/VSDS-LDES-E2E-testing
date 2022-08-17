@@ -9,14 +9,24 @@ To create a Docker image, run the following command:
 docker build --tag vsds/ldes-client-sink .
 ```
 
-> **Note**: as of pre-built container [ldes-client-sink:20220718T1542](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/pkgs/container/ldes-client-sink/28801718?tag=20220718T1542) a MongoDB is used as a member store. Please ensure you run a MongoDB instance locally or use an online instance. Configure the Docker container to use that instance or configure and use the [Docker compose file](./docker-compose.yml) that has been provided.
+You can use a MongoDB as a member store. Please ensure you run a MongoDB instance locally or use an online instance. Configure the Docker container to use that instance or configure and use the [Docker compose file](./docker-compose.yml) that has been provided. Alternatively you can use an in-memory database (simple object store).
 
-To run the sink Docker image mapped on port 9000, you can use:
+To run the sink Docker image mapped on port 9000 using a MongoDB, you can use:
 ```bash
 docker run -d -p 9000:80 --add-host=host.docker.internal:host-gateway \
--e MEMBER_TYPE="http://schema.org/Person" -e CONNECTION_URI="mongodb://host.docker.internal:27017" \
--e DATABASE_NAME="test" -e COLLECTION_NAME="cartoons" vsds/ldes-client-sink
+-e MEMBER_TYPE="http://schema.org/Person" -e COLLECTION_NAME="cartoons" \
+-e CONNECTION_URI="mongodb://host.docker.internal:27017" -e DATABASE_NAME="test" \
+vsds/ldes-client-sink
 ```
+
+Alternatively, with an in-memory database:
+```bash
+docker run -d -p 9000:80 --add-host=host.docker.internal:host-gateway \
+-e MEMBER_TYPE="http://schema.org/Person" -e COLLECTION_NAME="cartoons" \
+-e MEMORY=true \
+vsds/ldes-client-sink
+```
+
 
 The Docker run command will return a container ID (e.g. `0cc5d65d8108f8e91778a0a4cdb6504a2b3926055ce10cb899dceb98db4c3eef`), which you need to stop the container.
 
@@ -51,16 +61,17 @@ The sink uses a MongoDB as permanent storage to allow for large data sets, so be
 
 The sink takes the following command line arguments:
 * `--member-type` defines the member type to use to determine the member's ID (subject value), no default
-* `--port=<port-number>` allows to set the port, defaults to `8080`
+* `--port=<port-number>` allows to set the port, defaults to `9000`
 * `--host=<host-name>` allows to set the hostname, defaults to `localhost`
 * `--silent=<true|false>` prevents any console debug output if true, defaults to false (not silent, logging all debug info)
 * `--connection-uri` allows to set the MongoDB connection URI, defaults to `mongodb://localhost:27017`
 * `--database-name` allows to set the MongoDB database name, defaults to `ldes_client_sink`
 * `--collection-name` allows to set the MongoDB collection name, defaults to `members`
+* `--memory` allows to use an in-memory database for smaller data sets instead of MongoDB, defaults to false
 
 You can run the sink with one of the following command after building it:
 ```bash
-node dist/server.js --member-type "http://schema.org/Person" --collection-name cartoons
+node dist/server.js --member-type "http://schema.org/Person" --collection-name cartoons --memory true
 ```
 This results in:
 ```
@@ -69,26 +80,16 @@ Arguments:  {
   'member-type': 'http://schema.org/Person',
   'collection-name': 'cartoons'
 }
-Sink listening at http://127.0.0.1:8080
+Sink listening at http://127.0.0.1:9000
 ```
 
-Alternatively launch it using other arguments, e.g.:
-
-GIPOD use case: 
-```bash
-node dist/server.js --silent="true" --member-type="https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder" --database-name="GIPOD" --collection-name="mobility-hindrances"
-```
-GTFS/RT use case: 
-```bash
-node dist/server.js --silent="true" --member-type="http://semweb.mmlab.be/ns/linkedconnections#Connection" --database-name="GTFS" --collection-name="connections"
-```
 ## Usage
 The sink server accepts the following REST calls.
 
 ### `GET /` -- Retrieve Number of Ingested Members
 Returns the number of members received, e.g.
 ```bash
-curl http://localhost:8080/
+curl http://localhost:9000/
 ```
 returns:
 ```json
@@ -98,11 +99,11 @@ returns:
 ### `POST /member` -- Ingest Members
 Ingests a member as quads (mime-type: `application/n-quads`) or as triples (mime-type: `application/n-triples`) and returns the member ID (URI), e.g.
 ```bash
-curl -X POST http://localhost:8080/member -H "Content-Type: application/n-quads" -d "@donald-duck.nq"
+curl -X POST http://localhost:9000/member -H "Content-Type: application/n-quads" -d "@donald-duck.nq"
 ```
 OR
 ```bash
-curl -X POST http://localhost:8080/member -H "Content-Type: application/n-triples" -d "@donald-duck.nt"
+curl -X POST http://localhost:9000/member -H "Content-Type: application/n-triples" -d "@donald-duck.nt"
 ```
 returns:
 ```
@@ -112,7 +113,7 @@ http://example.org/id/cartoon-figure/donald-duck
 ### `GET /member` -- Get Member List
 Returns the (limited) list of members (as local URLs), e.g.
 ```bash
-curl http://localhost:8080/member
+curl http://localhost:9000/member
 ```
 returns (formatted for readability):
 ```json
@@ -130,7 +131,7 @@ returns (formatted for readability):
 ### `GET /member?id=<url-encoded-member-id>` -- Get Member Content
 Returns the member content as quads (if ingested with mime-type: `application/n-quads`), e.g.
 ```bash
-curl "http://localhost:8080/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
+curl "http://localhost:9000/member?id=http%3A%2F%2Fexample.org%2Fid%2Fcartoon-figure%2Fdonald-duck"
 ```
 returns (formatted for readability):
 ```
@@ -141,7 +142,7 @@ returns (formatted for readability):
 ### `DELETE /member` -- Remove all Members
 Removes all members, e.g.
 ```bash
-curl -X DELETE http://localhost:8080/member
+curl -X DELETE http://localhost:9000/member
 ```
 Returns the amount of members deleted:
 ```json

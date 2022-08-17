@@ -15,6 +15,10 @@ export class MongoStorage implements IStorage {
         this._client = new MongoClient(connectionUri);
     }
 
+    public get storageTypeName(): string {
+        return 'MongoDB';
+    }
+
     public get memberTypeName(): string {
         return this._collectionName;
     }

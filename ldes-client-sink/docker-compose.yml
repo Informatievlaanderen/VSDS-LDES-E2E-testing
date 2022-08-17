@@ -1,26 +1,25 @@
 version: '3.3'
 services:
   ldes-client-sink:
-    container_name: ldes-client-sink
+    image: vsds/ldes-client-sink
+    container_name: ${USECASE_NAME:-sink-mongo}_ldes-client-sink
     env_file:
       - env.sink
-    image: vsds/ldes-client-sink
     build:
       context: .
       args:
-        - CONNECTION_URI="mongodb://ldes-mongodb:27017"
+        - CONNECTION_URI=mongodb://ldes-mongodb:27017
     ports:
       - ${LDES_CLIENT_SINK_PORT}:80
     networks:
       - ldes
   ldes-mongodb:
+    image: mongo:${MONGODB_TAG}
+    container_name: ${USECASE_NAME:-sink-mongo}_ldes-mongodb
     env_file:
       - env.mongo
-    image: mongo:${MONGODB_TAG}
-    container_name: ldes-mongodb
     ports:
       - ${MONGODB_PORT}:27017
-    restart: always
     networks:
       - ldes
 networks:

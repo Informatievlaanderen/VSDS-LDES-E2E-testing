@@ -8,7 +8,12 @@ export interface IStorage {
     /**
      * Returns the member type name.
      */
-    get memberTypeName(): string;
+     get storageTypeName(): string;
+
+     /**
+     * Returns the member type name.
+     */
+     get memberTypeName(): string;
 
     /**
      * Perform any required initialization.

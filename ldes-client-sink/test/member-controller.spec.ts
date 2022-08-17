@@ -1,7 +1,7 @@
 import { DataFactory, Parser, Quad, Writer } from 'n3';
 import { MemberController } from '../src/member-controller';
 import { Member } from '../src/member';
-import { MemoryStorage } from './memory-storage';
+import { MemoryStorage } from '../src/memory-storage';
 
 describe('Member controller tests', () => {
 

@@ -15,6 +15,7 @@ To setup the context, combine the contents of all the `env.<component>` files in
 > **Note**: you need to specify a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (PAT) with scope `read:packages`
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
+* USECASE_NAME (default: `simulator-workflow-sink`)
 * LDES_SERVER_SIMULATOR_PORT (default: 9011)
 * LDES_CLIENT_SINK_PORT (default: 9003)
 * NIFI_UI_PORT (default: 8443)

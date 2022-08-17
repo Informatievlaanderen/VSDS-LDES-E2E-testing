@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   ldes-server-simulator:
-    container_name: ldes-server-simulator
+    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}/ldes-server-simulator
     env_file:
       - env.simulator
     image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG}
@@ -17,10 +17,10 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    container_name: nifi-workflow
+    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}/nifi-workflow
     env_file:
       - env.workflow
-    image: simulator-workflow-server-mongo/nifi-workflow
+    image: ${USECASE_NAME:-simulator-workflow-server-mongo}/nifi-workflow
     build:
       context: ../../workflow
       args:
@@ -31,7 +31,7 @@ services:
     networks:
       - ldes
   ldes-server:
-    container_name: ldes-server
+    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}/ldes-server
     env_file:
       - env.server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
@@ -49,7 +49,7 @@ services:
     env_file:
       - env.mongo
     image: mongo:${MONGODB_TAG}
-    container_name: ldes-mongodb
+    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}/ldes-mongodb
     ports:
       - ${MONGODB_PORT}:27017
     restart: always

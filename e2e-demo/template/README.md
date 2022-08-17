@@ -1,5 +1,7 @@
 # E2E-test automated testing setup
 
+> **Note**: this is obsolete all will be removed.
+
 This is a template for the automated testing of nifi flows in the LDES client.
 
 It is taken from the base code of the [first demo given on May, 24th](../20220524.demo-1/README.md).

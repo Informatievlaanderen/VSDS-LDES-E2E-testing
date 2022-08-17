@@ -93,13 +93,14 @@ export class LdesFragmentController {
     }
 
     /**
-     * Seeds the simulator with the fragments found in the given directory location. Each file is assumed to contain a fragment and be encoded with UTF-8.
+     * Seeds the simulator with the fragments (.jsonld files) found in the given directory location. 
+     * Each file is assumed to contain a fragment and be encoded with UTF-8.
      * @param directoryPath The absolute or relative location of a directory containing fragment files.
      */
     public async seed(directoryPath: string): Promise<{ file: string, fragment: IFragmentInfo }[]> {
         const result: { file: string, fragment: IFragmentInfo }[] = [];
-        const files = await readdir(directoryPath);
-        for await (const file of files) {
+        const files: string[] = await readdir(directoryPath);
+        for await (const file of files.filter(x => x.endsWith('.jsonld'))) {
             const content = await readFile(`${directoryPath}/${file}`, { encoding: 'utf-8' });
             const fragment = this.service.save(JSON.parse(content), undefined, {'content-type': mimeJsonLd});
             result.push({ file: file, fragment: fragment });

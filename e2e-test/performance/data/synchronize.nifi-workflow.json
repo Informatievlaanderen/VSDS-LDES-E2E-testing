@@ -342,7 +342,8 @@
                         "TREE_DIRECTION": null,
                         "DATA_SOURCE_URL": "http://localhost:9001/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z",
                         "DATA_SOURCE_FORMAT": "JSONLD11",
-                        "DATA_DESTINATION_FORMAT": "n-quads"
+                        "DATA_DESTINATION_FORMAT": "n-quads",
+                        "DEFAULT_FRAGMENT_EXPIRATION_INTERVAL": 3600
                     },
                     "propertyDescriptors": {
                         "TREE_DIRECTION": {
@@ -366,6 +367,12 @@
                         "DATA_DESTINATION_FORMAT": {
                             "name": "DATA_DESTINATION_FORMAT",
                             "displayName": "Data destination format",
+                            "identifiesControllerService": false,
+                            "sensitive": false
+                        },
+                        "DEFAULT_FRAGMENT_EXPIRATION_INTERVAL": {
+                            "name": "DEFAULT_FRAGMENT_EXPIRATION_INTERVAL",
+                            "displayName": "Default fragment expiration interval",
                             "identifiesControllerService": false,
                             "sensitive": false
                         }

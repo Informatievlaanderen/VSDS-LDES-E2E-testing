@@ -2,17 +2,11 @@
 To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it.
 
 ### Test Setup
-To demonstrate the LDES Client CLI, we use the [Simulator / Client CLI](../../../support/context/simulator-clientcli/README.md) context. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and change the arguments as needed.
+To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and change the arguments as needed.
 
 We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
 
 The LDES Client CLI starts to follow the given data set url as soons as it starts. It requests the existing data set by getting the first fragment and following all relations contained in the fragment. All fragments marked as immutable are retrieved only once. All mutable fragments are re-requested based on the fragment expiration date.
-
-Set the docker compose file location:
-```bash
-export COMPOSE_FILE="../../../support/context/simulator-clientcli/docker-compose.yml"
-export LDES_SERVER_SIMULATOR_SEED_FOLDER=$(pwd)/../../../support/data/empty
-```
 
 Create both containers and run the simulator:
 ```bash
@@ -27,14 +21,27 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
+You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/api/v1/ldes/mobility-hindrances):
+```bash
+curl http://localhost:9011/
+```
+returns:
+```json
+{
+    "aliases":["/api/v1/ldes/mobility-hindrances"],
+    "fragments":["/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"],
+    "responses":{}
+}
+```
+
 When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
 ```bash
 docker compose --env-file env.user start ldes-client-cli
 ```
 
-Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs:
+Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs (in another shell):
 ```bash
-docker logs -f ldes-client-cli
+docker logs -f simulator-cli_ldes-client-cli
 ```
 
 Ingest the [data set update](./data/delta.jsonld) containing the additional members and see the LDES Client CLI output them as well:
@@ -44,7 +51,7 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 
 Stop following the log file and output the log to a file:
 ```bash
-docker logs ldes-client-cli > ./fragment.nq
+docker logs simulator-cli_ldes-client-cli > ./fragment.nq
 ```
 
 Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).

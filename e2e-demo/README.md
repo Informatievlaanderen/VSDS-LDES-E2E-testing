@@ -1,4 +1,3 @@
-# LDES end-to-end tests
-These end-to-end (E2E) tests illustrate that the LDES components work as expected from an end-to-end perspective. They are also used to demonstrate the usage and correct working of these components during the sprint demo's.
-
-Next to running them manually, we try to automate them as much as possible. The automated tests also serve as living documentation and are therefore specified in [Gherkin language](https://cucumber.io/docs/gherkin/) while the supporting step definitions are written in TypeScript.
+# Independant Demos
+The following demos are available:
+* [LDES Client CLI](./ldes-client-cli/README.md): uses the LDES Client CLI (command line interface) to replicate and synchronize a data set

@@ -13,9 +13,16 @@ Then the following members are retrieved: A, B, C, D, E, F, G and H
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
 ### Test Setup
-For this scenario we can use the [Simulator / Workflow / Sink](../../../support/context/simulator-workflow-sink/README.md) context. Please copy the [environment file (env.replicate)](./env.replicate) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
+For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (env.replicate)](./env.replicate) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+
+> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user up
+export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
+```
+
+Then you can run the systems by executing the following command:
+```bash
+docker compose --env-file env.user up
 ```
 
 ### Test Execution
@@ -42,7 +49,7 @@ The GIPOD simulator (http://localhost:9011) is seeded by a subset of the GIPOD d
 You can verify that, after some time, all (1016) LDES members are received by the sink HTTP server by visit the following pages: http://localhost:9003 (count) and http://localhost:9003/member (LDES member ids).
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user down
+docker compose --env-file env.user down
 ```

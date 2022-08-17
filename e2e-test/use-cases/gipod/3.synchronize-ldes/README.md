@@ -23,9 +23,16 @@ Then only the new LDES members are forwarded
 ```
 
 ### Test Setup
-For this scenario we can use the [Simulator / Workflow / Sink](../../../support/context/simulator-workflow-sink/README.md) context. Please copy the [environment file (env.synchronize)](./env.synchronize) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
+For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (env.synchronize)](./env.synchronize) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+
+> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user up
+export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
+```
+
+Then you can run the systems by executing the following command:
+```bash
+docker compose --env-file env.user up
 ```
 
 ### Test Execution
@@ -44,7 +51,7 @@ Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using th
 Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink HTTP server.
-* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z`
+* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
 #### 2. Seed the Initial Data Set
@@ -72,6 +79,11 @@ The simulator (http://localhost:9011) will respond with:
 ```
 
 **Note** the `"cache-control":"public, max-age=604800, immutable"` for the first two fragments and the `"cache-control":"public, max-age=10"` for the last one.
+
+Now we have our initial data set uploaded. We only need to [alias it](./create-alias.json):
+```bash
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+```
 
 #### 3. Start the Workflow
 Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
@@ -129,5 +141,5 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 ### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-sink/docker-compose.yml --env-file env.user down
+docker compose --env-file env.user down
 ```

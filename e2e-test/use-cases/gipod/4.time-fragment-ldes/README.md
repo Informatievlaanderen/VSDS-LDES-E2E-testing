@@ -48,17 +48,24 @@ And the response of the last fragment should contain a Cache-Control header
 ```
 
 ### Test Setup
-For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.time-fragment)](./env.time-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. Then you can run the systems by executing the following command:
+For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.time-fragment)](./env.time-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
 
+> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user up
+export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
 ```
+
+Then you can run the systems by executing the following command:
+```bash
+docker compose --env-file env.user up
+```
+
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
 Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES-server.
-* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z`
+* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/mobility-hindrances` and the property `HTTP method` should be `POST`
 
 The different scenarios can be tested with the following data set: 
@@ -68,14 +75,14 @@ The different scenarios can be tested with the following data set:
 
 So, the total data set contains 617 items. We have [configured our LDES Server](./env.time-fragment) deliberately to create fragments of 300 members to be able to easily test each scenario.
 
-#### Restart Containers Between the Scenarios
-All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to stop and re-start all containers between them to ensure a clean environment:
-
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then restart the containers:
+#### Recreate Containers Between the Scenarios
+All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To recreate the containers:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user stop
-docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user start
+docker compose --env-file env.user down
+docker compose --env-file env.user up
 ```
+
+You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
 
 ### Test Execution
 > **Note**: the first scenario is already implicitly tested by the [LDES Server verification step](../../../support/context/simulator-workflow-server-mongo/README.md#ldes-server).
@@ -86,6 +93,7 @@ For testing the second scenario we need to send the [scenario 2 alfa.jsonld](./d
 1. Upload the `alfa.jsonld` file to the [simulator](http://localhost:9011/):
 ```bash
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario2/alfa.jsonld'
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 2. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
 3. Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/) or use [Chrome DevTools](https://developer.chrome.com/docs/devtools/) to view the response headers.
@@ -95,11 +103,12 @@ The response should be a fragment containing 250 items, no header `Cache-Control
 #### Test and Verify Scenario 3
 For testing the third scenario we need to send the [scenario 3 alfa.jsonld](./data/scenario3/alfa.jsonld) and [scenario 3 beta.jsonld](./data/scenario3/beta.jsonld) files and expect to see one *immutable* fragment complete with 300 members and one *mutable* fragment containing 200 members.
 
-1. Re-start the container as described [here](#restart-containers-between-the-scenarios).
+1. Recreate the container as described [here](#recreate-containers-between-the-scenarios).
 2. Upload the `alfa.jsonld` and `beta.jsonld` files to the [simulator](http://localhost:9011/):
 ```bash
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario3/alfa.jsonld'
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario3/beta.jsonld'
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 3. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances. 
@@ -111,12 +120,13 @@ In this fragment validate the `Cache-Control` header (**not** `immutable`), sear
 #### Test and Verify Scenario 4
 For testing the fourth scenario we need to send the the [scenario 4 alfa.jsonld](./data/scenario4/alfa.jsonld), [scenario 4 beta.jsonld](./data/scenario4/beta.jsonld) and [scenario 4 epsilon.jsonld](./data/scenario4/epsilon.jsonld) files, resulting in 2 complete fragments with 300 members each and an incomplete/mutable one with the remaining 17 items.
 
-1. Re-start the container as described [here](#restart-containers-between-the-scenarios).
+1. Recreate the container as described [here](#recreate-containers-between-the-scenarios).
 2. Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [simulator](http://localhost:9011/):
 ```bash
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/alfa.jsonld'
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/beta.jsonld'
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/epsilon.jsonld'
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 3. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances.
@@ -132,5 +142,5 @@ In this fragment  search for the `tree#relation`, note the `LesserThanOrEqualToR
 ### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose -f ../../../support/context/simulator-workflow-server-mongo/docker-compose.yml --env-file env.user down
+docker compose --env-file env.user down
 ```

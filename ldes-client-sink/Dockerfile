@@ -11,8 +11,8 @@ RUN npm run build
 # run environment
 FROM node:18.2.0-alpine3.15
 # fix vulnerabilities
-RUN apk update
-RUN apk upgrade
+# note: trivy insists this to be on the same RUN line
+RUN apk update && apk upgrade
 WORKDIR /usr/vsds/sink
 # setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./

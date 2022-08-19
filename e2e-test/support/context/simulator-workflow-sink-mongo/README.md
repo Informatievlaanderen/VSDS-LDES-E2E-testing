@@ -1,4 +1,4 @@
-# Simulator / Workflow / Sink Context
+# Simulator / Workflow / Sink / Mongo Context
 This context is used for validating the LDES client.
 
 We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and, a small HTTP server which serves as a [sink](/ldes-client-sink/README.md) that allows to capture the LDES members emitted by the LDES client NiFi processor.
@@ -15,11 +15,13 @@ To setup the context, combine the contents of all the `env.<component>` files in
 > **Note**: you need to specify a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (PAT) with scope `read:packages`
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
-* USECASE_NAME (default: `simulator-workflow-sink`)
+* USECASE_NAME (default: `simulator-workflow-sink-mongo`)
 * LDES_SERVER_SIMULATOR_PORT (default: 9011)
 * LDES_CLIENT_SINK_PORT (default: 9003)
 * NIFI_UI_PORT (default: 8443)
 * LDES_SERVER_SIMULATOR_SEED_FOLDER (an empty data folder, so no seeding)
+* MONGODB_TAG (default: 5.0.9)
+* MONGODB_PORT (default: 27017)
 
 ## Run the Systems
 To create and start all systems in the context:
@@ -52,6 +54,17 @@ response:
 ```json
 {"count":0}
 ```
+
+### Mongo Database
+Browse to http://localhost:27017 or use Bash command:
+```bash
+curl http://localhost:27017
+```
+response:
+```text
+It looks like you are trying to access MongoDB over HTTP on the native driver port.
+```
+This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
 
 ### Stop the Systems
 To stop all systems in the context:

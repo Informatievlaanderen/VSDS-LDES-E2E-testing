@@ -24,3 +24,6 @@ COPY --from=build-stage /nifi-processors-bundle/ldes-processors/target/*.nar ./l
 
 # NIFI: configure
 COPY ./conf/ /opt/nifi/nifi-current/conf_template/
+
+# to make trivy happy
+USER nifi

@@ -1,7 +1,7 @@
 # LDES Client Command Line Interface (CLI) can Replicate and Synchronize an LDES
 To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it.
 
-### Test Setup
+## Test Setup
 To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and change the arguments as needed.
 
 We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
@@ -14,12 +14,13 @@ docker compose --env-file env.user create
 docker compose --env-file env.user start ldes-server-simulator
 ```
 
-### Test Execution and Verification
+## Test Execution and Verification
 Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json):
 ```bash
 curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
+> **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
 
 You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/api/v1/ldes/mobility-hindrances):
 ```bash
@@ -34,6 +35,7 @@ returns:
 }
 ```
 
+### Verify Replication
 When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
 ```bash
 docker compose --env-file env.user start ldes-client-cli
@@ -44,6 +46,12 @@ Watch the LDES Client CLI retrieve and output exactly one member to the containe
 docker logs -f simulator-cli_ldes-client-cli
 ```
 
+As we have specified a freshness of 10 seconds the LDES Client CLI will re-request the fragment every 10 seconds. You can verify this by waiting a while and then querying the LDES Server Simulator (see the data under `responses`):
+```bash
+curl http://localhost:9011/
+```
+
+### Verify Synchronization
 Ingest the [data set update](./data/delta.jsonld) containing the additional members and see the LDES Client CLI output them as well:
 ```bash
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/delta.jsonld'
@@ -56,7 +64,9 @@ docker logs simulator-cli_ldes-client-cli > ./fragment.nq
 
 Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).
 
-### Test Teardown
+Again, wait a while and request the LDES Server Simulator home page and ensure that the repeated re-requesting has ended.
+
+## Test Teardown
 Stop all systems, i.e.:
 ```bash
 docker compose --env-file env.user down

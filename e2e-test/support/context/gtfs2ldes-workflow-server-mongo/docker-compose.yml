@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   gtfs2ldes-js:
-    container_name: gtfs2ldes-js
+    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG}
     env_file:
       - env.gtfs2ldes
@@ -14,10 +14,10 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    container_name: nifi-workflow
+    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
+    image: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}/nifi-workflow
     env_file:
       - env.workflow
-    image: gtfs2ldes-workflow-server-mongo/nifi-workflow
     build:
       context: ../../workflow
       args:
@@ -29,10 +29,10 @@ services:
     networks:
       - ldes
   ldes-server:
-    container_name: ldes-server
+    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
     env_file:
       - env.server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
     environment:
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
@@ -44,10 +44,10 @@ services:
     depends_on:
       - ldes-mongodb
   ldes-mongodb:
+    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-mongodb
+    image: mongo:${MONGODB_TAG}
     env_file:
       - env.mongo
-    image: mongo:${MONGODB_TAG}
-    container_name: ldes-mongodb
     ports:
       - ${MONGODB_PORT}:27017
     volumes:
@@ -57,4 +57,5 @@ services:
     networks:
       - ldes
 networks:
-  ldes: {}
+  ldes:
+    name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_network

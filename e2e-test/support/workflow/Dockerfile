@@ -1,8 +1,17 @@
 ARG AGTURLEY_NIFI_TAG=1.16.3-jdk17
 FROM agturley/nifi:$AGTURLEY_NIFI_TAG
 WORKDIR ${NIFI_HOME}
-ARG PAT_READ_PACKAGES
+ARG VERSION_BASE=1.0
+# Dependency information
+ARG GROUP_ID=be.vlaanderen.informatievlaanderen
+ARG ARTIFACT_ID=ldes-client-wrappers-nifi
+ARG VERSION=${VERSION_BASE}-SNAPSHOT
+# NAR
 ARG LDES_CLIENT_NAR_TAG
-RUN curl -H "Authorization: Bearer $PAT_READ_PACKAGES" -L -o ./lib/ldes-processors-1.0.nar \
-    "https://maven.pkg.github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor/be.vlaanderen.informatievlaanderen/ldes-processors/1.0-SNAPSHOT/ldes-processors-1.0-$LDES_CLIENT_NAR_TAG.nar"
+ARG LDES_CLIENT_NAR=${ARTIFACT_ID}-${VERSION_BASE}-${LDES_CLIENT_NAR_TAG}.nar
+# Retrieve NAR
+ARG PAT_READ_PACKAGES
+RUN curl -H "Authorization: Bearer $PAT_READ_PACKAGES" -L -o ./lib/${LDES_CLIENT_NAR} \
+    "https://maven.pkg.github.com/Informatievlaanderen/VSDS-LDESClient-NifiProcessor/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${LDES_CLIENT_NAR}"
+# Run as nifi user
 USER nifi

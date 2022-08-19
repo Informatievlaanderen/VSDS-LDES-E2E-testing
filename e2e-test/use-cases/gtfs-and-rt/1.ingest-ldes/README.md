@@ -19,7 +19,11 @@ Then that service should POST the updated Linked Connections Event Stream member
 ### Test Setup
 For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (env.ingest)](./env.ingest) to a personal file (e.g. `env.user`) and fill in the mandatory arguments or, if available, append the specific `env.<gtfs-use-case>` file to your personal file.
 
-> **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
+> **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then. E.g.:
+>
+> for NMBS data set: `mkdir -p ~/data/gtfs/nmbs/lc/; mkdir ~/data/gtfs/nmbs/mongo.db/`
+>
+> for De Lijn data set: `mkdir -p ~/data/gtfs/delijn/lc/; mkdir ~/data/gtfs/delijn/mongo.db/`
 
 > **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 
@@ -65,7 +69,7 @@ docker compose --env-file env.user start gtfs2ldes-js
 
 Verify that the GTFS to LDEs convertor is processing the GTFS or GTFS/RT source:
 ```bash
-docker logs --follow gtfs2ldes-js
+docker logs --follow gtfs2ldes-workflow-server-mongo_gtfs2ldes-js
 ```
 
 #### 3. Verify LDES Members Received

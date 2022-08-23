@@ -60,16 +60,16 @@ curl http://localhost:9005/gtfs/healthcheck
 ```
 
 #### 2. Start the GTFS to LDES convertor
-Restart the GTFS to LDES convertor as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#start-the-gtfs-to-ldes-convertor) and watch its Docker logs to know when it starts sending GTFS connections to the workflow.
+Start the GTFS to LDES convertor as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#start-the-gtfs-to-ldes-convertor) and watch its Docker logs to know when it starts sending GTFS connections to the workflow.
 
-To restart the GTFS to LDES convertor:
+To start the GTFS to LDES convertor:
 ```bash
 docker compose --env-file env.user start gtfs2ldes-js
 ```
 
 Verify that the GTFS to LDEs convertor is processing the GTFS or GTFS/RT source:
 ```bash
-docker logs --follow gtfs2ldes-workflow-server-mongo_gtfs2ldes-js
+docker logs --follow gtfs-ingest-ldes_gtfs2ldes-js
 ```
 
 #### 3. Verify LDES Members Received

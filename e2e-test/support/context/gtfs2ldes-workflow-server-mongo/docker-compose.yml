@@ -15,14 +15,9 @@ services:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
-    image: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}/nifi-workflow
+    image: docker.io/agturley/nifi:${AGTURLEY_NIFI_TAG:-1.16.3-jdk17}
     env_file:
       - env.workflow
-    build:
-      context: ../../workflow
-      args:
-        PAT_READ_PACKAGES: ${PAT_READ_PACKAGES}
-        LDES_CLIENT_NAR_TAG: ${LDES_CLIENT_NAR_TAG}
     ports:
       - ${NIFI_UI_PORT}:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT}:9005

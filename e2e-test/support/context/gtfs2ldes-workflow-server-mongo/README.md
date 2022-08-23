@@ -9,28 +9,26 @@ If required, the workflow can contain other processors to transfor the LD object
 
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
-* GTFS2LDES_TAG (e.g. 20220714t1136)
-* PAT_READ_PACKAGES (Github personal access token)
-* LDES_CLIENT_NAR_TAG (e.g. 20220704.153332-11)
+* GTFS2LDES_TAG (e.g. `20220714t1136`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_SERVER_TAG (e.g. 20220727t1517)
+* LDES_SERVER_TAG (e.g. `20220727t1517`)
 * LDES_COLLECTIONNAME (e.g. `"connections"`)
 * LDES_MEMBERTYPE (e.g. `"http://semweb.mmlab.be/ns/linkedconnections#Connection"`)
 
 > **Note**: you need to specify a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (PAT) with scope `read:packages`
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
-* NIFI_UI_PORT (default: 8443)
-* NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: 9005)
-* NIFI_JVM_HEAP_INIT (initial JVM heap size, default=8g)
-* NIFI_JVM_HEAP_MAX (max JVM heap size, default=8g)
+* NIFI_UI_PORT (default: `8443`)
+* NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
+* NIFI_JVM_HEAP_INIT (initial JVM heap size, default: `8g`)
+* NIFI_JVM_HEAP_MAX (max JVM heap size, default: `8g`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: 100)
-* MONGODB_TAG (default: 5.0.9)
-* MONGODB_PORT (default: 27017)
+* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
+* MONGODB_TAG (default: `5.0.9`)
+* MONGODB_PORT (default: `27017`)
 
 
 In addition, for the GTFS to LDES conversion, various other arguments are required (for more information see [here](https://github.com/julianrojas87/gtfs2ldes-js)):

@@ -52,7 +52,6 @@ The environment file is already configured for geospatial fragmentation but you 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
 export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
-export LDES_SERVER_SIMULATOR_SEED_FOLDER=$(pwd)/data
 ```
 > **Note**: the second environent variable is needed as it is defined in your `env.user` file as `LDES_SERVER_SIMULATOR_SEED_FOLDER=./data` but by setting the COMPOSE_FILE environent variable Docker interprets it as relative to the `docker-compose.yml` file instead of the `env.user` file.
 
@@ -97,8 +96,9 @@ Now you can plot the [shape](./wkt/out.wkt) using the [online tool](https://clyd
 ![GIPOD shape](./wkt/out.png)
 
 #### 2. Ingest the Data Set
-The data set ([single file containing one member](./data/one-member.jsonld)) is already seeded. We only need to [alias it](./create-alias.json):
+You need to ingest the data set ([single file containing one member](./data/one-member.jsonld)) and [alias it](./create-alias.json):
 ```bash
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/one-member.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 

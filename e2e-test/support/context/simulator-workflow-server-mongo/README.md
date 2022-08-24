@@ -5,12 +5,15 @@ We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves
 
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
-* LDES_SERVER_SIMULATOR_TAG (e.g. 20220718T1542)
+* LDES_SERVER_SIMULATOR_TAG (e.g. `20220718T1542`)
 * PAT_READ_PACKAGES (Github personal access token)
-* LDES_CLIENT_NAR_TAG (e.g. 20220704.153332-11)
+* LDES_CLIENT_NAR_TAG (e.g. `20220704.153332-11`)
+* LDES_CLIENT_NAR_ARTIFACT_ID (e.g. `ldes-client-wrappers-nifi`)
+* LDES_CLIENT_NAR_VERSION_BASE (e.g. `1.0`)
+* LDES_CLIENT_NAR_VERSION (e.g. `1.0-SNAPSHOT`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_SERVER_TAG (e.g. 20220721t0939)
+* LDES_SERVER_TAG (e.g. `20220721t0939`)
 * LDES_COLLECTIONNAME (e.g. `"mobility-hindrances"`)
 * LDES_MEMBERTYPE (e.g. `"https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder"`)
 
@@ -18,15 +21,15 @@ To setup the context, combine the contents of all the `env.<component>` files in
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-server-mongo`)
-* LDES_SERVER_SIMULATOR_PORT (default: 9011)
-* NIFI_UI_PORT (default: 8443)
+* LDES_SERVER_SIMULATOR_PORT (default: `9011`)
+* NIFI_UI_PORT (default: `8443`)
 * LDES_SERVER_SIMULATOR_SEED_FOLDER (an empty data folder, so no seeding)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: 100)
-* MONGODB_TAG (default: 5.0.9)
-* MONGODB_PORT (default: 27017)
+* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
+* MONGODB_TAG (default: `5.0.11`)
+* MONGODB_PORT (default: `27017`)
 
 ### Geospatial Fragmentation
 

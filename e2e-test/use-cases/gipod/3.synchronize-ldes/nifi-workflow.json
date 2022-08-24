@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "6ba07159-ccde-3dc2-872b-e3475a472ed0",
-        "instanceIdentifier": "d639639e-0180-1000-0a80-d621e8b92418",
-        "name": "replicate and synchronize",
+        "identifier": "98cd2184-0184-3e97-8ff0-9047e3729f64",
+        "instanceIdentifier": "cb423656-0182-1000-848d-b07fac93ab21",
+        "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 526.2651249135986,
-            "y": 213.50646523030895
+            "x": 405.0,
+            "y": 214.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "672455ba-2584-3edd-9a9c-6cbdc8505996",
-                "instanceIdentifier": "4d4720a4-fb63-35ff-163a-804ea8513dbd",
+                "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a",
                 "name": "InvokeHTTP",
                 "comments": "",
                 "position": {
@@ -24,7 +24,7 @@
                 "bundle": {
                     "group": "org.apache.nifi",
                     "artifact": "nifi-standard-nar",
-                    "version": "1.16.1"
+                    "version": "1.16.3"
                 },
                 "properties": {
                     "Proxy Host": null,
@@ -291,7 +291,7 @@
                 "schedulingPeriod": "0 sec",
                 "schedulingStrategy": "TIMER_DRIVEN",
                 "executionNode": "ALL",
-                "penaltyDuration": "30 sec",
+                "penaltyDuration": "1 sec",
                 "yieldDuration": "1 sec",
                 "bulletinLevel": "WARN",
                 "runDurationMillis": 0,
@@ -304,44 +304,59 @@
                     "Failure"
                 ],
                 "scheduledState": "ENABLED",
-                "retryCount": 10,
+                "retryCount": 5,
                 "retriedRelationships": [
+                    "Retry",
                     "Failure"
                 ],
-                "backoffMechanism": "PENALIZE_FLOWFILE",
-                "maxBackoffPeriod": "10 mins",
+                "backoffMechanism": "YIELD_PROCESSOR",
+                "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "6ba07159-ccde-3dc2-872b-e3475a472ed0"
+                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
             },
             {
                 "identifier": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
-                "instanceIdentifier": "14412be5-8cb5-3214-d68b-92e2c9aa90c6",
+                "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a",
                 "name": "LdesClient",
                 "comments": "",
                 "position": {
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClientFragmentProcessor",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ldes-processors",
+                    "artifact": "ldes-client-wrappers-nifi",
                     "version": "1.0-SNAPSHOT"
                 },
                 "properties": {
-                    "TREE_DIRECTION": null,
-                    "DATASOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
+                    "FRAGMENT_EXPIRATION_INTERVAL": "604800",
+                    "DATA_SOURCE_FORMAT": "JSONLD11",
+                    "DATA_DESTINATION_FORMAT": "n-quads",
+                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
                 },
                 "propertyDescriptors": {
-                    "TREE_DIRECTION": {
-                        "name": "TREE_DIRECTION",
-                        "displayName": "Ldes tree direction",
+                    "FRAGMENT_EXPIRATION_INTERVAL": {
+                        "name": "FRAGMENT_EXPIRATION_INTERVAL",
+                        "displayName": "Fragment expiration interval",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATASOURCE_URL": {
-                        "name": "DATASOURCE_URL",
-                        "displayName": "Datasource url",
+                    "DATA_SOURCE_FORMAT": {
+                        "name": "DATA_SOURCE_FORMAT",
+                        "displayName": "Data source format",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATA_DESTINATION_FORMAT": {
+                        "name": "DATA_DESTINATION_FORMAT",
+                        "displayName": "Data destination format",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATA_SOURCE_URL": {
+                        "name": "DATA_SOURCE_URL",
+                        "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }
@@ -350,7 +365,7 @@
                 "schedulingPeriod": "0 sec",
                 "schedulingStrategy": "TIMER_DRIVEN",
                 "executionNode": "ALL",
-                "penaltyDuration": "30 sec",
+                "penaltyDuration": "1 sec",
                 "yieldDuration": "1 sec",
                 "bulletinLevel": "WARN",
                 "runDurationMillis": 0,
@@ -358,11 +373,13 @@
                 "autoTerminatedRelationships": [],
                 "scheduledState": "ENABLED",
                 "retryCount": 10,
-                "retriedRelationships": [],
-                "backoffMechanism": "PENALIZE_FLOWFILE",
-                "maxBackoffPeriod": "10 mins",
+                "retriedRelationships": [
+                    "data"
+                ],
+                "backoffMechanism": "YIELD_PROCESSOR",
+                "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "6ba07159-ccde-3dc2-872b-e3475a472ed0"
+                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
             }
         ],
         "inputPorts": [],
@@ -370,23 +387,23 @@
         "connections": [
             {
                 "identifier": "5c200e71-b5e9-3c81-b21f-d6c66074a2ef",
-                "instanceIdentifier": "bf0bde2f-9f45-37e8-c27b-0085356e86f4",
+                "instanceIdentifier": "f6f8d21f-75f4-3fbd-9d00-f6a6cb022196",
                 "name": "",
                 "source": {
                     "id": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                     "type": "PROCESSOR",
-                    "groupId": "6ba07159-ccde-3dc2-872b-e3475a472ed0",
+                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
                     "name": "LdesClient",
                     "comments": "",
-                    "instanceIdentifier": "14412be5-8cb5-3214-d68b-92e2c9aa90c6"
+                    "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a"
                 },
                 "destination": {
                     "id": "672455ba-2584-3edd-9a9c-6cbdc8505996",
                     "type": "PROCESSOR",
-                    "groupId": "6ba07159-ccde-3dc2-872b-e3475a472ed0",
+                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
                     "name": "InvokeHTTP",
                     "comments": "",
-                    "instanceIdentifier": "4d4720a4-fb63-35ff-163a-804ea8513dbd"
+                    "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -402,7 +419,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "6ba07159-ccde-3dc2-872b-e3475a472ed0"
+                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
             }
         ],
         "labels": [],
@@ -413,8 +430,8 @@
         "defaultBackPressureObjectThreshold": 10000,
         "defaultBackPressureDataSizeThreshold": "1 GB",
         "componentType": "PROCESS_GROUP",
-        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
-        "flowFileConcurrency": "UNBOUNDED"
+        "flowFileConcurrency": "UNBOUNDED",
+        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE"
     },
     "externalControllerServices": {},
     "parameterContexts": {},

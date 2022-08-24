@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "98cd2184-0184-3e97-8ff0-9047e3729f64",
-        "instanceIdentifier": "cb423656-0182-1000-848d-b07fac93ab21",
+        "identifier": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4",
+        "instanceIdentifier": "cbce2008-0182-1000-668b-a65b07065b46",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 405.0,
-            "y": 214.0
+            "x": 460.0,
+            "y": 242.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "672455ba-2584-3edd-9a9c-6cbdc8505996",
-                "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a",
+                "instanceIdentifier": "84fbb9e1-3e49-3169-d5e5-9ae719ab10b3",
                 "name": "InvokeHTTP",
                 "comments": "",
                 "position": {
@@ -312,51 +312,30 @@
                 "backoffMechanism": "YIELD_PROCESSOR",
                 "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4"
             },
             {
                 "identifier": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
-                "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a",
+                "instanceIdentifier": "90e87b35-3fde-33c5-57d0-813dc970cb17",
                 "name": "LdesClient",
                 "comments": "",
                 "position": {
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClientFragmentProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ldes-client-wrappers-nifi",
+                    "artifact": "ldes-processors",
                     "version": "1.0-SNAPSHOT"
                 },
                 "properties": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": "604800",
-                    "DATA_SOURCE_FORMAT": "JSONLD11",
-                    "DATA_DESTINATION_FORMAT": "n-quads",
-                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
+                    "DATASOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
                 },
                 "propertyDescriptors": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": {
-                        "name": "FRAGMENT_EXPIRATION_INTERVAL",
-                        "displayName": "Fragment expiration interval",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_SOURCE_FORMAT": {
-                        "name": "DATA_SOURCE_FORMAT",
-                        "displayName": "Data source format",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_DESTINATION_FORMAT": {
-                        "name": "DATA_DESTINATION_FORMAT",
-                        "displayName": "Data destination format",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_SOURCE_URL": {
-                        "name": "DATA_SOURCE_URL",
-                        "displayName": "Data source url",
+                    "DATASOURCE_URL": {
+                        "name": "DATASOURCE_URL",
+                        "displayName": "Datasource url",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }
@@ -373,13 +352,11 @@
                 "autoTerminatedRelationships": [],
                 "scheduledState": "ENABLED",
                 "retryCount": 10,
-                "retriedRelationships": [
-                    "data"
-                ],
-                "backoffMechanism": "YIELD_PROCESSOR",
-                "maxBackoffPeriod": "30 sec",
+                "retriedRelationships": [],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4"
             }
         ],
         "inputPorts": [],
@@ -387,23 +364,23 @@
         "connections": [
             {
                 "identifier": "5c200e71-b5e9-3c81-b21f-d6c66074a2ef",
-                "instanceIdentifier": "f6f8d21f-75f4-3fbd-9d00-f6a6cb022196",
+                "instanceIdentifier": "9dc6ba05-f55e-3944-340b-a24eeed585a9",
                 "name": "",
                 "source": {
                     "id": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                     "type": "PROCESSOR",
-                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
+                    "groupId": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4",
                     "name": "LdesClient",
                     "comments": "",
-                    "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a"
+                    "instanceIdentifier": "90e87b35-3fde-33c5-57d0-813dc970cb17"
                 },
                 "destination": {
                     "id": "672455ba-2584-3edd-9a9c-6cbdc8505996",
                     "type": "PROCESSOR",
-                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
+                    "groupId": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4",
                     "name": "InvokeHTTP",
                     "comments": "",
-                    "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a"
+                    "instanceIdentifier": "84fbb9e1-3e49-3169-d5e5-9ae719ab10b3"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -419,7 +396,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "fc7f39cd-19cd-3cd9-8d08-b137b897d5d4"
             }
         ],
         "labels": [],

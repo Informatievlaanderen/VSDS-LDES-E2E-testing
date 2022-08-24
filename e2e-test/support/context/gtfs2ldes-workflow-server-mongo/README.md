@@ -27,7 +27,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
 * TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
-* MONGODB_TAG (default: `5.0.9`)
+* MONGODB_TAG (default: `5.0.11`)
 * MONGODB_PORT (default: `27017`)
 
 

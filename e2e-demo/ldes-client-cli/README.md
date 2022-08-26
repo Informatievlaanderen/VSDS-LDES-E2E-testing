@@ -38,7 +38,7 @@ returns:
 ### Verify Replication
 When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
 ```bash
-docker compose --env-file env.user start ldes-client-cli
+docker compose --env-file env.user start ldes-cli
 ```
 
 Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs (in another shell):

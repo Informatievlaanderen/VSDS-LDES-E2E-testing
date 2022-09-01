@@ -41,6 +41,17 @@ and configure the geospatial fragmentation:
 * GEOSPATIAL_BUCKETISERPROPERTY (defines which property will be used for bucketizing, e.g. `"http://www.opengis.net/ont/geosparql#asWKT"`)
 * GEOSPATIAL_PROJECTION (the projection type, currently only `lambert72` is allowed)
 
+### Multi-level Fragmentation
+
+> **Note**: as of tag `20220826t1001`, the LDES Server allows to define a multi-level fragmentation strategy.
+
+The property `FRAGMENTATION_TYPE` has been replaced by `FRAGMENTATIONLIST_FRAGMENTATIONS` in which you can fill in the required fragmentation:
+* `timebased`
+* `geospatial`
+* `geospatial,timebased`
+* "" (leave empty results in no fragmentation)
+* ... (other combinations of plugged in fragmentations)
+
 ## Run the Systems
 To create and start all systems in the context:
 ```bash

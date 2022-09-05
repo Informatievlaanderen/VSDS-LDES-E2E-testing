@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "98cd2184-0184-3e97-8ff0-9047e3729f64",
-        "instanceIdentifier": "cb423656-0182-1000-848d-b07fac93ab21",
+        "identifier": "2f2384c8-01b3-3677-ae50-91aa545917b5",
+        "instanceIdentifier": "0c99aa8b-0183-1000-1f8c-f16b5451861a",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 405.0,
-            "y": 214.0
+            "x": 635.0,
+            "y": 228.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "672455ba-2584-3edd-9a9c-6cbdc8505996",
-                "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a",
+                "instanceIdentifier": "b602d1a0-0c9c-33c4-5829-62cea59d041d",
                 "name": "InvokeHTTP",
                 "comments": "",
                 "position": {
@@ -24,7 +24,7 @@
                 "bundle": {
                     "group": "org.apache.nifi",
                     "artifact": "nifi-standard-nar",
-                    "version": "1.16.3"
+                    "version": "1.17.0"
                 },
                 "properties": {
                     "Proxy Host": null,
@@ -38,14 +38,15 @@
                     "set-form-filename": "true",
                     "Always Output Response": "false",
                     "etag-max-cache-size": "10MB",
+                    "Content-Encoding": "DISABLED",
                     "disable-http2": "False",
                     "idle-timeout": "5 mins",
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
                     "Remote URL": "http://ldes-client-sink/member",
-                    "Content-Type": "${mime.type}",
                     "form-body-form-name": null,
+                    "Content-Type": "${mime.type}",
                     "flow-file-naming-strategy": "RANDOM",
                     "max-idle-connections": "5",
                     "invokehttp-proxy-user": null,
@@ -57,8 +58,8 @@
                     "Digest Authentication": "false",
                     "HTTP Method": "POST",
                     "Add Response Headers to Request": "false",
-                    "Basic Authentication Username": null,
                     "oauth2-access-token-provider": null,
+                    "Basic Authentication Username": null,
                     "Include Date Header": "True",
                     "Penalize on \"No Retry\"": "false",
                     "Useragent": null
@@ -72,13 +73,13 @@
                     },
                     "Attributes to Send": {
                         "name": "Attributes to Send",
-                        "displayName": "Attributes to Send",
+                        "displayName": "Request Header Attributes Pattern",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "use-etag": {
                         "name": "use-etag",
-                        "displayName": "Use HTTP ETag",
+                        "displayName": "Response Cache Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -96,103 +97,109 @@
                     },
                     "Basic Authentication Password": {
                         "name": "Basic Authentication Password",
-                        "displayName": "Basic Authentication Password",
+                        "displayName": "Request Password",
                         "identifiesControllerService": false,
                         "sensitive": true
                     },
                     "cookie-strategy": {
                         "name": "cookie-strategy",
-                        "displayName": "Cookie Strategy",
+                        "displayName": "Response Cookie Strategy",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Connection Timeout": {
                         "name": "Connection Timeout",
-                        "displayName": "Connection Timeout",
+                        "displayName": "Socket Connect Timeout",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "send-message-body": {
                         "name": "send-message-body",
-                        "displayName": "Send Message Body",
+                        "displayName": "Request Body Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "set-form-filename": {
                         "name": "set-form-filename",
-                        "displayName": "Set FlowFile Form Data File Name",
+                        "displayName": "Request Multipart Form-Data Filename Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Always Output Response": {
                         "name": "Always Output Response",
-                        "displayName": "Always Output Response",
+                        "displayName": "Response Generation Required",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "etag-max-cache-size": {
                         "name": "etag-max-cache-size",
-                        "displayName": "Maximum ETag Cache Size",
+                        "displayName": "Response Cache Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Content-Encoding": {
+                        "name": "Content-Encoding",
+                        "displayName": "Request Content-Encoding",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "disable-http2": {
                         "name": "disable-http2",
-                        "displayName": "Disable HTTP/2",
+                        "displayName": "HTTP/2 Disabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "idle-timeout": {
                         "name": "idle-timeout",
-                        "displayName": "Idle Timeout",
+                        "displayName": "Socket Idle Timeout",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Put Response Body In Attribute": {
                         "name": "Put Response Body In Attribute",
-                        "displayName": "Put Response Body In Attribute",
+                        "displayName": "Response Body Attribute Name",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Use Chunked Encoding": {
                         "name": "Use Chunked Encoding",
-                        "displayName": "Use Chunked Encoding",
+                        "displayName": "Request Chunked Transfer-Encoding Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Follow Redirects": {
                         "name": "Follow Redirects",
-                        "displayName": "Follow Redirects",
+                        "displayName": "Response Redirects Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Remote URL": {
                         "name": "Remote URL",
-                        "displayName": "Remote URL",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "Content-Type": {
-                        "name": "Content-Type",
-                        "displayName": "Content-Type",
+                        "displayName": "HTTP URL",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "form-body-form-name": {
                         "name": "form-body-form-name",
-                        "displayName": "FlowFile Form Data Name",
+                        "displayName": "Request Multipart Form-Data Name",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Content-Type": {
+                        "name": "Content-Type",
+                        "displayName": "Request Content-Type",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "flow-file-naming-strategy": {
                         "name": "flow-file-naming-strategy",
-                        "displayName": "FlowFile Naming Strategy",
+                        "displayName": "Response FlowFile Naming Strategy",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "max-idle-connections": {
                         "name": "max-idle-connections",
-                        "displayName": "Max Idle Connections",
+                        "displayName": "Socket Idle Connections",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -204,13 +211,13 @@
                     },
                     "Read Timeout": {
                         "name": "Read Timeout",
-                        "displayName": "Read Timeout",
+                        "displayName": "Socket Read Timeout",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Max Length To Put In Attribute": {
                         "name": "Max Length To Put In Attribute",
-                        "displayName": "Max Length To Put In Attribute",
+                        "displayName": "Response Body Attribute Size",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -222,7 +229,7 @@
                     },
                     "ignore-response-content": {
                         "name": "ignore-response-content",
-                        "displayName": "Ignore response's content",
+                        "displayName": "Response Body Ignored",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -240,7 +247,7 @@
                     },
                     "Digest Authentication": {
                         "name": "Digest Authentication",
-                        "displayName": "Use Digest Authentication",
+                        "displayName": "Request Digest Authentication Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -252,37 +259,37 @@
                     },
                     "Add Response Headers to Request": {
                         "name": "Add Response Headers to Request",
-                        "displayName": "Add Response Headers to Request",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "Basic Authentication Username": {
-                        "name": "Basic Authentication Username",
-                        "displayName": "Basic Authentication Username",
+                        "displayName": "Response Header Request Attributes Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "oauth2-access-token-provider": {
                         "name": "oauth2-access-token-provider",
-                        "displayName": "OAuth2 Access Token provider",
+                        "displayName": "Request OAuth2 Access Token Provider",
                         "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Basic Authentication Username": {
+                        "name": "Basic Authentication Username",
+                        "displayName": "Request Username",
+                        "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Include Date Header": {
                         "name": "Include Date Header",
-                        "displayName": "Include Date Header",
+                        "displayName": "Request Date Header Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Penalize on \"No Retry\"": {
                         "name": "Penalize on \"No Retry\"",
-                        "displayName": "Penalize on \"No Retry\"",
+                        "displayName": "Request Failure Penalization Enabled",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
                     "Useragent": {
                         "name": "Useragent",
-                        "displayName": "Useragent",
+                        "displayName": "Request User-Agent",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }
@@ -312,18 +319,18 @@
                 "backoffMechanism": "YIELD_PROCESSOR",
                 "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
             },
             {
                 "identifier": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
-                "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a",
+                "instanceIdentifier": "85df4a4a-38c5-3633-e4e1-00fc0f98efbd",
                 "name": "LdesClient",
                 "comments": "",
                 "position": {
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClientFragmentProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
                     "artifact": "ldes-client-wrappers-nifi",
@@ -379,7 +386,7 @@
                 "backoffMechanism": "YIELD_PROCESSOR",
                 "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
             }
         ],
         "inputPorts": [],
@@ -387,23 +394,23 @@
         "connections": [
             {
                 "identifier": "5c200e71-b5e9-3c81-b21f-d6c66074a2ef",
-                "instanceIdentifier": "f6f8d21f-75f4-3fbd-9d00-f6a6cb022196",
+                "instanceIdentifier": "8e2c2e0a-b575-37f3-b2ef-ad96f46e0600",
                 "name": "",
                 "source": {
                     "id": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                     "type": "PROCESSOR",
-                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
+                    "groupId": "2f2384c8-01b3-3677-ae50-91aa545917b5",
                     "name": "LdesClient",
                     "comments": "",
-                    "instanceIdentifier": "b15d9018-1d4b-3787-6c62-94fc07e3999a"
+                    "instanceIdentifier": "85df4a4a-38c5-3633-e4e1-00fc0f98efbd"
                 },
                 "destination": {
                     "id": "672455ba-2584-3edd-9a9c-6cbdc8505996",
                     "type": "PROCESSOR",
-                    "groupId": "98cd2184-0184-3e97-8ff0-9047e3729f64",
+                    "groupId": "2f2384c8-01b3-3677-ae50-91aa545917b5",
                     "name": "InvokeHTTP",
                     "comments": "",
-                    "instanceIdentifier": "a286d481-1ee2-35e5-6178-49d74290c65a"
+                    "instanceIdentifier": "b602d1a0-0c9c-33c4-5829-62cea59d041d"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -419,7 +426,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "98cd2184-0184-3e97-8ff0-9047e3729f64"
+                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
             }
         ],
         "labels": [],

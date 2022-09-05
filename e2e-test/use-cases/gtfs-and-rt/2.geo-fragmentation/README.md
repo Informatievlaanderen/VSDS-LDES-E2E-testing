@@ -53,7 +53,6 @@ The environment file is already configured for geospatial fragmentation but you 
 ```bash
 export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
 ```
-> **Note**: the second environent variable is needed as it is defined in your `env.user` file as `LDES_SERVER_SIMULATOR_SEED_FOLDER=./data` but by setting the COMPOSE_FILE environent variable Docker interprets it as relative to the `docker-compose.yml` file instead of the `env.user` file.
 
 You can then run the systems by executing the following command:
 ```bash
@@ -108,7 +107,7 @@ curl --location --header 'Accept: application/n-quads' http://localhost:8080/mob
 ```
 When the response contains the member then all fragments have been created.
 
-Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains one LDES member and the `ldesfragments` document collection contains four LDES fragments.
+Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains one LDES member and the `ldesfragments` document collection contains four LDES fragments (apart from the geo-spatial root fragment 0/0/0 and the real root/redirection fragment).
 
 #### 3. Verify the Fragments
 We have configured the zoom level (= 15) in such a way that the geospatial fragmentation creates four tile fragments (15 / x / y) and when combined in the appropriate way they correspond to the image we had when visualizing the member:

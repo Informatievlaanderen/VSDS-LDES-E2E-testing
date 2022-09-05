@@ -24,7 +24,7 @@
                 "bundle": {
                     "group": "org.apache.nifi",
                     "artifact": "nifi-standard-nar",
-                    "version": "1.16.3"
+                    "version": "1.17.0"
                 },
                 "properties": {
                     "Proxy Host": null,
@@ -323,7 +323,7 @@
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClientFragmentProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
                     "artifact": "ldes-client-wrappers-nifi",

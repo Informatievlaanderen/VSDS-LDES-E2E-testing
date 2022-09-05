@@ -5,17 +5,11 @@ We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves
 
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
-* LDES_SERVER_SIMULATOR_TAG (e.g. `20220718T1542`)
-* PAT_READ_PACKAGES (Github personal access token)
-* LDES_CLIENT_NAR_TAG (e.g. `20220704.153332-11`)
-* LDES_CLIENT_NAR_ARTIFACT_ID (e.g. `ldes-client-wrappers-nifi`)
-* LDES_CLIENT_NAR_VERSION_BASE (e.g. `1.0`)
-* LDES_CLIENT_NAR_VERSION (e.g. `1.0-SNAPSHOT`)
+* LDES_SERVER_SIMULATOR_TAG (e.g. `20220818T1548`)
+* LDES_WORKBENCH_NIFI_TAG (e.g. `20220901t170424`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_CLIENT_SINK_TAG (e.g. `20220714T1423`)
-
-> **Note**: you need to specify a [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) (PAT) with scope `read:packages`
+* LDES_CLIENT_SINK_TAG (e.g. `20220818T1548`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)

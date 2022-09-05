@@ -54,7 +54,7 @@ Once logged in, create a new process group based on the [ingest workflow](./nifi
 
 Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
 
-Verify that the ListHTTP processor is listening for incoming GTFS/RT members:
+Verify that the ListenHTTP processor is listening for incoming GTFS/RT members:
 ```bash
 curl http://localhost:9005/gtfs/healthcheck
 ```

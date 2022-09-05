@@ -55,7 +55,6 @@ The environment file is already configured for geospatial fragmentation but you 
 ```bash
 export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
 ```
-> **Note**: the second environent variable is needed as it is defined in your `env.user` file as `LDES_SERVER_SIMULATOR_SEED_FOLDER=./data` but by setting the COMPOSE_FILE environent variable Docker interprets it as relative to the `docker-compose.yml` file instead of the `env.user` file.
 
 You can then run the systems by executing the following command:
 ```bash
@@ -85,14 +84,10 @@ To verify the above acceptance criteria:
     * visualize the combined tiles
 
 #### 1. Ingest the Data Set
-We need to [alias it](./create-alias.json):
-```bash
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
-```
-and ingest:
-
+You need to ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):
 ```bash
 curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/six-members.jsonld'
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
 After that you can start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):

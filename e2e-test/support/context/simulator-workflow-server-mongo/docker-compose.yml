@@ -17,19 +17,10 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_nifi-workflow
-    image: ${USECASE_NAME:-simulator-workflow-server-mongo}/nifi-workflow
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG}
+    container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-workbench-nifi
     env_file:
       - env.workflow
-    build:
-      context: ../../workflow
-      args:
-        GROUP_ID: be.vlaanderen.informatievlaanderen
-        ARTIFACT_ID: ${LDES_CLIENT_NAR_ARTIFACT_ID}
-        VERSION_BASE: ${LDES_CLIENT_NAR_VERSION_BASE}
-        VERSION: ${LDES_CLIENT_NAR_VERSION}
-        LDES_CLIENT_NAR_TAG: ${LDES_CLIENT_NAR_TAG}
-        PAT_READ_PACKAGES: ${PAT_READ_PACKAGES}
     ports:
       - ${NIFI_UI_PORT}:8443
     networks:

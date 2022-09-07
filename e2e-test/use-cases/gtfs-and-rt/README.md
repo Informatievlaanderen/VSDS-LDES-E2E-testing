@@ -6,3 +6,4 @@ These tests illustrate the epic **Make a GTFS and GTFS-RT data set available to 
 The following tests are available:
 * [Ingest LDES](./1.ingest-ldes/README.md): uses a workflow (containing a standard ListenHTTP processor and a standard InvokeHTTP processor) to buffer and forward GTFS/RT data towards the LDES server to test the LDES server's ability to correctly ingest and store a large volume of LDES members.
 * [Geospatial fragmentation](./2.geo-fragmentation/README.md): uses a workflow to ingest data containing a geospatial property to test the LDES server's ability to do geospatial fragmentation and ability to configure the type of fragmentation.
+* [Multi-level fragmentation](./3.multi-level-fragmentation/README.md): uses a workflow to ingest data containing a geospatial property to test the LDES server's ability to do fragmentation using a combination of fragmentizers.

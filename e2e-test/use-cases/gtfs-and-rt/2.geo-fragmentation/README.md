@@ -89,7 +89,7 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
-After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly until it returns some relations):
+After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
 ```bash
 curl http://localhost:8080/mobility-hindrances?tile=0/0/0
 ```

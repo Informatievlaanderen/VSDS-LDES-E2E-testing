@@ -1,0 +1,22 @@
+@startuml "LDES IoW Use Case Demo - Container Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title LDES IoW Use Case Demo - Container Diagram
+
+Person(tester, "Tester")
+
+System_Ext(generator, "JSON Data Generator", "Simple generator creating\n**WaterQualityObserved** updates (NGSI-v2 format)")
+System_Boundary(nifi, "Apache NiFi system") {
+    Container(workflow, "IoW Workflow", "Apache Nifi", "Workflow containing standard and custom NiFi processors")
+}
+System_Ext(servers, "LDES Servers", "collection of LDES Servers ingesting/serving:\n**Devices**\n**DeviceModels**\n**WaterQualityObserved**")
+System_Ext(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_R(generator, workflow, "generates and pushes NGSI-v2 updates", "HTTP (method POST)")
+Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, workflow, "pushes Devices & DeviceModels", "HTTPS")
+Rel_D(tester, servers, "verifies all LDES's are correct & fragmented time-based", "HTTP")
+Rel_R(workflow, servers, "pushes LDES members", "HTTP (method POST)")
+Rel_R(servers, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

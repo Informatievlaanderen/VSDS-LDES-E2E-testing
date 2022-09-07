@@ -63,7 +63,7 @@ It looks like you are trying to access MongoDB over HTTP on the native driver po
 ```
 This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
 
-### Stop the Systems
+## Stop the Systems
 To stop all systems in the context:
 ```bash
 docker compose --env-file env.user down

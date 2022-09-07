@@ -1,0 +1,91 @@
+{
+    "@context": [
+        "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
+    ],
+    "id": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-T83eGVGxSyo5srYHN2dCxU",
+    "type": "Device",
+    "refDeviceModel": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2"
+    },
+    "alternativeIds": {
+        "type": "Property",
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6LTvUm38Hr4uR3MoapAAFZ"
+        ]
+    },
+    "maxTimeBetweenObservations": {
+        "type": "Property",
+        "value": 420
+    },
+    "category": {
+        "type": "Property",
+        "value": [
+            "sensor"
+        ]
+    },
+    "locationName": {
+        "type": "Property",
+        "value": "loc-00052-31"
+    },
+    "controlledProperty": {
+        "type": "Property",
+        "value": [
+            "temperature",
+            "conductivity",
+            "pH",
+            "O2",
+            "turbidity"
+        ]
+    },
+    "source": {
+        "type": "Property",
+        "value": "cot.iow.observed"
+    },
+    "healthState": {
+        "type": "Property",
+        "value": "up"
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                2.8436689,
+                50.9923557
+            ]
+        },
+        "name": {
+            "type": "Property",
+            "value": "loc-00052-31"
+        }
+    },
+    "adminState": {
+        "type": "Property",
+        "value": "up"
+    },
+    "extraMeasurementAttributes": {
+        "type": "Property",
+        "value": {
+            "location": true,
+            "samplingPoint": true,
+            "locationName": true
+        }
+    },
+    "dateLastValueReported": {
+        "type": "Property",
+        "value": {
+            "@type": "DateTime",
+            "@value": "2022-01-24T20:00Z"
+        }
+    },
+    "name": {
+        "type": "Property",
+        "value": "dwg-box-exo-Blankaart"
+    },
+    "samplingPoint": {
+        "type": "Property",
+        "value": "spt-00097-87"
+    }
+}

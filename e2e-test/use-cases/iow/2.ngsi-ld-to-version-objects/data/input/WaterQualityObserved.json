@@ -1,0 +1,62 @@
+{
+    "@context": [
+        "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
+    ],
+    "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6J9QCoXdftXDWT24nf658z",
+    "type": "WaterQualityObserved",
+    "refDevices": {
+        "type": "Property",
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8"
+        ]
+    },
+    "refDevice": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8"
+    },
+    "dateObserved": {
+        "type": "Property",
+        "value": {
+            "@type": "DateTime",
+            "@value": "2022-01-31T06:40Z"
+        }
+    },
+    "depth": {
+        "type": "Property",
+        "value": 1681,
+        "unitCode": "HP"
+    },
+    "temperature": {
+        "type": "Property",
+        "value": 6.17,
+        "unitCode": "CEL"
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                2.806237114,
+                50.98189063
+            ]
+        },
+        "name": {
+            "type": "Property",
+            "value": "loc-00020-30"
+        }
+    },
+    "conductivity": {
+        "type": "Property",
+        "value": 1050,
+        "unitCode": "G42"
+    },
+    "locationName": {
+        "type": "Property",
+        "value": "loc-00020-30"
+    },
+    "samplingPoint": {
+        "type": "Property",
+        "value": "spt-00037-73"
+    }
+}

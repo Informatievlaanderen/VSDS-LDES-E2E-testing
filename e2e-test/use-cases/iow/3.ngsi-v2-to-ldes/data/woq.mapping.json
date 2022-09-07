@@ -1,0 +1,4 @@
+{
+    "$.id": "${@}:${nextCounter}",
+    "$.dateObserved.value": "${currentTimestamp}"
+}

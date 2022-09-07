@@ -1,0 +1,21 @@
+services:
+  nifi-workflow:
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG}
+    container_name: ${USECASE_NAME:-workflow}_ldes-workbench-nifi
+    env_file:
+      - env.workflow
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    ports:
+      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_WORKFLOW_LISTEN_PORT:-9010}:9010
+    volumes:
+      - type: bind
+        source: ${NIFI_DATA_FOLDER:-./data}
+        target: /mnt/data
+    networks:
+      - ldes
+networks:
+  ldes:
+    name: ${USECASE_NAME:-workflow}_network

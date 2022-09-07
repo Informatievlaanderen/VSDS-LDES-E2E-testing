@@ -1,0 +1,431 @@
+{
+    "flowContents": {
+        "identifier": "90ba11ff-4129-3377-918a-46e666c27432",
+        "instanceIdentifier": "5b71b231-0183-1000-9bfe-0751c385b356",
+        "name": "nifi-workflow",
+        "comments": "",
+        "position": {
+            "x": 297.0,
+            "y": 114.0
+        },
+        "processGroups": [],
+        "remoteProcessGroups": [],
+        "processors": [
+            {
+                "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                "instanceIdentifier": "33c67f31-ebc8-37a8-b55c-a9d775874f7c",
+                "name": "ListenHTTP",
+                "comments": "",
+                "position": {
+                    "x": 208.0,
+                    "y": -8.0
+                },
+                "type": "org.apache.nifi.processors.standard.ListenHTTP",
+                "bundle": {
+                    "group": "org.apache.nifi",
+                    "artifact": "nifi-standard-nar",
+                    "version": "1.17.0"
+                },
+                "properties": {
+                    "authorized-issuer-dn-pattern": ".*",
+                    "multipart-request-max-size": "1 MB",
+                    "record-writer": null,
+                    "HTTP Protocols": "HTTP_1_1",
+                    "HTTP Headers to receive as Attributes (Regex)": null,
+                    "health-check-port": null,
+                    "Authorized DN Pattern": ".*",
+                    "max-thread-pool-size": "200",
+                    "Base Path": "ngsi",
+                    "multipart-read-buffer-size": "512 KB",
+                    "SSL Context Service": null,
+                    "Max Unconfirmed Flowfile Time": "60 secs",
+                    "Max Data to Receive per Second": null,
+                    "client-authentication": "AUTO",
+                    "Return Code": "200",
+                    "record-reader": null,
+                    "Listening Port": "9010"
+                },
+                "propertyDescriptors": {
+                    "authorized-issuer-dn-pattern": {
+                        "name": "authorized-issuer-dn-pattern",
+                        "displayName": "Authorized Issuer DN Pattern",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "multipart-request-max-size": {
+                        "name": "multipart-request-max-size",
+                        "displayName": "Multipart Request Max Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "record-writer": {
+                        "name": "record-writer",
+                        "displayName": "Record Writer",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "HTTP Protocols": {
+                        "name": "HTTP Protocols",
+                        "displayName": "HTTP Protocols",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "HTTP Headers to receive as Attributes (Regex)": {
+                        "name": "HTTP Headers to receive as Attributes (Regex)",
+                        "displayName": "HTTP Headers to receive as Attributes (Regex)",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "health-check-port": {
+                        "name": "health-check-port",
+                        "displayName": "Listening Port for Health Check Requests",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Authorized DN Pattern": {
+                        "name": "Authorized DN Pattern",
+                        "displayName": "Authorized Subject DN Pattern",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "max-thread-pool-size": {
+                        "name": "max-thread-pool-size",
+                        "displayName": "Maximum Thread Pool Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Base Path": {
+                        "name": "Base Path",
+                        "displayName": "Base Path",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "multipart-read-buffer-size": {
+                        "name": "multipart-read-buffer-size",
+                        "displayName": "Multipart Read Buffer Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "SSL Context Service": {
+                        "name": "SSL Context Service",
+                        "displayName": "SSL Context Service",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Max Unconfirmed Flowfile Time": {
+                        "name": "Max Unconfirmed Flowfile Time",
+                        "displayName": "Max Unconfirmed Flowfile Time",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Max Data to Receive per Second": {
+                        "name": "Max Data to Receive per Second",
+                        "displayName": "Max Data to Receive per Second",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "client-authentication": {
+                        "name": "client-authentication",
+                        "displayName": "Client Authentication",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Return Code": {
+                        "name": "Return Code",
+                        "displayName": "Return Code",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "record-reader": {
+                        "name": "record-reader",
+                        "displayName": "Record Reader",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Listening Port": {
+                        "name": "Listening Port",
+                        "displayName": "Listening Port",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 1,
+                "autoTerminatedRelationships": [],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+            },
+            {
+                "identifier": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
+                "instanceIdentifier": "e7743375-4e27-3134-1807-a05e2c96635c",
+                "name": "PutFile",
+                "comments": "",
+                "position": {
+                    "x": 208.0,
+                    "y": 560.0
+                },
+                "type": "org.apache.nifi.processors.standard.PutFile",
+                "bundle": {
+                    "group": "org.apache.nifi",
+                    "artifact": "nifi-standard-nar",
+                    "version": "1.17.0"
+                },
+                "properties": {
+                    "Group": null,
+                    "Owner": null,
+                    "Create Missing Directories": "false",
+                    "Permissions": null,
+                    "Maximum File Count": null,
+                    "Last Modified Time": null,
+                    "Directory": "/mnt/data",
+                    "Conflict Resolution Strategy": "replace"
+                },
+                "propertyDescriptors": {
+                    "Group": {
+                        "name": "Group",
+                        "displayName": "Group",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Owner": {
+                        "name": "Owner",
+                        "displayName": "Owner",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Create Missing Directories": {
+                        "name": "Create Missing Directories",
+                        "displayName": "Create Missing Directories",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Permissions": {
+                        "name": "Permissions",
+                        "displayName": "Permissions",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Maximum File Count": {
+                        "name": "Maximum File Count",
+                        "displayName": "Maximum File Count",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Last Modified Time": {
+                        "name": "Last Modified Time",
+                        "displayName": "Last Modified Time",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Directory": {
+                        "name": "Directory",
+                        "displayName": "Directory",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Conflict Resolution Strategy": {
+                        "name": "Conflict Resolution Strategy",
+                        "displayName": "Conflict Resolution Strategy",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 1,
+                "autoTerminatedRelationships": [
+                    "success",
+                    "failure"
+                ],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [
+                    "failure"
+                ],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+            },
+            {
+                "identifier": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
+                "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a",
+                "name": "NgsiLd2LdesMemberProcessor",
+                "comments": "",
+                "position": {
+                    "x": 216.0,
+                    "y": 272.0
+                },
+                "type": "be.vlaanderen.informatievlaanderen.processors.ngsild2ldes.NgsiLd2LdesMemberProcessor",
+                "bundle": {
+                    "group": "be.vlaanderen.informatievlaanderen",
+                    "artifact": "ngsild2ldes-processor",
+                    "version": "1.0-SNAPSHOT"
+                },
+                "properties": {
+                    "ID_JSON_PATH": "$.id",
+                    "DATE_OBSERVED_VALUE_JSON_PATH": "$.dateObserved.value.['@value']",
+                    "DATA_DESTINATION_FORMAT": "n-quads",
+                    "DELIMITER": ":",
+                    "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf"
+                },
+                "propertyDescriptors": {
+                    "ID_JSON_PATH": {
+                        "name": "ID_JSON_PATH",
+                        "displayName": "JsonPath to the id",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATE_OBSERVED_VALUE_JSON_PATH": {
+                        "name": "DATE_OBSERVED_VALUE_JSON_PATH",
+                        "displayName": "JsonPath to the value of the dateObserved element",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATA_DESTINATION_FORMAT": {
+                        "name": "DATA_DESTINATION_FORMAT",
+                        "displayName": "Data destination format",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DELIMITER": {
+                        "name": "DELIMITER",
+                        "displayName": "Delimiter used to create the version object id",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "VERSION_OF_KEY": {
+                        "name": "VERSION_OF_KEY",
+                        "displayName": "VersionOf Property",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 1,
+                "autoTerminatedRelationships": [],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+            }
+        ],
+        "inputPorts": [],
+        "outputPorts": [],
+        "connections": [
+            {
+                "identifier": "f87a16f7-e143-3242-9828-aacfb8334de7",
+                "instanceIdentifier": "5b7214be-0183-1000-adb2-2dee7d75e84f",
+                "name": "",
+                "source": {
+                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
+                    "type": "PROCESSOR",
+                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "name": "NgsiLd2LdesMemberProcessor",
+                    "comments": "",
+                    "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a"
+                },
+                "destination": {
+                    "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
+                    "type": "PROCESSOR",
+                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "name": "PutFile",
+                    "comments": "",
+                    "instanceIdentifier": "e7743375-4e27-3134-1807-a05e2c96635c"
+                },
+                "labelIndex": 1,
+                "zIndex": 0,
+                "selectedRelationships": [
+                    "data"
+                ],
+                "backPressureObjectThreshold": 10000,
+                "backPressureDataSizeThreshold": "1 GB",
+                "flowFileExpiration": "0 sec",
+                "prioritizers": [],
+                "bends": [],
+                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                "partitioningAttribute": "",
+                "loadBalanceCompression": "DO_NOT_COMPRESS",
+                "componentType": "CONNECTION",
+                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+            },
+            {
+                "identifier": "838a74e7-c7e6-387f-93e8-e3a745c3386c",
+                "instanceIdentifier": "4575df2f-f6a0-3072-35f5-a65353911aa0",
+                "name": "",
+                "source": {
+                    "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                    "type": "PROCESSOR",
+                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "name": "ListenHTTP",
+                    "comments": "",
+                    "instanceIdentifier": "33c67f31-ebc8-37a8-b55c-a9d775874f7c"
+                },
+                "destination": {
+                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
+                    "type": "PROCESSOR",
+                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "name": "NgsiLd2LdesMemberProcessor",
+                    "comments": "",
+                    "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a"
+                },
+                "labelIndex": 1,
+                "zIndex": 0,
+                "selectedRelationships": [
+                    "success"
+                ],
+                "backPressureObjectThreshold": 10000,
+                "backPressureDataSizeThreshold": "1 GB",
+                "flowFileExpiration": "0 sec",
+                "prioritizers": [],
+                "bends": [],
+                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                "partitioningAttribute": "",
+                "loadBalanceCompression": "DO_NOT_COMPRESS",
+                "componentType": "CONNECTION",
+                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+            }
+        ],
+        "labels": [],
+        "funnels": [],
+        "controllerServices": [],
+        "variables": {},
+        "defaultFlowFileExpiration": "0 sec",
+        "defaultBackPressureObjectThreshold": 10000,
+        "defaultBackPressureDataSizeThreshold": "1 GB",
+        "componentType": "PROCESS_GROUP",
+        "flowFileConcurrency": "UNBOUNDED",
+        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE"
+    },
+    "externalControllerServices": {},
+    "parameterContexts": {},
+    "flowEncodingVersion": "1.0"
+}

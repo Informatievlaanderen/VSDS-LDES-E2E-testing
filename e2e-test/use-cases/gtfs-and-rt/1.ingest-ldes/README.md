@@ -50,9 +50,9 @@ To run the test, you need to:
 #### 1. Upload NiFi Workflow
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
+Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
-Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
 Verify that the ListenHTTP processor is listening for incoming GTFS/RT members:
 ```bash
@@ -83,7 +83,7 @@ curl --location --header 'Accept: application/n-quads' http://localhost:8080/con
 ```
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
 docker compose --env-file env.user down
 ```

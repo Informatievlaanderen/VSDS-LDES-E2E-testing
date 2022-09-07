@@ -1,0 +1,67 @@
+{
+    "id": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2",
+    "type": "DeviceModel",
+    "function": {
+        "type": "StructuredValue",
+        "value": [
+            "sensing"
+        ],
+        "metadata": {}
+    },
+    "controlledProperty": {
+        "type": "StructuredValue",
+        "value": [
+            "temperature",
+            "conductivity",
+            "pH",
+            "O2",
+            "turbidity"
+        ],
+        "metadata": {}
+    },
+    "name": {
+        "type": "String",
+        "value": "EXO2 multi-parameter probe",
+        "metadata": {}
+    },
+    "iow_tags": {
+        "type": "StructuredValue",
+        "value": [
+            "external"
+        ],
+        "metadata": {}
+    },
+    "supportedUnits": {
+        "type": "StructuredValue",
+        "value": [
+            "CEL",
+            "D10",
+            "Q30",
+            "M1",
+            ""
+        ],
+        "metadata": {}
+    },
+    "manufacturerName": {
+        "type": "String",
+        "value": "Xylem",
+        "metadata": {}
+    },
+    "modelName": {
+        "type": "String",
+        "value": "EXO2 Multiparameter sensor",
+        "metadata": {}
+    },
+    "brandName": {
+        "type": "String",
+        "value": "YSI",
+        "metadata": {}
+    },
+    "category": {
+        "type": "StructuredValue",
+        "value": [
+            "sensor"
+        ],
+        "metadata": {}
+    }
+}

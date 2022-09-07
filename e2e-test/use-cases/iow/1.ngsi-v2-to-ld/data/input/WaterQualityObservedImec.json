@@ -1,0 +1,162 @@
+{
+    "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:canary-iow-PfVMyX4AtqYVAuQ8D9onqH",
+    "type": "WaterQualityObserved",
+    "NO3": {
+        "type": "Number",
+        "value": 5199.4,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "Q30"
+            }
+        }
+    },
+    "batteryLevel": {
+        "type": "Number",
+        "value": 0.38,
+        "metadata": {
+            "rawValue": {
+                "type": "Number",
+                "value": "3228"
+            },
+            "rawValueUnitCode": {
+                "type": "Text",
+                "value": "2Z"
+            }
+        }
+    },
+    "conductivity": {
+        "type": "Number",
+        "value": 900.900900901,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "G42"
+            }
+        }
+    },
+    "dateObserved": {
+        "type": "DateTime",
+        "value": "2022-04-15T11:15:01.000Z",
+        "metadata": {}
+    },
+    "deviceHumidity": {
+        "type": "Number",
+        "value": 56,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "P1"
+            }
+        }
+    },
+    "deviceTemperature": {
+        "type": "Number",
+        "value": 22,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "CEL"
+            }
+        }
+    },
+    "imec_NO3": {
+        "type": "Number",
+        "value": 1855.857142857,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "Q30"
+            }
+        }
+    },
+    "imec_pH": {
+        "type": "Number",
+        "value": -3193.6,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "Q30"
+            }
+        }
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                5.456441784,
+                51.413649952
+            ]
+        },
+        "metadata": {
+            "name": {
+                "type": "Text",
+                "value": "loc-00000-90"
+            }
+        }
+    },
+    "locationName": {
+        "type": "Text",
+        "value": "loc-00000-90",
+        "metadata": {}
+    },
+    "octa_state": {
+        "type": "Number",
+        "value": 0,
+        "metadata": {}
+    },
+    "pH": {
+        "type": "Number",
+        "value": -2074,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "Q30"
+            }
+        }
+    },
+    "refDevice": {
+        "type": "Relationship",
+        "value": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-fsPE4WYXyjt4m2bTBNc9dQ",
+        "metadata": {}
+    },
+    "refDevices": {
+        "type": "StructuredValue",
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:Device:imec-iow-fsPE4WYXyjt4m2bTBNc9dQ",
+            "urn:ngsi-v2:cot-imec-be:Device:imec-iow-VeLuFpH8Qy96gihcddUw6A"
+        ],
+        "metadata": {}
+    },
+    "reliability": {
+        "type": "Number",
+        "value": 1,
+        "metadata": {
+            "sensor_state": {
+                "type": "Number",
+                "value": 0
+            }
+        }
+    },
+    "samplingPoint": {
+        "type": "Text",
+        "value": "spt-00000-87",
+        "metadata": {}
+    },
+    "sensor_state": {
+        "type": "Number",
+        "value": 0,
+        "metadata": {}
+    },
+    "temperature": {
+        "type": "Number",
+        "value": 157,
+        "metadata": {
+            "unitCode": {
+                "type": "Text",
+                "value": "CEL"
+            }
+        }
+    }
+}

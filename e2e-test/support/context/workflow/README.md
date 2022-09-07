@@ -1,5 +1,25 @@
-# Apache NiFi Workflow
+# Apache NiFi Workflow Context
 The LDES client is currently provided as a Apache NiFi processor and therefore requires an Apache NiFi system hosting a Apache NiFi workflow.
+
+This context is used for validating the LDES client and other custom-built NiFi processors.
+
+## Setup the Context
+To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
+* LDES_WORKBENCH_NIFI_TAG (e.g. `20220901t170424`)
+* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
+
+Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
+* USECASE_NAME (default: `workflow`)
+* NIFI_UI_PORT (default: `8443`)
+* NIFI_DATA_FOLDER (default: `./data`)
+* NIFI_WORKFLOW_LISTEN_PORT (default: `9005`)
+
+## Run the System
+To create and start the workflow container:
+```bash
+docker compose --env-file env.user up
+```
 
 ## Logon to the Apache NiFi System
 In order to logon, point your favorite browser to https://localhost:8443/nifi/login and provide your credentials specified when running the Docker image.
@@ -25,3 +45,10 @@ To launch a workflow, ensure that no processor is selected (click in the workpac
 
 ## Stopping a Workflow
 To stop a workflow, ensure that no processor is selected (click in the workpace OR navigate back to the root process group and select the newly added process group) and click the stop button (immediately to the right of the start button).
+
+## Stop the System
+To stop and remove the workflow container:
+```bash
+docker compose --env-file env.user down
+```
+This will gracefully shutdown the workflow system and remove the container.

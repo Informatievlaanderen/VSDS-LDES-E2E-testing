@@ -1,0 +1,77 @@
+    {
+        "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6J9QCoXdftXDWT24nf658z",
+        "type": "WaterQualityObserved",
+        "refDevices": {
+            "type": "StructuredValue",
+            "value": [
+                "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8"
+            ],
+            "metadata": {}
+        },
+        "refDevice": {
+            "type": "Relationship",
+            "value": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8",
+            "metadata": {}
+        },
+        "dateObserved": {
+            "type": "DateTime",
+            "value": "2022-01-31T06:40Z",
+            "metadata": {}
+        },
+        "depth": {
+            "type": "Number",
+            "value": 1681,
+            "metadata": {
+                "unitCode": {
+                    "type": "text",
+                    "value": "HP"
+                }
+            }
+        },
+        "temperature": {
+            "type": "Number",
+            "value": 6.17,
+            "metadata": {
+                "unitCode": {
+                    "type": "text",
+                    "value": "CEL"
+                }
+            }
+        },
+        "location": {
+            "type": "geo:json",
+            "value": {
+                "type": "Point",
+                "coordinates": [
+                    2.806237114,
+                    50.98189063
+                ]
+            },
+            "metadata": {
+                "name": {
+                    "type": "Text",
+                    "value": "loc-00020-30"
+                }
+            }
+        },
+        "conductivity": {
+            "type": "Number",
+            "value": 1050,
+            "metadata": {
+                "unitCode": {
+                    "type": "text",
+                    "value": "G42"
+                }
+            }
+        },
+        "locationName": {
+            "type": "Text",
+            "value": "loc-00020-30",
+            "metadata": {}
+        },
+        "samplingPoint": {
+            "type": "Text",
+            "value": "spt-00037-73",
+            "metadata": {}
+        }
+    }

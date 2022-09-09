@@ -34,7 +34,7 @@
         },
         "observedAt": "2022-09-09T09:10:00.000Z"
     },
-    "conductivity": {
+    "locationName": {
         "type": "Property",
         "value": 6150,
         "observedAt": "2022-09-09T09:10:00.000Z",

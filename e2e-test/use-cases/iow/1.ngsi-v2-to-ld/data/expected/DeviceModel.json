@@ -3,12 +3,16 @@
         "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
-    "id": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2",
+    "id": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-sensor-v0005",
     "type": "DeviceModel",
-    "function": {
+    "brandName": {
+        "type": "Property",
+        "value": "imec"
+    },
+    "category": {
         "type": "Property",
         "value": [
-            "sensing"
+            "sensor"
         ]
     },
     "controlledProperty": {
@@ -17,46 +21,39 @@
             "temperature",
             "conductivity",
             "pH",
-            "O2",
-            "turbidity"
+            "nitrate"
         ]
     },
-    "name": {
+    "function": {
         "type": "Property",
-        "value": "EXO2 multi-parameter probe"
+        "value": [
+            "sensing"
+        ]
     },
     "iow_tags": {
         "type": "Property",
         "value": [
-            "external"
+            "wqmd_sensor"
         ]
+    },
+    "manufacturerName": {
+        "type": "Property",
+        "value": "IMEC NL"
+    },
+    "maxTimeBetweenObservations": {
+        "type": "Property",
+        "value": 60
+    },
+    "modelName": {
+        "type": "Property",
+        "value": "iow-sensor-v0005"
     },
     "supportedUnits": {
         "type": "Property",
         "value": [
             "CEL",
             "D10",
-            "Q30",
-            "M1",
-            ""
-        ]
-    },
-    "manufacturerName": {
-        "type": "Property",
-        "value": "Xylem"
-    },
-    "modelName": {
-        "type": "Property",
-        "value": "EXO2 Multiparameter sensor"
-    },
-    "brandName": {
-        "type": "Property",
-        "value": "YSI"
-    },
-    "category": {
-        "type": "Property",
-        "value": [
-            "sensor"
+            "Q30"
         ]
     }
 }

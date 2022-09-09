@@ -3,45 +3,60 @@
         "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
-    "id": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-T83eGVGxSyo5srYHN2dCxU",
+    "id": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
     "type": "Device",
-    "refDeviceModel": {
-        "type": "Relationship",
-        "object": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2"
+    "adminState": {
+        "type": "Property",
+        "value": "down"
     },
     "alternativeIds": {
         "type": "Property",
         "value": [
-            "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6LTvUm38Hr4uR3MoapAAFZ"
+            "simcard.206012902136977",
+            "octa_dec.2336861766884020237"
         ]
     },
-    "maxTimeBetweenObservations": {
+    "batteryLevel": {
         "type": "Property",
-        "value": 420
+        "value": 0.32,
+        "rawValue": {
+            "type": "Property",
+            "value": "3192"
+        },
+        "rawValueUnitCode": {
+            "type": "Property",
+            "value": "2Z"
+        }
     },
-    "category": {
+    "calibrationParameters": {
+        "type": "Property",
+        "value": {
+            "battery": {
+                "gain": 600,
+                "offset": 3000
+            }
+        }
+    },
+    "copyObservationAttributes": {
         "type": "Property",
         "value": [
-            "sensor"
+            "batteryLevel"
         ]
     },
-    "locationName": {
+    "dateLastValueReported": {
         "type": "Property",
-        "value": "loc-00052-31"
+        "value": {
+            "@type": "DateTime",
+            "@value": "2022-06-28T08:26:06.000Z"
+        }
     },
-    "controlledProperty": {
+    "extraMeasurementAttributes": {
         "type": "Property",
-        "value": [
-            "temperature",
-            "conductivity",
-            "pH",
-            "O2",
-            "turbidity"
-        ]
-    },
-    "source": {
-        "type": "Property",
-        "value": "cot.iow.observed"
+        "value": {
+            "location": true,
+            "locationName": true,
+            "samplingPoint": true
+        }
     },
     "healthState": {
         "type": "Property",
@@ -52,40 +67,43 @@
         "value": {
             "type": "Point",
             "coordinates": [
-                2.8436689,
-                50.9923557
+                5.4563,
+                51.41363
             ]
         },
         "name": {
             "type": "Property",
-            "value": "loc-00052-31"
+            "value": "loc-00056-19"
         }
     },
-    "adminState": {
+    "locationName": {
         "type": "Property",
-        "value": "up"
+        "value": "loc-00056-19"
     },
-    "extraMeasurementAttributes": {
+    "maxTimeBetweenObservations": {
         "type": "Property",
-        "value": {
-            "location": true,
-            "samplingPoint": true,
-            "locationName": true
-        }
-    },
-    "dateLastValueReported": {
-        "type": "Property",
-        "value": {
-            "@type": "DateTime",
-            "@value": "2022-01-24T20:00Z"
-        }
+        "value": 60
     },
     "name": {
         "type": "Property",
-        "value": "dwg-box-exo-Blankaart"
+        "value": "box-00145-49"
+    },
+    "owner": {
+        "type": "Property",
+        "value": [
+            "imec"
+        ]
+    },
+    "refDeviceModel": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-box-v0003"
     },
     "samplingPoint": {
         "type": "Property",
-        "value": "spt-00097-87"
+        "value": "spt-00000-87"
+    },
+    "source": {
+        "type": "Property",
+        "value": "cot.iow.observed"
     }
 }

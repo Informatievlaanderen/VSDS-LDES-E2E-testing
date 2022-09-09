@@ -1,49 +1,62 @@
 {
-    "id": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-T83eGVGxSyo5srYHN2dCxU",
+    "id": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
     "type": "Device",
-    "refDeviceModel": {
-        "type": "Relationship",
-        "value": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2",
+    "adminState": {
+        "type": "Text",
+        "value": "down",
         "metadata": {}
     },
     "alternativeIds": {
         "type": "StructuredValue",
         "value": [
-            "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6LTvUm38Hr4uR3MoapAAFZ"
+            "simcard.206012902136977",
+            "octa_dec.2336861766884020237"
         ],
         "metadata": {}
     },
-    "maxTimeBetweenObservations": {
+    "batteryLevel": {
         "type": "Number",
-        "value": 420,
+        "value": 0.32,
+        "metadata": {
+            "rawValue": {
+                "type": "Number",
+                "value": "3192"
+            },
+            "rawValueUnitCode": {
+                "type": "Text",
+                "value": "2Z"
+            }
+        }
+    },
+    "calibrationParameters": {
+        "type": "StructuredValue",
+        "value": {
+            "battery": {
+                "gain": 600,
+                "offset": 3000
+            }
+        },
         "metadata": {}
     },
-    "category": {
+    "copyObservationAttributes": {
         "type": "StructuredValue",
         "value": [
-            "sensor"
+            "batteryLevel"
         ],
         "metadata": {}
     },
-    "locationName": {
-        "type": "Text",
-        "value": "loc-00052-31",
+    "dateLastValueReported": {
+        "type": "DateTime",
+        "value": "2022-06-28T08:26:06.000Z",
         "metadata": {}
     },
-    "controlledProperty": {
+    "extraMeasurementAttributes": {
         "type": "StructuredValue",
-        "value": [
-            "temperature",
-            "conductivity",
-            "pH",
-            "O2",
-            "turbidity"
-        ],
-        "metadata": {}
-    },
-    "source": {
-        "type": "String",
-        "value": "cot.iow.observed",
+        "value": {
+            "location": true,
+            "locationName": true,
+            "samplingPoint": true
+        },
         "metadata": {}
     },
     "healthState": {
@@ -56,44 +69,52 @@
         "value": {
             "type": "Point",
             "coordinates": [
-                2.8436689,
-                50.9923557
+                5.4563,
+                51.41363
             ]
         },
         "metadata": {
             "name": {
                 "type": "Text",
-                "value": "loc-00052-31"
+                "value": "loc-00056-19"
             }
         }
     },
-    "adminState": {
+    "locationName": {
         "type": "Text",
-        "value": "up",
+        "value": "loc-00056-19",
         "metadata": {}
     },
-    "extraMeasurementAttributes": {
-        "type": "StructuredValue",
-        "value": {
-            "location": true,
-            "samplingPoint": true,
-            "locationName": true
-        },
-        "metadata": {}
-    },
-    "dateLastValueReported": {
-        "type": "DateTime",
-        "value": "2022-01-24T20:00Z",
+    "maxTimeBetweenObservations": {
+        "type": "Number",
+        "value": 60,
         "metadata": {}
     },
     "name": {
         "type": "Text",
-        "value": "dwg-box-exo-Blankaart",
+        "value": "box-00145-49",
+        "metadata": {}
+    },
+    "owner": {
+        "type": "StructuredValue",
+        "value": [
+            "imec"
+        ],
+        "metadata": {}
+    },
+    "refDeviceModel": {
+        "type": "Relationship",
+        "value": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-box-v0003",
         "metadata": {}
     },
     "samplingPoint": {
         "type": "Text",
-        "value": "spt-00097-87",
+        "value": "spt-00000-87",
+        "metadata": {}
+    },
+    "source": {
+        "type": "Text",
+        "value": "cot.iow.observed",
         "metadata": {}
     }
 }

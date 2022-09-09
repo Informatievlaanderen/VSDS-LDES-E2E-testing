@@ -1,10 +1,15 @@
 {
-    "id": "urn:ngsi-v2:cot-imec-be:devicemodel:ysi-exo2",
+    "id": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-sensor-v0005",
     "type": "DeviceModel",
-    "function": {
+    "brandName": {
+        "type": "Text",
+        "value": "imec",
+        "metadata": {}
+    },
+    "category": {
         "type": "StructuredValue",
         "value": [
-            "sensing"
+            "sensor"
         ],
         "metadata": {}
     },
@@ -14,21 +19,37 @@
             "temperature",
             "conductivity",
             "pH",
-            "O2",
-            "turbidity"
+            "nitrate"
         ],
         "metadata": {}
     },
-    "name": {
-        "type": "String",
-        "value": "EXO2 multi-parameter probe",
+    "function": {
+        "type": "StructuredValue",
+        "value": [
+            "sensing"
+        ],
         "metadata": {}
     },
     "iow_tags": {
         "type": "StructuredValue",
         "value": [
-            "external"
+            "wqmd_sensor"
         ],
+        "metadata": {}
+    },
+    "manufacturerName": {
+        "type": "Text",
+        "value": "IMEC NL",
+        "metadata": {}
+    },
+    "maxTimeBetweenObservations": {
+        "type": "Number",
+        "value": 60,
+        "metadata": {}
+    },
+    "modelName": {
+        "type": "Text",
+        "value": "iow-sensor-v0005",
         "metadata": {}
     },
     "supportedUnits": {
@@ -36,31 +57,7 @@
         "value": [
             "CEL",
             "D10",
-            "Q30",
-            "M1",
-            ""
-        ],
-        "metadata": {}
-    },
-    "manufacturerName": {
-        "type": "String",
-        "value": "Xylem",
-        "metadata": {}
-    },
-    "modelName": {
-        "type": "String",
-        "value": "EXO2 Multiparameter sensor",
-        "metadata": {}
-    },
-    "brandName": {
-        "type": "String",
-        "value": "YSI",
-        "metadata": {}
-    },
-    "category": {
-        "type": "StructuredValue",
-        "value": [
-            "sensor"
+            "Q30"
         ],
         "metadata": {}
     }

@@ -3,60 +3,60 @@
         "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
-    "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-6J9QCoXdftXDWT24nf658z",
+    "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj",
     "type": "WaterQualityObserved",
-    "refDevices": {
+    "conductivity": {
         "type": "Property",
-        "value": [
-            "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8"
-        ]
-    },
-    "refDevice": {
-        "type": "Relationship",
-        "object": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-4prZsfFVVCZET5WnsYJRW8"
+        "value": 6150,
+        "unitCode": "G42"
     },
     "dateObserved": {
         "type": "Property",
         "value": {
             "@type": "DateTime",
-            "@value": "2022-01-31T06:40Z"
+            "@value": "2022-09-09T09:10:00.000Z"
         }
     },
     "depth": {
         "type": "Property",
-        "value": 1681,
+        "value": 1442,
         "unitCode": "HP"
-    },
-    "temperature": {
-        "type": "Property",
-        "value": 6.17,
-        "unitCode": "CEL"
     },
     "location": {
         "type": "GeoProperty",
         "value": {
             "type": "Point",
             "coordinates": [
-                2.806237114,
-                50.98189063
+                2.854459744,
+                51.03321207
             ]
         },
         "name": {
             "type": "Property",
-            "value": "loc-00020-30"
+            "value": "loc-00019-33"
         }
-    },
-    "conductivity": {
-        "type": "Property",
-        "value": 1050,
-        "unitCode": "G42"
     },
     "locationName": {
         "type": "Property",
-        "value": "loc-00020-30"
+        "value": "loc-00019-33"
+    },
+    "refDevice": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG"
+    },
+    "refDevices": {
+        "type": "Property",
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG"
+        ]
     },
     "samplingPoint": {
         "type": "Property",
-        "value": "spt-00037-73"
+        "value": "spt-00035-79"
+    },
+    "temperature": {
+        "type": "Property",
+        "value": 20.43,
+        "unitCode": "CEL"
     }
 }

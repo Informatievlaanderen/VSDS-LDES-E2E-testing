@@ -122,7 +122,6 @@ def normalized_2_LD(entity, ld_context_uri):
                 if mkey == 'timestamp':
                     ld_attr['observedAt'] = normalize_date(metadata[mkey]['value'])
                 elif mkey == 'unitCode':
-                #if mkey == 'unitCode':
                      ld_attr['unitCode'] = metadata[mkey]['value']
                 else:
                     sub_attr = dict()

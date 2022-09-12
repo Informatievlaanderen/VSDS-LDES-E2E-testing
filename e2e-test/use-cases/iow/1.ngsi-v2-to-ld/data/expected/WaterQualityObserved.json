@@ -8,6 +8,7 @@
     "conductivity": {
         "type": "Property",
         "value": 6150,
+        "observedAt": "2022-09-09T09:10:00.000Z",
         "unitCode": "G42"
     },
     "dateObserved": {
@@ -15,11 +16,13 @@
         "value": {
             "@type": "DateTime",
             "@value": "2022-09-09T09:10:00.000Z"
-        }
+        },
+        "observedAt": "2022-09-09T09:10:00.000Z"
     },
     "depth": {
         "type": "Property",
         "value": 1442,
+        "observedAt": "2022-09-09T09:10:00.000Z",
         "unitCode": "HP"
     },
     "location": {
@@ -31,6 +34,7 @@
                 51.03321207
             ]
         },
+        "observedAt": "2022-09-09T09:10:00.000Z",
         "name": {
             "type": "Property",
             "value": "loc-00019-33"
@@ -38,7 +42,8 @@
     },
     "locationName": {
         "type": "Property",
-        "value": "loc-00019-33"
+        "value": "loc-00019-33",
+        "observedAt": "2022-09-09T09:10:00.000Z"
     },
     "refDevice": {
         "type": "Relationship",
@@ -48,15 +53,18 @@
         "type": "Property",
         "value": [
             "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG"
-        ]
+        ],
+        "observedAt": "2022-09-09T09:10:00.000Z"
     },
     "samplingPoint": {
         "type": "Property",
-        "value": "spt-00035-79"
+        "value": "spt-00035-79",
+        "observedAt": "2022-09-09T09:10:00.000Z"
     },
     "temperature": {
         "type": "Property",
         "value": 20.43,
+        "observedAt": "2022-09-09T09:10:00.000Z",
         "unitCode": "CEL"
     }
 }

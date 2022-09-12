@@ -6,7 +6,7 @@ IoW data contains objects of type `WaterQualityObserved`, `Device` and `DeviceMo
 ## Test Setup
 For this test we can use the [Workflow](../../../support/context/workflow/README.md) context. Please copy the [environment file (env.create-versions)](./env.create-versions) to a personal file (e.g. `env.user`) and fill in the mandatory arguments.
 
-Yyou can change the location of generated files containing the modified NGSI-LD output.
+You can change the location of generated files containing the modified NGSI-LD output.
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then.
 

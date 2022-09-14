@@ -49,6 +49,15 @@ The property `FRAGMENTATION_TYPE` has been replaced by `FRAGMENTATIONLIST_FRAGME
 * "" (leave empty results in no fragmentation)
 * ... (other combinations of plugged in fragmentations)
 
+### Multiview
+
+> **Note**: as of tag `20220914t0740`, the LDES Server allows to define a multiple views, each based on a different fragmentation strategy.
+
+The property `FRAGMENTATIONLIST_FRAGMENTATIONS` has been replaced by the following properties:
+* VIEWS_X_NAME=name of the view
+* VIEWS_X_FRAGMENTATIONS_Y_NAME=name of fragmentation (currently, only "timebased" and "geospatial" are supported)
+* VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`FRAGMENTATION_PROPERTY_KEY`=`FRAGMENTATION_PROPERTY_VALUE` (specific to the kind of fragmentation, e.g. `FRAGMENTATION_PROPERTY_KEY` = "maxzoomlevel" and `FRAGMENTATION_PROPERTY_VALUE` = "15" for geospatial fragmentation)
+
 ## Run the Systems
 To create and start all systems in the context:
 ```bash

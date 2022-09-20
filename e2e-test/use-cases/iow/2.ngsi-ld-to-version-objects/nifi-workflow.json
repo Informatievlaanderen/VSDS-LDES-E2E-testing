@@ -412,20 +412,73 @@
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
                 "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
-            }
+            },
+
+      {
+        "identifier":"2173bf06-0c3b-3a91-9045-2a9edf6c1e71",
+        "instanceIdentifier":"5a55aa61-0183-1000-eafa-d06e128f5006",
+        "name":"",
+        "source":{
+          "id":"0d5912cd-4b4c-3417-a9c2-47d072da413a",
+          "type":"PROCESSOR",
+          "groupId":"48151ea8-e63a-3702-9670-6836a88f8420",
+          "name":"ListenHTTP",
+          "comments":"",
+          "instanceIdentifier":"dd028355-bcd6-32b3-8ab1-1f178c52776d"
+        },
+        "destination":{
+          "id":"27d1ba11-2046-3f47-ad04-b8f56b7f5a2d",
+          "type":"PROCESSOR",
+          "groupId":"48151ea8-e63a-3702-9670-6836a88f8420",
+          "name":"NgsiLd2LdesMemberProcessor",
+          "comments":"",
+          "instanceIdentifier":"5a559d3c-0183-1000-ed15-1ff140c19494"
+        },
+        "labelIndex":1,
+        "zIndex":0,
+        "selectedRelationships":[
+          "success"
         ],
-        "labels": [],
-        "funnels": [],
-        "controllerServices": [],
-        "variables": {},
-        "defaultFlowFileExpiration": "0 sec",
-        "defaultBackPressureObjectThreshold": 10000,
-        "defaultBackPressureDataSizeThreshold": "1 GB",
-        "componentType": "PROCESS_GROUP",
-        "flowFileConcurrency": "UNBOUNDED",
-        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE"
+        "backPressureObjectThreshold":10000,
+        "backPressureDataSizeThreshold":"1 GB",
+        "flowFileExpiration":"0 sec",
+        "prioritizers":[
+
+        ],
+        "bends":[
+
+        ],
+        "loadBalanceStrategy":"DO_NOT_LOAD_BALANCE",
+        "partitioningAttribute":"",
+        "loadBalanceCompression":"DO_NOT_COMPRESS",
+        "componentType":"CONNECTION",
+        "groupIdentifier":"48151ea8-e63a-3702-9670-6836a88f8420"
+      }
+    ],
+    "labels":[
+
+    ],
+    "funnels":[
+
+    ],
+    "controllerServices":[
+
+    ],
+    "variables":{
+
     },
-    "externalControllerServices": {},
-    "parameterContexts": {},
-    "flowEncodingVersion": "1.0"
+    "defaultFlowFileExpiration":"0 sec",
+    "defaultBackPressureObjectThreshold":10000,
+    "defaultBackPressureDataSizeThreshold":"1 GB",
+    "componentType":"PROCESS_GROUP",
+    "flowFileConcurrency":"UNBOUNDED",
+    "flowFileOutboundPolicy":"STREAM_WHEN_AVAILABLE"
+  },
+  "externalControllerServices":{
+
+  },
+  "parameterContexts":{
+
+  },
+  "flowEncodingVersion":"1.0"
 }

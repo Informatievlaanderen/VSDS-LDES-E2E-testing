@@ -13,7 +13,7 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9010}:9010
     volumes:
       - type: bind
-        source: ${NIFI_DATA_FOLDER}
+        source: ${NIFI_DATA_FOLDER:-./data}
         target: /mnt/data
     networks:
       - ldes

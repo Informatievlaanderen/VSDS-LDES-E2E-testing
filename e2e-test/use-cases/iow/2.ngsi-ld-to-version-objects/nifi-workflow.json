@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "90ba11ff-4129-3377-918a-46e666c27432",
-        "instanceIdentifier": "5b71b231-0183-1000-9bfe-0751c385b356",
+        "identifier": "cb6170ab-d166-3f67-bd70-195623620074",
+        "instanceIdentifier": "5b9045ce-0183-1000-d0d8-401deaa0df47",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 297.0,
-            "y": 114.0
+            "x": 366.0,
+            "y": 40.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
-                "instanceIdentifier": "33c67f31-ebc8-37a8-b55c-a9d775874f7c",
+                "instanceIdentifier": "54c0c845-1af3-3f99-3e25-aafac656ffc8",
                 "name": "ListenHTTP",
                 "comments": "",
                 "position": {
@@ -165,11 +165,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+                "groupIdentifier": "cb6170ab-d166-3f67-bd70-195623620074"
             },
             {
                 "identifier": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
-                "instanceIdentifier": "e7743375-4e27-3134-1807-a05e2c96635c",
+                "instanceIdentifier": "f533747b-9320-3749-eef3-92325c47da7c",
                 "name": "PutFile",
                 "comments": "",
                 "position": {
@@ -263,11 +263,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+                "groupIdentifier": "cb6170ab-d166-3f67-bd70-195623620074"
             },
             {
                 "identifier": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
-                "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a",
+                "instanceIdentifier": "a0c13e11-fd10-3ab9-67cf-0de4414c3b8c",
                 "name": "NgsiLd2LdesMemberProcessor",
                 "comments": "",
                 "position": {
@@ -335,67 +335,31 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+                "groupIdentifier": "cb6170ab-d166-3f67-bd70-195623620074"
             }
         ],
         "inputPorts": [],
         "outputPorts": [],
         "connections": [
             {
-                "identifier": "f87a16f7-e143-3242-9828-aacfb8334de7",
-                "instanceIdentifier": "5b7214be-0183-1000-adb2-2dee7d75e84f",
-                "name": "",
-                "source": {
-                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
-                    "type": "PROCESSOR",
-                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
-                    "name": "NgsiLd2LdesMemberProcessor",
-                    "comments": "",
-                    "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a"
-                },
-                "destination": {
-                    "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
-                    "type": "PROCESSOR",
-                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
-                    "name": "PutFile",
-                    "comments": "",
-                    "instanceIdentifier": "e7743375-4e27-3134-1807-a05e2c96635c"
-                },
-                "labelIndex": 1,
-                "zIndex": 0,
-                "selectedRelationships": [
-                    "data"
-                ],
-                "backPressureObjectThreshold": 10000,
-                "backPressureDataSizeThreshold": "1 GB",
-                "flowFileExpiration": "0 sec",
-                "prioritizers": [],
-                "bends": [],
-                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                "partitioningAttribute": "",
-                "loadBalanceCompression": "DO_NOT_COMPRESS",
-                "componentType": "CONNECTION",
-                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
-            },
-            {
                 "identifier": "838a74e7-c7e6-387f-93e8-e3a745c3386c",
-                "instanceIdentifier": "4575df2f-f6a0-3072-35f5-a65353911aa0",
+                "instanceIdentifier": "3f1efb62-3018-323f-fa0b-f5fb7129261e",
                 "name": "",
                 "source": {
                     "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
                     "type": "PROCESSOR",
-                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "groupId": "cb6170ab-d166-3f67-bd70-195623620074",
                     "name": "ListenHTTP",
                     "comments": "",
-                    "instanceIdentifier": "33c67f31-ebc8-37a8-b55c-a9d775874f7c"
+                    "instanceIdentifier": "54c0c845-1af3-3f99-3e25-aafac656ffc8"
                 },
                 "destination": {
                     "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
                     "type": "PROCESSOR",
-                    "groupId": "90ba11ff-4129-3377-918a-46e666c27432",
+                    "groupId": "cb6170ab-d166-3f67-bd70-195623620074",
                     "name": "NgsiLd2LdesMemberProcessor",
                     "comments": "",
-                    "instanceIdentifier": "5b71e2bd-0183-1000-fb77-115707c6906a"
+                    "instanceIdentifier": "a0c13e11-fd10-3ab9-67cf-0de4414c3b8c"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -411,7 +375,43 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "90ba11ff-4129-3377-918a-46e666c27432"
+                "groupIdentifier": "cb6170ab-d166-3f67-bd70-195623620074"
+            },
+            {
+                "identifier": "f87a16f7-e143-3242-9828-aacfb8334de7",
+                "instanceIdentifier": "e0cf4030-36c7-3c85-c721-fe931ded02e0",
+                "name": "",
+                "source": {
+                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
+                    "type": "PROCESSOR",
+                    "groupId": "cb6170ab-d166-3f67-bd70-195623620074",
+                    "name": "NgsiLd2LdesMemberProcessor",
+                    "comments": "",
+                    "instanceIdentifier": "a0c13e11-fd10-3ab9-67cf-0de4414c3b8c"
+                },
+                "destination": {
+                    "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
+                    "type": "PROCESSOR",
+                    "groupId": "cb6170ab-d166-3f67-bd70-195623620074",
+                    "name": "PutFile",
+                    "comments": "",
+                    "instanceIdentifier": "f533747b-9320-3749-eef3-92325c47da7c"
+                },
+                "labelIndex": 1,
+                "zIndex": 0,
+                "selectedRelationships": [
+                    "data"
+                ],
+                "backPressureObjectThreshold": 10000,
+                "backPressureDataSizeThreshold": "1 GB",
+                "flowFileExpiration": "0 sec",
+                "prioritizers": [],
+                "bends": [],
+                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                "partitioningAttribute": "",
+                "loadBalanceCompression": "DO_NOT_COMPRESS",
+                "componentType": "CONNECTION",
+                "groupIdentifier": "cb6170ab-d166-3f67-bd70-195623620074"
             }
         ],
         "labels": [],

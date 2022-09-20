@@ -414,18 +414,37 @@
                 "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
             }
         ],
-        "labels": [],
-        "funnels": [],
-        "controllerServices": [],
-        "variables": {},
-        "defaultFlowFileExpiration": "0 sec",
-        "defaultBackPressureObjectThreshold": 10000,
-        "defaultBackPressureDataSizeThreshold": "1 GB",
-        "componentType": "PROCESS_GROUP",
-        "flowFileConcurrency": "UNBOUNDED",
-        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE"
+        "loadBalanceStrategy":"DO_NOT_LOAD_BALANCE",
+        "partitioningAttribute":"",
+        "loadBalanceCompression":"DO_NOT_COMPRESS",
+        "componentType":"CONNECTION",
+        "groupIdentifier":"48151ea8-e63a-3702-9670-6836a88f8420"
+      }
+    ],
+    "labels":[
+
+    ],
+    "funnels":[
+
+    ],
+    "controllerServices":[
+
+    ],
+    "variables":{
+
     },
-    "externalControllerServices": {},
-    "parameterContexts": {},
-    "flowEncodingVersion": "1.0"
+    "defaultFlowFileExpiration":"0 sec",
+    "defaultBackPressureObjectThreshold":10000,
+    "defaultBackPressureDataSizeThreshold":"1 GB",
+    "componentType":"PROCESS_GROUP",
+    "flowFileConcurrency":"UNBOUNDED",
+    "flowFileOutboundPolicy":"STREAM_WHEN_AVAILABLE"
+  },
+  "externalControllerServices":{
+
+  },
+  "parameterContexts":{
+
+  },
+  "flowEncodingVersion":"1.0"
 }

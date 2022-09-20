@@ -1,6 +1,6 @@
 {
     "@context": [
-        "https://github.com/smart-data-models/dataModel.WaterQuality/blob/master/context.jsonld",
+        "https://raw.githubusercontent.com/smart-data-models/dataModel.WaterQuality/master/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
     "id": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-sensor-v0005",

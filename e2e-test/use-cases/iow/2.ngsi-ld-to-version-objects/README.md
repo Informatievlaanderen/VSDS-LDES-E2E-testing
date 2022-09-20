@@ -40,18 +40,18 @@ The workflow contains a standard HTTP listener (ListenHTTP), the NiFi processor 
 
 > **NOTE**: currently the NiFi processor creating NGSI-LD version objects does not yet exist and as such the workflow template does not yet contain it!
 
-You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9005/ngsi), etc.
+You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9010/ngsi), etc.
 
 ### 2. Start the Workflow
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
-Verify that the HTTP listener is working: http://localhost:9005/ngsi/healthcheck should say `OK`.
+Verify that the HTTP listener is working: http://localhost:9010/ngsi/healthcheck should say `OK`.
 
 ### 3. Upload a NGSI-LD File
 Upload the given (or your own) NGSI-LD test file to the ListenHTTP processor:
 
 ```bash
-curl -X POST http://localhost:9005/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
+curl -X POST http://localhost:9010/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
 ```
 
 ## Test Verification

@@ -20,12 +20,32 @@ For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../
 export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
 ```
 
+> **Note**: because the MongoDB service is configured to permanently store the database, you need to empty the permanent storage before re-running this systems.
+
 Then you can run the systems by executing the following command:
 ```bash
 docker compose --env-file env.user up
 ```
 
-The data set is already seeded. We only need to [alias it](./create-alias.json):
+The data set is already seeded (see [simulator](http://localhost:9011/)):
+```bash
+curl http://localhost:9011/
+```
+returns:
+```json
+{
+    "aliases":[],
+    "fragments":[
+        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z",
+        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-21T09:38:34.617Z",
+        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-28T14:50:23.317Z",
+        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-06T11:55:00.313Z",
+        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-13T11:36:49.04Z"],
+    "responses":{}
+}
+```
+
+We only need to [alias it](./create-alias.json):
 ```bash
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```

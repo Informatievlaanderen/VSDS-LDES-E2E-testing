@@ -36,9 +36,10 @@ export COMPOSE_FILE="../../../support/context/gtfs2ldes-workflow-server-mongo/do
 
 Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
 ```bash
-docker compose --env-file env.user create
-docker compose --env-file env.user start nifi-workflow ldes-mongodb ldes-server
+docker compose --env-file env.user up
 ```
+
+> **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
 
 ### Test Execution
 To run the test, you need to:
@@ -64,13 +65,10 @@ Start the GTFS to LDES convertor as described [here](../../../support/context/gt
 
 To start the GTFS to LDES convertor:
 ```bash
-docker compose --env-file env.user start gtfs2ldes-js
+docker compose --env-file env.user up gtfs2ldes-js
 ```
 
-Verify that the GTFS to LDEs convertor is processing the GTFS or GTFS/RT source:
-```bash
-docker logs --follow gtfs-ingest-ldes_gtfs2ldes-js
-```
+Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
 
 #### 3. Verify LDES Members Received
 To ensure GTFS connections are being received by the LDES-server you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains the LDES members (check the document count).

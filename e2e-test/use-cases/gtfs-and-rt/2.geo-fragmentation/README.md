@@ -1,13 +1,6 @@
 # LDES Server Can Fragment an LDES Using Geospatial Fragmentation
 This test validates user story **As a Data Intermediary (business role) I want to fragment the GTFS/RT dataset using a geo-spatial fragmentation so I can query an LDES on geographic area in a more efficient way** (VSDSPUB-207) and was shown during demo 1 on August, 16th 2022.
 
-> **Note**: all the details of geospatial fragmentation have not yet been flushed out and we focussed on the most important criteria during this sprint so the current implementation does not yet cover all the acceptance criteria.
->
-> The following criteria still need to be decided:
-> * tile-to-tile relations: tile neighbors? which? N/E/S/W or also NE/NW/…
-> * member fragment relations: GT/LT?
-> * tile-to-member relations: all/only first/first+last?
-
 ## LDES Server
 The LDES Server provides some configuration to cover the following acceptance criteria:
 * can configure LDES server to use geo-spatial fragmentation (instead of the default time-based fragmentation)
@@ -39,7 +32,7 @@ The geospatial fragmentizer currently does not cover the following acceptance cr
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+To demonstrate the geospatial fragmentation, we use a adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments.
 
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation). Please note the specific configuration properties which allow to configure which fragmentizer to use as well as the specific geospatial bucketizer and fragmentizer properties:
 * FRAGMENTATION_TYPE=`geospatial` (do not change)
@@ -48,11 +41,6 @@ The environment file is already configured for geospatial fragmentation but you 
 * GEOSPATIAL_PROJECTION=lambert72 (only projecting supported currently, do not change)
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
-> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
-```bash
-export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
-```
 
 You can then run the systems by executing the following command:
 ```bash
@@ -101,11 +89,10 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
-After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
+After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly until it returns some relations):
 ```bash
-curl --location --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances
+curl http://localhost:8080/mobility-hindrances?tile=0/0/0
 ```
-When the response contains the member then all fragments have been created.
 
 Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains one LDES member and the `ldesfragments` document collection contains four LDES fragments (apart from the geo-spatial root fragment 0/0/0 and the real root/redirection fragment).
 

@@ -6,9 +6,9 @@ services:
     profiles:
       - delayed-start
     environment:
-      - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_CRON=${GTFS_CRON:-0 0 3 * * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
       - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
@@ -17,7 +17,7 @@ services:
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
     volumes:
       - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER:-./data/gtfs}
+        source: ${GTFS2LDES_DATA_FOLDER}
         target: /data
     networks:
       - ldes
@@ -47,8 +47,8 @@ services:
       - LDES_SHAPE=${LDES_SHAPE:-}
       - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-recent-first}
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=${VIEWS_0_FRAGMENTATIONS_0_NAME:-timebased}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-time}
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased # fixed to time-based for now
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
@@ -63,7 +63,7 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     volumes:
       - type: bind
-        source: ${MONGODB_DATA_FOLDER:-./data/db}
+        source: ${MONGODB_DATA_FOLDER}
         target: /data/db
     networks:
       - ldes

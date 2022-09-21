@@ -2,52 +2,66 @@ version: '3.3'
 services:
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG}
-    env_file:
-      - env.gtfs2ldes
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220714t1136}
     environment:
       - TARGET_URL=http://nifi-workflow:9005/gtfs
+      - GTFS_SOURCE=${GTFS_SOURCE}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - GTFS_CRON=${GTFS_CRON:-0 0 3 * * *}
+      - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
+      - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
+      - THROTTLE_RATE=${THROTTLE_RATE:-100}
+      - AUTH_HEADER=${AUTH_HEADER}
+      - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
     volumes:
       - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER}
+        source: ${GTFS2LDES_DATA_FOLDER:-./data/gtfs}
         target: /data
     networks:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
-    image: docker.io/agturley/nifi:${AGTURLEY_NIFI_TAG:-1.16.3-jdk17}
-    env_file:
-      - env.workflow
+    image: ghcr.io/informatievlaanderen/nifi:${NIFI_TAG:-1.17.0-jdk17}
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
+      - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
     ports:
-      - ${NIFI_UI_PORT}:8443
-      - ${NIFI_WORKFLOW_LISTEN_PORT}:9005
+      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
-    env_file:
-      - env.server
     environment:
+      - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
-      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT}
+      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME:-connections}
+      - LDES_MEMBERTYPE=${LDES_MEMBERTYPE:-http://semweb.mmlab.be/ns/linkedconnections#Connection}
+      - LDES_SHAPE=${LDES_SHAPE:-}
+      - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
+      - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-recent-first}
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=${VIEWS_0_FRAGMENTATIONS_0_NAME:-timebased}
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
     ports:
-      - ${LDES_SERVER_PORT}:8080
+      - ${LDES_SERVER_PORT:-8080}:8080
     networks:
       - ldes
     depends_on:
       - ldes-mongodb
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-mongodb
-    image: mongo:${MONGODB_TAG}
-    env_file:
-      - env.mongo
+    image: mongo:${MONGODB_TAG:-5.0.11}
     ports:
-      - ${MONGODB_PORT}:27017
+      - ${MONGODB_PORT:-27017}:27017
     volumes:
       - type: bind
-        source: ${MONGODB_DATA_FOLDER}
+        source: ${MONGODB_DATA_FOLDER:-./data/db}
         target: /data/db
     networks:
       - ldes

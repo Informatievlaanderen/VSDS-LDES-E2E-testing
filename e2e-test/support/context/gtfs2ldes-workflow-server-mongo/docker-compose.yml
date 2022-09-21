@@ -3,6 +3,8 @@ services:
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220714t1136}
+    profiles:
+      - delayed-start
     environment:
       - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_SOURCE=${GTFS_SOURCE}

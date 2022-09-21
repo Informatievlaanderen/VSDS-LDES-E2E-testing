@@ -17,7 +17,7 @@ services:
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
     volumes:
       - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER:-./data/gtfs}
+        source: ${GTFS2LDES_DATA_FOLDER}
         target: /data
     networks:
       - ldes
@@ -63,7 +63,7 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     volumes:
       - type: bind
-        source: ${MONGODB_DATA_FOLDER:-./data/db}
+        source: ${MONGODB_DATA_FOLDER}
         target: /data/db
     networks:
       - ldes

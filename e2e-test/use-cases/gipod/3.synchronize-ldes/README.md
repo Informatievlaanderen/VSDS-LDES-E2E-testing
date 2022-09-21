@@ -30,6 +30,8 @@ For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../
 export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
 ```
 
+> **Note**: because the MongoDB service is configured to permanently store the database, you need to empty the permanent storage before re-running this systems.
+
 Then you can run the systems by executing the following command:
 ```bash
 docker compose --env-file env.user up
@@ -91,7 +93,7 @@ Start the workflow as described [here](../../../support/context/workflow/README.
 #### 4. Verify Initial Data Set Received
 You can verify that, after some time, all (501) LDES members are received by the sink HTTP server by visit the following pages: http://localhost:9003 (count) and http://localhost:9003/member (LDES member ids).
 
-To verify all members are received (execute repeatedly):
+To verify all members are received by the [sink](http://localhost:9003/) execute repeatedly:
 ```bash
 curl http://localhost:9003/
 ```

@@ -5,41 +5,51 @@ We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves
 
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
-* LDES_SERVER_SIMULATOR_TAG (e.g. `20220718T1542`)
+* LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
 * LDES_WORKBENCH_NIFI_TAG (e.g. `20220901t170424`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 * LDES_SERVER_TAG (e.g. `20220721t0939`)
-* LDES_COLLECTIONNAME (e.g. `"mobility-hindrances"`)
+* SPRING_DATA_MONGODB_DATABASE (e.g. `GIPOD`)
+* LDES_COLLECTIONNAME (e.g. `mobility-hindrances`)
 * LDES_MEMBERTYPE (e.g. `"https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder"`)
+* MONGODB_DATA_FOLDER (location of MongoDB permanent storage, no default)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-server-mongo`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20220914t0847`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_SERVER_SIMULATOR_SEED_FOLDER (an empty data folder, so no seeding)
+* LDES_SERVER_PORT (default: `8080`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
 * MONGODB_TAG (default: `5.0.11`)
 * MONGODB_PORT (default: `27017`)
 
-### Geospatial Fragmentation
+## Fragmentation
+In addition to the above mandatory settings, the LDES server requires some configuration on how it needs to fragment the LDES members. Due to the nature on Agile Development, this LDES server configuration has changed.
 
+### Time-based fragmentation
+> **Note**: before tag `20220812T1227`, the LDES Server only allows time-based fragmentation.
+
+You can specify the following parameters:
+* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
+
+### Geospatial Fragmentation
 > **Note**: as of tag `20220812T1227`, the LDES Server allows to choose between time-based and geospation fragmentation.
 
-The default fragmentation is time-based and its only property is still TIMEBASED_MEMBERLIMIT. To change this default fragmentation type to geospatial fragmentation set the FRAGMENTATION_TYPE:
-* FRAGMENTATION_TYPE (`timebased` or `geospatial`, default: `timebased`)
+The default fragmentation is time-based and its only property is still TIMEBASED_MEMBERLIMIT, i.e.:
+* FRAGMENTATION_TYPE=`timebased` (default)
+* TIMEBASED_MEMBERLIMIT (number of members per fragment, default: `100`)
 
-and configure the geospatial fragmentation:
-
+To specify geospatial fragmentation:
+* FRAGMENTATION_TYPE=`geospatial`
+* GEOSPATIAL_PROJECTION=`lambert72` (currently the only projection type allowed)
 * GEOSPATIAL_MAXZOOMLEVEL (the required [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels), no default)
 * GEOSPATIAL_BUCKETISERPROPERTY (defines which property will be used for bucketizing, e.g. `"http://www.opengis.net/ont/geosparql#asWKT"`)
-* GEOSPATIAL_PROJECTION (the projection type, currently only `lambert72` is allowed)
 
 ### Multi-level Fragmentation
-
 > **Note**: as of tag `20220826t1001`, the LDES Server allows to define a multi-level fragmentation strategy.
 
 The property `FRAGMENTATION_TYPE` has been replaced by `FRAGMENTATIONLIST_FRAGMENTATIONS` in which you can fill in the required fragmentation:
@@ -112,7 +122,6 @@ response:
 It looks like you are trying to access MongoDB over HTTP on the native driver port.
 ```
 This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
-![compass](./artwork/mongo-compass.png)
 
 ### Stop the Systems
 To stop all systems in the context:

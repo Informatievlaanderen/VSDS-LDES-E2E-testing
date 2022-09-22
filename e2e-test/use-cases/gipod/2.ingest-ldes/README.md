@@ -48,7 +48,7 @@ Then you can run the systems by executing the following command:
 docker compose --env-file env.user up
 ```
 
-The data set is already seeded. We only need to [alias it](./create-alias.json):
+The data set is already seeded (see [simulator](http://localhost:9011)). We only need to [alias it](./create-alias.json):
 ```bash
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```

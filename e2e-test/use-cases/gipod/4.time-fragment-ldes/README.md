@@ -76,12 +76,14 @@ The different scenarios can be tested with the following data set:
 So, the total data set contains 617 items. We have [configured our LDES Server](./env.time-fragment) deliberately to create fragments of 300 members to be able to easily test each scenario.
 
 #### Recreate Containers Between the Scenarios
-All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To recreate the containers:
+All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To destroy the containers:
 ```bash
 docker compose --env-file env.user down
+```
+> **Note**: as we use a permanent storage for MongoDB, you also need to delete the database before restarting the containers:
+```bash
 docker compose --env-file env.user up
 ```
-
 You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 ### Test Execution

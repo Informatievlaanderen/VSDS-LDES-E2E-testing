@@ -40,7 +40,7 @@
         "observedAt": "2022-09-09T09:10:00.000Z",
         "unitCode": "G42"
     },
-    "https://uri.fiware.org/ns/data-models#dateObserved": {
+    "dateObserved": {
         "type": "Property",
         "value": {
             "type": "DateTime",

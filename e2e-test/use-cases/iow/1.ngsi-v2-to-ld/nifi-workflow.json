@@ -1,24 +1,24 @@
 {
     "flowContents": {
-        "identifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3",
-        "instanceIdentifier": "65c94a06-0183-1000-38e9-40de2e30fd02",
+        "identifier": "e8d35f82-be44-351e-af73-5b51f6b174cb",
+        "instanceIdentifier": "6f789e9c-0183-1000-5b8c-e8041e8c4ac0",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 389.0,
-            "y": 145.0
+            "x": 567.0,
+            "y": 241.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
-                "instanceIdentifier": "50a5868f-5174-390a-1b8e-9fb927677be4",
+                "instanceIdentifier": "8640c839-9055-3dfd-8f33-bd0aa0700e49",
                 "name": "ListenHTTP",
                 "comments": "",
                 "position": {
-                    "x": 304.0,
-                    "y": -16.0
+                    "x": 216.0,
+                    "y": -24.0
                 },
                 "type": "org.apache.nifi.processors.standard.ListenHTTP",
                 "bundle": {
@@ -165,11 +165,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3"
+                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
             },
             {
                 "identifier": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
-                "instanceIdentifier": "65c9778f-0183-1000-f86f-7ac26ad548cc",
+                "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c",
                 "name": "NgsiV2ToLdTranslatorProcessor",
                 "comments": "",
                 "position": {
@@ -184,9 +184,10 @@
                 },
                 "properties": {
                     "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-                    "LD_CONTEXT": "https://raw.githubusercontent.com/smart-data-models/dataModel.WaterQuality/c1d8cce0edd56a2af4dd179d3f939bedc64d8bfa/context.jsonld",
+                    "LD_CONTEXT": "https://json-ld.org/test-suite/context.jsonld",
+                    "ADD_WKT_FOR_GEOJSON_PROPERTIES": "true",
                     "DATA_SOURCE_FORMAT": "JSONLD11",
-                    "DATA_DESTINATION_FORMAT": "n-quads"
+                    "DATA_DESTINATION_FORMAT": "JSONLD11"
                 },
                 "propertyDescriptors": {
                     "CORE_CONTEXT": {
@@ -198,6 +199,12 @@
                     "LD_CONTEXT": {
                         "name": "LD_CONTEXT",
                         "displayName": "NGSI LD context",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "ADD_WKT_FOR_GEOJSON_PROPERTIES": {
+                        "name": "ADD_WKT_FOR_GEOJSON_PROPERTIES",
+                        "displayName": "Translate geoJSON properties to wkt literals",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -230,11 +237,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3"
+                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
             },
             {
                 "identifier": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
-                "instanceIdentifier": "20a37ebd-35f6-37c3-ae0f-e84020d26a92",
+                "instanceIdentifier": "861b614a-51c1-3c26-bd8f-a7e4543c1ba1",
                 "name": "PutFile",
                 "comments": "",
                 "position": {
@@ -328,7 +335,7 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3"
+                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
             }
         ],
         "inputPorts": [],
@@ -336,23 +343,23 @@
         "connections": [
             {
                 "identifier": "838a74e7-c7e6-387f-93e8-e3a745c3386c",
-                "instanceIdentifier": "5d0c058d-4949-3b1f-df21-4a3a8ea92ae8",
+                "instanceIdentifier": "b7603533-10c7-39cb-7322-0a5ff57fba41",
                 "name": "",
                 "source": {
                     "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
                     "type": "PROCESSOR",
-                    "groupId": "ba2a910b-78d9-364d-9b4d-21549c3844f3",
+                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
                     "name": "ListenHTTP",
                     "comments": "",
-                    "instanceIdentifier": "50a5868f-5174-390a-1b8e-9fb927677be4"
+                    "instanceIdentifier": "8640c839-9055-3dfd-8f33-bd0aa0700e49"
                 },
                 "destination": {
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
-                    "groupId": "ba2a910b-78d9-364d-9b4d-21549c3844f3",
+                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
                     "name": "NgsiV2ToLdTranslatorProcessor",
                     "comments": "",
-                    "instanceIdentifier": "65c9778f-0183-1000-f86f-7ac26ad548cc"
+                    "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -368,27 +375,27 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3"
+                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
             },
             {
                 "identifier": "92e4e45f-dc51-3290-a26b-f5f2b43272ee",
-                "instanceIdentifier": "65c9b85a-0183-1000-ca13-e82f7bb09475",
+                "instanceIdentifier": "5e260dec-3dd6-3828-036f-88061a76587f",
                 "name": "",
                 "source": {
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
-                    "groupId": "ba2a910b-78d9-364d-9b4d-21549c3844f3",
+                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
                     "name": "NgsiV2ToLdTranslatorProcessor",
                     "comments": "",
-                    "instanceIdentifier": "65c9778f-0183-1000-f86f-7ac26ad548cc"
+                    "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c"
                 },
                 "destination": {
                     "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
                     "type": "PROCESSOR",
-                    "groupId": "ba2a910b-78d9-364d-9b4d-21549c3844f3",
+                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
                     "name": "PutFile",
                     "comments": "",
-                    "instanceIdentifier": "20a37ebd-35f6-37c3-ae0f-e84020d26a92"
+                    "instanceIdentifier": "861b614a-51c1-3c26-bd8f-a7e4543c1ba1"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -404,7 +411,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "ba2a910b-78d9-364d-9b4d-21549c3844f3"
+                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
             }
         ],
         "labels": [],

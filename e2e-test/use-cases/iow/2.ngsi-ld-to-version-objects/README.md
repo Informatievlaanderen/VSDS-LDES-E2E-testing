@@ -38,8 +38,6 @@ Once logged in, create a new process group based on the [translate workflow](./n
 
 The workflow contains a standard HTTP listener (ListenHTTP), the NiFi processor creating NGSI-LD version objects and a standard processor to capture the modified NGSI-LD content (PutFile).
 
-> **NOTE**: currently the NiFi processor creating NGSI-LD version objects does not yet exist and as such the workflow template does not yet contain it!
-
 You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9010/ngsi), etc.
 
 ### 2. Start the Workflow

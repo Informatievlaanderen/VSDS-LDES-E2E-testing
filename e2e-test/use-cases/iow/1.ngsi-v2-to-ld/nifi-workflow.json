@@ -17,8 +17,8 @@
                 "name": "ListenHTTP",
                 "comments": "",
                 "position": {
-                    "x": 208.0,
-                    "y": -8.0
+                    "x": 304.0,
+                    "y": -16.0
                 },
                 "type": "org.apache.nifi.processors.standard.ListenHTTP",
                 "bundle": {

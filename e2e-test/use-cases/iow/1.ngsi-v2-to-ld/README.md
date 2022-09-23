@@ -48,24 +48,22 @@ The workflow contains a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI
 
 > **NOTE**: currently the NGSI-v2 to NGSI-LD translator does not yet exist and as such the workflow template does not yet contain it!
 
-You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9005/ngsi), etc.
+You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9010/ngsi), etc.
 
 ### 2. Start the Workflow
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
-Verify that the HTTP listener is working: http://localhost:9005/ngsi/healthcheck should say `OK`.
+Verify that the HTTP listener is working: http://localhost:9010/ngsi/healthcheck should say `OK`.
 
 ### 3. Upload a NGSI-v2 File
 Upload the given (or your own) NGSI-v2 test file to the ListenHTTP processor:
 
 ```bash
-curl -X POST http://localhost:9005/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
+curl -X POST http://localhost:9010/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
 ```
 
 ### 4. Generate Expected NGSI-LD File
 While waiting for the workflow to translate the NGSI-v2 file to the NGSI-LD become available in the mapped volume, you can use Fiware's NGSI-v2 to NGSI-LD [python script](https://github.com/FIWARE/data-models/blob/master/tools/normalized2LD.py) to generate the expected output.
-
-> **Note**: that the script is a couple of years old and the repository is already archived and that this script is nowhere to be found on the [new repository](https://github.com/smart-data-models/data-models).
 
 The script relies on a package (`entity_print`) that cannot be found anymore so we have adapted the script to use a standard method for printing an entity to json (`json.dumps`). You can find the adapted script [here](./normalized2LD.py).
 

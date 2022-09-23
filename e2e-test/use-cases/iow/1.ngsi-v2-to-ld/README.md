@@ -48,18 +48,18 @@ The workflow contains a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI
 
 > **NOTE**: currently the NGSI-v2 to NGSI-LD translator does not yet exist and as such the workflow template does not yet contain it!
 
-You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9005/ngsi), etc.
+You can verify the processor settings to ensure the HTTP listener listens on the correct port and path (e.g. http://localhost:9010/ngsi), etc.
 
 ### 2. Start the Workflow
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
-Verify that the HTTP listener is working: http://localhost:9005/ngsi/healthcheck should say `OK`.
+Verify that the HTTP listener is working: http://localhost:9010/ngsi/healthcheck should say `OK`.
 
 ### 3. Upload a NGSI-v2 File
 Upload the given (or your own) NGSI-v2 test file to the ListenHTTP processor:
 
 ```bash
-curl -X POST http://localhost:9005/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
+curl -X POST http://localhost:9010/ngsi -H 'Content-Type: application/json' -d '@data/input/WaterQualityObserved.json' 
 ```
 
 ### 4. Generate Expected NGSI-LD File

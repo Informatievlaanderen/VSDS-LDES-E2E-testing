@@ -17,6 +17,7 @@ services:
         target: /mnt/data
     networks:
       - ldes
+
 networks:
   ldes:
     name: ${USECASE_NAME:-workflow}_network

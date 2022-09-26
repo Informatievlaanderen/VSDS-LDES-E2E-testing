@@ -1,7 +1,7 @@
 # build environment
 FROM node:18 AS builder
 # fix vulnerabilities
-RUN npm install -g npm@8.19.1
+RUN npm install -g npm@8.19.2
 # build it
 WORKDIR /build
 COPY . .
@@ -15,7 +15,7 @@ FROM node:18.2.0-alpine3.15
 RUN apk update && apk upgrade
 WORKDIR /usr/vsds/generator
 # fix vulnerabilities
-RUN npm install -g npm@8.19.1
+RUN npm install -g npm@8.19.2
 ## setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
 COPY --chown=node:node --from=builder /build/dist ./

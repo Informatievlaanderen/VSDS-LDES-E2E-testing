@@ -1,23 +1,29 @@
 {
     "@context": [
+        "https://json-ld.org/test-suite/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
     "id": "urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj",
     "type": "WaterQualityObserved",
-    "locationName": {
+    "conductivity": {
         "type": "Property",
-        "value": "loc-00019-33",
+        "value": 6150,
+        "observedAt": "2022-09-09T09:10:00.000Z",
+        "unitCode": "G42"
+    },
+    "dateObserved": {
+        "type": "Property",
+        "value": {
+            "@type": "DateTime",
+            "@value": "2022-09-09T09:10:00.000Z"
+        },
         "observedAt": "2022-09-09T09:10:00.000Z"
     },
-    "refDevices": {
+    "depth": {
         "type": "Property",
-        "value": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG",
-        "observedAt": "2022-09-09T09:10:00.000Z"
-    },
-    "samplingPoint": {
-        "type": "Property",
-        "value": "spt-00035-79",
-        "observedAt": "2022-09-09T09:10:00.000Z"
+        "value": 1442,
+        "observedAt": "2022-09-09T09:10:00.000Z",
+        "unitCode": "HP"
     },
     "location": {
         "type": "GeoProperty",
@@ -32,8 +38,7 @@
         "name": {
             "type": "Property",
             "value": "loc-00019-33"
-        },
-        "observedAt": "2022-09-09T09:10:00.000Z"
+        }
     },
     "locationName": {
         "type": "Property",
@@ -43,21 +48,24 @@
     },
     "https://uri.fiware.org/ns/data-models#dateObserved": {
         "type": "Property",
-        "value": {
-            "type": "DateTime",
-            "@value": "2022-09-09T09:10:00.000Z"
-        },
+        "value": "loc-00019-33",
         "observedAt": "2022-09-09T09:10:00.000Z"
-    },
-    "depth": {
-        "type": "Property",
-        "value": 1442,
-        "observedAt": "2022-09-09T09:10:00.000Z",
-        "unitCode": "HP"
     },
     "refDevice": {
         "type": "Relationship",
         "object": "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG"
+    },
+    "refDevices": {
+        "type": "Property",
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:Device:dwg-iow-JAmXrtiSYwBpsbN9s4nQDG"
+        ],
+        "observedAt": "2022-09-09T09:10:00.000Z"
+    },
+    "samplingPoint": {
+        "type": "Property",
+        "value": "spt-00035-79",
+        "observedAt": "2022-09-09T09:10:00.000Z"
     },
     "temperature": {
         "type": "Property",

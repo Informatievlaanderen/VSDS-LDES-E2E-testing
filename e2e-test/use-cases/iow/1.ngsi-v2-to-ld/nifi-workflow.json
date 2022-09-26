@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "e8d35f82-be44-351e-af73-5b51f6b174cb",
-        "instanceIdentifier": "6f789e9c-0183-1000-5b8c-e8041e8c4ac0",
+        "identifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5",
+        "instanceIdentifier": "798a5d9f-0183-1000-1f9b-64c4f5a0ecbb",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 567.0,
-            "y": 241.0
+            "x": 328.0,
+            "y": 64.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
-                "instanceIdentifier": "8640c839-9055-3dfd-8f33-bd0aa0700e49",
+                "instanceIdentifier": "c77bb961-6717-3eaa-98a6-3581f0f69ae7",
                 "name": "ListenHTTP",
                 "comments": "",
                 "position": {
@@ -165,11 +165,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
+                "groupIdentifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5"
             },
             {
                 "identifier": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
-                "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c",
+                "instanceIdentifier": "68c8ddbc-3194-3fc9-58e1-d2c48bcc104b",
                 "name": "NgsiV2ToLdTranslatorProcessor",
                 "comments": "",
                 "position": {
@@ -184,10 +184,7 @@
                 },
                 "properties": {
                     "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-                    "LD_CONTEXT": "https://json-ld.org/test-suite/context.jsonld",
-                    "ADD_WKT_FOR_GEOJSON_PROPERTIES": "true",
-                    "DATA_SOURCE_FORMAT": "JSONLD11",
-                    "DATA_DESTINATION_FORMAT": "JSONLD11"
+                    "LD_CONTEXT": null
                 },
                 "propertyDescriptors": {
                     "CORE_CONTEXT": {
@@ -198,25 +195,7 @@
                     },
                     "LD_CONTEXT": {
                         "name": "LD_CONTEXT",
-                        "displayName": "NGSI LD context",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "ADD_WKT_FOR_GEOJSON_PROPERTIES": {
-                        "name": "ADD_WKT_FOR_GEOJSON_PROPERTIES",
-                        "displayName": "Translate geoJSON properties to wkt literals",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_SOURCE_FORMAT": {
-                        "name": "DATA_SOURCE_FORMAT",
-                        "displayName": "Data source format",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_DESTINATION_FORMAT": {
-                        "name": "DATA_DESTINATION_FORMAT",
-                        "displayName": "Data destination format",
+                        "displayName": "Data-specific NGSI LD context",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }
@@ -237,11 +216,11 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
+                "groupIdentifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5"
             },
             {
                 "identifier": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
-                "instanceIdentifier": "861b614a-51c1-3c26-bd8f-a7e4543c1ba1",
+                "instanceIdentifier": "959256e2-8455-3cb5-9dc7-f6a53dbef4eb",
                 "name": "PutFile",
                 "comments": "",
                 "position": {
@@ -335,7 +314,7 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
+                "groupIdentifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5"
             }
         ],
         "inputPorts": [],
@@ -343,23 +322,23 @@
         "connections": [
             {
                 "identifier": "838a74e7-c7e6-387f-93e8-e3a745c3386c",
-                "instanceIdentifier": "b7603533-10c7-39cb-7322-0a5ff57fba41",
+                "instanceIdentifier": "df70c8ae-28d3-30ac-b42b-7c4d7d7eb5a1",
                 "name": "",
                 "source": {
                     "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
                     "type": "PROCESSOR",
-                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
+                    "groupId": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5",
                     "name": "ListenHTTP",
                     "comments": "",
-                    "instanceIdentifier": "8640c839-9055-3dfd-8f33-bd0aa0700e49"
+                    "instanceIdentifier": "c77bb961-6717-3eaa-98a6-3581f0f69ae7"
                 },
                 "destination": {
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
-                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
+                    "groupId": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5",
                     "name": "NgsiV2ToLdTranslatorProcessor",
                     "comments": "",
-                    "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c"
+                    "instanceIdentifier": "68c8ddbc-3194-3fc9-58e1-d2c48bcc104b"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -375,27 +354,27 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
+                "groupIdentifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5"
             },
             {
                 "identifier": "92e4e45f-dc51-3290-a26b-f5f2b43272ee",
-                "instanceIdentifier": "5e260dec-3dd6-3828-036f-88061a76587f",
+                "instanceIdentifier": "62650035-d265-3d33-6cc4-333d58a1889f",
                 "name": "",
                 "source": {
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
-                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
+                    "groupId": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5",
                     "name": "NgsiV2ToLdTranslatorProcessor",
                     "comments": "",
-                    "instanceIdentifier": "80fb7088-64b5-3e12-3d6d-4c2eb8c6b08c"
+                    "instanceIdentifier": "68c8ddbc-3194-3fc9-58e1-d2c48bcc104b"
                 },
                 "destination": {
                     "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
                     "type": "PROCESSOR",
-                    "groupId": "e8d35f82-be44-351e-af73-5b51f6b174cb",
+                    "groupId": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5",
                     "name": "PutFile",
                     "comments": "",
-                    "instanceIdentifier": "861b614a-51c1-3c26-bd8f-a7e4543c1ba1"
+                    "instanceIdentifier": "959256e2-8455-3cb5-9dc7-f6a53dbef4eb"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -411,7 +390,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "e8d35f82-be44-351e-af73-5b51f6b174cb"
+                "groupIdentifier": "62cd8a41-00a9-3491-b083-0fc95ba8e2c5"
             }
         ],
         "labels": [],

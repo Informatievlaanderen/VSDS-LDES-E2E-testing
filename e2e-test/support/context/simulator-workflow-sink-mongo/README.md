@@ -5,18 +5,23 @@ We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves
 
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
-* LDES_SERVER_SIMULATOR_TAG (e.g. `20220818T1548`)
+* LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
 * LDES_WORKBENCH_NIFI_TAG (e.g. `20220901t170424`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_CLIENT_SINK_TAG (e.g. `20220818T1548`)
+* MONGODB_DATA_FOLDER (location of MongoDB permanent storage, no default)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20220914t0847`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_CLIENT_SINK_PORT (default: `9003`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_SERVER_SIMULATOR_SEED_FOLDER (an empty data folder, so no seeding)
+* LDES_CLIENT_SINK_TAG (default: `20220914t0847`)
+* LDES_CLIENT_SINK_SILENT (default: `true`)
+* LDES_CLIENT_SINK_MEMBER_TYPE (default: `https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder`)
+* LDES_CLIENT_SINK_DATABASE_NAME (default: `GIPOD`)
+* LDES_CLIENT_SINK_COLLECTION_NAME (default: `mobility-hindrances`)
+* LDES_CLIENT_SINK_PORT (default: `9003`)
 * MONGODB_TAG (default: `5.0.11`)
 * MONGODB_PORT (default: `27017`)
 
@@ -63,7 +68,7 @@ It looks like you are trying to access MongoDB over HTTP on the native driver po
 ```
 This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
 
-### Stop the Systems
+## Stop the Systems
 To stop all systems in the context:
 ```bash
 docker compose --env-file env.user down

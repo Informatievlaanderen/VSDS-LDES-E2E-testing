@@ -1,13 +1,6 @@
 # LDES Server Can Fragment an LDES Using Geospatial Fragmentation
 This test validates user story **As a Data Intermediary (business role) I want to fragment the GTFS/RT dataset using a geo-spatial fragmentation so I can query an LDES on geographic area in a more efficient way** (VSDSPUB-207) and was shown during demo 1 on August, 26th 2022.
 
-> **Note**: all the details of geospatial fragmentation have not yet been flushed out and we focussed on the most important criteria during this sprint so the current implementation does not yet cover all the acceptance criteria.
->
-> The following criteria still need to be decided:
-> * tile-to-tile relations: tile neighbors? which? N/E/S/W or also NE/NW/…
-> * member fragment relations: GT/LT?
-> * tile-to-member relations: all/only first/first+last?
-
 ## LDES Server
 The LDES Server provides some configuration to cover the following acceptance criteria:
 * can configure LDES server to use geo-spatial fragmentation (instead of the default time-based fragmentation)
@@ -41,20 +34,11 @@ Currently, the following criteria are not yet implemented:
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+To demonstrate the geospatial fragmentation, we use an aapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
 
-The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation). Please note the specific configuration properties which allow to configure which fragmentizer to use as well as the specific geospatial bucketizer and fragmentizer properties:
-* FRAGMENTATIONLIST_FRAGMENTATIONS=`geospatial,timebased` (change to `geospatial` or `timebased` to see different fragmentation)
-* GEOSPATIAL_MAXZOOMLEVEL=15 (tune as needed)
-* GEOSPATIAL_BUCKETISERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT" (specific to the GIPOD data set, do not change)
-* GEOSPATIAL_PROJECTION=lambert72 (only projecting supported currently, do not change)
+The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation).
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
-> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
-```bash
-export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
-```
 
 You can then run the systems by executing the following command:
 ```bash
@@ -63,7 +47,7 @@ docker compose --env-file env.user up
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
+Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES-server.
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances` -- **note** that we use an alias here to ease the use of different data sets
@@ -90,30 +74,31 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
-After that you can start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
+After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
 ```bash
-curl --location --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances
+curl http://localhost:8080/mobility-hindrances
 ```
+The response should contain a relation to the geo-spatial root node (`http://localhost:8080/mobility-hindrances?tile=0/0/0/`) which contains four `GeospatiallyContainsRelation`s, each referring to a timebased fragment which contains the member (e.g. `http://localhost:8080/mobility-hindrances?tile=15/16742/11010&generatedAtTime=2022-09-22T14:40:49.379Z`).
 
-
-When the response contains the member then all fragments have been created.
-
-Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains four LDES members and the `ldesfragments` document collection contains TODO LDES fragments.
+Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains six LDES members and the `ldesfragments` document collection contains one root fragment (`tile=0/0/0`), four tile fragments (e.g. `http://localhost:8080/mobility-hindrances?tile=15/16742/11010`) and four timebased fragments (e.g. `http://localhost:8080/mobility-hindrances?tile=15/16742/11010&generatedAtTime=2022-09-22T14:40:49.379Z`).
 
 #### 2. Try-out different fragmentation strategies.
 
-Try out different fragmentation strategies by
-1. By updating the value of `FRAGMENTATIONLIST_FRAGMENTATIONS` from `geospatial,timebased` to either `geospatial` or `timebased`
-2. Deleting the database for example using [Mongo Compass](https://www.mongodb.com/products/compass)
-3. Recreating the ldes-server:
+To try out a different fragmentation strategy you need to tune the [Docker Compose](./docker-compose.yml) file and follow these steps:
+1. Change the strategy, e.g.:
+   * Disable the current strategy (comment) and enable (uncomment) the `ALTERNATIVE STRATEGY: only timebased`
+   * Disable the current strategy (comment) and enable (uncomment) the `ALTERNATIVE STRATEGY: only geospatial`
+2. Delete the MongoDB database (e.g. using [Mongo Compass](https://www.mongodb.com/products/compass))
+3. Recreate the ldes-server:
    ```
     docker compose --env-file env.user stop ldes-server  
     docker compose --env-file env.user create ldes-server
     docker compose --env-file env.user start ldes-server   
     ``` 
+4. Restart the workflow
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
 docker compose --env-file env.user down
 ```

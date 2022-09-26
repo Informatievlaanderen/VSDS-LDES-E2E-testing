@@ -36,9 +36,10 @@ export COMPOSE_FILE="../../../support/context/gtfs2ldes-workflow-server-mongo/do
 
 Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
 ```bash
-docker compose --env-file env.user create
-docker compose --env-file env.user start nifi-workflow ldes-mongodb ldes-server
+docker compose --env-file env.user up
 ```
+
+> **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
 
 ### Test Execution
 To run the test, you need to:
@@ -50,9 +51,9 @@ To run the test, you need to:
 #### 1. Upload NiFi Workflow
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
+Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
-Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
 Verify that the ListenHTTP processor is listening for incoming GTFS/RT members:
 ```bash
@@ -64,13 +65,10 @@ Start the GTFS to LDES convertor as described [here](../../../support/context/gt
 
 To start the GTFS to LDES convertor:
 ```bash
-docker compose --env-file env.user start gtfs2ldes-js
+docker compose --env-file env.user up gtfs2ldes-js
 ```
 
-Verify that the GTFS to LDEs convertor is processing the GTFS or GTFS/RT source:
-```bash
-docker logs --follow gtfs-ingest-ldes_gtfs2ldes-js
-```
+Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
 
 #### 3. Verify LDES Members Received
 To ensure GTFS connections are being received by the LDES-server you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains the LDES members (check the document count).
@@ -83,7 +81,7 @@ curl --location --header 'Accept: application/n-quads' http://localhost:8080/con
 ```
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
 docker compose --env-file env.user down
 ```

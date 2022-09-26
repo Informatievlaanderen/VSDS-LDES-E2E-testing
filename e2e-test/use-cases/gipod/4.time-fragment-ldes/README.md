@@ -62,7 +62,7 @@ docker compose --env-file env.user up
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
 
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
+Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES-server.
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
@@ -76,13 +76,15 @@ The different scenarios can be tested with the following data set:
 So, the total data set contains 617 items. We have [configured our LDES Server](./env.time-fragment) deliberately to create fragments of 300 members to be able to easily test each scenario.
 
 #### Recreate Containers Between the Scenarios
-All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To recreate the containers:
+All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To destroy the containers:
 ```bash
 docker compose --env-file env.user down
+```
+> **Note**: as we use a permanent storage for MongoDB, you also need to delete the database before restarting the containers:
+```bash
 docker compose --env-file env.user up
 ```
-
-You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
+You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 ### Test Execution
 > **Note**: the first scenario is already implicitly tested by the [LDES Server verification step](../../../support/context/simulator-workflow-server-mongo/README.md#ldes-server).
@@ -95,7 +97,7 @@ For testing the second scenario we need to send the [scenario 2 alfa.jsonld](./d
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario2/alfa.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
-2. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+2. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 3. Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/) or use [Chrome DevTools](https://developer.chrome.com/docs/devtools/) to view the response headers.
 
 The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanOrEqualToRelation` nor `LessThanOrEqualToRelation`.
@@ -110,7 +112,7 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario3/beta.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
-3. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances. 
 
 This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/last fragment.
@@ -128,7 +130,7 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/epsilon.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
-3. Start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow).
+3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances.
 
 This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/middle fragment.
@@ -140,7 +142,7 @@ In this fragment validate the `Cache-Control` header (**not** `immutable`), sear
 In this fragment  search for the `tree#relation`, note the `LesserThanOrEqualToRelation` and follow it to the previous/first fragment.
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
 docker compose --env-file env.user down
 ```

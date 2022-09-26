@@ -1,0 +1,30 @@
+@startuml "LDES IoW Use Case Demo - Component Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title LDES IoW Use Case Demo - Component Diagram
+
+Person(tester, "Tester")
+
+System_Ext(generator, "JSON Data Generator", "Simple generator creating\n**WaterQualityObserved** updates (NGSI-v2 format)")
+System_Boundary(nifi, "Apache NiFi system") {
+    Container_Boundary(workflow, "IoW Workflow"){
+         Component(listener, "ListenHTTP", "Java - standard NiFI processor", "Receives NGSI-v2 updates for Device, DeviceModel OR WaterQualityObserved")
+         Component(translator, "NGSI v2 to LD translation", "Java - **custom** NiFI processor", "Translates NGSI-v2 to NGSI-LD according to Fiware rules")
+         Component(creator, "LDES member creator", "Java - **custom** NiFI processor", "Produces LDES member (version object) from NGSI-LD")
+         Component(sender, "InvokeHTTP", "Java - standard NiFI processor", "Sends LDES member to LDES server")
+    }
+}
+System_Ext(servers, "LDES Servers", "collection of LDES Servers ingesting/serving:\n**Devices**\n**DeviceModels**\n**WaterQualityObserved**")
+System_Ext(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_R(generator, listener, "generates and pushes NGSI-v2 updates", "HTTP (method POST)")
+Rel_R(listener, translator, "NGSI-v2")
+Rel_D(translator, creator, "NGSI-LD")
+Rel_R(creator, sender, "LDES member (JSON-LD)")
+Rel_R(sender, servers, "pushes LDES members", "HTTP (method POST)")
+Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, listener, "pushes Devices & DeviceModels", "HTTPS")
+Rel_D(tester, servers, "verifies all LDES's are correct & fragmented time-based", "HTTP")
+Rel_R(servers, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

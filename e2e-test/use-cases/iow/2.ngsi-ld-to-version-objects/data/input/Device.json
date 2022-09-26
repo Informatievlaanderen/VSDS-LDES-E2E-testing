@@ -1,0 +1,104 @@
+{
+    "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
+    ],
+    "id": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
+    "type": "Device",
+    "adminState": {
+        "type": "Property",
+        "value": "up"
+    },
+    "alternativeIds": {
+        "type": "Property",
+        "value": [
+            "simcard.206012902136977",
+            "octa_dec.2336861766884020237"
+        ]
+    },
+    "calibrationParameters": {
+        "type": "Property",
+        "value": {
+            "battery": {
+                "gain": 600,
+                "offset": 3000
+            }
+        }
+    },
+    "copyObservationAttributes": {
+        "type": "Property",
+        "value": "batteryLevel"
+    },
+    "extraMeasurementAttributes": {
+        "type": "Property",
+        "value": {
+            "locationName": true,
+            "samplingPoint": true,
+            "location": true
+        }
+    },
+    "healthState": {
+        "type": "Property",
+        "value": "up"
+    },
+    "locationName": {
+        "type": "Property",
+        "value": "loc-00056-19"
+    },
+    "maxTimeBetweenObservations": {
+        "type": "Property",
+        "value": 60
+    },
+    "samplingPoint": {
+        "type": "Property",
+        "value": "spt-00000-87"
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                5.4563,
+                51.41363
+            ]
+        },
+        "name": {
+            "type": "Property",
+            "value": "loc-00056-19"
+        }
+    },
+    "name": {
+        "type": "Property",
+        "value": "box-00145-49"
+    },
+    "batteryLevel": {
+        "type": "Property",
+        "rawValue": {
+            "type": "Property",
+            "value": "3196"
+        },
+        "rawValueUnitCode": {
+            "type": "Property",
+            "value": "2Z"
+        },
+        "value": 0.326666667
+    },
+    "https://uri.fiware.org/ns/data-models#dateLastValueReported": {
+        "type": "Property",
+        "value": {
+            "type": "DateTime",
+            "@value": "2022-06-23T11:48:40.000Z"
+        }
+    },
+    "owner": {
+        "type": "Property",
+        "value": "imec"
+    },
+    "refDeviceModel": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-box-v0003"
+    },
+    "source": {
+        "type": "Property",
+        "value": "cot.iow.observed"
+    }
+}

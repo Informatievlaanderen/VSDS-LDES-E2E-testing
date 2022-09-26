@@ -4,7 +4,22 @@ For the Internet of Water (IoW) use case, the Vlaamse Milieu Maatschappij (VMM) 
 This little component can act as a simple replacement for this broker and allows to send on regular time intervals some JSON data, based on a template that gets altered before sending based on a mapping.
 
 ## Docker
-> TODO
+The generator can be run as a Docker container, after creating a Docker image for it. The Docker container will keep running until stopped.
+
+To create a Docker image, run the following command:
+```bash
+docker build --tag vsds/json-data-generator .
+```
+
+To run the generator, you can use:
+```bash
+docker run -v $(pwd)/data:/tmp/data -e TEMPLATEFILE=/tmp/data/other.template.json -e MAPPINGFILE=/tmp/data/other.mapping.json vsds/json-data-generator
+```
+You can also pass the following arguments when running the container:
+* `TARGETURL=<target-uri>` to POST the output to the target URI instead of to the console
+* `SILENT=false` to display more logging to the console
+
+Alternatively, you can also pass the template and mapping as string instead of as files, use `TEMPLATE` respectively `MAPPING`.
 
 ## Build the Generator
 The generator is implemented as a [Node.js](https://nodejs.org/en/) application.
@@ -73,7 +88,7 @@ Alternatively you can generate the output using a different time schedule (e.g. 
 node ./dist/index.js --templateFile ./data/other.template.json --mappingFile ./data/other.mapping.json --cron '*/2 * * * * *' --targetUrl https://webhook.site/28dba053-5bc2-4934-9cd8-0541012470a5
 ```
 This results in:
-```json
+```
 data template:  { "id": "my-id", "type": "Something", "modifiedAt": "2022-09-09T09:10:00.000Z" }
 Mapping:  {
   '$.id': '${@}-${nextCounter}',

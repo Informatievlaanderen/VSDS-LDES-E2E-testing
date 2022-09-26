@@ -92,7 +92,9 @@ def normalized_2_LD(entity, ld_context_uri):
         if not('type' in attr) or attr['type'] != 'Relationship':
             ld_attr['type'] = 'Property'
             ld_attr['value'] = attr['value']
-            ld_attr['observedAt'] = normalize_date(entity['dateObserved']['value'])
+
+            if ('dateObserved' in entity):
+                ld_attr['observedAt'] = normalize_date(entity['dateObserved']['value'])
         else:
             ld_attr['type'] = 'Relationship'
             aux_obj = attr['value']

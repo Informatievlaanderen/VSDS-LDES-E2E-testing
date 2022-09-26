@@ -54,3 +54,88 @@ curl -X POST http://localhost:9010/ngsi -H 'Content-Type: application/json' -d '
 
 ## Test Verification
 Now, you can verify that the modified NGSI-LD by the NiFi processor contains version objects that refer to the original NGSI-LD base object.
+
+With the default settings unchanged, the NiFi processor creates N-quads (actually N-triples) which for most people less readable. To validate the output you can use a(n online) tool such as [EasyRDF Convertor](https://www.easyrdf.org/converter) to format the output to the more readable Turtle format:
+* goto https://www.easyrdf.org/converter
+* copy/paste the N-triples output to the `Input Data:` field
+* change the input format to `N-triples`
+* choose the `Turtle Terse RDF Triple Language` output format
+* choose `Submit`
+
+The online tool results in output similar to (only showing relevant properties):
+```
+@prefix ns0: <https://uri.etsi.org/ngsi-ld/default-context/> .
+@prefix ns1: <https://uri.etsi.org/ngsi-ld/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix ns2: <http://www.opengis.net/ont/geosparql#> .
+
+<urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj:2022-09-09T09:10:00.000Z>
+...
+  a ns0:WaterQualityObserved ;
+...
+  prov:generatedAtTime "2022-09-09T09:10:00.000Z" ;
+...
+  dc:isVersionOf <urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj> ;
+...
+  ns1:location [
+    ns1:observedAt "2022-09-09T09:10:00.000Z"^^ns1:DateTime ;
+    ns1:name [
+      ns1:hasValue "loc-00019-33" ;
+      a ns1:Property
+    ] ;
+    ns1:hasValue [
+      ns1:coordinates 5.103321e+1, 2.854460e+0 ;
+      a ns0:Point
+    ] ;
+    ns2:asWKT "POINT(2.854459744 51.03321207)"^^ns2:wktLiteral ;
+    a ns1:GeoProperty
+  ] ;
+  ns0:dateObserved [
+    ns1:observedAt "2022-09-09T09:10:00.000Z"^^ns1:DateTime ;
+    ns1:hasValue "2022-09-09T09:10:00.000Z"^^ns1:DateTime ;
+    a ns1:Property
+  ] .
+```
+
+> **Note**: that a version object is created with its ID based on the `dateObserved.hasValue` value, which is defined as `https://uri.etsi.org/ngsi-ld/DateTime`.
+
+> **Note**: because of this custom type, the NiFi processor can also adds a property `prov:generatedAtTime` which by definition has range `http://www.w3.org/2001/XMLSchema#dateTime`. Adding this property is recommended by LDES, however The NiFi processor can be instructed to omit this property if not needed.
+
+> **Note**: that the verson object refers to its base (state) object using `dc:isVersionOf` having a simple IRI as its value. The NiFi processor can also generate the following format (with a `Relationship` property) which is more NGSI-LD compliant, but less LDES-style.
+```
+<urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj:2022-09-09T09:10:00.000Z>
+...
+  dc:isVersionOf [
+    ns1:hasObject <urn:ngsi-v2:cot-imec-be:WaterQualityObserved:dwg-iow-886nJGdroD857YjumSEuNj> ;
+    a ns1:Relationship
+  ] ;
+...
+```
+
+> **Note**: the `ns2:asWKT` property of type `ns2:wktLiteral` where `ns2:` is `http://www.opengis.net/ont/geosparql#`. We add this property because the original GeoJSON representation is an array of coordinates with the longitude and latitude in a specific order, and when converted to N-quads, the order of quads is not quaranteed and the meaning of longitude and latitude is lost.
+
+Original GeoJSON representation:
+```json
+  "value": {
+      "type": "Point",
+      "coordinates": [
+          2.854459744,
+          51.03321207
+      ]
+  },
+```
+gets translated to:
+```
+    ns1:hasValue [
+      ns1:coordinates 5.103321e+1, 2.854460e+0 ;
+      a ns0:Point
+    ] ;
+```
+> **Note**: that the coordinates are changed slightly (rounding) and reordered!
+
+## Test Teardown
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+```bash
+docker compose --env-file env.user down
+```

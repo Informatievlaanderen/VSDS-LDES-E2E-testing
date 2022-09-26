@@ -12,7 +12,7 @@ To setup the context, copy the `.env` file as `env.user` and specify the missing
 Optionally, you can change the component tags:
 * JSON_DATA_GENERATOR_TAG (default: `20220914T0847`)
 * MONGODB_TAG (default: `5.0.12`)
-* LDES_SERVER_TAG (default: `0.0.2`)
+* LDES_SERVER_TAG (default: `20220926t1609`)
 
 Optionally, you can change the port numbers:
 * NIFI_UI_PORT (default: `8443`)
@@ -66,7 +66,6 @@ curl -H "Accept: application/ld+json" http://localhost:8071/observations-by-time
 ```
 response will be similar to:
 ```json
-TODO: fix LDES ID !!!
 {
     "@id": "http://localhost:8071/observations-by-time",
     "https://w3id.org/tree#view": {

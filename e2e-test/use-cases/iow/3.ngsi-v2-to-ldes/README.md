@@ -66,7 +66,6 @@ curl -H "Accept: application/ld+json" http://localhost:8071/observations-by-time
 ```
 response will be similar to:
 ```json
-TODO: fix LDES ID !!!
 {
     "@id": "http://localhost:8071/observations-by-time",
     "https://w3id.org/tree#view": {

@@ -1,0 +1,80 @@
+version: '3.3'
+services:
+  gtfs2ldes-js:
+    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_gtfs2ldes-js
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220928t1555}
+    profiles:
+      - delayed-start
+    environment:
+      - GTFS_SOURCE=${GTFS_SOURCE}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - TARGET_URL=http://nifi-workflow:9005/gtfs
+      - GTFS_CRON=${GTFS_CRON:-0 0 3 15 * *}
+      - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
+      - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
+      - THROTTLE_RATE=${THROTTLE_RATE:-100}
+      - AUTH_HEADER=${AUTH_HEADER}
+      - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
+      - BASE_IRI=${GTFS_BASE_IRI}
+    volumes:
+      - type: bind
+        source: ${GTFS2LDES_DATA_FOLDER}
+        target: /data
+    networks:
+      - ldes
+  nifi-workflow:
+    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
+    image: ghcr.io/informatievlaanderen/nifi:${NIFI_TAG:-1.17.0-jdk17}
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
+      - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
+    ports:
+      - ${NIFI_UI_PORT:-8443}:8443 # https://localhost:8443/nifi
+      - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005 # http://localhost:9005/gtfs/healthcheck
+    networks:
+      - ldes
+  ldes-server:
+    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
+    environment:
+      - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME:-connections}
+      - LDES_MEMBERTYPE=${LDES_MEMBERTYPE:-http://semweb.mmlab.be/ns/linkedconnections#Connection}
+      - LDES_SHAPE=${LDES_SHAPE:-}
+      - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
+      - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-location-and-time}
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_BUCKETISERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT"
+      - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
+      - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT:-100}
+      # - VIEWS_1_NAME=${VIEWS_1_NAME:-connections-by-time}
+      # - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
+      # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-250}
+    ports:
+      - ${LDES_SERVER_PORT:-8080}:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-5.0.12}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
+    networks:
+      - ldes
+networks:
+  ldes:
+    name: ${USECASE_NAME:-gtfs-geo-fragment}_network

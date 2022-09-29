@@ -1,0 +1,520 @@
+{
+    "flowContents": {
+        "identifier": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f",
+        "instanceIdentifier": "49fcac6b-0182-1000-e1ac-a97f6a7a6acb",
+        "name": "nifi-workflow",
+        "comments": "",
+        "position": {
+            "x": 415.0,
+            "y": 182.0
+        },
+        "processGroups": [],
+        "remoteProcessGroups": [],
+        "processors": [
+            {
+                "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                "instanceIdentifier": "b416a47d-855b-3ade-7282-9c97179af53e",
+                "name": "ListenHTTP",
+                "comments": "",
+                "position": {
+                    "x": 208.0,
+                    "y": -16.0
+                },
+                "type": "org.apache.nifi.processors.standard.ListenHTTP",
+                "bundle": {
+                    "group": "org.apache.nifi",
+                    "artifact": "nifi-standard-nar",
+                    "version": "1.16.3"
+                },
+                "properties": {
+                    "authorized-issuer-dn-pattern": ".*",
+                    "multipart-request-max-size": "1 MB",
+                    "record-writer": null,
+                    "HTTP Headers to receive as Attributes (Regex)": null,
+                    "health-check-port": null,
+                    "Authorized DN Pattern": ".*",
+                    "max-thread-pool-size": "200",
+                    "Base Path": "gtfs",
+                    "multipart-read-buffer-size": "512 KB",
+                    "SSL Context Service": null,
+                    "Max Unconfirmed Flowfile Time": "60 secs",
+                    "Max Data to Receive per Second": null,
+                    "client-authentication": "AUTO",
+                    "Return Code": "200",
+                    "record-reader": null,
+                    "Listening Port": "9005"
+                },
+                "propertyDescriptors": {
+                    "authorized-issuer-dn-pattern": {
+                        "name": "authorized-issuer-dn-pattern",
+                        "displayName": "Authorized Issuer DN Pattern",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "multipart-request-max-size": {
+                        "name": "multipart-request-max-size",
+                        "displayName": "Multipart Request Max Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "record-writer": {
+                        "name": "record-writer",
+                        "displayName": "Record Writer",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "HTTP Headers to receive as Attributes (Regex)": {
+                        "name": "HTTP Headers to receive as Attributes (Regex)",
+                        "displayName": "HTTP Headers to receive as Attributes (Regex)",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "health-check-port": {
+                        "name": "health-check-port",
+                        "displayName": "Listening Port for Health Check Requests",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Authorized DN Pattern": {
+                        "name": "Authorized DN Pattern",
+                        "displayName": "Authorized Subject DN Pattern",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "max-thread-pool-size": {
+                        "name": "max-thread-pool-size",
+                        "displayName": "Maximum Thread Pool Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Base Path": {
+                        "name": "Base Path",
+                        "displayName": "Base Path",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "multipart-read-buffer-size": {
+                        "name": "multipart-read-buffer-size",
+                        "displayName": "Multipart Read Buffer Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "SSL Context Service": {
+                        "name": "SSL Context Service",
+                        "displayName": "SSL Context Service",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Max Unconfirmed Flowfile Time": {
+                        "name": "Max Unconfirmed Flowfile Time",
+                        "displayName": "Max Unconfirmed Flowfile Time",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Max Data to Receive per Second": {
+                        "name": "Max Data to Receive per Second",
+                        "displayName": "Max Data to Receive per Second",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "client-authentication": {
+                        "name": "client-authentication",
+                        "displayName": "Client Authentication",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Return Code": {
+                        "name": "Return Code",
+                        "displayName": "Return Code",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "record-reader": {
+                        "name": "record-reader",
+                        "displayName": "Record Reader",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Listening Port": {
+                        "name": "Listening Port",
+                        "displayName": "Listening Port",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 1,
+                "autoTerminatedRelationships": [],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f"
+            },
+            {
+                "identifier": "5ec4bc61-828a-3979-b416-2f58f035b0b1",
+                "instanceIdentifier": "87035452-4188-3663-7dbe-a676bfe4cda1",
+                "name": "InvokeHTTP",
+                "comments": "",
+                "position": {
+                    "x": 456.0,
+                    "y": 288.0
+                },
+                "type": "org.apache.nifi.processors.standard.InvokeHTTP",
+                "bundle": {
+                    "group": "org.apache.nifi",
+                    "artifact": "nifi-standard-nar",
+                    "version": "1.16.3"
+                },
+                "properties": {
+                    "Proxy Host": null,
+                    "Attributes to Send": null,
+                    "use-etag": "false",
+                    "proxy-configuration-service": null,
+                    "Proxy Type": "http",
+                    "cookie-strategy": "DISABLED",
+                    "Connection Timeout": "5 secs",
+                    "send-message-body": "true",
+                    "set-form-filename": "true",
+                    "Always Output Response": "false",
+                    "etag-max-cache-size": "10MB",
+                    "disable-http2": "False",
+                    "idle-timeout": "5 mins",
+                    "Put Response Body In Attribute": null,
+                    "Use Chunked Encoding": "false",
+                    "Follow Redirects": "True",
+                    "Remote URL": "http://ldes-server:8080/connections",
+                    "Content-Type": "application/n-quads",
+                    "form-body-form-name": null,
+                    "flow-file-naming-strategy": "RANDOM",
+                    "max-idle-connections": "5",
+                    "invokehttp-proxy-user": null,
+                    "Read Timeout": "15 secs",
+                    "Max Length To Put In Attribute": "256",
+                    "ignore-response-content": "false",
+                    "Proxy Port": null,
+                    "SSL Context Service": null,
+                    "Digest Authentication": "false",
+                    "HTTP Method": "POST",
+                    "Add Response Headers to Request": "false",
+                    "Basic Authentication Username": null,
+                    "oauth2-access-token-provider": null,
+                    "Include Date Header": "True",
+                    "Penalize on \"No Retry\"": "false",
+                    "Useragent": null
+                },
+                "propertyDescriptors": {
+                    "Proxy Host": {
+                        "name": "Proxy Host",
+                        "displayName": "Proxy Host",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Attributes to Send": {
+                        "name": "Attributes to Send",
+                        "displayName": "Attributes to Send",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "use-etag": {
+                        "name": "use-etag",
+                        "displayName": "Use HTTP ETag",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "proxy-configuration-service": {
+                        "name": "proxy-configuration-service",
+                        "displayName": "Proxy Configuration Service",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Proxy Type": {
+                        "name": "Proxy Type",
+                        "displayName": "Proxy Type",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Basic Authentication Password": {
+                        "name": "Basic Authentication Password",
+                        "displayName": "Basic Authentication Password",
+                        "identifiesControllerService": false,
+                        "sensitive": true
+                    },
+                    "cookie-strategy": {
+                        "name": "cookie-strategy",
+                        "displayName": "Cookie Strategy",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Connection Timeout": {
+                        "name": "Connection Timeout",
+                        "displayName": "Connection Timeout",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "send-message-body": {
+                        "name": "send-message-body",
+                        "displayName": "Send Message Body",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "set-form-filename": {
+                        "name": "set-form-filename",
+                        "displayName": "Set FlowFile Form Data File Name",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Always Output Response": {
+                        "name": "Always Output Response",
+                        "displayName": "Always Output Response",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "etag-max-cache-size": {
+                        "name": "etag-max-cache-size",
+                        "displayName": "Maximum ETag Cache Size",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "disable-http2": {
+                        "name": "disable-http2",
+                        "displayName": "Disable HTTP/2",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "idle-timeout": {
+                        "name": "idle-timeout",
+                        "displayName": "Idle Timeout",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Put Response Body In Attribute": {
+                        "name": "Put Response Body In Attribute",
+                        "displayName": "Put Response Body In Attribute",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Use Chunked Encoding": {
+                        "name": "Use Chunked Encoding",
+                        "displayName": "Use Chunked Encoding",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Follow Redirects": {
+                        "name": "Follow Redirects",
+                        "displayName": "Follow Redirects",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Remote URL": {
+                        "name": "Remote URL",
+                        "displayName": "Remote URL",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Content-Type": {
+                        "name": "Content-Type",
+                        "displayName": "Content-Type",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "form-body-form-name": {
+                        "name": "form-body-form-name",
+                        "displayName": "FlowFile Form Data Name",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "flow-file-naming-strategy": {
+                        "name": "flow-file-naming-strategy",
+                        "displayName": "FlowFile Naming Strategy",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "max-idle-connections": {
+                        "name": "max-idle-connections",
+                        "displayName": "Max Idle Connections",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "invokehttp-proxy-user": {
+                        "name": "invokehttp-proxy-user",
+                        "displayName": "Proxy Username",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Read Timeout": {
+                        "name": "Read Timeout",
+                        "displayName": "Read Timeout",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Max Length To Put In Attribute": {
+                        "name": "Max Length To Put In Attribute",
+                        "displayName": "Max Length To Put In Attribute",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "invokehttp-proxy-password": {
+                        "name": "invokehttp-proxy-password",
+                        "displayName": "Proxy Password",
+                        "identifiesControllerService": false,
+                        "sensitive": true
+                    },
+                    "ignore-response-content": {
+                        "name": "ignore-response-content",
+                        "displayName": "Ignore response's content",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Proxy Port": {
+                        "name": "Proxy Port",
+                        "displayName": "Proxy Port",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "SSL Context Service": {
+                        "name": "SSL Context Service",
+                        "displayName": "SSL Context Service",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Digest Authentication": {
+                        "name": "Digest Authentication",
+                        "displayName": "Use Digest Authentication",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "HTTP Method": {
+                        "name": "HTTP Method",
+                        "displayName": "HTTP Method",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Add Response Headers to Request": {
+                        "name": "Add Response Headers to Request",
+                        "displayName": "Add Response Headers to Request",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Basic Authentication Username": {
+                        "name": "Basic Authentication Username",
+                        "displayName": "Basic Authentication Username",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "oauth2-access-token-provider": {
+                        "name": "oauth2-access-token-provider",
+                        "displayName": "OAuth2 Access Token provider",
+                        "identifiesControllerService": true,
+                        "sensitive": false
+                    },
+                    "Include Date Header": {
+                        "name": "Include Date Header",
+                        "displayName": "Include Date Header",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Penalize on \"No Retry\"": {
+                        "name": "Penalize on \"No Retry\"",
+                        "displayName": "Penalize on \"No Retry\"",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "Useragent": {
+                        "name": "Useragent",
+                        "displayName": "Useragent",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 10,
+                "autoTerminatedRelationships": [
+                    "Response",
+                    "No Retry",
+                    "Retry",
+                    "Original",
+                    "Failure"
+                ],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [
+                    "Failure"
+                ],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f"
+            }
+        ],
+        "inputPorts": [],
+        "outputPorts": [],
+        "connections": [
+            {
+                "identifier": "3badfc81-1c39-3dad-b3e5-41bb5824ccc9",
+                "instanceIdentifier": "513ecf73-f53f-39b7-7ddd-68192fc88bdb",
+                "name": "",
+                "source": {
+                    "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                    "type": "PROCESSOR",
+                    "groupId": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f",
+                    "name": "ListenHTTP",
+                    "comments": "",
+                    "instanceIdentifier": "b416a47d-855b-3ade-7282-9c97179af53e"
+                },
+                "destination": {
+                    "id": "5ec4bc61-828a-3979-b416-2f58f035b0b1",
+                    "type": "PROCESSOR",
+                    "groupId": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f",
+                    "name": "InvokeHTTP",
+                    "comments": "",
+                    "instanceIdentifier": "87035452-4188-3663-7dbe-a676bfe4cda1"
+                },
+                "labelIndex": 1,
+                "zIndex": 0,
+                "selectedRelationships": [
+                    "success"
+                ],
+                "backPressureObjectThreshold": 10000000,
+                "backPressureDataSizeThreshold": "50 GB",
+                "flowFileExpiration": "0 sec",
+                "prioritizers": [],
+                "bends": [],
+                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                "partitioningAttribute": "",
+                "loadBalanceCompression": "DO_NOT_COMPRESS",
+                "componentType": "CONNECTION",
+                "groupIdentifier": "67a5f09f-f4b8-357c-bd32-cf2eb736fe5f"
+            }
+        ],
+        "labels": [],
+        "funnels": [],
+        "controllerServices": [],
+        "variables": {},
+        "defaultFlowFileExpiration": "0 sec",
+        "defaultBackPressureObjectThreshold": 10000,
+        "defaultBackPressureDataSizeThreshold": "1 GB",
+        "componentType": "PROCESS_GROUP",
+        "flowFileConcurrency": "UNBOUNDED",
+        "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE"
+    },
+    "externalControllerServices": {},
+    "parameterContexts": {},
+    "flowEncodingVersion": "1.0"
+}

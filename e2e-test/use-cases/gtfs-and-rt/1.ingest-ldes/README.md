@@ -75,9 +75,9 @@ To ensure GTFS connections are being received by the LDES-server you can use the
 
 > **Note**: that we store the document collection in a database as configured in the Docker environment argument `SPRING_DATA_MONGODB_DATABASE`.
 
-In addition, you can request the members (e.g. as [N-Quads](https://www.w3.org/TR/n-quads/) with `<connection-name>` replaced with the value of the Docker environment variable `LDES_COLLECTIONNAME`):
+In addition, you can request the members from here by following the view to the first and subsequent fragments:
 ```bash
-curl --location --header 'Accept: application/n-quads' http://localhost:8080/connections
+curl http://localhost:8080/connections-by-time
 ```
 
 ### Test Teardown

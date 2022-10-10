@@ -5,14 +5,14 @@ This test validates user story **Publish IoW data using time-based fragmentation
 We use a [JSON Data Generator](/json-data-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), an Apache NiFi instance containing an HTTP listener that receives the observations (and devices & models), the NiFi components translating the NGSI-v2 entities to NGSI-LD entities, the NiFi components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
 
 To setup the context, copy the `.env` file as `env.user` and specify the missing, required arguments:
-* LDES_WORKBENCH_NIFI_TAG (e.g. `20220923t130052`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20220914T0847`)
-* MONGODB_TAG (default: `5.0.12`)
-* LDES_SERVER_TAG (default: `20220926t1609`)
+* JSON_DATA_GENERATOR_TAG (default: `20220927t0821`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
+* LDES_SERVER_TAG (default: `20221004t1751`)
+* MONGODB_TAG (default: `5.0.13`)
 
 Optionally, you can change the port numbers:
 * NIFI_UI_PORT (default: `8443`)
@@ -60,30 +60,36 @@ It looks like you are trying to access MongoDB over HTTP on the native driver po
 This means that the MongoDB is correctly started. To actually view the contents of the database, use a Mongo command line tool or GUI, e.g. [Compass](https://www.mongodb.com/products/compass).
 
 ### LDES Servers
-Browse to http://localhost:8071/observations-by-time (returns [RDF turtle](https://www.w3.org/TR/turtle/) format) or run an equivalent Bash command, e.g. (as [JSON-LD](https://www.w3.org/TR/json-ld11/) format):
+Browse to http://localhost:8073/water-quality-observations (returns [RDF turtle](https://www.w3.org/TR/turtle/) format) or run an equivalent Bash command, e.g. (as [JSON-LD](https://www.w3.org/TR/json-ld11/) format):
 ```bash
-curl -H "Accept: application/ld+json" http://localhost:8071/observations-by-time
+curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations
 ```
 response will be similar to:
 ```json
 {
-    "@id": "http://localhost:8071/observations-by-time",
-    "https://w3id.org/tree#view": {
-        "@id": "http://localhost:8071/observations-by-time"
+    "@id": "http://localhost:8073/water-quality-observations",
+    "tree:view": {
+        "@id": "http://localhost:8073/water-quality-observations-by-time"
     },
-    "@type": "https://w3id.org/ldes#EventStream",
-    "https://w3id.org/ldes#timestampPath": {
-        "@id": "http://www.w3.org/ns/prov#generatedAtTime"
+    "ldes:timestampPath": {
+        "@id": "prov:generatedAtTime"
     },
-    "https://w3id.org/ldes#versionOf": {
-        "@id": "http://purl.org/dc/terms/isVersionOf"
+    "ldes:versionOfPath": {
+        "@id": "terms:isVersionOf"
+    },
+    "@type": "ldes:EventStream",
+    "@context": {
+        "tree": "https://w3id.org/tree#",
+        "ldes": "https://w3id.org/ldes#",
+        "terms": "http://purl.org/dc/terms/",
+        "prov": "http://www.w3.org/ns/prov#"
     }
 }
 ```
 You can also check the models and devices LDES servers:
 ```bash
-curl http://localhost:8072/models-by-time
-curl http://localhost:8073/devices-by-time
+curl http://localhost:8071/devices
+curl http://localhost:8072/device-models
 ```
 
 ## Test Execution
@@ -123,14 +129,14 @@ docker compose --env-file env.user up json-data-generator
 You can now verify that all three LDES streams are available (see the [devices LDES server](http://localhost:8071/devices-by-time) and the [models LDES server](http://localhost:8072/models-by-time)) and that the observations LDES continues to grow as `WaterQualityObserved` LDES members arrive at the [observations LDES server](http://localhost:8073/observations-by-time). They will form an ever growing, time-based fragmented LDES stream.
 ```bash
 curl -H "Accept: application/ld+json" http://localhost:8071/devices-by-time
-curl -H "Accept: application/ld+json" http://localhost:8072/models-by-time
-curl -H "Accept: application/ld+json" http://localhost:8073/observations-by-time
+curl -H "Accept: application/ld+json" http://localhost:8072/device-models-by-time
+curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations-by-time
 ```
 
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose down
+docker compose --env-file env.user down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

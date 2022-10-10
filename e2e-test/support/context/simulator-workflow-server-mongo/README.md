@@ -6,10 +6,8 @@ We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves
 ## Setup the Context
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
 * LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
-* LDES_WORKBENCH_NIFI_TAG (e.g. `20220901t170424`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_SERVER_TAG (e.g. `20220721t0939`)
 * SPRING_DATA_MONGODB_DATABASE (e.g. `GIPOD`)
 * LDES_COLLECTIONNAME (e.g. `mobility-hindrances`)
 * LDES_MEMBERTYPE (e.g. `"https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder"`)
@@ -17,14 +15,16 @@ To setup the context, combine the contents of all the `env.<component>` files in
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-server-mongo`)
-* LDES_SERVER_SIMULATOR_TAG (default: `20220914t0847`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20220927t0821`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
 * NIFI_UI_PORT (default: `8443`)
+* LDES_SERVER_TAG (default: `20221004t1751`)
 * LDES_SERVER_PORT (default: `8080`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* MONGODB_TAG (default: `5.0.11`)
+* MONGODB_TAG (default: `5.0.13`)
 * MONGODB_PORT (default: `27017`)
 
 ## Fragmentation

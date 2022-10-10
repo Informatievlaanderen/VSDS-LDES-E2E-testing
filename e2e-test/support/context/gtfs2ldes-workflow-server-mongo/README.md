@@ -11,9 +11,9 @@ If required, the workflow can contain other processors to transfor the LD object
 To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* LDES_SERVER_TAG (e.g. `20220727t1517`)
 * SPRING_DATA_MONGODB_DATABASE (e.g. `DeLijn`)
 * MONGODB_DATA_FOLDER (location of MongoDB permanent storage, no default)
+* GTFS_BASE_IRI with trailing `/` (e.g. `https://data.delijn.be/`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * NIFI_TAG (default: `1.17.0-jdk17`)
@@ -21,12 +21,13 @@ Optionally, you can also specify different (external) port numbers for the compo
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
-* LDES_COLLECTIONNAME (default `"connections"`)
-* LDES_MEMBERTYPE (default: `"http://semweb.mmlab.be/ns/linkedconnections#Connection"`)
+* LDES_SERVER_TAG (default: `20221004t1751`)
+* LDES_COLLECTIONNAME (default `connections`)
+* LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)
 * LDES_SERVER_PORT (default: 8080)
 * LDES_SHAPE (optional, shape of ingested members, no default)
-* VIEW_TIMESTAMPPATH (default: `"http://www.w3.org/ns/prov#generatedAtTime"`)
-* VIEW_VERSIONOFPATH (default: `"http://purl.org/dc/terms/isVersionOf"`)
+* VIEW_TIMESTAMPPATH (default: `http://www.w3.org/ns/prov#generatedAtTime`)
+* VIEW_VERSIONOFPATH (default: `http://purl.org/dc/terms/isVersionOf`)
 * VIEWS_0_NAME (default: `connections-by-time`)
 * VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT (number of members per fragment, default: `100`)
 * MONGODB_TAG (default: `5.0.11`)
@@ -38,10 +39,10 @@ In addition, for the GTFS to LDES conversion, various other arguments are requir
 * GTFS2LDES_DATA_FOLDER (location of GTFS data permanent storage, no default)
 
 Optionally, you can currently tune the following parameters: 
-* GTFS2LDES_TAG (default: `20220714t1136`)
+* GTFS2LDES_TAG (default: `20220928t1555`)
 * RUN_ON_LAUNCH (`true` or `false`, default: `true`)
 * THROTTLE_RATE (default: 10)
-* GTFS_CRON (cron for reading GTFS source, default: `0 0 3 * * *`)
+* GTFS_CRON (cron for reading GTFS source, default: `0 0 3 1 * *`)
 * GTFSRT_CRON (cron for reading GTFS/RT source, default: `*/30 * * * * *`)
 * AUTH_HEADER (optional, authentication type for requesting GTFS/RT, no default)
 * AUTH_HEADER_VALUE (optional, authentication value for requesting GTFS/RT, no default)

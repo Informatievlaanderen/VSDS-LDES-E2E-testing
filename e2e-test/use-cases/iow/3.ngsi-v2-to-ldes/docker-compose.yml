@@ -2,7 +2,7 @@ version: '3.3'
 services:
   json-data-generator:
     container_name: ${USECASE_NAME:-iow-context}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20220926t2028}
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20220927t0821}
     profiles:
       - delay-started
     environment:
@@ -22,7 +22,7 @@ services:
     depends_on:
       - nifi-workflow
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221010t091137}
     container_name: ${USECASE_NAME:-iow-context}_ldes-workbench-nifi
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
@@ -37,15 +37,19 @@ services:
       - ldes
   ldes-mongodb:
     container_name: ${USECASE_NAME:-iow-context}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-5.0.12}
+    image: mongo:${MONGODB_TAG:-5.0.13}
     ports:
       - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
     networks:
       - ldes
   # Using 3 consecutive ports for the 3 LDES servers -- see https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=8073
   ldes-server-devices:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-devices
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20220926t1609}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
@@ -66,7 +70,7 @@ services:
       - ldes-mongodb
   ldes-server-models:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-models
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20220926t1609}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_models
@@ -76,7 +80,7 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
-      - VIEWS_0_NAME=models-by-time
+      - VIEWS_0_NAME=device-models-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MODELS_LDES_SERVER_MEMBERLIMIT:-10}
     ports:
@@ -87,7 +91,7 @@ services:
       - ldes-mongodb
   ldes-server-observations:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-observations
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20220926t1609}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_observations
@@ -97,9 +101,9 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved
-      - VIEWS_0_NAME=observations-by-time
+      - VIEWS_0_NAME=water-quality-observations-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-100}
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-25}
     ports:
       - ${OBSERVATIONS_LDES_SERVER_PORT:-8073}:8080
     networks:

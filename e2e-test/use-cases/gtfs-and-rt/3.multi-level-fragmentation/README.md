@@ -34,7 +34,7 @@ Currently, the following criteria are not yet implemented:
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use an aapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+To demonstrate the geospatial fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
 
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation).
 

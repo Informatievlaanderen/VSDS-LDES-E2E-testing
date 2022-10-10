@@ -39,24 +39,15 @@ docker compose --env-file env.user up
 
 ### Test Execution
 To run the test, you need to:
-1. Upload a pre-defined NiFi workflow containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
-2. Seed the initial data set.
+1. Seed the initial data set.
+2. Upload a pre-defined NiFi workflow containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
 3. Start the NiFi workflow and wait for it to process all LDES members.
 4. Verify that initial data set is received by the sink HTTP server and last fragment is re-requested (but no members are sent to the sink HTTP server).
 5. Seed a data set update.
 6. Verify that the update is received by the sink HTTP server.
 7. Seed another data set update and again verify that synchronization happens correctly.
 
-#### 1. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
-
-Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
-
-You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink HTTP server.
-* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
-* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
-
-#### 2. Seed the Initial Data Set
+#### 1. Seed the Initial Data Set
 For the demo we use a data set containing three fragments in the initial set (for the replication part):
 * `alfa.jsonld` (250 items)
 * `beta.jsonld` (250 items)
@@ -86,6 +77,15 @@ Now we have our initial data set uploaded. We only need to [alias it](./create-a
 ```bash
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
+
+#### 2. Upload NiFi Workflow
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+
+Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+
+You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink HTTP server.
+* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
+* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
 #### 3. Start the Workflow
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).

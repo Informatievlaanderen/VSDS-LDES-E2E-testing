@@ -1,19 +1,19 @@
 {
     "flowContents": {
-        "identifier": "d24d9525-82cb-3a08-abb2-859527fb2176",
-        "instanceIdentifier": "6f83dbae-0183-1000-400c-b44807f876b1",
+        "identifier": "32688c08-28c8-34ac-afde-24abb71f8c86",
+        "instanceIdentifier": "c3469d5b-0183-1000-c908-20ea361fa3a9",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 440.0,
-            "y": 144.0
+            "x": 468.0,
+            "y": 489.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
-                "instanceIdentifier": "b5bb9f4e-e36d-3d4d-9d42-e45b46caba2d",
+                "instanceIdentifier": "36e56773-2f59-3404-8acc-52de259081ac",
                 "name": "ListenHTTP",
                 "comments": "",
                 "position": {
@@ -165,11 +165,106 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
+                "groupIdentifier": "32688c08-28c8-34ac-afde-24abb71f8c86"
+            },
+            {
+                "identifier": "227fd60e-51ad-3d99-8380-9e6353d08948",
+                "instanceIdentifier": "c346dea1-0183-1000-d951-f17dc8d048a5",
+                "name": "NgsiLdToLdesMemberProcessor",
+                "comments": "",
+                "position": {
+                    "x": 888.0,
+                    "y": 304.0
+                },
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiLdToLdesMemberProcessor",
+                "bundle": {
+                    "group": "be.vlaanderen.informatievlaanderen",
+                    "artifact": "ngsi-ld-to-ldes-processor",
+                    "version": "1.0-SNAPSHOT"
+                },
+                "properties": {
+                    "ID_JSON_PATH": "$.id",
+                    "USE_SIMPLE_VERSION_OF": "true",
+                    "ADD_TOP_LEVEL_GENERATED_AT": "true",
+                    "DATE_OBSERVED_VALUE_JSON_PATH": "$.dateObserved.value['@value']",
+                    "DATA_DESTINATION_FORMAT": "n-quads",
+                    "DELIMITER": "/",
+                    "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
+                    "ADD_WKT_PROPERTY": "true"
+                },
+                "propertyDescriptors": {
+                    "ID_JSON_PATH": {
+                        "name": "ID_JSON_PATH",
+                        "displayName": "JsonPath to the id",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "USE_SIMPLE_VERSION_OF": {
+                        "name": "USE_SIMPLE_VERSION_OF",
+                        "displayName": "Use simple URI for isVersionOf",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "ADD_TOP_LEVEL_GENERATED_AT": {
+                        "name": "ADD_TOP_LEVEL_GENERATED_AT",
+                        "displayName": "Add top-level 'generatedAt' property",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATE_OBSERVED_VALUE_JSON_PATH": {
+                        "name": "DATE_OBSERVED_VALUE_JSON_PATH",
+                        "displayName": "JsonPath to the value of the dateObserved element",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DATA_DESTINATION_FORMAT": {
+                        "name": "DATA_DESTINATION_FORMAT",
+                        "displayName": "Data destination format",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "DELIMITER": {
+                        "name": "DELIMITER",
+                        "displayName": "Delimiter used to create the version object id",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "VERSION_OF_KEY": {
+                        "name": "VERSION_OF_KEY",
+                        "displayName": "VersionOf Property",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "ADD_WKT_PROPERTY": {
+                        "name": "ADD_WKT_PROPERTY",
+                        "displayName": "Add 'asWKT' property",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    }
+                },
+                "style": {},
+                "schedulingPeriod": "0 sec",
+                "schedulingStrategy": "TIMER_DRIVEN",
+                "executionNode": "ALL",
+                "penaltyDuration": "30 sec",
+                "yieldDuration": "1 sec",
+                "bulletinLevel": "WARN",
+                "runDurationMillis": 0,
+                "concurrentlySchedulableTaskCount": 1,
+                "autoTerminatedRelationships": [
+                    "unparseable"
+                ],
+                "scheduledState": "ENABLED",
+                "retryCount": 10,
+                "retriedRelationships": [],
+                "backoffMechanism": "PENALIZE_FLOWFILE",
+                "maxBackoffPeriod": "10 mins",
+                "componentType": "PROCESSOR",
+                "groupIdentifier": "32688c08-28c8-34ac-afde-24abb71f8c86"
             },
             {
                 "identifier": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
-                "instanceIdentifier": "7e83e20e-c332-3af7-687a-6318be0cfd03",
+                "instanceIdentifier": "8b588fb2-1fec-3f75-9351-671564ea4a37",
                 "name": "PutFile",
                 "comments": "",
                 "position": {
@@ -263,139 +358,31 @@
                 "backoffMechanism": "PENALIZE_FLOWFILE",
                 "maxBackoffPeriod": "10 mins",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
-            },
-            {
-                "identifier": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
-                "instanceIdentifier": "286a4614-5313-3ddd-ec61-058bc0198a94",
-                "name": "NgsiLd2LdesMemberProcessor",
-                "comments": "",
-                "position": {
-                    "x": 912.0,
-                    "y": 320.0
-                },
-                "type": "be.vlaanderen.informatievlaanderen.processors.ngsild2ldes.NgsiLd2LdesMemberProcessor",
-                "bundle": {
-                    "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ngsild2ldes-processor",
-                    "version": "1.0-SNAPSHOT"
-                },
-                "properties": {
-                    "ID_JSON_PATH": "$.id",
-                    "DATE_OBSERVED_VALUE_JSON_PATH": "$.dateObserved.value.['@value']",
-                    "DATA_DESTINATION_FORMAT": "n-quads",
-                    "DELIMITER": ":",
-                    "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf"
-                },
-                "propertyDescriptors": {
-                    "ID_JSON_PATH": {
-                        "name": "ID_JSON_PATH",
-                        "displayName": "JsonPath to the id",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATE_OBSERVED_VALUE_JSON_PATH": {
-                        "name": "DATE_OBSERVED_VALUE_JSON_PATH",
-                        "displayName": "JsonPath to the value of the dateObserved element",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DATA_DESTINATION_FORMAT": {
-                        "name": "DATA_DESTINATION_FORMAT",
-                        "displayName": "Data destination format",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "DELIMITER": {
-                        "name": "DELIMITER",
-                        "displayName": "Delimiter used to create the version object id",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "VERSION_OF_KEY": {
-                        "name": "VERSION_OF_KEY",
-                        "displayName": "VersionOf Property",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    }
-                },
-                "style": {},
-                "schedulingPeriod": "0 sec",
-                "schedulingStrategy": "TIMER_DRIVEN",
-                "executionNode": "ALL",
-                "penaltyDuration": "30 sec",
-                "yieldDuration": "1 sec",
-                "bulletinLevel": "WARN",
-                "runDurationMillis": 0,
-                "concurrentlySchedulableTaskCount": 1,
-                "autoTerminatedRelationships": [],
-                "scheduledState": "ENABLED",
-                "retryCount": 10,
-                "retriedRelationships": [],
-                "backoffMechanism": "PENALIZE_FLOWFILE",
-                "maxBackoffPeriod": "10 mins",
-                "componentType": "PROCESSOR",
-                "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
+                "groupIdentifier": "32688c08-28c8-34ac-afde-24abb71f8c86"
             }
         ],
         "inputPorts": [],
         "outputPorts": [],
         "connections": [
             {
-                "identifier": "d9ccc08a-cf19-3c2f-bbbb-c733756ea01b",
-                "instanceIdentifier": "6f844de5-0183-1000-52f5-b4c8ffd957ce",
+                "identifier": "036e4854-d7f9-3692-ac2c-98528f9eb55f",
+                "instanceIdentifier": "c3470740-0183-1000-6f68-0f9e3e47de93",
                 "name": "",
                 "source": {
-                    "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                    "id": "227fd60e-51ad-3d99-8380-9e6353d08948",
                     "type": "PROCESSOR",
-                    "groupId": "d24d9525-82cb-3a08-abb2-859527fb2176",
-                    "name": "ListenHTTP",
+                    "groupId": "32688c08-28c8-34ac-afde-24abb71f8c86",
+                    "name": "NgsiLdToLdesMemberProcessor",
                     "comments": "",
-                    "instanceIdentifier": "b5bb9f4e-e36d-3d4d-9d42-e45b46caba2d"
-                },
-                "destination": {
-                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
-                    "type": "PROCESSOR",
-                    "groupId": "d24d9525-82cb-3a08-abb2-859527fb2176",
-                    "name": "NgsiLd2LdesMemberProcessor",
-                    "comments": "",
-                    "instanceIdentifier": "286a4614-5313-3ddd-ec61-058bc0198a94"
-                },
-                "labelIndex": 1,
-                "zIndex": 0,
-                "selectedRelationships": [
-                    "success"
-                ],
-                "backPressureObjectThreshold": 10000,
-                "backPressureDataSizeThreshold": "1 GB",
-                "flowFileExpiration": "0 sec",
-                "prioritizers": [],
-                "bends": [],
-                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                "partitioningAttribute": "",
-                "loadBalanceCompression": "DO_NOT_COMPRESS",
-                "componentType": "CONNECTION",
-                "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
-            },
-            {
-                "identifier": "33e33fbf-4786-3c9d-be5f-67df558d3764",
-                "instanceIdentifier": "6f84597c-0183-1000-9ecc-f1cc93ddae43",
-                "name": "",
-                "source": {
-                    "id": "b7debba1-3548-3cb1-89d9-9bb2bd7fab86",
-                    "type": "PROCESSOR",
-                    "groupId": "d24d9525-82cb-3a08-abb2-859527fb2176",
-                    "name": "NgsiLd2LdesMemberProcessor",
-                    "comments": "",
-                    "instanceIdentifier": "286a4614-5313-3ddd-ec61-058bc0198a94"
+                    "instanceIdentifier": "c346dea1-0183-1000-d951-f17dc8d048a5"
                 },
                 "destination": {
                     "id": "ebdcfae9-5ee5-3eeb-8dc1-c4545816179e",
                     "type": "PROCESSOR",
-                    "groupId": "d24d9525-82cb-3a08-abb2-859527fb2176",
+                    "groupId": "32688c08-28c8-34ac-afde-24abb71f8c86",
                     "name": "PutFile",
                     "comments": "",
-                    "instanceIdentifier": "7e83e20e-c332-3af7-687a-6318be0cfd03"
+                    "instanceIdentifier": "8b588fb2-1fec-3f75-9351-671564ea4a37"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -411,7 +398,43 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "d24d9525-82cb-3a08-abb2-859527fb2176"
+                "groupIdentifier": "32688c08-28c8-34ac-afde-24abb71f8c86"
+            },
+            {
+                "identifier": "2acc24e0-6150-3844-8f84-1c818a47a806",
+                "instanceIdentifier": "c346f22b-0183-1000-6e86-72b61af8f3be",
+                "name": "",
+                "source": {
+                    "id": "0d5912cd-4b4c-3417-a9c2-47d072da413a",
+                    "type": "PROCESSOR",
+                    "groupId": "32688c08-28c8-34ac-afde-24abb71f8c86",
+                    "name": "ListenHTTP",
+                    "comments": "",
+                    "instanceIdentifier": "36e56773-2f59-3404-8acc-52de259081ac"
+                },
+                "destination": {
+                    "id": "227fd60e-51ad-3d99-8380-9e6353d08948",
+                    "type": "PROCESSOR",
+                    "groupId": "32688c08-28c8-34ac-afde-24abb71f8c86",
+                    "name": "NgsiLdToLdesMemberProcessor",
+                    "comments": "",
+                    "instanceIdentifier": "c346dea1-0183-1000-d951-f17dc8d048a5"
+                },
+                "labelIndex": 1,
+                "zIndex": 0,
+                "selectedRelationships": [
+                    "success"
+                ],
+                "backPressureObjectThreshold": 10000,
+                "backPressureDataSizeThreshold": "1 GB",
+                "flowFileExpiration": "0 sec",
+                "prioritizers": [],
+                "bends": [],
+                "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                "partitioningAttribute": "",
+                "loadBalanceCompression": "DO_NOT_COMPRESS",
+                "componentType": "CONNECTION",
+                "groupIdentifier": "32688c08-28c8-34ac-afde-24abb71f8c86"
             }
         ],
         "labels": [],

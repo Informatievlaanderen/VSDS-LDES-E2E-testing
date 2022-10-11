@@ -9,7 +9,7 @@ The LDES Server provides some configuration to cover the following acceptance cr
 * views are consulted via the endpoint '/{viewname}'
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.multiview)](./env.multiview) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.multiview)](./env.multiview) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
 
 The environment file is already configured for two view (one geospatial & timebased and one timebased) but you can adapt the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#multiview). 
 Please note the specific configuration properties which allow to configure the amount of views and types of fragmentations (`X` represents the view number starting at 0, `Y` represents the fragmentation number starting at 0):
@@ -18,11 +18,6 @@ Please note the specific configuration properties which allow to configure the a
 * VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`FRAGMENTATION_PROPERTY_KEY`=`FRAGMENTATION_PROPERTY_VALUE` (specific to the kind of fragmentation, e.g. `FRAGMENTATION_PROPERTY_KEY` = "maxzoomlevel" and `FRAGMENTATION_PROPERTY_VALUE` = "15" for geospatial fragmentation)
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
-> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
-```bash
-export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/docker-compose.yml"
-```
 
 You can then run the systems by executing the following command:
 ```bash
@@ -60,13 +55,43 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 After that you can start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
 ```bash
-curl --location --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances
+curl http://localhost:8080/mobility-hindrances-by-time
+```
+Initially returns:
+```
+@prefix tree: <https://w3id.org/tree#> .
+
+<http://localhost:8080/mobility-hindrances-by-time>
+        a       tree:Node .
 ```
 
+When the response of this second view contains a relation then all fragments have been created:
+```
+@prefix tree: <https://w3id.org/tree#> .
 
-When the response contains the member then all fragments have been created.
+<http://localhost:8080/mobility-hindrances-by-time>
+        a              tree:Node ;
+        tree:relation  [ a          tree:Relation ;
+                         tree:node  <http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T18:24:31.971Z>
+                       ] .
+```
 
-Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains four LDES members and the `ldesfragments` document collection contains TODO LDES fragments.
+You can now also see the response of the first view:
+```bash
+curl http://localhost:8080/mobility-hindrances-by-location-and-time
+```
+response:
+```
+@prefix tree: <https://w3id.org/tree#> .
+
+<http://localhost:8080/mobility-hindrances-by-location-and-time>
+        a              tree:Node ;
+        tree:relation  [ a          tree:Relation ;
+                         tree:node  <http://localhost:8080/mobility-hindrances-by-location-and-time?tile=0/0/0>
+                       ] .
+```
+
+Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains four LDES members and the `ldesfragments` document collection contains 13 LDES fragments (1 timebased view + its 2 timebased fragments in addition to 1 tilebased view + 1 root tile + 4 tiles and its 4 time fragments).
 
 #### 2. Try-out different views and fragmentation strategies.
 

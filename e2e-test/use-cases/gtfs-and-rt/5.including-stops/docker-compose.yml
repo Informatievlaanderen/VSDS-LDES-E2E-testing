@@ -1,21 +1,21 @@
 version: '3.3'
 services:
   gtfs2ldes-js:
-    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_gtfs2ldes-js
+    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220928t1555}
     profiles:
       - delayed-start
     environment:
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - BASE_IRI=${GTFS_BASE_IRI}
       - TARGET_URL=http://nifi-workflow:9005/gtfs
-      - GTFS_CRON=${GTFS_CRON:-0 0 3 15 * *}
+      - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
       - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
-      - THROTTLE_RATE=${THROTTLE_RATE:-100}
+      - THROTTLE_RATE=${THROTTLE_RATE:-10}
       - AUTH_HEADER=${AUTH_HEADER}
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
-      - BASE_IRI=${GTFS_BASE_IRI}
     volumes:
       - type: bind
         source: ${GTFS2LDES_DATA_FOLDER}
@@ -37,7 +37,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
     environment:
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
@@ -50,9 +50,9 @@ services:
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
       - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-location-and-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=noop
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_BUCKETISERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT"
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_BUCKETISERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
       - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT:-100}
       # - VIEWS_1_NAME=${VIEWS_1_NAME:-connections-by-time}
@@ -66,7 +66,7 @@ services:
       - ldes-mongodb
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-5.0.12}
+    image: mongo:${MONGODB_TAG:-5.0.13}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     volumes:

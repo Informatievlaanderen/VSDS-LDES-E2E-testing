@@ -21,9 +21,9 @@ For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../.
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then. E.g.:
 >
-> for NMBS data set: `mkdir -p ~/data/gtfs/nmbs/lc/; mkdir ~/data/gtfs/nmbs/mongo.db/`
+> for NMBS data set: `mkdir -p ~/data/gtfs/nmbs/lc/; mkdir ~/data/gtfs/nmbs/db/`
 >
-> for De Lijn data set: `mkdir -p ~/data/gtfs/delijn/lc/; mkdir ~/data/gtfs/delijn/mongo.db/`
+> for De Lijn data set: `mkdir -p ~/data/gtfs/delijn/lc/; mkdir ~/data/gtfs/delijn/db/`
 
 > **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 

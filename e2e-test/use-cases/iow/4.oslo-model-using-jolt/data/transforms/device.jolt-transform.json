@@ -1,0 +1,10 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "#https://data.vlaanderen.be/doc/applicatieprofiel/waterkwaliteit/ontwerpstandaard/2022-05-24/context/waterkwaliteit-ap.jsonld": "\\@context[]",
+      "id": "\\@id",
+      "#Sensor": "\\@type"
+    }
+  }
+]

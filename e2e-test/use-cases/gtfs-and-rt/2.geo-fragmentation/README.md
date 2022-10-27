@@ -37,7 +37,7 @@ To demonstrate the geospatial fragmentation, we use a adapted version of the [Si
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation). Please note the specific configuration properties which allow to configure which fragmentizer to use as well as the specific geospatial bucketizer and fragmentizer properties:
 * FRAGMENTATION_TYPE=`geospatial` (do not change)
 * GEOSPATIAL_MAXZOOMLEVEL=15 (tune as needed)
-* GEOSPATIAL_BUCKETISERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT" (specific to the GIPOD data set, do not change)
+* GEOSPATIAL_FRAGMENTERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT" (specific to the GIPOD data set, do not change)
 * GEOSPATIAL_PROJECTION=lambert72 (only projecting supported currently, do not change)
 
 > **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.

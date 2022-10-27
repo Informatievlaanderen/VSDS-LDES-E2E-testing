@@ -47,7 +47,7 @@ To specify geospatial fragmentation:
 * FRAGMENTATION_TYPE=`geospatial`
 * GEOSPATIAL_PROJECTION=`lambert72` (currently the only projection type allowed)
 * GEOSPATIAL_MAXZOOMLEVEL (the required [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels), no default)
-* GEOSPATIAL_BUCKETISERPROPERTY (defines which property will be used for bucketizing, e.g. `"http://www.opengis.net/ont/geosparql#asWKT"`)
+* GEOSPATIAL_FRAGMENTERPROPERTY (defines which property will be used for bucketizing, e.g. `"http://www.opengis.net/ont/geosparql#asWKT"`)
 
 ### Multi-level Fragmentation
 > **Note**: as of tag `20220826t1001`, the LDES Server allows to define a multi-level fragmentation strategy.

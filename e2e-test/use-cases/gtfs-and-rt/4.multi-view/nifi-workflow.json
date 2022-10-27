@@ -366,7 +366,7 @@
                     }
                 },
                 "style": {},
-                "schedulingPeriod": "0 sec",
+                "schedulingPeriod": "1 sec",
                 "schedulingStrategy": "TIMER_DRIVEN",
                 "executionNode": "ALL",
                 "penaltyDuration": "30 sec",

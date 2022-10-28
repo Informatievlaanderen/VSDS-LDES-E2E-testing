@@ -98,7 +98,28 @@ curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 2. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
-3. Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/) or use [Chrome DevTools](https://developer.chrome.com/docs/devtools/) to view the response headers.
+3. Request the collection http://localhost:8080/mobility-hindrances using [Postman](https://www.postman.com/) or use [Chrome DevTools](https://developer.chrome.com/docs/devtools/) to view the response headers. The result is:
+```
+@prefix ldes:                <https://w3id.org/ldes#> .
+@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix tree:                <https://w3id.org/tree#> .
+
+<http://localhost:8080/mobility-hindrances>
+        a           ldes:EventStream ;
+        tree:shape  mobility-hindrances:shape ;
+        tree:view   <http://localhost:8080/mobility-hindrances-by-time> .
+```
+4. Follow the `tree:view` link, i.e. http://localhost:8080/mobility-hindrances-by-time. The result is similar to:
+```
+@prefix tree: <https://w3id.org/tree#> .
+
+<http://localhost:8080/mobility-hindrances-by-time>
+        a              tree:Node ;
+        tree:relation  [ a          tree:Relation ;
+                         tree:node  <http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-27T12:13:58.672Z>
+                       ] .
+```
+5. Follow the `tree:node` link, e.g. `http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-27T12:13:58.672Z`.
 
 The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanOrEqualToRelation` nor `LessThanOrEqualToRelation`.
 
@@ -114,6 +135,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 ```
 3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances. 
+5. Follow the `tree:view` and then the `tree:node`.
 
 This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/last fragment.
 
@@ -132,6 +154,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 ```
 3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 4. Request the collection http://localhost:8080/mobility-hindrances.
+5. Follow the `tree:view` and then the `tree:node`.
 
 This results in the first fragment, validate the `Cache-Control` header (`immutable`), search for the `tree#relation`, note the `GreaterThanOrEqualToRelation` (**no** `LesserThanOrEqualToRelation`) and follow it to the next/middle fragment.
 

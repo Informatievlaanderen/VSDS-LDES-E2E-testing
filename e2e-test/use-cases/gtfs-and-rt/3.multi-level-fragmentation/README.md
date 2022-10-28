@@ -76,7 +76,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
 ```bash
-curl http://localhost:8080/mobility-hindrances
+curl http://localhost:8080/mobility-hindrances-by-location-and-time
 ```
 The response should contain a relation to the geo-spatial root node (`http://localhost:8080/mobility-hindrances?tile=0/0/0/`) which contains four `GeospatiallyContainsRelation`s, each referring to a timebased fragment which contains the member (e.g. `http://localhost:8080/mobility-hindrances?tile=15/16742/11010&generatedAtTime=2022-09-22T14:40:49.379Z`).
 

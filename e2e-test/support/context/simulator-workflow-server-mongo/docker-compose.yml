@@ -15,7 +15,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221024t080100}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221107t094816}
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
@@ -26,7 +26,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221107t0923}
     environment:
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME}

@@ -50,7 +50,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221107t0923}
     environment:
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb

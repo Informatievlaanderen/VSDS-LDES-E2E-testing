@@ -9,9 +9,9 @@ To setup the context, copy the `.env` file as `env.user` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20220927t0821`)
+* JSON_DATA_GENERATOR_TAG (default: `20221104t1400`)
 * LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
-* LDES_SERVER_TAG (default: `20221004t1751`)
+* LDES_SERVER_TAG (default: `20221107t0923`)
 * MONGODB_TAG (default: `5.0.13`)
 
 Optionally, you can change the port numbers:

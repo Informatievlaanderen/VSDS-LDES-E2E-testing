@@ -2,7 +2,7 @@ version: '3.3'
 services:
   json-data-generator:
     container_name: ${USECASE_NAME:-iow-context}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20220927t0821}
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20221104t1400}
     profiles:
       - delay-started
     environment:
@@ -22,7 +22,7 @@ services:
     depends_on:
       - nifi-workflow
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221024t080100}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221107t094816}
     container_name: ${USECASE_NAME:-iow-context}_ldes-workbench-nifi
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
@@ -49,7 +49,7 @@ services:
   # Using 3 consecutive ports for the 3 LDES servers -- see https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=8073
   ldes-server-devices:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-devices
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221107t0923}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
@@ -70,7 +70,7 @@ services:
       - ldes-mongodb
   ldes-server-models:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-models
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221107t0923}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_models
@@ -91,7 +91,7 @@ services:
       - ldes-mongodb
   ldes-server-observations:
     container_name: ${USECASE_NAME:-iow-context}_ldes-server-observations
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221004t1751}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221107t0923}
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_observations

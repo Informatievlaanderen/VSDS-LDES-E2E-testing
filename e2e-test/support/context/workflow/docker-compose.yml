@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221024t080100}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221107t094816}
     container_name: ${USECASE_NAME:-workflow}_ldes-workbench-nifi
     env_file:
       - env.workflow

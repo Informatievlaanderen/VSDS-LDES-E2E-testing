@@ -1,0 +1,21 @@
+@startuml "Use Case: IoW - Context Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Use Case: IoW - Context Diagram
+
+Person(devops, "DevOps Operator")
+
+System_Ext(broker, "Orion broker", "NGSI-v2 broker")
+System(nifi, "Apache NiFi system","Contains\n**IoW Workflows**")
+System(servers, "LDES Servers (3)", "Collection of three LDES Servers ingesting & serving:\n**Devices**\n**DeviceModels**\n**WaterQualityObserved**")
+System_Ext(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_L(nifi, broker, "retrieves last entity state", "HTTPS (method GET)")
+Rel_R(broker, nifi, "pushes entity updates", "HTTPS (method POST)")
+Rel_D(devops, nifi, "creates and runs workflow", "HTTPS")
+Rel_D(devops, nifi, "pushes Devices & DeviceModels", "HTTPS")
+Rel_D(devops, servers, "verifies all LDES's are correct & fragmented time-based", "HTTPS")
+Rel_R(nifi, servers, "pushes LDES members", "HTTPS (method POST)")
+Rel_R(servers, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

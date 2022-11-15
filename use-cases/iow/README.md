@@ -13,7 +13,7 @@ In the IoW use case we deploy one [Apache NiFi system](https://localhost:8443/ni
 As an example we provide a [Docker Compose](./docker-compose.yml) file containing the above systems and an [environment](./.env) file containing the most relevant environment variables that can be tuned. Alternatively, if needed, you can change or extend the compose file and the environment file for your need.
 
 ## Workflow(s)
-To ingest the water quality observations and related models (device and device model) we use one Apache NiFi workflow consisting of 3 almost identical flows. Each flow allows to seed the initial data set, that is, request and handle the current state of observations, devices and models. In addition, each flow contains a listener that captures the messages sent from the Orion broker because of a subscription. Here is an example of the observations flow:
+To ingest the water quality observations and related models (device and device model) we use one Apache NiFi [workflow](./workflow.json) consisting of 3 almost identical flows. Each flow allows to seed the initial data set, that is, request and handle the current state of observations, devices and models. In addition, each flow contains a listener that captures the messages sent from the Orion broker because of a subscription. Here is an example of the observations flow:
 
 ![workflow](./workflow.png)
 

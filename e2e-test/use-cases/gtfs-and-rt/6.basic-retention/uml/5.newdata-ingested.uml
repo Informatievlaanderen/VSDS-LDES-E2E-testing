@@ -1,0 +1,46 @@
+@startuml
+state "MongoDB" as DB #ffff99
+state "LDES L" as L
+state "View V" as V
+state "View W" as W
+state "Fragment A" as A #line:grey;line.dashed;text:grey
+state "Fragment B" as B #line:grey;line.dashed;text:grey
+state "Fragment C" as C #line:grey;line.dashed;text:grey
+state "Fragment D" as D #ffff99
+state "Fragment E" as E #lightgreen
+state "Fragment F" as F #line:grey;line.dashed;text:grey
+state "Fragment G" as G #ffff99
+state "Fragment H" as H #lightgreen
+
+[*] -left-> DB
+[*] -right-> L
+L -down-> V
+L -right-> W
+V -right-> D
+A -right-> B
+B -right-> C
+C -right-> D
+D -right-> E
+W -right-> G
+F -right-> G
+G -right-> H
+
+DB: members: 317
+L : views: 2
+V : capacity: 150
+W : capacity: 300
+V : retention: shorter
+W : retention: longer
+A : deleted
+B : deleted
+C : deleted
+D : members: 150
+E : members: 17
+G : members: 300
+H : members: 17
+D : immutable
+E : mutable
+F : deleted
+G : immutable
+H : mutable
+@enduml

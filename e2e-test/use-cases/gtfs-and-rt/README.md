@@ -9,3 +9,4 @@ The following tests are available:
 * [Multi-level fragmentation (GIPOD)](./3.multi-level-fragmentation/README.md): uses a workflow to ingest data containing a geospatial property to test the LDES server's ability to do fragmentation using a combination of fragmentizers.
 * [Multi-view fragmentation (GIPOD)](./4.multi-view/README.md): uses a workflow to ingest data containing a geospatial property to test the LDES server's ability to create multiple with different fragmentations.
 * [Geospatial fragmentation (GTFS/RT)](./5.including-stops/README.md): uses the same workflow as the first test to ingest GTFS/RT data and create a single view using geospatial fragmentation.
+* [Basic retention (GIPOD)](./6.basic-retention/README.md): uses the GIPOD data set to verify the LDES Servers ability to do very basic purging of older data to keep the data set limited to a manageable size and prevent high storage costs

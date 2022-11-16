@@ -1,0 +1,18 @@
+@startuml
+state "MongoDB" as DB
+state "LDES L" as L
+state "View V" as V
+state "View W" as W
+
+[*] -left-> DB
+[*] -right-> L
+L -down-> V
+L -right-> W
+
+DB: members: 0
+L : views: 2
+V : capacity: 150
+W : capacity: 300
+V : retention: shorter
+W : retention: longer
+@enduml

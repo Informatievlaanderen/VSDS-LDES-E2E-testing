@@ -14,8 +14,7 @@ This test validates user story **As a data publisher I want to implement a reten
 For this scenario we use a [custom Simulator / Workflow / Server / Mongo](./docker-compose.yml) context. This sets up a simulator without seeding, an empty Apache NiFi, an LDES server and a MongoDB backed by permanent storage.
 
 We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a standard InvokeHTTP processor, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).
-
-> TODO: The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. `P3D` (3 days) - **AC1**.
+The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. `P3D` (3 days).
 
 ### Start Systems
 When started, we expect that the LDES server creates the initial state: the LDES itself (L) and the two views (V and W).

@@ -48,7 +48,7 @@ describe('controller tests', () => {
         it('should update response statistics', () => {
             sut.postFragment({body: body, headers: headers});
             sut.postAlias({body: queryIdAlias});
-            sut.getFragment({query: {id: queryIdAlias.original}});
+            sut.getFragment({query: {id: queryIdAlias.original}}, controllerBaseUrl);
 
             const now = new Date();
             const statistics = sut.getStatistics();
@@ -98,12 +98,12 @@ describe('controller tests', () => {
     describe('retrieve fragment tests', () => {
         it('should return stored fragment on request', () => {
             repository.save(firstPartialId, body, {'content-type': mimeJsonLd});
-            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            const fragment = sut.getFragment({query: {id: firstPartialId}}, controllerBaseUrl);
             expect(fragment.body).not.toBeUndefined();
             expect(fragment.body?.['@id']).toBe(body['@id']);
         });
         it('should return 404 if fragment not found', () => {
-            const fragment = sut.getFragment({query: {id: '/dummy/id'}});
+            const fragment = sut.getFragment({query: {id: '/dummy/id'}}, controllerBaseUrl);
             expect(fragment.body).toBeUndefined();
             expect(fragment.status).toBe(404);
         });
@@ -118,7 +118,7 @@ describe('controller tests', () => {
         it('should retrieve fragments by alias', () => {
             sut.postFragment({body: body, headers: headers});
             sut.postAlias({body: queryIdAlias});
-            const fragment = sut.getFragment({query: {id: partialWithQueryId}});
+            const fragment = sut.getFragment({query: {id: partialWithQueryId}}, controllerBaseUrl);
             expect(fragment.body).toBeUndefined();
             expect(fragment.status).toEqual(302);
             expect(fragment.headers?.['location']).toBe(body['@id']);
@@ -133,7 +133,7 @@ describe('controller tests', () => {
                 original: new URL(partialWithQueryId, originalBaseUrl).href
             };
             sut.postAlias({body: firstMemberAlias});
-            const fragment = sut.getFragment({query: {id: firstMemberId}});
+            const fragment = sut.getFragment({query: {id: firstMemberId}}, controllerBaseUrl);
             expect(fragment.body).toBeUndefined();
             expect(fragment.status).toEqual(302);
             expect(fragment.headers?.['location']).toBe(body['@id']);
@@ -143,15 +143,15 @@ describe('controller tests', () => {
     describe('seed tests', () => {
         it('should serve seeded data', async () => {
             await sut.seed('./test/data');
-            expect(sut.getFragment({query: {id: '/id/fragment/1'}})).not.toBeUndefined();
-            expect(sut.getFragment({query: {id: '/id/fragment/2'}})).not.toBeUndefined();
+            expect(sut.getFragment({query: {id: '/id/fragment/1'}}, controllerBaseUrl)).not.toBeUndefined();
+            expect(sut.getFragment({query: {id: '/id/fragment/2'}}, controllerBaseUrl)).not.toBeUndefined();
         });
     });
 
     describe('Cache-Control tests', () => {
         it('should return immutable by default', () => {
             sut.postFragment({body: body, headers: headers});
-            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            const fragment = sut.getFragment({query: {id: firstPartialId}}, controllerBaseUrl);
             expect(fragment.headers).not.toBeUndefined();
 
             const cacheControl = fragment.headers && fragment.headers['cache-control'] as string;
@@ -166,7 +166,7 @@ describe('controller tests', () => {
             const seconds = 5;
             sut.postFragment({body: body, headers: headers, query: {'max-age': seconds}});
             
-            const fragment = sut.getFragment({query: {id: firstPartialId}});
+            const fragment = sut.getFragment({query: {id: firstPartialId}}, controllerBaseUrl);
             const cacheControl = fragment.headers && fragment.headers['cache-control'] as string;
             
             const directives = cacheControl?.split(',').map(x => x.trim());

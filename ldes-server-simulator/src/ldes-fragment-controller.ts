@@ -35,7 +35,7 @@ export class LdesFragmentController {
      * @param request A get request with the query containing the ID of the fragment to retrieve.
      * @returns The fragment or undefined.
      */
-    public getFragment(request: IGetRequest<IFragmentId>): IResponse<TreeNode | undefined> {
+    public getFragment(request: IGetRequest<IFragmentId>, baseUrl: URL): IResponse<TreeNode | undefined> {
         let fragmentId = request.query.id;
         let redirection = this._redirections[fragmentId];
         if (redirection) {
@@ -45,7 +45,7 @@ export class LdesFragmentController {
             return {
                 status: 302,
                 body: undefined,
-                headers: { 'location': new URL(redirection, this.service.baseUrl).toJSON() },
+                headers: { 'location': new URL(redirection, baseUrl).toJSON() },
             }
         }
         const fragment = fragmentId ? this.service.get(fragmentId) : undefined;

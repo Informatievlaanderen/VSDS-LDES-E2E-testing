@@ -39,7 +39,8 @@ server.get('/', async (_request, reply) => {
 });
 
 server.get('/*', async (request, reply) => {
-  respondWith(reply, controller.getFragment({ query: {id: request.url}}));
+  const baseUrl = new URL(`${request.protocol}://${request.hostname}`);
+  respondWith(reply, controller.getFragment({ query: {id: request.url }}, baseUrl));
 });
 
 server.addContentTypeParser('application/ld+json', {parseAs: "string"}, server.getDefaultJsonParser('ignore', 'ignore'));

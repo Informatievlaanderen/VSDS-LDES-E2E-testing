@@ -102,6 +102,46 @@ and the simulator will respond with:
 {"from":"/ldes/mobility-hindrances","to":"/api/v1/ldes/mobility-hindrances"}
 ```
 
+When requesting a fragment by alias:
+```bash
+curl -i  http://localhost:8080/ldes/mobility-hindrances
+```
+the simulator returns an HTTP `302` status code and indicates the original URL in the `location` header:
+```http
+HTTP/1.1 302 Found
+location: http://localhost:8080/api/v1/ldes/mobility-hindrances
+content-length: 0
+Date: Wed, 23 Nov 2022 12:51:00 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+To automatically follow the redirects with `curl` you can pass it a `-L` or `--location` option:
+```bash
+curl -i -L http://localhost:8080/ldes/mobility-hindrances
+```
+which returns:
+```http
+HTTP/1.1 302 Found
+location: http://localhost:8080/api/v1/ldes/mobility-hindrances
+content-length: 0
+Date: Wed, 23 Nov 2022 12:56:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+HTTP/1.1 200 OK
+content-type: application/ld+json; charset=utf-8
+cache-control: public, max-age=604800, immutable
+content-length: 2571
+Date: Wed, 23 Nov 2022 12:56:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  "@context":["https://private-api.gipod.beta-vlaanderen.be/api/v1/context/gipod.jsonld"]
+  ... (omitted the response remainder)
+}
+```
+
 ## Retrieve a Fragment
 
 After uploading the fragments and optionally creating aliases, you can retrieve a fragment using your favorite HTTP client directly or through the simulator home page.

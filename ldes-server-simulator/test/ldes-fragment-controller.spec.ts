@@ -118,9 +118,10 @@ describe('controller tests', () => {
         it('should retrieve fragments by alias', () => {
             sut.postFragment({body: body, headers: headers});
             sut.postAlias({body: queryIdAlias});
-            const fragment = sut.getFragment({query: {id: firstPartialId}});
-            expect(fragment.body).not.toBeUndefined();
-            expect(fragment.body?.['@id']).toBe(body['@id']);
+            const fragment = sut.getFragment({query: {id: partialWithQueryId}});
+            expect(fragment.body).toBeUndefined();
+            expect(fragment.status).toEqual(302);
+            expect(fragment.headers?.['location']).toBe(body['@id']);
         });
         it('should retrieve fragments by alias, even recursively', () => {
             sut.postFragment({body: body, headers: headers});
@@ -133,8 +134,9 @@ describe('controller tests', () => {
             };
             sut.postAlias({body: firstMemberAlias});
             const fragment = sut.getFragment({query: {id: firstMemberId}});
-            expect(fragment.body).not.toBeUndefined();
-            expect(fragment.body?.['@id']).toBe(body['@id']);
+            expect(fragment.body).toBeUndefined();
+            expect(fragment.status).toEqual(302);
+            expect(fragment.headers?.['location']).toBe(body['@id']);
         });
     });
 

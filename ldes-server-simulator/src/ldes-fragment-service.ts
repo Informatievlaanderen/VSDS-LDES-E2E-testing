@@ -8,7 +8,7 @@ export interface ICreateFragmentOptions {
 }
 
 export class LdesFragmentService {
-    constructor(private baseUrl: URL, private repository: LdesFragmentRepository) { }
+    constructor(public baseUrl: URL, private repository: LdesFragmentRepository) { }
 
     public save(node: TreeNode, options?: ICreateFragmentOptions | undefined, headers?: IHeaders | undefined): IFragmentInfo {
         const fragmentUrl: URL = this.changeOrigins(node);

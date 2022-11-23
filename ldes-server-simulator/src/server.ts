@@ -42,6 +42,8 @@ server.get('/*', async (request, reply) => {
   respondWith(reply, controller.getFragment({ query: {id: request.url}}));
 });
 
+server.addContentTypeParser('application/ld+json', {parseAs: "string"}, server.getDefaultJsonParser('ignore', 'ignore'));
+
 server.post('/ldes', {schema: {querystring: {seconds: {type:'number'}}}}, async (request, reply) => {
   respondWith(reply, controller.postFragment({
     body: request.body as TreeNode, 

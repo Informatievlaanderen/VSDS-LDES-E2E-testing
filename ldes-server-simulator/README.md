@@ -66,11 +66,11 @@ To upload the LDES fragments, the simulator offers an `/ldes` endpoint to which 
 
 To upload an LDES fragment from the (Bash) command line using curl:
 
-`curl -X POST http://localhost:8080/ldes -H "Content-Type: application/json-ld" -d "@sample.jsonld"`
+`curl -X POST http://localhost:8080/ldes -H "Content-Type: application/ld+json" -d "@sample.jsonld"`
 
 where `sample.jsonld` is your fragment file located in the current working directory. This results in something like (depends on the file's content):
 ```json
-{"content-type":"application/json-ld","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances"}
+{"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 **Note**: you need to ensure that your collection of fragments does not contain a relation to a fragment outside of your collection (data subset). Obviously, the simulator will not contain such a fragment and return a HTTP code 404.
@@ -79,12 +79,12 @@ Additionally, you can control the `Cache-Control` header that is returned for a 
 
 To upload an LDES fragment and specify the `max-age` (e.g. 2 minutes / 120 seconds) using curl:
 
-`curl -X POST http://localhost:8080/ldes?max-age=120 -H "Content-Type: application/json-ld" -d "@sample.jsonld"`
+`curl -X POST http://localhost:8080/ldes?max-age=120 -H "Content-Type: application/ld+json" -d "@sample.jsonld"`
 
 Response:
 
 ```json
-{"content-type":"application/json-ld","cache-control":"public, max-age=120","id":"/api/v1/ldes/mobility-hindrances"}
+{"content-type":"application/ld+json","cache-control":"public, max-age=120","id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
 ## Create an Alias

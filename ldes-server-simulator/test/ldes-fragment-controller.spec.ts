@@ -1,7 +1,7 @@
 import { LdesFragmentController, LdesFragmentRepository, LdesFragmentService, IAlias, TreeNode, TreeRelation, IHeaders } from '../src'
 
 describe('controller tests', () => {
-    const mimeJsonLd = 'application/json-ld';
+    const mimeJsonLd = 'application/ld+json';
     const originalBaseUrl = new URL('http://www.example.org');
     const controllerBaseUrl = new URL("http://www.ldes-server-simulator.org");
     const firstPartialId = '/id/fragment/1';

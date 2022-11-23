@@ -18,4 +18,4 @@ export interface IPostRequest<TBody, TQuery = void> {
     headers?: IHeaders;
 }
 
-export const mimeJsonLd = 'application/json-ld';
+export const mimeJsonLd = 'application/ld+json';

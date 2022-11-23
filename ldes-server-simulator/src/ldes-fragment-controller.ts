@@ -37,8 +37,16 @@ export class LdesFragmentController {
      */
     public getFragment(request: IGetRequest<IFragmentId>): IResponse<TreeNode | undefined> {
         let fragmentId = request.query.id;
-        while (this._redirections[fragmentId] !== undefined) {
-            fragmentId = this._redirections[fragmentId] ?? '';
+        let redirection = this._redirections[fragmentId];
+        if (redirection) {
+            while (this._redirections[redirection]) {
+                redirection = this._redirections[redirection] ?? '';
+            }
+            return {
+                status: 302,
+                body: undefined,
+                headers: { 'location': new URL(redirection, this.service.baseUrl).toJSON() },
+            }
         }
         const fragment = fragmentId ? this.service.get(fragmentId) : undefined;
         this.addStatistics(fragmentId);

@@ -772,7 +772,7 @@
                             "ID_JSON_PATH": "$['@id']",
                             "GENERATED_AT_TIME_PROPERTY": "http://www.w3.org/ns/prov#generatedAtTime",
                             "DATE_OBSERVED_VALUE_JSON_PATH": "$['WaterkwaliteitObservatieVerzameling.^fenomeenTijd']['@value']",
-                            "DATA_DESTINATION_FORMAT": "n-quads",
+                            "DATA_DESTINATION_FORMAT": "application/n-quads",
                             "DELIMITER": "/",
                             "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
                             "ADD_WKT_PROPERTY": "true"
@@ -2084,7 +2084,7 @@
                             "ID_JSON_PATH": "$['@id']",
                             "GENERATED_AT_TIME_PROPERTY": "http://www.w3.org/ns/prov#generatedAtTime",
                             "DATE_OBSERVED_VALUE_JSON_PATH": "$['@dummy']",
-                            "DATA_DESTINATION_FORMAT": "n-quads",
+                            "DATA_DESTINATION_FORMAT": "application/n-quads",
                             "DELIMITER": ":",
                             "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
                             "ADD_WKT_PROPERTY": "false"
@@ -3321,7 +3321,7 @@
                             "ID_JSON_PATH": "$['@id']",
                             "GENERATED_AT_TIME_PROPERTY": "http://www.w3.org/ns/prov#generatedAtTime",
                             "DATE_OBSERVED_VALUE_JSON_PATH": "$['@id']",
-                            "DATA_DESTINATION_FORMAT": "n-quads",
+                            "DATA_DESTINATION_FORMAT": "application/n-quads",
                             "DELIMITER": "/",
                             "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
                             "ADD_WKT_PROPERTY": "false"

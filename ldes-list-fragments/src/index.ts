@@ -24,9 +24,7 @@ function sleep(ms: number) {
 }
 
 async function visit(url: string, queue: SortedQueue<TimedUrl>, visited: {[key: string]: any}) {
-  const response = mimeType 
-  ? await fetch(url, {headers: { accept: mimeType }}) 
-  : await fetch(url);
+  const response = await fetch(url, {headers: { accept: mimeType }});
 
   if (!response.ok) {
     console.error(response.statusText);
@@ -45,19 +43,14 @@ async function visit(url: string, queue: SortedQueue<TimedUrl>, visited: {[key: 
   const fragmentId = model.getSubjects(null, 'https://w3id.org/tree#Node', null).shift()?.value;
   if (fragmentId)
   {
-    if (!visited[fragmentId]) {
-      console.info(fragmentId);
-    }
+    if (!visited[fragmentId]) console.info(fragmentId);
     visited[fragmentId] = true;
 
     const relations = model.getObjects(null, 'https://w3id.org/tree#node', null).map(x => x.value);
     const unvisited = relations.filter(x => !visited[x]);
     unvisited.forEach(x => queue.push({at: undefined, url: x}));
 
-    const immutable = cacheControl.immutable;
-    if (!immutable) {
-      queue.push({at: expires, url: fragmentId});
-    }
+    if (!cacheControl.immutable) queue.push({at: expires, url: fragmentId});
   }
 }
 
@@ -76,18 +69,20 @@ interface TimedUrl {
 }
 
 const visitedFragments: {[key: string]: any} = {};
-const fragmentsToVisit = new SortedQueue<TimedUrl>((x,y) => { 
-  const f = x.at?.valueOf();
-  const s = y.at?.valueOf();
-  if (!f) return -1;
-  if (!s) return 1;
-  return s - f;
+const fragmentsToVisit = new SortedQueue<TimedUrl>((first,second) => { 
+  const firstAt = first.at;
+  if (!firstAt) return -1;
+
+  const secondAt = second.at;
+  if (!secondAt) return 1;
+
+  return secondAt.valueOf() - firstAt.valueOf();
 } );
 fragmentsToVisit.push({at: undefined, url: viewUrl});
 
-let next: TimedUrl | undefined;
-while (next = fragmentsToVisit.peek()?.value) {
-  if (next.at && (Date.now() < next.at.valueOf())) {
+let nextAt: Date | undefined;
+while (nextAt = fragmentsToVisit.peek()?.value?.at) {
+  if (nextAt && (Date.now() < nextAt.valueOf())) {
     await sleep(pollInterval);
   } else {
     const url = fragmentsToVisit.pop()?.value.url || '';

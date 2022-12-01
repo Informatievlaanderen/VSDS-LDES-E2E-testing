@@ -51,7 +51,7 @@ The template or template file should simply contain a valid JSON structure (with
 
 The mapping file is also a JSON file but uses a key/value mapping where the key conforms the [JSON path specifications](https://datatracker.ietf.org/doc/id/draft-goessner-dispatch-jsonpath-00.html) and the value conforms a syntax allowing to change the value matched by the JSON path to a new value obtained by replacing the variables specified in the value part, e.g.:
 ```json
-{ "$..id": "${@}-${nextCounter}", "$..modifiedAt": "${currentTimestamp}" }
+{ "$.id": "${@}-${nextCounter}", "$.modifiedAt": "${currentTimestamp}" }
 ```
 
 The `${@}` will be replaced by the currently match value of the JSON path `$.id` (e.g. `my-id`) while any other `${<property>}` will use a property of the generator itself. Currently the only allowed properties are:

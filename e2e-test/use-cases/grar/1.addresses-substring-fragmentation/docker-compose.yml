@@ -1,0 +1,72 @@
+version: '3.3'
+services:
+  json-data-generator:
+    container_name: ${USECASE_NAME:-grar-context}_json-data-generator
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20221205t1348}
+    profiles:
+      - delay-started
+    environment:
+      - TARGETURL=http://nifi-workflow:9012/grar/addresses
+      - SILENT=${JSON_DATA_GENERATOR_SILENT:-true}
+      - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
+      - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
+      - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/address.mapping.json}
+      - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
+      - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
+    volumes:
+      - type: bind
+        source: ./data
+        target: /tmp/data
+    networks:
+      - ldes
+  nifi-workflow:
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221205t135134}
+    container_name: ${USECASE_NAME:-grar-context}_ldes-workbench-nifi
+    ports:
+      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_WORKFLOW_LISTEN_PORT_ADDRESS:-9012}:9012
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    networks:
+      - ldes
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-grar-context}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.3}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
+    networks:
+      - ldes
+  ldes-server:
+    container_name: ${USECASE_NAME:-grar-context}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221205t1357}
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=grar_addresses
+      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - LDES_COLLECTIONNAME=addresses
+      - LDES_SHAPE=
+      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - LDES_MEMBERTYPE=https://data.vlaanderen.be/ns/adres#Adres
+      - VIEWS_0_NAME=addresses-by-name
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=substring
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=https://data.vlaanderen.be/ns/adres#volledigAdres
+      - VIEWS_1_NAME=addresses-by-time
+      - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
+      - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
+      - SIS_DATA=/tmp
+    ports:
+      - ${LDES_SERVER_PORT:-8080}:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+networks:
+  ldes:
+    name: ${USECASE_NAME:-grar-context}_network

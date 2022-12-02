@@ -1,0 +1,22 @@
+@startuml "GRAR Use Case - Actual - Context Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title GRAR Use Case - Actual - Context Diagram
+
+Person(tester, "Tester")
+
+System_Ext(grar, "GRAR system", "Some system sending adress change notifications")
+SystemQueue_Ext(topic, "Kafka Address topic", "Message queue for address changes")
+
+System(nifi, "Apache NiFi system","Contains\n**GRAR Workflow**")
+System(server, "LDES Server", "LDES Server ingesting & serving addresses")
+SystemDb(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_D(grar, topic, "pushes\naddress states", "Kafka")
+Rel_L(nifi, topic, "pulls\naddress states", "Kafka")
+Rel_D(tester, nifi, "create and run workflow", "HTTPS")
+Rel_D(tester, server, "verifies LDES substring & time-based fragmented", "HTTP")
+Rel_R(nifi, server, "pushes\naddress versions", "HTTP (method POST)")
+Rel_R(server, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

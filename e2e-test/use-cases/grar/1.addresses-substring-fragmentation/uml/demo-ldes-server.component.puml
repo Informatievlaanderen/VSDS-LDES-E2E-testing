@@ -1,0 +1,34 @@
+@startuml "GRAR Use Case - Demo - Component Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title GRAR Use Case - Demo - Component Diagram
+
+Person(tester, "Tester")
+
+System_Ext(generator, "JSON Data Generator", "Simple generator creating\naddress state updates\n(GRAR format)")
+
+System_Boundary(nifi, "Apache NiFi system") {
+    Container_Boundary(workflow, "GRAR Workflow"){
+         Component(listener, "ListenHTTP", "Java - standard NiFI processor", "Listens for address messages\n(containing multiple address updates)")
+         Component(split_message, "SplitJSON", "Java - standard NiFI processor", "Splits address message\ninto address states")
+         Component(fix_srs_uri, "ReplaceText", "Java - standard NiFI processor", "Fixes SRS uri scheme")
+         Component(fix_context, "ReplaceText", "Java - standard NiFI processor", "Fixes @context location")
+         Component(create_version, "CreateLdesMember", "Java - **custom** NiFI processor", "Creates version object\n(from state object)")
+         Component(sender, "InvokeHTTP", "Java - standard NiFI processor", "Sends address version to LDES server")
+    }
+}
+System(server, "LDES Server", "LDES Server ingesting & serving addresses")
+SystemDb(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_D(generator, listener, "pushes\naddress messages", "HTTP")
+Rel_U(listener, split_message, "address message", "JSON")
+Rel_R(split_message, fix_srs_uri, "address state", "JSON")
+Rel_R(fix_srs_uri, fix_context, "address state", "JSON")
+Rel_D(fix_context, create_version, "address state", "JSON")
+Rel_R(create_version, sender, "address version", "n-quads")
+Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, server, "verifies LDES substring & time-based fragmented", "HTTP")
+Rel_R(sender, server, "pushes\naddress versions", "HTTP (method POST)")
+Rel_R(server, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

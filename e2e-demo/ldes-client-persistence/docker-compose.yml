@@ -14,7 +14,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221201t125339}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221202t120945}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
@@ -27,10 +27,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20221201t1251}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-client-sink
     environment:
-      - MEMORY=false
-      - CONNECTION_URI=mongodb://ldes-mongodb:27017
-      - SILENT=${LDES_CLIENT_SINK_SILENT:-true}
-      - DATABASE_NAME=${LDES_CLIENT_SINK_DATABASE_NAME:-GIPOD}
+      - MEMORY=true
       - COLLECTION_NAME=${LDES_CLIENT_SINK_COLLECTION_NAME:-mobility-hindrances}
       - MEMBER_TYPE=${LDES_CLIENT_SINK_MEMBER_TYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
     ports:

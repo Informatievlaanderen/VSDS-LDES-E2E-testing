@@ -3,7 +3,11 @@
 #
 # Outputs the help for each task
 
-include pyldes.env
+ENV_FILE ?= env.client-persistence
+
+include ${ENV_FILE}
+
+USECASE_NAME ?= simulator-workflow-sink-mongo
 
 .PHONY: help
 
@@ -12,21 +16,20 @@ help: ## This help message
 
 .DEFAULT_GOAL := help
 
-build: ## Build the containers (with env file pyldes.env)
-	@docker compose --env-file ./pyldes.env build
+build: ## Build the containers 
+	@docker compose --env-file ${ENV_FILE} build
 
-	@if [ -n ${INITIALISE_DB_ON_BUILD} ] && [ ${INITIALISE_DB_ON_BUILD} = "true" ]; then \
-		docker compose --env-file ./pyldes.env up & \
-		./scripts/wait-for-it.sh localhost:5000 -q; \
-		./scripts/wait-for-it.sh localhost:9432 -q; \
-		sleep 5s; \
-		curl --request GET --url http://localhost:5000/manage/init; \
-		curl -X POST  -d "@data/initial.ttl" -H "Content-Type: text/turtle" -H "Accept: text/turtle" localhost:5000/ldes; \
-		docker compose --env-file ./pyldes.env stop; \
-	fi
-
-run: ## Run the containers (with env file pyldes.env)
-	@docker compose --env-file ./pyldes.env up
+run: ## Run the containers
+	echo Env file: ${ENV_FILE}
+	@docker compose --env-file ${ENV_FILE} up
+	@scripts/wait-for-it.sh http://localhost:9011 -q
+	@curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 
 stop: ## Stop the running containers
-	@docker compose stop
+	@docker compose --env-file ${ENV_FILE} stop
+
+login: ## Login to the LDES Workbench Nifi container
+	@docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /bin/bash
+
+extract: ## Extract the LDES Client state database from the docker image
+	@docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /bin/bash -c 'cd /opt/nifi/nifi-current && tar -cf - *.db' | tar -xvf - -C db/

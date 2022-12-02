@@ -1,5 +1,5 @@
 # LDES Client Can Persist State
-This test validates user story **As an LDES Client, I want to follow and resume an LDES and keep it's state** ([VSDSPUB-59](https://vlaamseoverheid.atlassian.net/browse/VSDSPUB-198)) and was shown during demo 15 on December, 7th 2022.
+This test validates user story [**As an LDES Client, I want to follow and resume an LDES and keep it's state** (VSDSPUB-59)](https://vlaamseoverheid.atlassian.net/browse/VSDSPUB-198) and was shown during demo 15 on December, 7th 2022.
 
 ## Scenario: Pause LDES Fragment Fetching and Resume From Last Queued Fragment
 This scenario verifies that the LDES client resumes processing at the last queued fragment, not the configured initial fragment.
@@ -17,9 +17,16 @@ For this scenario we use a [workflow](docker-compose.yml) based on the [Simulato
 
 Then you can run the systems by executing the following command:
 ```bash
+make run
+```
+
+This will execute
+
+```bash
 docker compose --env-file env.user up
 ```
 
+To verify that the data is already seeded, run this command:
 The data set is already seeded (see [simulator](http://localhost:9011/)):
 ```bash
 curl http://localhost:9011/
@@ -46,8 +53,11 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 ### Test Execution
 To run the test, you need to:
 1. Upload a pre-defined NiFi workflow containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
-2. Start the NiFi workflow and wait for it to process all LDES members.
-3. Verify that all LDES members from the GIPOD simulator are received by the sink HTTP server.
+2. Start the NiFi workflow, follow the logging and stop the workflow when a fragment has been processed.
+3. Verify that only the first fragment was requested from the server-simulator by visiting [http://localhost:9003](http://localhost:9003).
+4. Restart the NiFi workflow, follow the logging and stop the workflow when a following fragment has been processed.
+5. Verify that the processed fragment were requested from the server-simulator by visiting [http://localhost:9003](http://localhost:9003).
+
 
 #### 1. Upload NiFi Workflow
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
@@ -58,10 +68,16 @@ You can verify the LDES client processor properties to ensure the input source i
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
-#### 2. Start the Workflow
+#### 2. Start the Workflow and stop when a fragment was processed
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
+When a fragment has been processed, the logging will show a message like this:
 
-#### 3. Verify LDES Members Received
+```shell
+
+```
+
+#### 3. Verify the processed fragment
+
 The GIPOD simulator (http://localhost:9011) is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served.
 
 You can verify that, after some time, all (1016) LDES members are received by the sink HTTP server by visit the following pages: http://localhost:9003 (count) and http://localhost:9003/member (LDES member ids).

@@ -28,8 +28,7 @@ docker compose --env-file env.user up
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
-To verify that the data is already seeded, run this command:
-The data set is already seeded (see [simulator](http://localhost:9011/)):
+To verify that the data is already seeded, run this command (see [simulator](http://localhost:9011/)):
 ```bash
 curl http://localhost:9011/
 ```
@@ -90,7 +89,7 @@ The response should show something similar to this:
 ...
 ```
 
-#### 4. Restart the Workflow and stop when a fragment was processed
+#### 4. Restart the Workflow and stop when another fragment was processed
 Restart the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
 When the queue hits 500 members, stop the workflow again.

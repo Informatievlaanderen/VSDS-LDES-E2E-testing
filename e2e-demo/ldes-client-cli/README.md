@@ -2,7 +2,7 @@
 To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it.
 
 ## Test Setup
-To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI. Please copy the [environment file (env.client-cli)](./env.client-cli) to a personal file (e.g. `env.user`) and change the arguments as needed.
+To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the arguments as needed.
 
 We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
 
@@ -10,8 +10,8 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 
 Create both containers and run the simulator:
 ```bash
-docker compose --env-file env.user create
-docker compose --env-file env.user start ldes-server-simulator
+docker compose --env-file user.env create
+docker compose --env-file user.env start ldes-server-simulator
 ```
 
 ## Test Execution and Verification
@@ -38,7 +38,7 @@ returns:
 ### Verify Replication
 When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
 ```bash
-docker compose --env-file env.user start ldes-cli
+docker compose --env-file user.env start ldes-cli
 ```
 
 Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs (in another shell):
@@ -69,5 +69,5 @@ Again, wait a while and request the LDES Server Simulator home page and ensure t
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

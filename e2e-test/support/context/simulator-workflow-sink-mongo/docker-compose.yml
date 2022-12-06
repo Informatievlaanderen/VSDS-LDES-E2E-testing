@@ -1,6 +1,6 @@
 services:
   ldes-server-simulator:
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20220927t0821}
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221206t0913}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
@@ -14,7 +14,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221107t094816}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221205t135134}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
@@ -24,7 +24,7 @@ services:
     networks:
       - ldes
   ldes-client-sink:
-    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20220927t0820}
+    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20221206t0913}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-client-sink
     environment:
       - MEMORY=false
@@ -39,7 +39,7 @@ services:
       - ldes
   ldes-mongodb:
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-5.0.13}
+    image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     volumes:

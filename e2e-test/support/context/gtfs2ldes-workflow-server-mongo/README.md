@@ -8,7 +8,7 @@ We use an Apache NiFi instance which should be configured with a workflow contai
 If required, the workflow can contain other processors to transfor the LD object as needed. Alternatively, custom processors can also be provided to listen to the GTFS2LDES system and/or POST to the LDES server.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
+To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 * SPRING_DATA_MONGODB_DATABASE (e.g. `DeLijn`)
@@ -21,7 +21,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
-* LDES_SERVER_TAG (default: `20221107t0923`)
+* LDES_SERVER_TAG (default: `20221205t1357`)
 * LDES_COLLECTIONNAME (default `connections`)
 * LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)
 * LDES_SERVER_PORT (default: 8080)
@@ -50,7 +50,7 @@ Optionally, you can currently tune the following parameters:
 ## Run the Systems
 To create and start all systems in the context:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 > **Note**: the GTFS to LDES convertor is configured to not start immediately (tagged with a profile) because currently we cannot automatically upload the workflow to the Apache NiFi system. Therefore, you need to start the GTFS to LDES convertor, manually after loading and starting the workflow.
@@ -58,7 +58,7 @@ docker compose --env-file env.user up
 ### Start the GTFS to LDES convertor
 To start the GTFS to LDES convertor (after running the workflow) use the following Bash command:
 ```bash
-docker compose --env-file env.user up gtfs2ldes-js
+docker compose --env-file user.env up gtfs2ldes-js
 ```
 
 ## Verify Context
@@ -91,6 +91,7 @@ This means that the MongoDB is correctly started. To actually view the contents 
 To stop all systems in the context:
 ```bash
 docker compose down
+docker compose --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

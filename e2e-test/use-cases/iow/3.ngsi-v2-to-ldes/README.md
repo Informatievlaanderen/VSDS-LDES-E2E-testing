@@ -4,15 +4,15 @@ This test validates user story **Publish IoW data using time-based fragmentation
 ## Test Setup
 We use a [JSON Data Generator](/json-data-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), an Apache NiFi instance containing an HTTP listener that receives the observations (and devices & models), the NiFi components translating the NGSI-v2 entities to NGSI-LD entities, the NiFi components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
 
-To setup the context, copy the `.env` file as `env.user` and specify the missing, required arguments:
+To setup the context, copy the `.env` file as `user.env` and specify the missing, required arguments:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221104t1400`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
-* LDES_SERVER_TAG (default: `20221107t0923`)
-* MONGODB_TAG (default: `5.0.13`)
+* JSON_DATA_GENERATOR_TAG (default: `20221206t0913`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221205t135134`)
+* LDES_SERVER_TAG (default: `20221205t1357`)
+* MONGODB_TAG (default: `6.0.3`)
 
 Optionally, you can change the port numbers:
 * NIFI_UI_PORT (default: `8443`)
@@ -38,7 +38,7 @@ Optionally, you can change the other variables:
 
 To create and start all systems except for the JSON Data Generator:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 > **Note** that we do not create nor start the generator yet as we first need to create a workflow containing the HTTP listeners.
@@ -46,7 +46,7 @@ docker compose --env-file env.user up
 To verify that all systems in the context (except for the generator) are available (please subsitute the correct ports if changed):
 
 ### LDES Client Workflow
-The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi) and use your credentials (provided in the `env.user` file) to login.
+The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi) and use your credentials (provided in the `user.env` file) to login.
 
 ### Mongo Database
 Browse to http://localhost:27017 or use Bash command:
@@ -122,7 +122,7 @@ curl -X POST http://localhost:9013/ngsi/device-model -H 'Content-Type: applicati
 ### 4. Start the Observations Generation
 To create the Docker container and start generating `WaterQualityObserved` messages launch the JSON Data Generator:
 ```bash
-docker compose --env-file env.user up json-data-generator
+docker compose --env-file user.env up json-data-generator
 ```
 
 ## Test Verification
@@ -136,7 +136,8 @@ curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observ
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
+docker compose --env-file user.env --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

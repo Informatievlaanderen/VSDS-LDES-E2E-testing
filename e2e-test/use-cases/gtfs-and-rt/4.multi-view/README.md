@@ -9,7 +9,7 @@ The LDES Server provides some configuration to cover the following acceptance cr
 * views are consulted via the endpoint '/{viewname}'
 
 ### Test Setup
-To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.multiview)](./env.multiview) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (multiview.env)](./multiview.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
 
 The environment file is already configured for two view (one geospatial & timebased and one timebased) but you can adapt the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#multiview). 
 Please note the specific configuration properties which allow to configure the amount of views and types of fragmentations (`X` represents the view number starting at 0, `Y` represents the fragmentation number starting at 0):
@@ -17,14 +17,14 @@ Please note the specific configuration properties which allow to configure the a
 * VIEWS_X_FRAGMENTATIONS_Y_NAME=name of fragmentation (currently, only "timebased" and "geospatial" are supported)
 * VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`FRAGMENTATION_PROPERTY_KEY`=`FRAGMENTATION_PROPERTY_VALUE` (specific to the kind of fragmentation, e.g. `FRAGMENTATION_PROPERTY_KEY` = "maxzoomlevel" and `FRAGMENTATION_PROPERTY_VALUE` = "15" for geospatial fragmentation)
 
-> **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
+> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
 
 You can then run the systems by executing the following command:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
 
@@ -32,7 +32,7 @@ You can verify the LDES client processor properties to ensure the input source i
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances` -- **note** that we use an alias here to ease the use of different data sets
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/mobility-hindrances` and the property `HTTP method` should be `POST`
 
-The test data set contains only one version object spanning multiple tiles and therefore consists of a [single file containing one member](./data/six-members.jsonld). This data set is used:
+The test data set contains only one version object spanning multiple tiles and therefore consists of a [single file containing six members](./data/six-members.jsonld). This data set is used:
 * to demonstrate the geospatial bucketizer's ability to correctly create (multiple) buckets for a given member based on the configured property,
 * to verify that the generated buckets values (`ldes:bucket`) are not present in the generated fragments and
 * to illustrate the current strategy used by the geospatial fragmentation to create fragments and the relations included.
@@ -100,13 +100,13 @@ Try out different views and fragmentation strategies by
 2. Deleting the database for example using [Mongo Compass](https://www.mongodb.com/products/compass)
 3. Recreating the ldes-server:
    ```
-    docker compose --env-file env.user stop ldes-server  
-    docker compose --env-file env.user create ldes-server
-    docker compose --env-file env.user start ldes-server   
+    docker compose --env-file user.env stop ldes-server  
+    docker compose --env-file user.env create ldes-server
+    docker compose --env-file user.env start ldes-server   
     ``` 
 
 ### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

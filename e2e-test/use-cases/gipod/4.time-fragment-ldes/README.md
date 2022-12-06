@@ -48,7 +48,7 @@ And the response of the last fragment should contain a Cache-Control header
 ```
 
 ### Test Setup
-For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.time-fragment)](./env.time-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (time-fragment.env)](./time-fragment.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -57,10 +57,10 @@ export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/do
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
@@ -73,18 +73,18 @@ The different scenarios can be tested with the following data set:
 * `beta.json.ld` (250 items)
 * `epsilon.json.ld` (117 items)
 
-So, the total data set contains 617 items. We have [configured our LDES Server](./env.time-fragment) deliberately to create fragments of 300 members to be able to easily test each scenario.
+So, the total data set contains 617 items. We have [configured our LDES Server](./time-fragment.env) deliberately to create fragments of 300 members to be able to easily test each scenario.
 
 #### Recreate Containers Between the Scenarios
 All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To destroy the containers:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```
 > **Note**: as we use a permanent storage for MongoDB, you also need to delete the database before restarting the containers:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
-You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 ### Test Execution
 > **Note**: the first scenario is already implicitly tested by the [LDES Server verification step](../../../support/context/simulator-workflow-server-mongo/README.md#ldes-server).
@@ -122,6 +122,11 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 5. Follow the `tree:node` link, e.g. `http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-27T12:13:58.672Z`.
 
 The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanOrEqualToRelation` nor `LessThanOrEqualToRelation`.
+
+To verify that the fragment contains 250 items, run a command similar to:
+```bash
+curl --silent http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
+```
 
 #### Test and Verify Scenario 3
 For testing the third scenario we need to send the [scenario 3 alfa.jsonld](./data/scenario3/alfa.jsonld) and [scenario 3 beta.jsonld](./data/scenario3/beta.jsonld) files and expect to see one *immutable* fragment complete with 300 members and one *mutable* fragment containing 200 members.
@@ -167,5 +172,5 @@ In this fragment  search for the `tree#relation`, note the `LesserThanOrEqualToR
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

@@ -23,7 +23,7 @@ Then only the new LDES members are forwarded
 ```
 
 ### Test Setup
-For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (env.synchronize)](./env.synchronize) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (synchronize.env)](./synchronize.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -34,7 +34,7 @@ export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/dock
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 ### Test Execution
@@ -79,7 +79,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 ```
 
 #### 2. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
@@ -141,7 +141,7 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 ```
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

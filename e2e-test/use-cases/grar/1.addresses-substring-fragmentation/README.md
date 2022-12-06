@@ -34,7 +34,7 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221201t1251`)
+* JSON_DATA_GENERATOR_TAG (default: `20221206t0913`)
 * LDES_WORKBENCH_NIFI_TAG (default: `20221128t155904`)
 * LDES_SERVER_TAG (default: `20221201t0927`)
 * MONGODB_TAG (default: `6.0.3`)
@@ -144,5 +144,6 @@ curl http://localhost:8080/addresses-by-time
 To stop all systems in the context:
 ```bash
 docker compose --env-file user.env down
+docker compose --env-file user.env --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.

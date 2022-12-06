@@ -1,7 +1,7 @@
 services:
   ldes-server-simulator:
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221201t1251}
-    container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-server-simulator
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221206t0913}
+    container_name: ${USECASE_NAME:-persisted-state}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
       - SEED=/tmp/data
@@ -9,23 +9,23 @@ services:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
     volumes:
       - type: bind
-        source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER}
+        source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER:-../../ldes-server-simulator/data/gipod}
         target: /tmp/data
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221202t120945}
-    container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221205t135134}
+    container_name: ${USECASE_NAME:-persisted-state}_ldes-workbench-nifi
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
     networks:
       - ldes
   ldes-client-sink:
-    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20221201t1251}
-    container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-client-sink
+    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20221206t0913}
+    container_name: ${USECASE_NAME:-persisted-state}_ldes-client-sink
     environment:
       - MEMORY=true
       - COLLECTION_NAME=${LDES_CLIENT_SINK_COLLECTION_NAME:-mobility-hindrances}
@@ -36,4 +36,4 @@ services:
       - ldes
 networks:
   ldes:
-    name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_network
+    name: ${USECASE_NAME:-persisted-state}_network

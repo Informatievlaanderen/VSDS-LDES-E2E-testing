@@ -11,7 +11,7 @@ The conversion from NGSI-LD to OSLO is a JSON-to-JSON format conversion and can 
 To setup this test, you need to configure your environment file, launch the systems and verify the initial state.
 
 ### Configure Environment File
-Please copy the [environment file (env.jold)](./env.jolt) to a personal file (e.g. `env.user`) and fill in the mandatory arguments:
+Please copy the [environment file (jolt.env)](./jolt.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments:
 
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
@@ -19,10 +19,10 @@ Please copy the [environment file (env.jold)](./env.jolt) to a personal file (e.
 
 Optionally, you can change the component tags:
 
-* JSON_DATA_GENERATOR_TAG (default: 20221104t1400)
-* LDES_WORKBENCH_NIFI_TAG (default: 20221107t094816)
-* LDES_SERVER_TAG (default: 20221107t0923)
-* MONGODB_TAG (default: 5.0.13)
+* JSON_DATA_GENERATOR_TAG (default: 20221206t0913)
+* LDES_WORKBENCH_NIFI_TAG (default: 20221205t135134)
+* LDES_SERVER_TAG (default: 20221205t1357)
+* MONGODB_TAG (default: 6.0.3)
 
 ### Launch Systems
 Please set the `COMPOSE_FILE` environment property to the [docker compose file](../3.ngsi-v2-to-ldes/docker-compose.yml) so you do not need to provide it in each docker compose command. I.e.:
@@ -31,7 +31,7 @@ export COMPOSE_FILE="../3.ngsi-v2-to-ldes/docker-compose.yml"
 ```
 Now, you can start all the required systems except for the observations generator:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 ### Verify Initial State
@@ -75,7 +75,7 @@ curl -X POST http://localhost:9012/ngsi/device -H 'Content-Type: application/jso
 
 To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
 ```bash
-docker compose --env-file env.user up json-data-generator
+docker compose --env-file user.env up json-data-generator
 ```
 
 ## Test Validation
@@ -89,7 +89,8 @@ curl http://localhost:8073/water-quality-observations-by-time
 ## Test Cleanup
 To clean up the test, please stop all systems:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
+docker compose --env-file user.env --profile delay-started down
 ```
 
 If needed, remove the database files in your `MONGODB_DATA_FOLDER` location.

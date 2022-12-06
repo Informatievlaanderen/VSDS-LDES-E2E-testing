@@ -795,7 +795,7 @@
                     "ID_JSON_PATH": "$['identificator']['id']",
                     "GENERATED_AT_TIME_PROPERTY": "http://www.w3.org/ns/prov#generatedAtTime",
                     "DATE_OBSERVED_VALUE_JSON_PATH": "$['identificator']['versieId']",
-                    "DATA_DESTINATION_FORMAT": "n-quads",
+                    "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "DELIMITER": "/",
                     "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
                     "ADD_WKT_PROPERTY": "false"

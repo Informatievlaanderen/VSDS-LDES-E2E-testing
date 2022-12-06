@@ -4,7 +4,7 @@ This context is used for validating the LDES server.
 We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and the LDES server configured to capture the LDES members emitted by the LDES client NiFi processor.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
+To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
 * LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
@@ -15,16 +15,16 @@ To setup the context, combine the contents of all the `env.<component>` files in
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-server-mongo`)
-* LDES_SERVER_SIMULATOR_TAG (default: `20220927t0821`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20221206t0913`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221205t135134`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_SERVER_TAG (default: `20221107t0923`)
+* LDES_SERVER_TAG (default: `20221205t1357`)
 * LDES_SERVER_PORT (default: `8080`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* MONGODB_TAG (default: `5.0.13`)
+* MONGODB_TAG (default: `6.0.3`)
 * MONGODB_PORT (default: `27017`)
 
 ## Fragmentation
@@ -71,7 +71,7 @@ The property `FRAGMENTATIONLIST_FRAGMENTATIONS` has been replaced by the followi
 ## Run the Systems
 To create and start all systems in the context:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 ## Verify Context

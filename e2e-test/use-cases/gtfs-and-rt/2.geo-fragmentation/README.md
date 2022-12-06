@@ -32,22 +32,19 @@ The geospatial fragmentizer currently does not cover the following acceptance cr
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use a adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (env.geospatial-fragment)](./env.geospatial-fragment) to a personal file (e.g. `env.user`) and fill in the mandatory arguments.
+To demonstrate the geospatial fragmentation, we use a adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (geospatial-fragment.env)](./geospatial-fragment.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments.
 
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation). Please note the specific configuration properties which allow to configure which fragmentizer to use as well as the specific geospatial bucketizer and fragmentizer properties:
-* FRAGMENTATION_TYPE=`geospatial` (do not change)
 * GEOSPATIAL_MAXZOOMLEVEL=15 (tune as needed)
-* GEOSPATIAL_FRAGMENTERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT" (specific to the GIPOD data set, do not change)
-* GEOSPATIAL_PROJECTION=lambert72 (only projecting supported currently, do not change)
 
-> **Note**: make sure to verify the settings in your personal `env.user` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
+> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
 
 You can then run the systems by executing the following command:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
@@ -91,7 +88,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly until it returns some relations):
 ```bash
-curl http://localhost:8080/mobility-hindrances?tile=0/0/0
+curl http://localhost:8080/mobility-hindrances-by-location?tile=0/0/0
 ```
 
 Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains one LDES member and the `ldesfragments` document collection contains four LDES fragments (apart from the geo-spatial root fragment 0/0/0 and the real root/redirection fragment).
@@ -107,5 +104,5 @@ We have configured the zoom level (= 15) in such a way that the geospatial fragm
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

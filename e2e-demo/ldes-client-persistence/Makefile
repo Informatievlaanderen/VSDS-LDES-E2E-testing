@@ -3,11 +3,11 @@
 #
 # Outputs the help for each task
 
-ENV_FILE ?= env.client-persistence
+ENV_FILE ?= .env
 
 include ${ENV_FILE}
 
-USECASE_NAME ?= simulator-workflow-sink-mongo
+USECASE_NAME ?= persisted-state
 
 .PHONY: help
 
@@ -21,7 +21,7 @@ build: ## Build the containers
 
 run: ## Run the containers
 	echo Env file: ${ENV_FILE}
-	@docker compose --env-file ${ENV_FILE} up
+	@docker compose --env-file ${ENV_FILE} up -d
 	@scripts/wait-for-it.sh http://localhost:9011 -q
 	@curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 

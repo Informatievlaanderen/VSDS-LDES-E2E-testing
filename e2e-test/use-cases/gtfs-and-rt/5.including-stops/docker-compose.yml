@@ -4,8 +4,9 @@ services:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220928t1555}
     profiles:
-      - delayed-start
+      - delayed-started
     environment:
+      - NODE_OPTIONS=${NODE_OPTIONS}
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
       - BASE_IRI=${GTFS_BASE_IRI}

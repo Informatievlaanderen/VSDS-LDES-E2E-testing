@@ -333,13 +333,13 @@
                 "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ldes-client-wrappers-nifi",
+                    "artifact": "ldes-client-processor",
                     "version": "1.0-SNAPSHOT"
                 },
                 "properties": {
                     "FRAGMENT_EXPIRATION_INTERVAL": "604800",
-                    "DATA_SOURCE_FORMAT": "JSONLD11",
-                    "DATA_DESTINATION_FORMAT": "n-quads",
+                    "DATA_SOURCE_FORMAT": "application/ld+json",
+                    "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
                 },
                 "propertyDescriptors": {

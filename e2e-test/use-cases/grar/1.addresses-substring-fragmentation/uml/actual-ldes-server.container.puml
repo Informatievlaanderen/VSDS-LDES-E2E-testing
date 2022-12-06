@@ -1,0 +1,25 @@
+@startuml "GRAR Use Case - Actual - Container Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title GRAR Use Case - Actual - Container Diagram
+
+Person(tester, "Tester")
+
+System_Ext(grar, "GRAR system", "Some system sending adress change notifications")
+SystemQueue_Ext(topic, "Kafka Address topic", "Message queue for address changes")
+
+System_Boundary(nifi, "Apache NiFi system") {
+    Container(workflow, "GRAR Workflow", "Apache Nifi", "Workflow containing standard NiFi processors")
+}
+
+System(server, "LDES Server", "LDES Server ingesting & serving addresses")
+SystemDb(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_D(grar, topic, "pushes\naddress states", "Kafka")
+Rel_L(workflow, topic, "pulls\naddress states", "Kafka")
+Rel_D(tester, workflow, "create and run workflow", "HTTPS")
+Rel_D(tester, server, "verifies LDES substring & time-based fragmented", "HTTP")
+Rel_R(workflow, server, "pushes\naddress versions", "HTTP (method POST)")
+Rel_R(server, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

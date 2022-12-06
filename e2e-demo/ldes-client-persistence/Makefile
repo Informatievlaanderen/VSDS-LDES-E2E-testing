@@ -8,6 +8,7 @@ ENV_FILE ?= env.client-persistence
 include ${ENV_FILE}
 
 USECASE_NAME ?= simulator-workflow-sink-mongo
+
 NIFI_TOOLKIT_TAG ?= 1.17.0
 
 .PHONY: help

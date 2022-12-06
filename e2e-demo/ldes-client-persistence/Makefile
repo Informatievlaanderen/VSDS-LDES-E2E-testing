@@ -8,6 +8,7 @@ ENV_FILE ?= env.client-persistence
 include ${ENV_FILE}
 
 USECASE_NAME ?= simulator-workflow-sink-mongo
+NIFI_TOOLKIT_TAG ?= 1.17.0
 
 .PHONY: help
 
@@ -27,6 +28,12 @@ run: ## Run the containers
 
 stop: ## Stop the running containers
 	@docker compose --env-file ${ENV_FILE} stop
+
+toolkit: ## Run the toolkit command
+	docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /opt/nifi/nifi-toolkit-current/bin/cli.sh -h
+
+workflow: ## Upload the NiFi workflow
+	docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /opt/nifi/nifi-toolkit-current/bin/cli.sh registry import-flow-version -f 7ce2fdaf9-bf81-43fa-846f-f38f6891be95 -i ./flows/nifi-workflow.json
 
 login: ## Login to the LDES Workbench Nifi container
 	@docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /bin/bash

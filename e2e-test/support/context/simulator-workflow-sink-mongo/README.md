@@ -4,7 +4,7 @@ This context is used for validating the LDES client.
 We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and, a small HTTP server which serves as a [sink](/ldes-client-sink/README.md) that allows to capture the LDES members emitted by the LDES client NiFi processor.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `env.<component>` files into an `env.user` and specify the missing, required arguments:
+To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
 * LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
@@ -12,23 +12,23 @@ To setup the context, combine the contents of all the `env.<component>` files in
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
-* LDES_SERVER_SIMULATOR_TAG (default: `20220927t0821`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20221206t0913`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221010t091137`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221205t135134`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_CLIENT_SINK_TAG (default: `20220927t0820`)
+* LDES_CLIENT_SINK_TAG (default: `20221206t0913`)
 * LDES_CLIENT_SINK_SILENT (default: `true`)
 * LDES_CLIENT_SINK_MEMBER_TYPE (default: `https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder`)
 * LDES_CLIENT_SINK_DATABASE_NAME (default: `GIPOD`)
 * LDES_CLIENT_SINK_COLLECTION_NAME (default: `mobility-hindrances`)
 * LDES_CLIENT_SINK_PORT (default: `9003`)
-* MONGODB_TAG (default: `5.0.13`)
+* MONGODB_TAG (default: `6.0.3`)
 * MONGODB_PORT (default: `27017`)
 
 ## Run the Systems
 To create and start all systems in the context:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 ## Verify Context
@@ -71,7 +71,7 @@ This means that the MongoDB is correctly started. To actually view the contents 
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

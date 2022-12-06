@@ -13,7 +13,7 @@ Then the following members are retrieved: A, B, C, D, E, F, G and H
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
 ### Test Setup
-For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (env.replicate)](./env.replicate) to a personal file (e.g. `env.user`) and fill in the mandatory arguments. 
+For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (replicate.env)](./replicate.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -24,7 +24,7 @@ export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/dock
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 The data set is already seeded (see [simulator](http://localhost:9011/)):
@@ -57,7 +57,7 @@ To run the test, you need to:
 3. Verify that all LDES members from the GIPOD simulator are received by the sink HTTP server.
 
 #### 1. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
@@ -76,5 +76,5 @@ You can verify that, after some time, all (1016) LDES members are received by th
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file env.user down
+docker compose --env-file user.env down
 ```

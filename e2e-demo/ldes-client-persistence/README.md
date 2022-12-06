@@ -11,7 +11,7 @@ Then the fragments and members that have already been processed are not requeste
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
 ### Test Setup
-For this scenario we use a [workflow](docker-compose.yml) based on the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context (but without the mongo container). Please copy the [environment file (env.client-persistence)](./env.client-persistence) to a personal file (e.g. `env.user`) and fill in the mandatory arguments.
+For this scenario we use a [workflow](docker-compose.yml) based on the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context (but without the mongo container). Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments.
 
 This demo makes use of a [Makefile](Makefile) to simplify the commands that need to be executed.
 
@@ -24,7 +24,7 @@ make run
 This will run `docker compose` and alias the dataset.
 
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
@@ -56,7 +56,7 @@ To run the test, you need to:
 
 
 #### 1. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `env.user` file.
+Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
 Once logged in, create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 

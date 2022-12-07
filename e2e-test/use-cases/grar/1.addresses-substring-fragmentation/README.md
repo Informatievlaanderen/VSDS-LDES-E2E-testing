@@ -15,8 +15,6 @@ The actual architecture for the GRAR use case includes a Kafka system where addr
 
 Because we have no control over the GRAR system, we need to use some simulator or data generator to feed our workflow. In addition, our workbench (the Apache NiFi system) already contains a standard component that allows reading a Kafka topic. As we do not need to demonstrate the correct working of such a Kafka reader we might as well remove the complexity of including a Kafka system for demo purposes.
 
-> TODO: include a diagram of generator => workflow => LDES Server
-
 ### Demo Context
 ![context](./artwork/demo-ldes-server.context.png)
 

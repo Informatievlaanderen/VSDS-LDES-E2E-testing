@@ -21,11 +21,10 @@ You can run the systems by executing the following command:
 make run
 ```
 
-This will run `docker compose` and alias the dataset.
+This will run `docker compose` daemonised.
 
 ```bash
-docker compose --env-file user.env up
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+docker compose --env-file user.env up -d
 ```
 
 To verify that the data is already seeded, run this command (see [simulator](http://localhost:9011/)):

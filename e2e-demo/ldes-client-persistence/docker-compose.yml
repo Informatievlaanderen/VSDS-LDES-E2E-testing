@@ -21,6 +21,8 @@ services:
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
+    volumes:
+      - "./flows:/opt/nifi/nifi-current/flows"
     networks:
       - ldes
   ldes-client-sink:

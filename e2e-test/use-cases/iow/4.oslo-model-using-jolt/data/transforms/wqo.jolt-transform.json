@@ -60,10 +60,33 @@
           "value": "Bemonsteringsobjectverzameling\\.lid[4].\\@id"
         },
         "value": {
-          "type": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie.\\@type",
-          "coordinates": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie"
+          "coordinates": {
+            "#http://www.opengis.net/ont/geosparql#wktLiteral": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie.\\@type",
+            "@0": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie.\\@value"
+          }
         }
       }
     }
+  }, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "Bemonsteringsobjectverzameling\\.lid": {
+        "[4]": {
+          "RuimtelijkBemonsteringsobject\\.geometrie": {
+            "\\@value": "=join(' ', @0)"
+          }
+        }
+      }
     }
-  ]
+}, {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "Bemonsteringsobjectverzameling\\.lid": {
+        "[4]": {
+          "RuimtelijkBemonsteringsobject\\.geometrie": {
+            "\\@value": "=concat('<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(', @0, ')')"
+          }
+        }
+      }
+    }
+  }]

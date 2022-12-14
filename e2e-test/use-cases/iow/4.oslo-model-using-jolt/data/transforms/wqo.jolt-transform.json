@@ -2,13 +2,15 @@
   {
     "operation": "shift",
     "spec": {
-      "#https://data.vlaanderen.be/doc/applicatieprofiel/waterkwaliteit/ontwerpstandaard/2022-05-24/context/waterkwaliteit-ap.jsonld": "\\@context[]",
+      "#https://geojson.org/geojson-ld/geojson-context.jsonld": "\\@context[0]",
+      "#https://data.vlaanderen.be/doc/applicatieprofiel/waterkwaliteit/ontwerpstandaard/2022-05-24/context/waterkwaliteit-ap.jsonld": "\\@context[1]",
+      "#https://data.vmm.be/id/": "\\@context[2].\\@base",
       "id": "\\@id",
       "#Observatieverzameling": "\\@type",
       "dateObserved": {
         "value": {
           "\\@value": "WaterkwaliteitObservatieVerzameling\\.^fenomeenTijd.\\@value",
-          "#http://www.w3.org/2001/XMLSchema#datetime": "Observatieverzameling\\.^fenomeenTijd.\\@type"
+          "#http://www.w3.org/2001/XMLSchema#datetime": "WaterkwaliteitObservatieVerzameling\\.^fenomeenTijd.\\@type"
         }
       },
       "samplingPoint": {
@@ -59,34 +61,8 @@
         "name": {
           "value": "Bemonsteringsobjectverzameling\\.lid[4].\\@id"
         },
-        "value": {
-          "coordinates": {
-            "#http://www.opengis.net/ont/geosparql#wktLiteral": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie.\\@type",
-            "@0": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie.\\@value"
-          }
-        }
+        "asWkt": "Bemonsteringsobjectverzameling\\.lid[4].RuimtelijkBemonsteringsobject\\.geometrie"
       }
     }
-  }, {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "Bemonsteringsobjectverzameling\\.lid": {
-        "[4]": {
-          "RuimtelijkBemonsteringsobject\\.geometrie": {
-            "\\@value": "=join(' ', @0)"
-          }
-        }
-      }
-    }
-}, {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "Bemonsteringsobjectverzameling\\.lid": {
-        "[4]": {
-          "RuimtelijkBemonsteringsobject\\.geometrie": {
-            "\\@value": "=concat('<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(', @0, ')')"
-          }
-        }
-      }
-    }
-  }]
+  }
+]

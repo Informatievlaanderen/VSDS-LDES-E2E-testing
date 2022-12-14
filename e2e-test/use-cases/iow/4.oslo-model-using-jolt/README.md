@@ -61,6 +61,8 @@ Please logon to the Apache Nifi system at https://localhost:8443/nifi and add th
 
 Note that the workflow contains several warnings because the JOLT processors are (deliberately) missing a transformation specification. Please add the provided JOLT specifications for [models](./data/transforms/device-model.jolt-transform.json), [devices](./data/transforms/device.jolt-transform.json) and water quality [observations](./data/transforms/wqo.jolt-transform.json) into the correct JOLT processor's `Jolt Specification` property.
 
+In addition, for the observations you need to add the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the OSLO model can not handle geojson.
+
 Start the workflow and verify that the workflow's HTTP listeners are ready to accept entities.
 * http://localhost:9013/ngsi/device-model/healthcheck
 * http://localhost:9012/ngsi/device/healthcheck

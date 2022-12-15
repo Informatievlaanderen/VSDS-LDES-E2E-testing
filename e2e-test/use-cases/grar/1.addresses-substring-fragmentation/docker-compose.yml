@@ -20,7 +20,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221205t135134}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221211t204451}
     container_name: ${USECASE_NAME:-grar-context}_ldes-workbench-nifi
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
@@ -43,7 +43,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-grar-context}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221205t1357}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221214T1415}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -54,10 +54,12 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://data.vlaanderen.be/ns/adres#Adres
+      
+      # Standard view sub-string on full address
       - VIEWS_0_NAME=addresses-by-name
       - VIEWS_0_FRAGMENTATIONS_0_NAME=substring
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=https://data.vlaanderen.be/ns/adres#volledigAdres
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTYQUERY=SELECT ?x WHERE { ?s <https://data.vlaanderen.be/ns/adres#volledigAdres> ?x . }
 
       # Additional view time-based
       - VIEWS_1_NAME=addresses-by-time
@@ -68,7 +70,7 @@ services:
       - VIEWS_2_NAME=addresses-by-location-and-time
       - VIEWS_2_FRAGMENTATIONS_0_NAME=geospatial
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
-      - VIEWS_2_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asGML
+      - VIEWS_2_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTYQUERY=SELECT ?x WHERE { ?s <http://www.opengis.net/ont/geosparql#asGML> ?x . }
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${GEOSPATIAL_MAXZOOMLEVEL:-13}
       - VIEWS_2_FRAGMENTATIONS_1_NAME=timebased
       - VIEWS_2_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}

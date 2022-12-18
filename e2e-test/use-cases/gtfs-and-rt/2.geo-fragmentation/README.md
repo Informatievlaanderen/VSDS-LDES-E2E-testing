@@ -88,7 +88,7 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 After that you can start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly until it returns some relations):
 ```bash
-curl http://localhost:8080/mobility-hindrances-by-location?tile=0/0/0
+curl http://localhost:8080/mobility-hindrances/by-location?tile=0/0/0
 ```
 
 Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains one LDES member and the `ldesfragments` document collection contains four LDES fragments (apart from the geo-spatial root fragment 0/0/0 and the real root/redirection fragment).

@@ -69,7 +69,7 @@ response will be similar to:
 {
     "@id": "http://localhost:8073/water-quality-observations",
     "tree:view": {
-        "@id": "http://localhost:8073/water-quality-observations-by-time"
+        "@id": "http://localhost:8073/water-quality-observations/by-time"
     },
     "ldes:timestampPath": {
         "@id": "prov:generatedAtTime"
@@ -126,11 +126,11 @@ docker compose --env-file user.env up json-data-generator
 ```
 
 ## Test Verification
-You can now verify that all three LDES streams are available (see the [devices LDES server](http://localhost:8071/devices-by-time) and the [models LDES server](http://localhost:8072/models-by-time)) and that the observations LDES continues to grow as `WaterQualityObserved` LDES members arrive at the [observations LDES server](http://localhost:8073/observations-by-time). They will form an ever growing, time-based fragmented LDES stream.
+You can now verify that all three LDES streams are available (see the [devices LDES server](http://localhost:8071/devices/by-time) and the [models LDES server](http://localhost:8072/models/by-time)) and that the observations LDES continues to grow as `WaterQualityObserved` LDES members arrive at the [observations LDES server](http://localhost:8073/observations/by-time). They will form an ever growing, time-based fragmented LDES stream.
 ```bash
-curl -H "Accept: application/ld+json" http://localhost:8071/devices-by-time
-curl -H "Accept: application/ld+json" http://localhost:8072/device-models-by-time
-curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations-by-time
+curl -H "Accept: application/ld+json" http://localhost:8071/devices/by-time
+curl -H "Accept: application/ld+json" http://localhost:8072/device-models/by-time
+curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations/by-time
 ```
 
 ## Stop the Systems

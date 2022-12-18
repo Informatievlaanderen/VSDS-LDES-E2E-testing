@@ -87,8 +87,8 @@ To execute this test scenario, run the following steps:
 1. verify the initial LDES:
 ```bash
 curl http://localhost:8080/mobility-hindrances
-curl http://localhost:8080/mobility-hindrances-by-short-time
-curl http://localhost:8080/mobility-hindrances-by-longer-time
+curl http://localhost:8080/mobility-hindrances/by-short-time
+curl http://localhost:8080/mobility-hindrances/by-longer-time
 ```
 
 2. send initial data set and verify simulator at http://localhost:9011:
@@ -105,8 +105,8 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 5. verify that all fragments are created for both views, following all links in the views, and check the mutability:
 ```bash
-curl http://localhost:8080/mobility-hindrances-by-short-time
-curl http://localhost:8080/mobility-hindrances-by-longer-time
+curl http://localhost:8080/mobility-hindrances/by-short-time
+curl http://localhost:8080/mobility-hindrances/by-longer-time
 ```
 
 6. wait for the shorter retention period to elapse and verify that the short-time view now refers to its last fragment, that requesting the other fragments returns an HTTP error (410 - GONE) and that in the database the member count did not change

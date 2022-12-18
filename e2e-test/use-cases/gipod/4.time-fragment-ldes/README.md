@@ -107,25 +107,25 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 <http://localhost:8080/mobility-hindrances>
         a           ldes:EventStream ;
         tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances-by-time> .
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
-4. Follow the `tree:view` link, i.e. http://localhost:8080/mobility-hindrances-by-time. The result is similar to:
+4. Follow the `tree:view` link, i.e. http://localhost:8080/mobility-hindrances/by-time. The result is similar to:
 ```
 @prefix tree: <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances-by-time>
+<http://localhost:8080/mobility-hindrances/by-time>
         a              tree:Node ;
         tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-27T12:13:58.672Z>
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-27T12:13:58.672Z>
                        ] .
 ```
-5. Follow the `tree:node` link, e.g. `http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-27T12:13:58.672Z`.
+5. Follow the `tree:node` link, e.g. `http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-27T12:13:58.672Z`.
 
 The response should be a fragment containing 250 items, no header `Cache-Control: immutable` and should not contain any `GreaterThanOrEqualToRelation` nor `LessThanOrEqualToRelation`.
 
 To verify that the fragment contains 250 items, run a command similar to:
 ```bash
-curl --silent http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
+curl --silent http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
 ```
 
 #### Test and Verify Scenario 3

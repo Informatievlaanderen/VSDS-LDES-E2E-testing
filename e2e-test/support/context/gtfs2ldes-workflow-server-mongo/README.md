@@ -28,7 +28,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * LDES_SHAPE (optional, shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (default: `http://www.w3.org/ns/prov#generatedAtTime`)
 * VIEW_VERSIONOFPATH (default: `http://purl.org/dc/terms/isVersionOf`)
-* VIEWS_0_NAME (default: `connections-by-time`)
+* VIEWS_0_NAME (default: `by-time`)
 * VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT (number of members per fragment, default: `100`)
 * MONGODB_TAG (default: `5.0.11`)
 * MONGODB_PORT (default: `27017`)
@@ -71,9 +71,9 @@ Please check the Docker logs for the status.
 The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at https://localhost:8443/nifi/login and use your credentials to login.
 
 ### LDES Server
-Browse to `http://localhost:8080/<ldes-view-name>` (e.g. http://localhost:8080/connections-by-time) or run an equivalent Bash command, e.g.:
+Browse to `http://localhost:8080/<ldes-view-name>` (e.g. http://localhost:8080/connections/by-time) or run an equivalent Bash command, e.g.:
 ```bash
-curl http://localhost:8080/connections-by-time
+curl http://localhost:8080/connections/by-time
 ```
 
 ### Mongo Database

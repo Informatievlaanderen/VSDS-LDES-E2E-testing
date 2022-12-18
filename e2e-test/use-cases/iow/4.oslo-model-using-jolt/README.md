@@ -37,20 +37,20 @@ docker compose --env-file user.env up
 ### Verify Initial State
 Once the LDES servers are launched, you can verify that the initial LDES'es are empty:
 ```bash
-curl http://localhost:8072/device-models-by-time
-curl http://localhost:8071/devices-by-time
-curl http://localhost:8073/water-quality-observations-by-time
+curl http://localhost:8072/device-models/by-time
+curl http://localhost:8071/devices/by-time
+curl http://localhost:8073/water-quality-observations/by-time
 ```
 returns (differently formatted):
 ```
 @prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8072/device-models-by-time> a tree:Node .
+<http://localhost:8072/device-models/by-time> a tree:Node .
 
 @prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8071/devices-by-time> a tree:Node .
+<http://localhost:8071/devices/by-time> a tree:Node .
 
 @prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8073/water-quality-observations-by-time> a tree:Node .
+<http://localhost:8073/water-quality-observations/by-time> a tree:Node .
 ```
 
 ## Test Execution
@@ -83,9 +83,9 @@ docker compose --env-file user.env up json-data-generator
 ## Test Validation
 To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
 ```bash
-curl http://localhost:8072/device-models-by-time
-curl http://localhost:8071/devices-by-time
-curl http://localhost:8073/water-quality-observations-by-time
+curl http://localhost:8072/device-models/by-time
+curl http://localhost:8071/devices/by-time
+curl http://localhost:8073/water-quality-observations/by-time
 ```
 
 ## Test Cleanup

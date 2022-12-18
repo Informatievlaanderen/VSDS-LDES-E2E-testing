@@ -87,10 +87,10 @@ response will be similar to:
     "@id": "http://localhost:8080/addresses",
     "tree:view": [
         {
-            "@id": "http://localhost:8080/addresses-by-time"
+            "@id": "http://localhost:8080/addresses/by-time"
         },
         {
-            "@id": "http://localhost:8080/addresses-by-name"
+            "@id": "http://localhost:8080/addresses/by-name"
         }
     ],
     "ldes:timestampPath": {
@@ -134,8 +134,8 @@ docker compose --env-file user.env up json-data-generator
 ## Test Verification
 You can now verify that the LDES continues to grow as address LDES members arrive at the [LDES server](http://localhost:8080/addresses). It creates an ever growing, substring fragmented LDES view in addition to the time-based one.
 ```bash
-curl http://localhost:8080/addresses-by-name
-curl http://localhost:8080/addresses-by-time
+curl http://localhost:8080/addresses/by-name
+curl http://localhost:8080/addresses/by-time
 ```
 
 ## Stop the Systems

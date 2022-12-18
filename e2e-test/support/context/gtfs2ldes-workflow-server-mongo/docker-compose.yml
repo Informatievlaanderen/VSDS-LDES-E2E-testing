@@ -52,7 +52,7 @@ services:
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
 
       # default view by time
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-time}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-by-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
     ports:

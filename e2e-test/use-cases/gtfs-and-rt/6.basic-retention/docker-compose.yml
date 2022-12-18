@@ -39,13 +39,13 @@ services:
       - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
       # First view by limited time
-      - VIEWS_0_NAME=mobility-hindrances-by-short-time
+      - VIEWS_0_NAME=by-short-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_MEMBERLIMIT:-150}
       - VIEWS_0_RETENTION-POLICIES_0_NAME=timebased
       - VIEWS_0_RETENTION-POLICIES_0_CONFIG_DURATION=${VIEWS_0_RETENTION_PERIOD:-PT1M}
       # Second view by longer time
-      - VIEWS_1_NAME=mobility-hindrances-by-longer-time
+      - VIEWS_1_NAME=by-longer-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_MEMBERLIMIT:-300}
       - VIEWS_1_RETENTION-POLICIES_0_NAME=timebased

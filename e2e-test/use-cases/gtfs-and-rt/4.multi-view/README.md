@@ -55,13 +55,13 @@ curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d 
 
 After that you can start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
 ```bash
-curl http://localhost:8080/mobility-hindrances-by-time
+curl http://localhost:8080/mobility-hindrances/by-time
 ```
 Initially returns:
 ```
 @prefix tree: <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances-by-time>
+<http://localhost:8080/mobility-hindrances/by-time>
         a       tree:Node .
 ```
 
@@ -69,25 +69,25 @@ When the response of this second view contains a relation then all fragments hav
 ```
 @prefix tree: <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances-by-time>
+<http://localhost:8080/mobility-hindrances/by-time>
         a              tree:Node ;
         tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T18:24:31.971Z>
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T18:24:31.971Z>
                        ] .
 ```
 
 You can now also see the response of the first view:
 ```bash
-curl http://localhost:8080/mobility-hindrances-by-location-and-time
+curl http://localhost:8080/mobility-hindrances/by-location-and-time
 ```
 response:
 ```
 @prefix tree: <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances-by-location-and-time>
+<http://localhost:8080/mobility-hindrances/by-location-and-time>
         a              tree:Node ;
         tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances-by-location-and-time?tile=0/0/0>
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=0/0/0>
                        ] .
 ```
 

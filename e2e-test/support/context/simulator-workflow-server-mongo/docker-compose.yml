@@ -40,12 +40,12 @@ services:
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
 
       # default view by time
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-$LDES_COLLECTIONNAME-by-time}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-by-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
 
       # # Alternative view by location and time
-      # - VIEWS_0_NAME=${VIEWS_0_NAME:-$LDES_COLLECTIONNAME-by-location-and-time}
+      # - VIEWS_0_NAME=${VIEWS_0_NAME:-by-location-and-time}
       # - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
       # - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72
       # - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}
@@ -53,10 +53,12 @@ services:
       # - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
       # - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT:-50}
       
-      # # # Additional view by time
-      # # - VIEWS_1_NAME=${VIEWS_1_NAME:-$LDES_COLLECTIONNAME-by-time}
-      # # - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
-      # # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
+      # # # Additional view by location
+      # # - VIEWS_1_NAME=${VIEWS_0_NAME:-by-location}
+      # # - VIEWS_1_FRAGMENTATIONS_0_NAME=geospatial
+      # # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72
+      # # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}
+      # # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY="http://www.opengis.net/ont/geosparql#asWKT"
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
     networks:

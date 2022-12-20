@@ -2,7 +2,7 @@ version: '3.3'
 services:
   json-data-generator:
     container_name: ${USECASE_NAME:-iow-context}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20221214t1733}
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20221220t0725}
     profiles:
       - delay-started
     environment:

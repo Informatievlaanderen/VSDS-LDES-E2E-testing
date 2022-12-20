@@ -19,7 +19,7 @@ Please copy the [environment file (jolt.env)](./jolt.env) to a personal file (e.
 
 Optionally, you can change the component tags:
 
-* JSON_DATA_GENERATOR_TAG (default: 20221214t1733)
+* JSON_DATA_GENERATOR_TAG (default: 20221220t0725)
 * LDES_WORKBENCH_NIFI_TAG (default: 20221216t155826)
 * LDES_SERVER_TAG (default: 20221216t1458)
 * MONGODB_TAG (default: 6.0.3)

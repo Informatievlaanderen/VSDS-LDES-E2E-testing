@@ -9,7 +9,7 @@ import { RouteGenericInterface } from 'fastify/types/route';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { IAlias } from './fragment-interfaces';
 
-const server = fastify();
+const server = fastify({exposeHeadRoutes: true});
 const args = minimist(process.argv.slice(2));
 const silent: boolean = args['silent'] !== undefined;
 

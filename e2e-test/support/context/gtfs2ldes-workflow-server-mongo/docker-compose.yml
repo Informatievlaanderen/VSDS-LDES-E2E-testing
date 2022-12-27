@@ -38,7 +38,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221205t1357}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -52,7 +52,7 @@ services:
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
 
       # default view by time
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-time}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-by-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
     ports:

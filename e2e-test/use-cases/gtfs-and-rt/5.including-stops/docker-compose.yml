@@ -51,7 +51,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221205t1357}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -70,7 +70,7 @@ services:
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
       - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT:-100}
-      # - VIEWS_1_NAME=${VIEWS_1_NAME:-connections-by-time}
+      # - VIEWS_1_NAME=${VIEWS_1_NAME:-by-time}
       # - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       # - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-250}
     ports:

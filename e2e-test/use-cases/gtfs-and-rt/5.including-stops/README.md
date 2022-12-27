@@ -49,11 +49,11 @@ Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
 To ensure GTFS connections are being received by the LDES-server you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains the LDES members (check the document count).
 > **Note**: that we store the document collection in a database as configured in the Docker environment argument `SPRING_DATA_MONGODB_DATABASE`.
 
-In addition, you can request the members from the LDES you specified (Docker environment variable `LDES_COLLECTIONNAME`- http://localhost:8080/connections) and follow the `tree:view` URI to the geospatial root tile, OR directly query the view (Docker environment variable `VIEWS_0_NAME` - http://localhost:8080/connections-by-location-and-time) and follow the `tree:node` to the geospatial tile root, OR even get the geospatial root tile directly (http://localhost:8080/connections-by-location-and-time?tile=0/0/0), e.g.:
+In addition, you can request the members from the LDES you specified (Docker environment variable `LDES_COLLECTIONNAME`- http://localhost:8080/connections) and follow the `tree:view` URI to the geospatial root tile, OR directly query the view (Docker environment variable `VIEWS_0_NAME` - http://localhost:8080/connections/by-location-and-time) and follow the `tree:node` to the geospatial tile root, OR even get the geospatial root tile directly (http://localhost:8080/connections/by-location-and-time?tile=0/0/0), e.g.:
 ```bash
 curl http://localhost:8080/connections
-curl http://localhost:8080/connections-by-location-and-time
-curl http://localhost:8080/connections-by-location-and-time?tile=0/0/0
+curl http://localhost:8080/connections/by-location-and-time
+curl http://localhost:8080/connections/by-location-and-time?tile=0/0/0
 ```
 
 > **Note** that the root tile fragment only exists after the first member is ingested.

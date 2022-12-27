@@ -9,9 +9,9 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221206t0913`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221205t135134`)
-* LDES_SERVER_TAG (default: `20221205t1357`)
+* JSON_DATA_GENERATOR_TAG (default: `20221220t0725`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221216t155826`)
+* LDES_SERVER_TAG (default: `20221216t1458`)
 * MONGODB_TAG (default: `6.0.3`)
 
 Optionally, you can change the port numbers:
@@ -69,7 +69,7 @@ response will be similar to:
 {
     "@id": "http://localhost:8073/water-quality-observations",
     "tree:view": {
-        "@id": "http://localhost:8073/water-quality-observations-by-time"
+        "@id": "http://localhost:8073/water-quality-observations/by-time"
     },
     "ldes:timestampPath": {
         "@id": "prov:generatedAtTime"
@@ -126,11 +126,11 @@ docker compose --env-file user.env up json-data-generator
 ```
 
 ## Test Verification
-You can now verify that all three LDES streams are available (see the [devices LDES server](http://localhost:8071/devices-by-time) and the [models LDES server](http://localhost:8072/models-by-time)) and that the observations LDES continues to grow as `WaterQualityObserved` LDES members arrive at the [observations LDES server](http://localhost:8073/observations-by-time). They will form an ever growing, time-based fragmented LDES stream.
+You can now verify that all three LDES streams are available (see the [devices LDES server](http://localhost:8071/devices/by-time) and the [models LDES server](http://localhost:8072/models/by-time)) and that the observations LDES continues to grow as `WaterQualityObserved` LDES members arrive at the [observations LDES server](http://localhost:8073/observations/by-time). They will form an ever growing, time-based fragmented LDES stream.
 ```bash
-curl -H "Accept: application/ld+json" http://localhost:8071/devices-by-time
-curl -H "Accept: application/ld+json" http://localhost:8072/device-models-by-time
-curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations-by-time
+curl -H "Accept: application/ld+json" http://localhost:8071/devices/by-time
+curl -H "Accept: application/ld+json" http://localhost:8072/device-models/by-time
+curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observations/by-time
 ```
 
 ## Stop the Systems

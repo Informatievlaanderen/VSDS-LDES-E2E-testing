@@ -77,7 +77,7 @@ To ensure GTFS connections are being received by the LDES-server you can use the
 
 In addition, you can request the members from here by following the view to the first and subsequent fragments:
 ```bash
-curl http://localhost:8080/connections-by-time
+curl http://localhost:8080/connections/by-time
 ```
 
 ### Test Teardown

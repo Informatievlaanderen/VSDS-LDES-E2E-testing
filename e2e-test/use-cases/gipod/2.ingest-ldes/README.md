@@ -90,25 +90,25 @@ response:
 <http://localhost:8080/mobility-hindrances>
         a           ldes:EventStream ;
         tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances-by-time> .
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
 You can follow the `tree:view` link to get the **view**:
 ```bash
-curl http://localhost:8080/mobility-hindrances-by-time
+curl http://localhost:8080/mobility-hindrances/by-time
 ```
 response:
 ```
 @prefix tree: <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances-by-time>
+<http://localhost:8080/mobility-hindrances/by-time>
         a              tree:Node ;
         tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z>
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z>
                        ] .
 ```
 Which allows you to follow the `tree:node` and retrieve the **fragment** containing the members:
 ```
-curl http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
 ```
 response:
 ```
@@ -164,7 +164,7 @@ response:
 
 > **Note**: you can verify that the fragment contains 1016 members by capturing the response to a file and counting the number of occurrences of `<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>`. E.g.:
 >```
-> curl --silent http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
+> curl --silent http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
 >```
 >response: 1016
 
@@ -172,12 +172,12 @@ In addition, you can request the members using various other formats:
 
 Get [N-Quads](https://www.w3.org/TR/n-quads/) (fast):
 ```bash
-curl --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
 ```
 
 Get [JSON-LD](https://www.w3.org/TR/json-ld11/) (slow):
 ```bash
-curl --header 'Accept: application/ld+json' http://localhost:8080/mobility-hindrances-by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl --header 'Accept: application/ld+json' http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
 ```
 
 ### Test Teardown

@@ -32,9 +32,9 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221206t0913`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221205t135134`)
-* LDES_SERVER_TAG (default: `20221205t1357`)
+* JSON_DATA_GENERATOR_TAG (default: `20221220t0725`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20221216t155826`)
+* LDES_SERVER_TAG (default: `20221216t1458`)
 * MONGODB_TAG (default: `6.0.3`)
 
 Optionally, you can change the port numbers:
@@ -87,10 +87,10 @@ response will be similar to:
     "@id": "http://localhost:8080/addresses",
     "tree:view": [
         {
-            "@id": "http://localhost:8080/addresses-by-time"
+            "@id": "http://localhost:8080/addresses/by-time"
         },
         {
-            "@id": "http://localhost:8080/addresses-by-name"
+            "@id": "http://localhost:8080/addresses/by-name"
         }
     ],
     "ldes:timestampPath": {
@@ -134,8 +134,8 @@ docker compose --env-file user.env up json-data-generator
 ## Test Verification
 You can now verify that the LDES continues to grow as address LDES members arrive at the [LDES server](http://localhost:8080/addresses). It creates an ever growing, substring fragmented LDES view in addition to the time-based one.
 ```bash
-curl http://localhost:8080/addresses/addresses-by-name
-curl http://localhost:8080/addresses/addresses-by-time
+curl http://localhost:8080/addresses/by-name
+curl http://localhost:8080/addresses/by-time
 ```
 
 ## Stop the Systems

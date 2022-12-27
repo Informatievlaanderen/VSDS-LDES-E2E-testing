@@ -2,7 +2,7 @@ version: '3.3'
 services:
   ldes-server-simulator:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server-simulator
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221206t0913}
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221220t0725}
     environment:
       - BASEURL=http://ldes-server-simulator
       - SEED=/tmp/data
@@ -15,7 +15,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221205t135134}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
     container_name: ${USECASE_NAME:-basic-retention}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
@@ -26,7 +26,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221205t1357}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod
@@ -39,13 +39,13 @@ services:
       - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
       # First view by limited time
-      - VIEWS_0_NAME=mobility-hindrances-by-short-time
+      - VIEWS_0_NAME=by-short-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_MEMBERLIMIT:-150}
       - VIEWS_0_RETENTION-POLICIES_0_NAME=timebased
       - VIEWS_0_RETENTION-POLICIES_0_CONFIG_DURATION=${VIEWS_0_RETENTION_PERIOD:-PT1M}
       # Second view by longer time
-      - VIEWS_1_NAME=mobility-hindrances-by-longer-time
+      - VIEWS_1_NAME=by-longer-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_MEMBERLIMIT:-300}
       - VIEWS_1_RETENTION-POLICIES_0_NAME=timebased

@@ -1,0 +1,60 @@
+version: '3.3'
+services:
+  ldes-server:
+    container_name: ${USECASE_NAME:-setup-caching}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221220T0927}
+    environment:
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_DATABASE=gipod
+      - LDES_COLLECTIONNAME=${COLLECTION_NAME:-mobility-hindrances}
+      - LDES_MEMBERTYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - LDES_HOSTNAME=http://localhost:${NGINX_PORT:-8080}
+      - LDES_SHAPE=https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape
+      - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
+      # view by time
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - VIEWS_0_NAME=${VIEW_NAME:-by-time}
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MEMBER_LIMIT:-2}
+      - REST_MAXAGE=${MAX_AGE:-60}
+      - REST_MAXAGEIMMUTABLE=${MAX_AGE_IMMUTABLE:-604800}
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-setup-caching}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.3}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
+    networks:
+      - ldes
+  nginx:
+    image: nginx:${NGINX_TAG:-1.23.3-alpine}
+    container_name: ${USECASE_NAME:-setup-caching}_nginx
+    ports:
+      - ${NGINX_PORT:-8080}:8080
+    volumes:
+      - type: bind
+        source: ${NGINX_CONFIG_FILE:-./nginx.conf}
+        target: /etc/nginx/conf.d/fwd-ldes-server.conf
+    networks:
+      - ldes
+  ldes-cli:
+    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-20221216t1346}
+    container_name: ${USECASE_NAME:-setup-caching}_ldes-client-cli
+    command: "--url http://localhost:${NGINX_PORT:-8080}/${COLLECTION_NAME:-mobility-hindrances}/${VIEW_NAME:-by-time} --input-format text/turtle"
+    profiles:
+      - delayed-started
+    # use the network stack of the nginx service so that 
+    # localhost refers to nginx and we can follow the LDES stream both from the host as from within the CLI
+    network_mode: service:nginx
+networks:
+  ldes:
+    name: ${USECASE_NAME:-setup-caching}_network

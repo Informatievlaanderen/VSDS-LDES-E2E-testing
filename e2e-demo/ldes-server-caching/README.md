@@ -194,7 +194,7 @@ Content-Type: text/turtle
 Transfer-Encoding: chunked
 Date: Wed, 28 Dec 2022 16:58:16 GMT
 ```
-Notice that the headers include `Cache-Control: public,max-age=60` which indicates that the response can be cached (publicly) for a duration of 30 seconds. In addition the header `ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"` defines a unique hash which can be used to verify that the content did not change, using `--head` or `-I` which do not request the content, only the headers.
+Notice that the headers include `Cache-Control: public,max-age=60` which indicates that the response can be cached (publicly) for a duration of 60 seconds. In addition the header `ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"` defines a unique hash which can be used to verify that the content did not change, using `--head` or `-I` which do not request the content, only the headers.
 
 ### Verify Actual Caching
 The above caching features allow to setup nginx (or another system) as a caching server for the LDES Server. The nginx [configuration](./nginx.conf) is setup as a proxy server for the LDES server and with a cache named `static-cache` which stores the responses for any HTTP verb for 60 minutes. In addition it adds a `X-Cache-Status` header to its responses to indicate a cache `Hit` or `Miss`. 

@@ -1,7 +1,7 @@
 # build environment
-FROM node:18 AS builder
+FROM node:18-bullseye-slim AS builder
 # fix vulnerabilities
-RUN npm install -g npm@8.17.0
+RUN npm install -g npm@9.2.0
 # build it
 WORKDIR /build
 COPY . .
@@ -9,10 +9,10 @@ RUN npm ci
 RUN npm run build
 
 # run environment
-FROM node:18.2.0-alpine3.15
+FROM node:18.12.1-bullseye-slim
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apk update && apk upgrade
+RUN apt-get update && apt-get upgrade
 WORKDIR /usr/vsds/simulator
 # fix vulnerabilities
 RUN npm install -g npm@8.17.0
@@ -23,7 +23,7 @@ COPY --chown=node:node --from=builder /build/dist ./
 ENV NODE_ENV production
 RUN npm ci --omit=dev
 ## install signal-handler wrapper
-RUN apk add dumb-init
+RUN apt-get install dumb-init
 ## allow passing variables
 ARG SEED=
 ENV SEED=${SEED}

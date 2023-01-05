@@ -1,7 +1,7 @@
 # build environment
-FROM node:18 AS builder
+FROM node:18-bullseye-slim AS builder
 # fix vulnerabilities
-RUN npm install -g npm@8.19.2
+RUN npm install -g npm@9.2.0
 # build it
 WORKDIR /build
 COPY . .
@@ -9,13 +9,13 @@ RUN npm ci
 RUN npm run build
 
 # run environment
-FROM node:18.2.0-alpine3.15
+FROM node:18.12.1-bullseye-slim
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apk update && apk upgrade
+RUN apt-get update && apt-get upgrade
 WORKDIR /usr/vsds/generator
 # fix vulnerabilities
-RUN npm install -g npm@8.19.2
+RUN npm install -g npm@9.2.0
 ## setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
 COPY --chown=node:node --from=builder /build/dist ./

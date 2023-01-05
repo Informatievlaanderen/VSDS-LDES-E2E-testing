@@ -2,7 +2,7 @@ version: '3.3'
 services:
   ldes-server-simulator:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server-simulator
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221220t0725}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221220t0725}
     environment:
       - BASEURL=http://ldes-server-simulator
       - SEED=/tmp/data
@@ -15,7 +15,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
     container_name: ${USECASE_NAME:-basic-retention}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
@@ -26,7 +26,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod

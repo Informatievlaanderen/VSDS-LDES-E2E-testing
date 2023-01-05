@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
     container_name: ${USECASE_NAME:-workflow}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}

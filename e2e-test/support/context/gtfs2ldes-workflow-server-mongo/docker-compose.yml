@@ -25,7 +25,7 @@ services:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
-    image: ghcr.io/informatievlaanderen/nifi:${NIFI_TAG:-1.17.0-jdk17}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/nifi:${NIFI_TAG:-1.17.0-jdk17}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
@@ -38,7 +38,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}

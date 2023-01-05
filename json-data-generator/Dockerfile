@@ -23,7 +23,7 @@ COPY --chown=node:node --from=builder /build/dist ./
 ENV NODE_ENV production
 RUN npm ci --omit=dev
 ## install signal-handler wrapper
-RUN apk add dumb-init
+RUN apt-get install dumb-init
 ## allow passing variables
 ARG SILENT=true
 ENV SILENT=${SILENT}

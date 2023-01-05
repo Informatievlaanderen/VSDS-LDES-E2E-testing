@@ -26,7 +26,7 @@ ENV MIME_TYPE=${MIME_TYPE}
 ARG POLL_INTERVAL=
 ENV POLL_INTERVAL=${POLL_INTERVAL}
 # install signal-handler wrapper
-RUN apk add dumb-init
+RUN apt-get install dumb-init
 # set start command
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # fix vulnerabilities

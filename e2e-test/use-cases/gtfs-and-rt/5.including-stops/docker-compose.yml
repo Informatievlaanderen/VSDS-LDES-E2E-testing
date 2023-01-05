@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   gtfs2ldes-js:
-    container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
+    container_name: ${USECASE_NAME:-gtfs-geo-fragment}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220928t1555}
     profiles:
       - delayed-started
@@ -25,7 +25,7 @@ services:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
-    image: ghcr.io/informatievlaanderen/nifi:${NIFI_TAG:-1.17.0-jdk17}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/nifi:${NIFI_TAG:-1.17.0-jdk17}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
@@ -51,7 +51,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}

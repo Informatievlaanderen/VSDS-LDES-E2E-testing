@@ -15,7 +15,7 @@ FROM node:18.12.1-bullseye-slim
 RUN apt-get update && apt-get upgrade
 WORKDIR /usr/vsds/simulator
 # fix vulnerabilities
-RUN npm install -g npm@8.17.0
+RUN npm install -g npm@9.2.0
 ## setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
 COPY --chown=node:node --from=builder /build/dist ./

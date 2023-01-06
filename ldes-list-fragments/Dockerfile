@@ -1,7 +1,7 @@
 # build environment
-FROM node:18 AS builder
+FROM node:18-bullseye-slim AS builder
 # fix vulnerabilities
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@9.2.0
 # build it
 WORKDIR /build
 COPY . .
@@ -9,10 +9,10 @@ RUN npm ci
 RUN npm run build
 
 # run environment
-FROM node:18.12.1-alpine3.16
+FROM node:18.12.1-bullseye-slim
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apk update && apk upgrade
+RUN apt-get update && apt-get upgrade
 WORKDIR /usr/ldes
 # setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
@@ -26,11 +26,11 @@ ENV MIME_TYPE=${MIME_TYPE}
 ARG POLL_INTERVAL=
 ENV POLL_INTERVAL=${POLL_INTERVAL}
 # install signal-handler wrapper
-RUN apk add dumb-init
+RUN apt-get install dumb-init
 # set start command
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # fix vulnerabilities
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@9.2.0
 # install dependancies
 ENV NODE_ENV production
 RUN npm ci --omit=dev

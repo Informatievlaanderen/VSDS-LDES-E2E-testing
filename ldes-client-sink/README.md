@@ -38,14 +38,10 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 To stop the container, you need to call the stop command with the (long or short) container ID, e.g. `docker stop 0cc5d65d8108`
 
 ## Docker compose
-For your convenience a [Docker compose file](./docker-compose.yml) is provided containing the client sink and a MongoDB store, and 2 files containing environment variables used for building and running the containers:
-* [env.mongo](./env.mongo) contains the mongo specific variables and normally needs no changing
-* [env.sink](./env.sink) contains the client sink variables
-
-The sink variables typically need tuning for your use case. The easiest way to provide these is to copy both env files into a new `env.user` file and change the variables as required. Then you can run the following command to build and run the Docker containers:
+For your convenience a [Docker compose file](./docker-compose.yml) is provided containing the client sink and a MongoDB store, and a [.env](./.env) file with environment variables used for building and running the containers. The sink variables typically need tuning for your use case. The easiest way to provide these is to copy the `.env` file into a file named `user.env` and change the variables as required. Then you can run the following command to build and run the Docker containers:
 
 ```bash
-docker compose --env-file env.user up
+docker compose --env-file user.env up
 ```
 
 ## Build

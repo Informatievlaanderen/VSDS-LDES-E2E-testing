@@ -17,7 +17,7 @@ When that data set is updated after the gtfs2ldes service was started initially
 Then that service should POST the updated Linked Connections Event Stream members to the LDES server upon the next run
 ```
 ### Test Setup
-For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (ingest.env)](./ingest.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments or, if available, append the specific `env.<gtfs-use-case>` file to your personal file.
+For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (ingest.env)](./ingest.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments or, if available, append the specific `<gtfs-use-case>.env` file to your personal file.
 
 > **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then. E.g.:
 >

@@ -3,8 +3,6 @@ services:
   ldes-client-sink:
     image: vsds/ldes-client-sink
     container_name: ${USECASE_NAME:-sink-mongo}_ldes-client-sink
-    env_file:
-      - env.sink
     build:
       context: .
       args:
@@ -16,8 +14,6 @@ services:
   ldes-mongodb:
     image: mongo:${MONGODB_TAG}
     container_name: ${USECASE_NAME:-sink-mongo}_ldes-mongodb
-    env_file:
-      - env.mongo
     ports:
       - ${MONGODB_PORT}:27017
     networks:

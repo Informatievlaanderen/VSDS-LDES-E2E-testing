@@ -1,3 +1,4 @@
 .idea
 .vscode
 user.env
+e2e-poc/**

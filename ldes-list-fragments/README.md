@@ -14,9 +14,10 @@ docker build --tag vsds/ldes-list-fragments .
 To run the Docker image mapped and follow an LDES view, you can run it interactively, e.g.:
 ```bash
 docker run --rm -it \
--e FOLLOW=https://gipod.smartdataspace.dev-vlaanderen.be/mobility-hindrances-timebased \
+-e FOLLOW=https://gtfs.smartdataspace.dev-vlaanderen.be/connections/by-stop-and-time \
 vsds/ldes-list-fragments:latest
 ```
+> **Note**: this is a large data set so you may want to interrupt the container with `CTRL-C`.
 
 All available environment variables are (see [below](#run) for details):
 * `FOLLOW` (mandatory)
@@ -36,11 +37,12 @@ npm run build
 The tool takes the following command line arguments:
 * `--follow=<view-url>` URL of the LDES view to follow, no default
 * `--silent=<true|false>` prevents any console debug output if true, defaults to `true` (silent, not logging debug info)
-* `--mime-type=<mime-type>` the mime-type to use when requesting a fragment, defaults to `application/n-quads`
+* `--mime-type=<mime-type>` the mime-type (supported by the [N3 parser](https://private-api.gipod.vlaanderen.be/api/v1/ldes/mobility-hindrances)) to use when requesting a fragment, defaults to `application/n-quads`
 * `--poll-interval=<millis>` the interval in milliseconds to wait before verifying if any fragment has expired, defaults to `1000` (1 second)
 
 You can run the tool providing the mandatory view URL (and one or more optional arguments) after building it, e.g.:
 ```bash
 node dist/index.js  --silent false --mime-type "text/turtle" --poll-interval 30000 \
---follow https://gipod.smartdataspace.dev-vlaanderen.be/mobility-hindrances-timebased
+--follow https://gtfs.smartdataspace.dev-vlaanderen.be/connections/by-stop-and-time
 ```
+> **Note**: again, this is a large data set so you may want to interrupt the tool with `CTRL-C`.

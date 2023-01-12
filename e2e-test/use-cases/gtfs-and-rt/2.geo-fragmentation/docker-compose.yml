@@ -38,7 +38,7 @@ services:
       - LDES_SHAPE=https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape
       - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
-      - VIEWS_0_NAME=mobility-hindrances-by-location
+      - VIEWS_0_NAME=by-location
       - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${GEOSPATIAL_MAXZOOMLEVEL:-15}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72

@@ -80,10 +80,10 @@ const fragmentsToVisit = new SortedQueue<TimedUrl>((first,second) => {
 } );
 fragmentsToVisit.push({at: undefined, url: viewUrl});
 
-let nextAt: Date | undefined;
-while (nextAt = fragmentsToVisit.peek()?.value?.at) {
-  if (nextAt && (Date.now() < nextAt.valueOf())) {
-    await sleep(pollInterval);
+let next: TimedUrl | undefined;
+while (next = fragmentsToVisit.peek()?.value) {
+  if (next.at && (Date.now() < next.at.valueOf())) {
+      await sleep(pollInterval);
   } else {
     const url = fragmentsToVisit.pop()?.value.url || '';
     await visit(url, fragmentsToVisit, visitedFragments);

@@ -1,7 +1,7 @@
 # build environment
 FROM node:18 AS builder
 # fix vulnerabilities
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@9.2.0
 # build it
 WORKDIR /build
 COPY . .
@@ -30,7 +30,7 @@ RUN apk add dumb-init
 # set start command
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # fix vulnerabilities
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@9.2.0
 # install dependancies
 ENV NODE_ENV production
 RUN npm ci --omit=dev

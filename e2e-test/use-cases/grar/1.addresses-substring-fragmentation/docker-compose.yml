@@ -54,18 +54,18 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://data.vlaanderen.be/ns/adres#Adres
-      - VIEWS_0_NAME=addresses-by-name
+      - VIEWS_0_NAME=by-name
       - VIEWS_0_FRAGMENTATIONS_0_NAME=substring
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=https://data.vlaanderen.be/ns/adres#volledigAdres
 
       # Additional view time-based
-      - VIEWS_1_NAME=addresses-by-time
+      - VIEWS_1_NAME=by-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       
       # Additional view geo-spatial
-      - VIEWS_2_NAME=addresses-by-location-and-time
+      - VIEWS_2_NAME=by-location-and-time
       - VIEWS_2_FRAGMENTATIONS_0_NAME=geospatial
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asGML

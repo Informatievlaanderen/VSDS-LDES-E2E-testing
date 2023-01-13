@@ -12,11 +12,11 @@ To setup the context, combine the contents of all the `<component>.env` files in
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
-* LDES_SERVER_SIMULATOR_TAG (default: `20221220t0725`)
+* LDES_SERVER_SIMULATOR_TAG (default: `20230113t0736`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221216t155826`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230106T150440`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_CLIENT_SINK_TAG (default: `20221220t0725`)
+* LDES_CLIENT_SINK_TAG (default: `20230113t0736`)
 * LDES_CLIENT_SINK_SILENT (default: `true`)
 * LDES_CLIENT_SINK_MEMBER_TYPE (default: `https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder`)
 * LDES_CLIENT_SINK_DATABASE_NAME (default: `GIPOD`)

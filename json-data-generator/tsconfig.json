@@ -1,12 +1,10 @@
 {
-  "exclude": ["./test"],
   "compilerOptions": {
     "lib": [
       "ES2022"
     ],
-    "module": "CommonJS",
-    // "moduleResolution": "node",
-    "target": "es2022",
+    "module": "ES2022",
+    "target": "ES2022",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

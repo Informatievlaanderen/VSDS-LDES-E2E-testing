@@ -41,7 +41,6 @@ docker compose --env-file user.env up
 ### Verify URL Naming Strategy
 As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/mobility-hindrances and the view at http://localhost:8080/mobility-hindrances/by-time, or using bash commands:
 ```bash
-curl http://localhost:8080/mobility-hindrances
 curl http://localhost:8080/mobility-hindrances/by-time
 ```
 this results in:
@@ -50,17 +49,13 @@ this results in:
 @prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
 @prefix tree:                <https://w3id.org/tree#> .
 
+<http://localhost:8080/mobility-hindrances/by-time>
+        a       tree:Node .
+
 <http://localhost:8080/mobility-hindrances>
         a           ldes:EventStream ;
         tree:shape  mobility-hindrances:shape ;
         tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
-```
-and
-```
-@prefix tree: <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances/by-time>
-        a       tree:Node .
 ```
 
 ### Verify Acceptable Fragment Formats
@@ -74,27 +69,56 @@ curl -H "accept: application/n-triples" http://localhost:8080/mobility-hindrance
 ```
 this results in:
 ```
-@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes:                <https://w3id.org/ldes#> .
+@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix tree:                <https://w3id.org/tree#> .
 
 <http://localhost:8080/mobility-hindrances/by-time>
         a       tree:Node .
+
+<http://localhost:8080/mobility-hindrances>
+        a           ldes:EventStream ;
+        tree:shape  mobility-hindrances:shape ;
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
 ```
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
+<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
 ```
 ```
 {
-    "@id": "http://localhost:8080/mobility-hindrances/by-time",
-    "@type": "tree:Node",
+    "@graph": [
+        {
+            "@id": "http://localhost:8080/mobility-hindrances/by-time",
+            "@type": "tree:Node"
+        },
+        {
+            "@id": "http://localhost:8080/mobility-hindrances",
+            "tree:view": {
+                "@id": "http://localhost:8080/mobility-hindrances/by-time"
+            },
+            "tree:shape": {
+                "@id": "mobility-hindrances:shape"
+            },
+            "@type": "ldes:EventStream"
+        }
+    ],
     "@context": {
-        "tree": "https://w3id.org/tree#"
+        "tree": "https://w3id.org/tree#",
+        "ldes": "https://w3id.org/ldes#",
+        "mobility-hindrances": "https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/"
     }
 }
 ```
 ```
-(empty response)
+<http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
+<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
 ```
-(**bug**: retrieving n-triples fails, see https://github.com/Informatievlaanderen/VSDS-LDESServer4J/issues/357)
+> **Note** that `application/n-triples` and `application/n-quads` return the same result as the ingested members are all in the default graph.
 
 ### Verify Acceptable Member Formats
 The LDES Server allows to ingest the following RDF formats: N-triples, N-quads, Turtle and JSON-LD.
@@ -105,37 +129,13 @@ curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: appl
 curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/ld+json' -d '@data/member.jsonld'
 curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/n-triples' -d '@data/member.nt'
 ```
-this results in:
+these commands all results in somthing similar to:
 ```
-HTTP/1.1 100 
-
-HTTP/1.1 415 
-Accept: application/n-quads, application/n-triples, application/ld+json
-Content-Length: 0
-Date: Wed, 28 Dec 2022 16:23:07 GMT
-Connection: close
-```
-(**bug**: cannot ingest turtle format, see https://github.com/Informatievlaanderen/VSDS-LDESServer4J/issues/355)
-```
-HTTP/1.1 100 
-
 HTTP/1.1 200 
+Server: nginx/1.23.3
+Date: Fri, 13 Jan 2023 18:51:26 GMT
 Content-Length: 0
-Date: Wed, 28 Dec 2022 16:23:07 GMT
-```
-```
-HTTP/1.1 100 
-
-HTTP/1.1 200 
-Content-Length: 0
-Date: Wed, 28 Dec 2022 16:23:07 GMT
-```
-```
-HTTP/1.1 100 
-
-HTTP/1.1 200 
-Content-Length: 0
-Date: Wed, 28 Dec 2022 16:23:07 GMT
+Connection: keep-alive
 ```
 
 ### Verify CORS and Suppored HTTP Verbs
@@ -146,6 +146,10 @@ curl -i -X OPTIONS -H "Origin: http://www.example.com" -H "Access-Control-Reques
 this results in:
 ```
 HTTP/1.1 200 
+Server: nginx/1.23.3
+Date: Fri, 13 Jan 2023 18:54:06 GMT
+Content-Length: 0
+Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -153,109 +157,116 @@ Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: GET
 Access-Control-Max-Age: 1800
 Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
-Content-Length: 0
-Date: Wed, 28 Dec 2022 16:33:01 GMT
 ```
-In the above response we notice that the allowed HTTP verbs also include HEAD. You can verify this using:
-> **Note** that you can use `-I` or `--head` which are equivalent.
+> **Note** that in the above response the allowed HTTP verbs also include HEAD.
+
+You can verify this using:
 ```bash
 curl -I http://localhost:8080/mobility-hindrances/by-time
 ```
-which results in:
+> **Note** that you can use `-I` or `--head` which are equivalent.
+
+Which results in:
 ```
 HTTP/1.1 200 
+Server: nginx/1.23.3
+Date: Fri, 13 Jan 2023 18:55:07 GMT
+Content-Type: text/turtle
+Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Cache-Control: public,max-age=60
 Content-Disposition: inline
-ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"
-Content-Type: text/turtle
-Transfer-Encoding: chunked
-Date: Wed, 28 Dec 2022 16:42:53 GMT
+ETag: "c2ed41319c441cbc840d4b195150214fd4de340060c7eb952e1cb00c3a9f582d"
+X-Cache-Status: MISS
 ```
-> **Note** that the fragment information also includes an `ETag` which can be used by the nginx for caching purposes.
+> **Note** that the fragment information also includes an `ETag` which can be used by the proxy server (nginx) for caching purposes.
 
 ### Verify Caching Features
-To verify which caching features the LDES Server provides you can use:
+To verify which caching features the LDES Server provides you can again use:
 ```bash
 curl -I http://localhost:8080/mobility-hindrances/by-time
 ```
 this results in:
 ```
 HTTP/1.1 200 
+Server: nginx/1.23.3
+Date: Fri, 13 Jan 2023 18:55:51 GMT
+Content-Type: text/turtle
+Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Cache-Control: public,max-age=60
 Content-Disposition: inline
-ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"
-Content-Type: text/turtle
-Transfer-Encoding: chunked
-Date: Wed, 28 Dec 2022 16:58:16 GMT
+ETag: "c2ed41319c441cbc840d4b195150214fd4de340060c7eb952e1cb00c3a9f582d"
+X-Cache-Status: HIT
 ```
-Notice that the headers include `Cache-Control: public,max-age=60` which indicates that the response can be cached (publicly) for a duration of 60 seconds. In addition the header `ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"` defines a unique hash which can be used to verify that the content did not change, using `--head` or `-I` which do not request the content, only the headers.
+Notice that the headers include `Cache-Control: public,max-age=60` which indicates that the response can be cached (publicly) for a duration of 60 seconds. In addition the header `ETag: "c2ed41319c441cbc840d4b195150214fd4de340060c7eb952e1cb00c3a9f582d"` defines a unique hash which can be used to verify that the content did not change, using `--head` or `-I` which do not request the content, only the headers.
 
 ### Verify Actual Caching
 The above caching features allow to setup nginx (or another system) as a caching server for the LDES Server. The nginx [configuration](./nginx.conf) is setup as a proxy server for the LDES server and with a cache named `static-cache` which stores the responses for any HTTP verb for 60 minutes. In addition it adds a `X-Cache-Status` header to its responses to indicate a cache `Hit` or `Miss`. 
 
 The nginx server is configured to listen to http://localhost:8080 by default, configurable in your `user.env`. The nginx server will forward any request to the LDES server and forward its response to the requester. However, because it is setup for caching, it will first verify if it does not have a response cached for the incoming request and, if so, return the response from cache. You can verify this by requesting a fragment twice:
 ```bash
-curl -i http://localhost:8080/mobility-hindrances/by-time
+curl -i http://localhost:8080/mobility-hindrances
 ```
 initially results in:
 ```
 HTTP/1.1 200 
 Server: nginx/1.23.3
-Date: Wed, 28 Dec 2022 17:20:30 GMT
+Date: Fri, 13 Jan 2023 18:59:34 GMT
 Content-Type: text/turtle
 Transfer-Encoding: chunked
 Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Cache-Control: public,max-age=60
+Cache-Control: public,max-age=604800,immutable
 Content-Disposition: inline
-ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"
+ETag: "d8cd93fb6df91f6d19a6a87c3e645ebe32982a36cee85a75aa084a8ed90f789b"
 X-Cache-Status: MISS
 
-@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes:                <https://w3id.org/ldes#> .
+@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix tree:                <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-12-28T15:25:45.468Z>
-                       ] .
+<http://localhost:8080/mobility-hindrances>
+        a           ldes:EventStream ;
+        tree:shape  mobility-hindrances:shape ;
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
 When re-requested:
 ```bash
-curl -i http://localhost:8080/mobility-hindrances/by-time
+curl -i http://localhost:8080/mobility-hindrances
 ```
 the result is:
 ```
 HTTP/1.1 200 
 Server: nginx/1.23.3
-Date: Wed, 28 Dec 2022 17:20:57 GMT
+Date: Fri, 13 Jan 2023 19:00:17 GMT
 Content-Type: text/turtle
 Transfer-Encoding: chunked
 Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Cache-Control: public,max-age=60
+Cache-Control: public,max-age=604800,immutable
 Content-Disposition: inline
-ETag: "4a1601b633847b2fb88527e39ad55bd14663ea95a6ed62ae4f2aa5fca8faf6aa"
+ETag: "d8cd93fb6df91f6d19a6a87c3e645ebe32982a36cee85a75aa084a8ed90f789b"
 X-Cache-Status: HIT
 
-@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes:                <https://w3id.org/ldes#> .
+@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix tree:                <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-12-28T15:25:45.468Z>
-                       ] .
+<http://localhost:8080/mobility-hindrances>
+        a           ldes:EventStream ;
+        tree:shape  mobility-hindrances:shape ;
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
-Notice that the cache did not contain a cached response the first time (`X-Cache-Status: MISS`) but it did the second time (`X-Cache-Status: HIT`).
+> **Note** that the cache did not contain a cached response the first time (`X-Cache-Status: MISS`) but it did the second time (`X-Cache-Status: HIT`).
 
 ### Verify Nginx Compression Setup
 The RDF file formats are rather verbose and therefore may benefit from compression during network transport. For this reason we have [configured](./nginx.conf) our nginx server to do gzip compression (`gzip on`) for the supported RDF types (`gzip_types application/n-triples application/ld+json text/turtle application/n-quads`) and switched it on (`gzip_static on`) for all forwarded requests. We can easily verify this if we request compression:
@@ -266,7 +277,7 @@ which results in:
 ```
 HTTP/1.1 200 
 Server: nginx/1.23.3
-Date: Wed, 28 Dec 2022 17:47:37 GMT
+Date: Fri, 13 Jan 2023 19:01:07 GMT
 Content-Type: text/turtle
 Connection: keep-alive
 Vary: Origin
@@ -274,11 +285,11 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Cache-Control: public,max-age=60
 Content-Disposition: inline
-ETag: W/"802756eadd0892271b5d7b19b86843191eb4be9198a5a9595bd5faae19db73b5"
-X-Cache-Status: MISS
+ETag: W/"c2ed41319c441cbc840d4b195150214fd4de340060c7eb952e1cb00c3a9f582d"
+X-Cache-Status: EXPIRED
 Content-Encoding: gzip
 ```
-Notice the presence of the header `Content-Encoding: gzip` which indicates that the content is compressed using gzip. If we request the content, curl will warn us about the compressed, binary content:
+> **Note** the presence of the header `Content-Encoding: gzip` which indicates that the content is compressed using gzip. If we request the content, curl will warn us about the compressed, binary content:
 ```bash
 curl -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-time
 ```
@@ -296,7 +307,7 @@ we receive the file and see:
 ```
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100   121    0   121    0     0  12100      0 --:--:-- --:--:-- --:--:-- 13444
+100   303    0   303    0     0   370k      0 --:--:-- --:--:-- --:--:--  295k
 ```
 We can use the following command to unzip it:
 ```bash

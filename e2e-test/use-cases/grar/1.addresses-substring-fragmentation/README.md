@@ -32,9 +32,9 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221220t0725`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221216t155826`)
-* LDES_SERVER_TAG (default: `20221216t1458`)
+* JSON_DATA_GENERATOR_TAG (default: `20230113t0736`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230106T150440`)
+* LDES_SERVER_TAG (default: `20230112t1553`)
 * MONGODB_TAG (default: `6.0.3`)
 
 Optionally, you can change the port numbers:
@@ -87,10 +87,13 @@ response will be similar to:
     "@id": "http://localhost:8080/addresses",
     "tree:view": [
         {
-            "@id": "http://localhost:8080/addresses/by-time"
+            "@id": "addresses:by-location-and-time"
         },
         {
-            "@id": "http://localhost:8080/addresses/by-name"
+            "@id": "addresses:by-time"
+        },
+        {
+            "@id": "addresses:by-name"
         }
     ],
     "ldes:timestampPath": {
@@ -102,6 +105,7 @@ response will be similar to:
     "@type": "ldes:EventStream",
     "@context": {
         "tree": "https://w3id.org/tree#",
+        "addresses": "http://localhost:8080/addresses/",
         "ldes": "https://w3id.org/ldes#",
         "terms": "http://purl.org/dc/terms/",
         "prov": "http://www.w3.org/ns/prov#"
@@ -141,7 +145,7 @@ curl http://localhost:8080/addresses/by-time
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file user.env down
 docker compose --env-file user.env --profile delay-started down
+docker compose --env-file user.env down
 ```
 This will gracefully shutdown all systems in the context and remove them.

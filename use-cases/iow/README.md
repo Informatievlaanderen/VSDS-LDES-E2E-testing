@@ -51,9 +51,9 @@ To ingest the observation, device and device model LDES members we use a standar
 To send the LDES members to the LDES server, start the processor.
 
 After a very brief moment you can request the LDES'es:
-* LDES: http://localhost:8073/water-quality-observations, view: http://localhost:8073/water-quality-observations-by-time
-* LDES: http://localhost:8072/device-models, view: http://localhost:8072/device-models-by-time
-* LDES: http://localhost:8071/devices, view: http://localhost:8071/devices-by-time
+* LDES: http://localhost:8073/water-quality-observations, view: http://localhost:8073/water-quality-observations/by-time
+* LDES: http://localhost:8072/device-models, view: http://localhost:8072/device-models/by-time
+* LDES: http://localhost:8071/devices, view: http://localhost:8071/devices/by-time
 
 ## More information
 If you need more info on the above systems or configuration please find here the repositories and Docker images:

@@ -60,7 +60,7 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=${DEVICE_LDES_MEMBERTYPE:-https://uri.etsi.org/ngsi-ld/default-context/Device}
-      - VIEWS_0_NAME=devices-by-time
+      - VIEWS_0_NAME=by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${DEVICES_LDES_SERVER_MEMBERLIMIT:-10}
     ports:
@@ -82,7 +82,7 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=${MODEL_LDES_MEMBERTYPE:-https://uri.etsi.org/ngsi-ld/default-context/DeviceModel}
-      - VIEWS_0_NAME=device-models-by-time
+      - VIEWS_0_NAME=by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MODELS_LDES_SERVER_MEMBERLIMIT:-10}
     ports:
@@ -104,7 +104,7 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=${WQO_LDES_MEMBERTYPE:-https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved}
-      - VIEWS_0_NAME=water-quality-observations-by-time
+      - VIEWS_0_NAME=-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-25}
     ports:

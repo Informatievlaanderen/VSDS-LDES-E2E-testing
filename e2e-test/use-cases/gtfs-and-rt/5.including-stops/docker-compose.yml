@@ -63,7 +63,7 @@ services:
       - LDES_SHAPE=${LDES_SHAPE:-}
       - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-connections-by-location-and-time}
+      - VIEWS_0_NAME=${VIEWS_0_NAME:-by-location-and-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=noop
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}

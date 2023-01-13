@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   ldes-server-simulator:
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20221220t0725}
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230113t0736}
     container_name: ${USECASE_NAME:-simulator-cli}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
@@ -10,7 +10,7 @@ services:
     networks:
       - ldes
   ldes-cli:
-    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-20221216t1346}
+    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230104T1519}
     container_name: ${USECASE_NAME:-simulator-cli}_ldes-client-cli
     command: "--url ${LDES_DATA_SET_URL:-http://ldes-server-simulator/api/v1/ldes/mobility-hindrances}"
     networks:

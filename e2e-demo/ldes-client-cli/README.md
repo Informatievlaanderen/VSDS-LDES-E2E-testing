@@ -15,7 +15,7 @@ docker compose --env-file user.env start ldes-server-simulator
 ```
 
 ## Test Execution and Verification
-Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json):
+Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json) - in a new terminal window (bash shell):
 ```bash
 curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
@@ -63,8 +63,11 @@ docker logs simulator-cli_ldes-client-cli > ./fragment.nq
 ```
 
 Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).
+```
+cat ./fragment.nq | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+```
 
-Again, wait a while and request the LDES Server Simulator home page and ensure that the repeated re-requesting has ended.
+Again, wait a while and request the LDES Server Simulator home page (http://localhost:9011/) and ensure that the repeated re-requesting has ended.
 
 ## Test Teardown
 Stop all systems, i.e.:

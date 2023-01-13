@@ -96,88 +96,43 @@ You can follow the `tree:view` link to get the **view**:
 ```bash
 curl http://localhost:8080/mobility-hindrances/by-time
 ```
-response:
+response (similar to):
 ```
-@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes:                <https://w3id.org/ldes#> .
+@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix tree:                <https://w3id.org/tree#> .
 
 <http://localhost:8080/mobility-hindrances/by-time>
         a              tree:Node ;
         tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z>
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T20:38:13.134Z>
                        ] .
+
+<http://localhost:8080/mobility-hindrances>
+        a           ldes:EventStream ;
+        tree:shape  mobility-hindrances:shape ;
+        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
 Which allows you to follow the `tree:node` and retrieve the **fragment** containing the members:
 ```
-curl http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl <replace-by-tree:node>
 ```
-response:
-```
-@prefix adms:                 <http://www.w3.org/ns/adms#> .
-@prefix consequencetypes:     <https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/mobility-hindrance/consequencetypes/> .
-@prefix contactorganisations: <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10770700/contactorganisations/> .
-@prefix core:                 <http://www.w3.org/2004/02/skos/core#> .
-@prefix geosparql:            <http://www.opengis.net/ont/geosparql#> .
-@prefix gipod:                <https://gipod.vlaanderen.be/ns/gipod#> .
-@prefix ldes:                 <https://w3id.org/ldes#> .
-@prefix locn:                 <http://www.w3.org/ns/locn#> .
-@prefix m8g:                  <http://data.europa.eu/m8g/> .
-@prefix org:                  <http://www.w3.org/ns/org#> .
-@prefix organisations:        <https://private-api.gipod.beta-vlaanderen.be/api/v1/organisations/> .
-@prefix prov:                 <http://www.w3.org/ns/prov#> .
-@prefix statuses:             <https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/statuses/> .
-@prefix terms:                <http://purl.org/dc/terms/> .
-@prefix tree:                 <https://w3id.org/tree#> .
-@prefix zones:                <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10773891/zones/> .
-
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10773542/1838671>
-        a                     <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
-        <http://purl.org/dc/elements/1.1/contributor>
-                organisations:fedab33f-792a-029c-9b34-9d9cfe7d6245 ;
-        <http://purl.org/dc/elements/1.1/creator>
-                organisations:fedab33f-792a-029c-9b34-9d9cfe7d6245 ;
-        terms:created         "2022-04-20T08:53:33.7012596Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        terms:description     "8530 Harelbeke, Frankrijklaan 7: Container"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> ;
-        terms:isVersionOf     <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10773542> ;
-        terms:modified        "2022-04-20T08:53:33.7043281Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        adms:identifier       [ a                  adms:Identifier ;
-                                core:notation      "10773542"^^gipod:gipodId ;
-                                adms:schemaAgency  "https://gipod.vlaanderen.be"@nl-BE
-                              ] ;
-        adms:versionNotes     "MobilityHindranceContactOrganisationWasAdded"@nl-BE ;
-        prov:generatedAtTime  "2022-04-20T08:53:33.69Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        <https://data.vlaanderen.be/ns/mobiliteit#Inname.status>
-                statuses:0a4ee99b-8b8a-47c8-913f-117220febee0 ;
-        <https://data.vlaanderen.be/ns/mobiliteit#beheerder>
-                organisations:fedab33f-792a-029c-9b34-9d9cfe7d6245 ;
-        <https://data.vlaanderen.be/ns/mobiliteit#contactOrganisatie>
-                <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10773542/contactorganisations/8fe1dbb3-9620-4d45-9d08-940c861e6994> ;
-        <https://data.vlaanderen.be/ns/mobiliteit#periode>
-                [ a              m8g:PeriodOfTime ;
-                  m8g:endTime    "2022-05-01T18:00:00Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-                  m8g:startTime  "2022-04-27T04:00:00Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>
-                ] ;
-        <https://data.vlaanderen.be/ns/mobiliteit#zone>
-                <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10773542/zones/d0f9148d-3aa6-496e-a1e1-93b585aa7235> ;
-        gipod:gipodId         10773542 .
-...
-```
-
 > **Note**: you can verify that the fragment contains 1016 members by capturing the response to a file and counting the number of occurrences of `<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>`. E.g.:
->```
-> curl --silent http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
->```
->response: 1016
+```
+curl --silent <replace-by-tree:node> | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
+```
+response: 1016
 
 In addition, you can request the members using various other formats:
 
 Get [N-Quads](https://www.w3.org/TR/n-quads/) (fast):
 ```bash
-curl --header 'Accept: application/n-quads' http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl --header 'Accept: application/n-quads' <replace-by-tree:node>
 ```
 
 Get [JSON-LD](https://www.w3.org/TR/json-ld11/) (slow):
 ```bash
-curl --header 'Accept: application/ld+json' http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T12:29:14.172Z
+curl --header 'Accept: application/ld+json' <replace-by-tree:node>
 ```
 
 ### Test Teardown

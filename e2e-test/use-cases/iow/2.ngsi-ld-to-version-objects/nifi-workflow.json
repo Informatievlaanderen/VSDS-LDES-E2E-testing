@@ -170,7 +170,7 @@
             {
                 "identifier": "227fd60e-51ad-3d99-8380-9e6353d08948",
                 "instanceIdentifier": "0f9ee7bc-c38a-37f5-5a48-4d7658a934f3",
-                "name": "NgsiLdToLdesMemberProcessor",
+                "name": "CreateVersionObjectProcessor",
                 "comments": "",
                 "position": {
                     "x": 888.0,
@@ -356,7 +356,7 @@
                     "id": "227fd60e-51ad-3d99-8380-9e6353d08948",
                     "type": "PROCESSOR",
                     "groupId": "6e062ff6-db19-3b9b-b549-067faf2f2a68",
-                    "name": "NgsiLdToLdesMemberProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "0f9ee7bc-c38a-37f5-5a48-4d7658a934f3"
                 },
@@ -400,7 +400,7 @@
                     "id": "227fd60e-51ad-3d99-8380-9e6353d08948",
                     "type": "PROCESSOR",
                     "groupId": "6e062ff6-db19-3b9b-b549-067faf2f2a68",
-                    "name": "NgsiLdToLdesMemberProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "0f9ee7bc-c38a-37f5-5a48-4d7658a934f3"
                 },
@@ -428,7 +428,7 @@
                     "id": "227fd60e-51ad-3d99-8380-9e6353d08948",
                     "type": "PROCESSOR",
                     "groupId": "6e062ff6-db19-3b9b-b549-067faf2f2a68",
-                    "name": "NgsiLdToLdesMemberProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "0f9ee7bc-c38a-37f5-5a48-4d7658a934f3"
                 },

@@ -420,16 +420,16 @@
                     {
                         "identifier": "25b291c7-792d-357b-9dda-78432e16020b",
                         "instanceIdentifier": "229b4b48-d33f-365b-aeea-e822c218903e",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 144.0,
                             "y": 216.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "artifact": "create-version-object-processor",
                             "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
@@ -471,7 +471,7 @@
                     {
                         "identifier": "7e946e08-b070-3038-b855-5e0d44e91d41",
                         "instanceIdentifier": "d8ad9b79-d244-319d-5d22-70bf55a35079",
-                        "name": "NgsiLdToLdesMemberProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 144.0,
@@ -715,7 +715,7 @@
                             "id": "25b291c7-792d-357b-9dda-78432e16020b",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "229b4b48-d33f-365b-aeea-e822c218903e"
                         },
@@ -751,7 +751,7 @@
                             "id": "25b291c7-792d-357b-9dda-78432e16020b",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "229b4b48-d33f-365b-aeea-e822c218903e"
                         },
@@ -787,7 +787,7 @@
                             "id": "7e946e08-b070-3038-b855-5e0d44e91d41",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "d8ad9b79-d244-319d-5d22-70bf55a35079"
                         },
@@ -831,7 +831,7 @@
                             "id": "25b291c7-792d-357b-9dda-78432e16020b",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "229b4b48-d33f-365b-aeea-e822c218903e"
                         },
@@ -867,7 +867,7 @@
                             "id": "7e946e08-b070-3038-b855-5e0d44e91d41",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "d8ad9b79-d244-319d-5d22-70bf55a35079"
                         },
@@ -895,7 +895,7 @@
                             "id": "7e946e08-b070-3038-b855-5e0d44e91d41",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "d8ad9b79-d244-319d-5d22-70bf55a35079"
                         },
@@ -1400,7 +1400,7 @@
                     {
                         "identifier": "78017cda-0644-383d-bda5-65683be74a9a",
                         "instanceIdentifier": "68805af9-567b-3a7e-5f6b-f6a87a98ed59",
-                        "name": "NgsiLdToLdesMemberProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 120.0,
@@ -1721,16 +1721,16 @@
                     {
                         "identifier": "37b5b17a-357f-3649-9e64-7c449aa4b80e",
                         "instanceIdentifier": "416136a4-4338-386e-13ab-31188e2a2d15",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 768.0,
                             "y": 24.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "artifact": "create-version-object-processor",
                             "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
@@ -1781,7 +1781,7 @@
                             "id": "78017cda-0644-383d-bda5-65683be74a9a",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "68805af9-567b-3a7e-5f6b-f6a87a98ed59"
                         },
@@ -1825,7 +1825,7 @@
                             "id": "78017cda-0644-383d-bda5-65683be74a9a",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "68805af9-567b-3a7e-5f6b-f6a87a98ed59"
                         },
@@ -1889,7 +1889,7 @@
                             "id": "78017cda-0644-383d-bda5-65683be74a9a",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "68805af9-567b-3a7e-5f6b-f6a87a98ed59"
                         },
@@ -1925,7 +1925,7 @@
                             "id": "37b5b17a-357f-3649-9e64-7c449aa4b80e",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "416136a4-4338-386e-13ab-31188e2a2d15"
                         },
@@ -1997,7 +1997,7 @@
                             "id": "37b5b17a-357f-3649-9e64-7c449aa4b80e",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "416136a4-4338-386e-13ab-31188e2a2d15"
                         },
@@ -2041,7 +2041,7 @@
                             "id": "37b5b17a-357f-3649-9e64-7c449aa4b80e",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "416136a4-4338-386e-13ab-31188e2a2d15"
                         },
@@ -2430,16 +2430,16 @@
                     {
                         "identifier": "6ab86bc0-2a99-3800-b49b-6eabda72b147",
                         "instanceIdentifier": "9ab4d12e-da43-3cc3-39a4-a9c9e7c506fd",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 952.0,
                             "y": 0.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "artifact": "create-version-object-processor",
                             "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
@@ -2653,7 +2653,7 @@
                     {
                         "identifier": "00e3f017-689f-3f82-99e0-5aa79f1be5b2",
                         "instanceIdentifier": "1a9ae8b6-60c4-39df-4961-f352141e2d4c",
-                        "name": "NgsiLdToLdesMemberProcessor",
+                        "name": "CreateVersionObjectProcessor",
                         "comments": "",
                         "position": {
                             "x": 144.0,
@@ -2897,7 +2897,7 @@
                             "id": "6ab86bc0-2a99-3800-b49b-6eabda72b147",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "9ab4d12e-da43-3cc3-39a4-a9c9e7c506fd"
                         },
@@ -2933,7 +2933,7 @@
                             "id": "00e3f017-689f-3f82-99e0-5aa79f1be5b2",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "1a9ae8b6-60c4-39df-4961-f352141e2d4c"
                         },
@@ -2969,7 +2969,7 @@
                             "id": "6ab86bc0-2a99-3800-b49b-6eabda72b147",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "9ab4d12e-da43-3cc3-39a4-a9c9e7c506fd"
                         },
@@ -3049,7 +3049,7 @@
                             "id": "00e3f017-689f-3f82-99e0-5aa79f1be5b2",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "1a9ae8b6-60c4-39df-4961-f352141e2d4c"
                         },
@@ -3077,7 +3077,7 @@
                             "id": "00e3f017-689f-3f82-99e0-5aa79f1be5b2",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiLdToLdesMemberProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "1a9ae8b6-60c4-39df-4961-f352141e2d4c"
                         },
@@ -3157,7 +3157,7 @@
                             "id": "6ab86bc0-2a99-3800-b49b-6eabda72b147",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "CreateVersionObjectProcessor",
                             "comments": "",
                             "instanceIdentifier": "9ab4d12e-da43-3cc3-39a4-a9c9e7c506fd"
                         },

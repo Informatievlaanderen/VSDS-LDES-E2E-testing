@@ -176,10 +176,10 @@
                     "x": 888.0,
                     "y": 304.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiLdToLdesMemberProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ngsi-ld-to-ldes-processor",
+                    "artifact": "create-version-object-processor",
                     "version": "1.0-SNAPSHOT"
                 },
                 "properties": {
@@ -188,8 +188,7 @@
                     "DATE_OBSERVED_VALUE_JSON_PATH": "$.dateObserved.value['@value']",
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "DELIMITER": "/",
-                    "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf",
-                    "ADD_WKT_PROPERTY": "true"
+                    "VERSION_OF_KEY": "http://purl.org/dc/terms/isVersionOf"
                 },
                 "propertyDescriptors": {
                     "ID_JSON_PATH": {
@@ -225,12 +224,6 @@
                     "VERSION_OF_KEY": {
                         "name": "VERSION_OF_KEY",
                         "displayName": "VersionOf Property",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
-                    "ADD_WKT_PROPERTY": {
-                        "name": "ADD_WKT_PROPERTY",
-                        "displayName": "Add 'asWKT' property",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }

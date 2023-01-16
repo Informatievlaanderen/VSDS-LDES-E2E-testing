@@ -19,9 +19,9 @@ Please copy the [environment file (jolt.env)](./jolt.env) to a personal file (e.
 
 Optionally, you can change the component tags:
 
-* JSON_DATA_GENERATOR_TAG (default: 20221220t0725)
-* LDES_WORKBENCH_NIFI_TAG (default: 20221216t155826)
-* LDES_SERVER_TAG (default: 20221216t1458)
+* JSON_DATA_GENERATOR_TAG (default: 20230113t0736)
+* LDES_WORKBENCH_NIFI_TAG (default: 20230106T150440)
+* LDES_SERVER_TAG (default: 20230112t1553)
 * MONGODB_TAG (default: 6.0.3)
 
 ### Launch Systems
@@ -41,16 +41,55 @@ curl http://localhost:8072/device-models/by-time
 curl http://localhost:8071/devices/by-time
 curl http://localhost:8073/water-quality-observations/by-time
 ```
-returns (differently formatted):
+returns:
 ```
-@prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8072/device-models/by-time> a tree:Node .
+@prefix device-models: <http://localhost:8072/device-models/> .
+@prefix ldes:          <https://w3id.org/ldes#> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix terms:         <http://purl.org/dc/terms/> .
+@prefix tree:          <https://w3id.org/tree#> .
 
-@prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8071/devices/by-time> a tree:Node .
+<http://localhost:8072/device-models>
+        a                   ldes:EventStream ;
+        ldes:timestampPath  prov:generatedAtTime ;
+        ldes:versionOfPath  terms:isVersionOf ;
+        tree:view           device-models:by-time .
 
-@prefix tree: <https://w3id.org/tree#> .
-<http://localhost:8073/water-quality-observations/by-time> a tree:Node .
+device-models:by-time
+        a       tree:Node .
+
+----------------------------------------------------------
+
+@prefix devices: <http://localhost:8071/devices/> .
+@prefix ldes:    <https://w3id.org/ldes#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix terms:   <http://purl.org/dc/terms/> .
+@prefix tree:    <https://w3id.org/tree#> .
+
+devices:by-time  a  tree:Node .
+
+<http://localhost:8071/devices>
+        a                   ldes:EventStream ;
+        ldes:timestampPath  prov:generatedAtTime ;
+        ldes:versionOfPath  terms:isVersionOf ;
+        tree:view           devices:by-time .
+
+----------------------------------------------------------
+
+@prefix ldes:                       <https://w3id.org/ldes#> .
+@prefix prov:                       <http://www.w3.org/ns/prov#> .
+@prefix terms:                      <http://purl.org/dc/terms/> .
+@prefix tree:                       <https://w3id.org/tree#> .
+@prefix water-quality-observations: <http://localhost:8073/water-quality-observations/> .
+
+<http://localhost:8073/water-quality-observations>
+        a                   ldes:EventStream ;
+        ldes:timestampPath  prov:generatedAtTime ;
+        ldes:versionOfPath  terms:isVersionOf ;
+        tree:view           water-quality-observations:by-time .
+
+water-quality-observations:by-time
+        a       tree:Node .   
 ```
 
 ## Test Execution
@@ -61,7 +100,7 @@ Please logon to the Apache Nifi system at https://localhost:8443/nifi and add th
 
 Note that the workflow contains several warnings because the JOLT processors are (deliberately) missing a transformation specification. Please add the provided JOLT specifications for [models](./data/transforms/device-model.jolt-transform.json), [devices](./data/transforms/device.jolt-transform.json) and water quality [observations](./data/transforms/wqo.jolt-transform.json) into the correct JOLT processor's `Jolt Specification` property.
 
-In addition, for the observations you need to add the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the OSLO model can not handle geojson.
+In addition, for the observations you need to add the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the second JOLT transform because the OSLO model can not handle geojson.
 
 Start the workflow and verify that the workflow's HTTP listeners are ready to accept entities.
 * http://localhost:9013/ngsi/device-model/healthcheck
@@ -91,7 +130,6 @@ curl http://localhost:8073/water-quality-observations/by-time
 ## Test Cleanup
 To clean up the test, please stop all systems:
 ```bash
-docker compose --env-file user.env down
 docker compose --env-file user.env --profile delay-started down
 ```
 

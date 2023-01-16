@@ -2,7 +2,7 @@ version: '3.3'
 services:
   json-data-generator:
     container_name: ${USECASE_NAME:-grar-context}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20221220t0725}
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230113t0736}
     profiles:
       - delay-started
     environment:
@@ -20,7 +20,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221216t155826}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230106T150440}
     container_name: ${USECASE_NAME:-grar-context}_ldes-workbench-nifi
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
@@ -43,7 +43,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-grar-context}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -54,18 +54,18 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://data.vlaanderen.be/ns/adres#Adres
-      - VIEWS_0_NAME=addresses-by-name
+      - VIEWS_0_NAME=by-name
       - VIEWS_0_FRAGMENTATIONS_0_NAME=substring
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=https://data.vlaanderen.be/ns/adres#volledigAdres
 
       # Additional view time-based
-      - VIEWS_1_NAME=addresses-by-time
+      - VIEWS_1_NAME=by-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       
       # Additional view geo-spatial
-      - VIEWS_2_NAME=addresses-by-location-and-time
+      - VIEWS_2_NAME=by-location-and-time
       - VIEWS_2_FRAGMENTATIONS_0_NAME=geospatial
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asGML

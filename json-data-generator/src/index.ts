@@ -1,8 +1,8 @@
 import { CronJob } from 'cron';
 import { readFileSync } from 'fs';
 import minimist from 'minimist';
-import { JsonGenerator } from './generator';
-const fetch = require('node-fetch');
+import { JsonGenerator } from './generator.js';
+import fetch from 'node-fetch';
 
 const args = minimist(process.argv.slice(2));
 const silent: boolean = (/true/i).test(args['silent']);

@@ -1,4 +1,4 @@
-var jp = require('jsonpath');
+import jp from 'jsonpath';
 
 interface JsonMapping {
     path: string,

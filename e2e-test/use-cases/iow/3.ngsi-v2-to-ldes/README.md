@@ -9,9 +9,9 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20221220t0725`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20221216t155826`)
-* LDES_SERVER_TAG (default: `20221216t1458`)
+* JSON_DATA_GENERATOR_TAG (default: `20230113t0736`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230106T150440`)
+* LDES_SERVER_TAG (default: `20230112t1553`)
 * MONGODB_TAG (default: `6.0.3`)
 
 Optionally, you can change the port numbers:
@@ -69,7 +69,7 @@ response will be similar to:
 {
     "@id": "http://localhost:8073/water-quality-observations",
     "tree:view": {
-        "@id": "http://localhost:8073/water-quality-observations/by-time"
+        "@id": "water-quality-observations:by-time"
     },
     "ldes:timestampPath": {
         "@id": "prov:generatedAtTime"
@@ -82,7 +82,8 @@ response will be similar to:
         "tree": "https://w3id.org/tree#",
         "ldes": "https://w3id.org/ldes#",
         "terms": "http://purl.org/dc/terms/",
-        "prov": "http://www.w3.org/ns/prov#"
+        "prov": "http://www.w3.org/ns/prov#",
+        "water-quality-observations": "http://localhost:8073/water-quality-observations/"
     }
 }
 ```
@@ -136,7 +137,6 @@ curl -H "Accept: application/ld+json" http://localhost:8073/water-quality-observ
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file user.env down
 docker compose --env-file user.env --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.

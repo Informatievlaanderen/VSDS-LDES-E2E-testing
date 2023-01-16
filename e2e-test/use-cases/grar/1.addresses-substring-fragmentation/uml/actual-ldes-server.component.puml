@@ -5,7 +5,7 @@ title GRAR Use Case - Actual - Component Diagram
 
 Person(tester, "Tester")
 
-System_Ext(grar, "GRAR system", "Some system sending adress change notifications")
+System_Ext(grar, "GRAR system", "Some system sending address change notifications")
 SystemQueue_Ext(topic, "Kafka Address topic", "Message queue for address changes")
 
 System_Boundary(nifi, "Apache NiFi system") {

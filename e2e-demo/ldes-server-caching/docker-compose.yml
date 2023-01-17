@@ -47,7 +47,7 @@ services:
     networks:
       - ldes
   ldes-cli:
-    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230104T1519}
+    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230116t1123}
     container_name: ${USECASE_NAME:-setup-caching}_ldes-client-cli
     command: "--url http://localhost:${NGINX_PORT:-8080}/${COLLECTION_NAME:-mobility-hindrances}/${VIEW_NAME:-by-time} --input-format text/turtle"
     profiles:

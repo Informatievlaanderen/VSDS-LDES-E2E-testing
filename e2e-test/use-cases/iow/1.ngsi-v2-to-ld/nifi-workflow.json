@@ -170,16 +170,16 @@
             {
                 "identifier": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                 "instanceIdentifier": "bfee3130-3a18-39af-d10c-e65bc9cedbb1",
-                "name": "NgsiV2ToLdTranslatorProcessor",
+                "name": "CreateVersionObjectProcessor",
                 "comments": "",
                 "position": {
                     "x": 832.0,
                     "y": 184.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen",
-                    "artifact": "ngsiv2-to-ngsi-ld-processor",
+                    "artifact": "create-version-object-processor",
                     "version": "1.0-SNAPSHOT"
                 },
                 "properties": {
@@ -328,7 +328,7 @@
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
                     "groupId": "f2030529-c894-398a-bbf9-33d181cafead",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "bfee3130-3a18-39af-d10c-e65bc9cedbb1"
                 },
@@ -372,7 +372,7 @@
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
                     "groupId": "f2030529-c894-398a-bbf9-33d181cafead",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "bfee3130-3a18-39af-d10c-e65bc9cedbb1"
                 },
@@ -400,7 +400,7 @@
                     "id": "d18bd2f7-f73c-3d8d-b60f-0035fdc27ae3",
                     "type": "PROCESSOR",
                     "groupId": "f2030529-c894-398a-bbf9-33d181cafead",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "CreateVersionObjectProcessor",
                     "comments": "",
                     "instanceIdentifier": "bfee3130-3a18-39af-d10c-e65bc9cedbb1"
                 },

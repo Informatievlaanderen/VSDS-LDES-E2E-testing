@@ -38,7 +38,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20221216t1458}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}

@@ -65,6 +65,7 @@ docker logs simulator-cli_ldes-client-cli > ./fragment.nq
 Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).
 ```
 cat ./fragment.nq | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+rm ./fragment.nq
 ```
 
 Again, wait a while and request the LDES Server Simulator home page (http://localhost:9011/) and ensure that the repeated re-requesting has ended.

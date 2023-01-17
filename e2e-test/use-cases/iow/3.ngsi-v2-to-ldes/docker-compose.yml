@@ -22,7 +22,7 @@ services:
     depends_on:
       - nifi-workflow
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230106T150440}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230116t113945}
     container_name: ${USECASE_NAME:-iow-context}_ldes-workbench-nifi
     ports:
       - ${NIFI_UI_PORT:-8443}:8443

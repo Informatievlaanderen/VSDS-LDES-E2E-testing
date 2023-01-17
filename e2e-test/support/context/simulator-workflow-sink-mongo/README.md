@@ -14,7 +14,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
 * LDES_SERVER_SIMULATOR_TAG (default: `20230113t0736`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230106T150440`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230116t113945`)
 * NIFI_UI_PORT (default: `8443`)
 * LDES_CLIENT_SINK_TAG (default: `20230113t0736`)
 * LDES_CLIENT_SINK_SILENT (default: `true`)

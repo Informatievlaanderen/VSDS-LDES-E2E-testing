@@ -50,7 +50,10 @@ this results in:
 @prefix tree:                <https://w3id.org/tree#> .
 
 <http://localhost:8080/mobility-hindrances/by-time>
-        a       tree:Node .
+        a              tree:Node ;
+        tree:relation  [ a          tree:Relation ;
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z>
+                       ] .
 
 <http://localhost:8080/mobility-hindrances>
         a           ldes:EventStream ;
@@ -74,7 +77,10 @@ this results in:
 @prefix tree:                <https://w3id.org/tree#> .
 
 <http://localhost:8080/mobility-hindrances/by-time>
-        a       tree:Node .
+        a              tree:Node ;
+        tree:relation  [ a          tree:Relation ;
+                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z>
+                       ] .
 
 <http://localhost:8080/mobility-hindrances>
         a           ldes:EventStream ;
@@ -82,17 +88,30 @@ this results in:
         tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
 ```
 ```
+<http://localhost:8080/mobility-hindrances/by-time> <https://w3id.org/tree#relation> _:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 .
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
 <http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
+_:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Relation> .
+_:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 <https://w3id.org/tree#node> <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z> .
 ```
 ```
 {
     "@graph": [
         {
             "@id": "http://localhost:8080/mobility-hindrances/by-time",
+            "tree:relation": {
+                "@id": "_:b0"
+            },
             "@type": "tree:Node"
+        },
+        {
+            "@id": "_:b0",
+            "@type": "tree:Relation",
+            "tree:node": {
+                "@id": "http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z"
+            }
         },
         {
             "@id": "http://localhost:8080/mobility-hindrances",
@@ -113,10 +132,13 @@ this results in:
 }
 ```
 ```
+<http://localhost:8080/mobility-hindrances/by-time> <https://w3id.org/tree#relation> _:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e .
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
 <http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
+_:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Relation> .
+_:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e <https://w3id.org/tree#node> <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z> .
 ```
 > **Note** that `application/n-triples` and `application/n-quads` return the same result as the ingested members are all in the default graph.
 
@@ -313,7 +335,14 @@ We can use the following command to unzip it:
 ```bash
 gzip -d view.ttl.gz
 ```
-which results in a [turtle file](./view.ttl).
+which results in a [turtle file](./view.ttl):
+```bash
+cat view.ttl
+```
+To remove the temporary, downloaded file:
+```bash
+rm view.ttl
+```
 
 ### Verify HTTP 304 Handling
 To launch the LDES client and follow its behavior run the following command:

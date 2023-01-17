@@ -10,7 +10,7 @@ To setup the context, copy the `.env` file as `user.env` and specify the missing
 
 Optionally, you can change the component tags:
 * JSON_DATA_GENERATOR_TAG (default: `20230113t0736`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230106T150440`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230116t113945`)
 * LDES_SERVER_TAG (default: `20230112t1553`)
 * MONGODB_TAG (default: `6.0.3`)
 

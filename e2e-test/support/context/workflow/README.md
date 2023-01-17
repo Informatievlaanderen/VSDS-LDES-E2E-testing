@@ -10,7 +10,7 @@ To setup the context, combine the contents of all the `<component>.env` files in
 * NIFI_DATA_FOLDER (e.g.: `~/data/my-use-case`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
-* LDES_WORKBENCH_NIFI_TAG (default `20230106T150440`)
+* LDES_WORKBENCH_NIFI_TAG (default `20230116t113945`)
 * USECASE_NAME (default: `workflow`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (default: `9005`)

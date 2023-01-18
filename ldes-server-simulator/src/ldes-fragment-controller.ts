@@ -2,7 +2,7 @@ import { ICreateFragmentOptions, LdesFragmentService } from "./ldes-fragment-ser
 import { TreeNode } from "./tree-specification";
 import { readdir, readFile } from 'node:fs/promises';
 import { IGetRequest, IPostRequest, IResponse, mimeJsonLd } from "./http-interfaces";
-import { IAlias, IFragmentId, IFragmentInfo, IRedirection, IStatistics, IStatisticsResponses } from "./fragment-interfaces";
+import { IAlias, IDeleteAll, IFragmentId, IFragmentInfo, IRedirection, IStatistics, IStatisticsResponses } from "./fragment-interfaces";
 
 export class LdesFragmentController {
     private _redirections: {[key: string]: string} = {};
@@ -119,5 +119,23 @@ export class LdesFragmentController {
     private withoutOrigin(path: string): string {
         const url = new URL(path);
         return path.replace(`${url.protocol}//${url.host}`, '');
+    }
+
+    private removeAllAliasesAndStatistics(): number {
+        const count = Object.keys(this._redirections).length;
+        this._redirections = {};
+        this._requests = {};
+        return count;
+    }    
+
+    /**
+     * Removes all aliases, fragments and responses.
+     * This allows running multiple tests without having to restart the simulator.
+     */
+    public deleteAll(): IResponse<IDeleteAll> {
+        return {status: 200, body: {
+            aliasCount: this.removeAllAliasesAndStatistics(),
+            fragmentCount: this.service.removeAllFragments(),
+        }};
     }
 }

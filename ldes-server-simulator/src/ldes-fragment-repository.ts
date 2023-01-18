@@ -24,4 +24,10 @@ export class LdesFragmentRepository {
     public get keys(): string[] {
         return Object.keys(this._fragments);
     }
+
+    public removeAll(): number {
+        const count = this.keys.length;
+        this._fragments = {};
+        return count;
+    }
 }

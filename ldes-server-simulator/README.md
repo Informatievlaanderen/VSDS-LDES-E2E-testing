@@ -47,26 +47,30 @@ node dist/server.js --baseUrl=http://localhost:8080 --port=8080
 
 > **Note**: for the examples below please use `node dist/server.js --baseUrl=http://localhost:8080 --port=8080`
 
-## Retrieve Available Fragments and Aliases
+### `GET /` -- Retrieve Available Fragments and Aliases
 
 You can use a regulator browser, [Postman](https://www.postman.com/), [curl](https://curl.se/) or any other HTTP client to query the simulator. The root url of the simulator allows to query for the available fragments (uploaded pages) and aliases (configured redirects), as well as the returned responses (count and an array of timestamps). 
 
 To query the available fragments and aliases from the (Bash) command line using curl:
 
-`curl http://localhost:8080/` 
+```bash
+curl http://localhost:8080/
+ ``` 
 
 This results initially in:
 ```json
 {"aliases":[],"fragments":[],"responses":{}}  
 ```
 
-## Upload a Fragment
+### `POST /ldes` -- Upload a Fragment
 
 To upload the LDES fragments, the simulator offers an `/ldes` endpoint to which you can `POST` your LDES fragment with the body containing the fragment content. The simulator will replace the origin and protocol (e.g. `https://private-api.gipod.beta-vlaanderen.be`) in the fragment's ID (`"tree:node"."@id"`) with the given baseURL to ensure that when it returns a fragment, you can follow the fragment relations.
 
 To upload an LDES fragment from the (Bash) command line using curl:
 
-`curl -X POST http://localhost:8080/ldes -H "Content-Type: application/ld+json" -d "@sample.jsonld"`
+```bash
+curl -X POST http://localhost:8080/ldes -H "Content-Type: application/ld+json" -d "@sample.jsonld"
+```
 
 where `sample.jsonld` is your fragment file located in the current working directory. This results in something like (depends on the file's content):
 ```json
@@ -79,7 +83,9 @@ Additionally, you can control the `Cache-Control` header that is returned for a 
 
 To upload an LDES fragment and specify the `max-age` (e.g. 2 minutes / 120 seconds) using curl:
 
-`curl -X POST http://localhost:8080/ldes?max-age=120 -H "Content-Type: application/ld+json" -d "@sample.jsonld"`
+```bash
+curl -X POST http://localhost:8080/ldes?max-age=120 -H "Content-Type: application/ld+json" -d "@sample.jsonld"
+```
 
 Response:
 
@@ -87,7 +93,7 @@ Response:
 {"content-type":"application/ld+json","cache-control":"public, max-age=120","id":"/api/v1/ldes/mobility-hindrances"}
 ```
 
-## Create an Alias
+### `POST /alias` -- Create an Alias
 
 Although it does not matter with which fragment you start retrieving a LDES data set, typically it can be retrieved from a 'starting point', e.g. in case of a time-based fragmentation this is the oldest fragment. For this and similar reasons you can alias a fragment with a more human-friendly path. The simulator allows to define an alias for a fragment, resulting in a HTTP redirect to the original fragment. The simulator provides an `/alias` endpoint to which you can `POST` your alias information with the body containg a JSON like:
 ```json
@@ -142,7 +148,7 @@ Keep-Alive: timeout=5
 }
 ```
 
-## Retrieve a Fragment
+### `GET /<path>` -- Retrieve a Fragment
 
 After uploading the fragments and optionally creating aliases, you can retrieve a fragment using your favorite HTTP client directly or through the simulator home page.
 
@@ -157,9 +163,10 @@ now results in:
 
 To retrieve a fragment directly with curl:
 ```bash
-curl http://localhost:8080/ldes/mobility-hindrances
+curl http://localhost:8080/api/v1/ldes/mobility-hindrances
 ```
-results in:
+results in (formatted):
+
 ```json
 {
   "@context": [
@@ -180,13 +187,12 @@ results in:
       ... (omitted LDES members)
   ]
 }
-
 ```
 **Note**: that the fragment ID (and, if available, the relation link) refers to the simulator instead of the original LDES server.
 
 To verify that the correct `Cache-Control` header is returned you need to use `curl -i`, e.g.:
 ```bash
-curl -i http://localhost:8080/ldes/mobility-hindrances
+curl -i http://localhost:8080/api/v1/ldes/mobility-hindrances
 ```
 results in:
 ```http
@@ -222,6 +228,16 @@ now results in something similar to:
     }
   }
 }
+```
+
+### `DELETE /ldes` -- Remove all Fragments and Aliases
+Removes all fragments, aliases and related statistics, e.g.
+```bash
+curl -X DELETE http://localhost:8080/ldes
+```
+Returns the amount of fragments and aliases that were deleted:
+```json
+{"aliasCount":1,"fragmentCount":1}
 ```
 
 ## Docker

@@ -57,6 +57,10 @@ server.post('/alias', async (request, reply) => {
   respondWith(reply, controller.postAlias({body: request.body as IAlias}));
 });
 
+server.delete('/ldes', async (_request, reply) => {
+  respondWith(reply, controller.deleteAll());
+});
+
 async function closeGracefully(signal: any) {
   if (!silent) {
     console.debug(`Received signal: `, signal);

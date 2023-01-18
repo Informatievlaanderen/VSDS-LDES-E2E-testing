@@ -180,4 +180,22 @@ describe('controller tests', () => {
             expect(age).toBe(seconds);
         });
     });
+
+    describe('cleanup tests', () => {
+        it('should remove all fragments, aliases and responses', () => {
+            sut.postFragment({body: body, headers: headers});
+            sut.postAlias({body: queryIdAlias});
+
+            const response = sut.deleteAll();
+            expect(response.status).toBe(200);
+            expect(response.body).not.toBe(undefined);
+            expect(response.body.aliasCount).toBe(1);
+            expect(response.body.fragmentCount).toBe(1);
+
+            const statistics = sut.getStatistics();
+            expect(statistics.body).not.toBe(undefined);
+            expect(statistics.body.aliases).toHaveLength(0);
+            expect(statistics.body.fragments).toHaveLength(0);
+        });
+    });
 });

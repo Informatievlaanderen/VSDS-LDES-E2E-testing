@@ -45,4 +45,9 @@ export class LdesFragmentService {
     public get fragmentIds(): string[] {
         return this.repository.keys;
     }
+
+    public removeAllFragments(): number {
+        return this.repository.removeAll();
+    }
+
 }

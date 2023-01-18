@@ -26,3 +26,8 @@ export interface IFragmentId {
 }
 
 export interface IFragmentInfo extends IFragmentId, IHeaders {}
+
+export interface IDeleteAll {
+    aliasCount: number;
+    fragmentCount: number;
+}

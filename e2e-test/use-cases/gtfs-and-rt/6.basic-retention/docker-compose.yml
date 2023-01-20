@@ -58,7 +58,7 @@ services:
       - ldes-mongodb
   ldes-mongodb:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.2}
+    image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     volumes:

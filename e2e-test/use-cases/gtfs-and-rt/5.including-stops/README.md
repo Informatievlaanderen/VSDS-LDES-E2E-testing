@@ -63,6 +63,5 @@ Because the LDES server is configured to fragment the members geospatially and t
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file user.env down
 docker compose --env-file user.env --profile delay-started down
 ```

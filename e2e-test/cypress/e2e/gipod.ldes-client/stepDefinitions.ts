@@ -13,10 +13,20 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 
 Given('a Simulator-Workflow-Sink-Mongo context is started', () => {
-    //export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
-    //docker compose --env-file user.env up
-
-    cy.exec('docker compose -f ../../support/context/simulator-workflow-sink-mongo/docker-compose.yml -e SINGLE_USER_CREDENTIALS_USERNAME=E2ETest');
+    
+    cy.exec('docker compose up -d', {
+        log:true, 
+        env: {
+            SINGLE_USER_CREDENTIALS_USERNAME:'Ruben',
+            SINGLE_USER_CREDENTIALS_PASSWORD:'3d20ee76-af78-4875-9a27-7298378416ef',
+            COMPOSE_FILE:"support/context/simulator-workflow-sink-mongo/docker-compose.yml",
+            // LDES_SERVER_SIMULATOR_SEED_FOLDER:"../ldes-server-simulator/data/gipod",
+            LDES_WORKBENCH_NIFI_TAG:"latest",
+            LDES_SERVER_SIMULATOR_TAG:"latest",
+            LDES_CLIENT_SINK_TAG:"latest",
+            USECASE_NAME:"gipod-replicate-ldes"
+        }
+    });
     
 
     // return "pending";

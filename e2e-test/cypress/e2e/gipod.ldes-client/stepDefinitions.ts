@@ -38,4 +38,3 @@ Given('I have aliased the simulator\'s pre-seeded data set', () => {
 Given('I have logged on to the Apache NiFi UI', () => {
     workbench.logon(credentials);
 });
-

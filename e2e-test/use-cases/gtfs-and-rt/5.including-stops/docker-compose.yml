@@ -6,7 +6,7 @@ services:
     profiles:
       - delayed-started
     environment:
-      - NODE_OPTIONS=${NODE_OPTIONS}
+      - NODE_OPTIONS=${NODE_OPTIONS:-}
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
       - BASE_IRI=${GTFS_BASE_IRI}

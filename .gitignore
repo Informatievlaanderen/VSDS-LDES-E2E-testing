@@ -2,3 +2,4 @@
 .vscode
 user.env
 e2e-poc/**
+!e2e-poc/README.md

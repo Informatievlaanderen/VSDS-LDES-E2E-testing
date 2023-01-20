@@ -12,7 +12,6 @@ import {credentials, DockerCompose, LdesServerSimulator, LdesWorkbenchNiFi} from
 
 const dockerCompose = new DockerCompose("support/context/simulator-workflow-sink-mongo/docker-compose.yml", {
     USECASE_NAME:"gipod-replicate-ldes",
-});
 
 Before(() => {
     dockerCompose.up();

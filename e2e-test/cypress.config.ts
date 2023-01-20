@@ -1,9 +1,14 @@
 import { defineConfig } from "cypress";
 import * as webpack from "@cypress/webpack-preprocessor";
 import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+import fs = require('fs');
+
+const getFiles = (path: string) => {
+  return fs.readdirSync(`${__dirname}/${path}`)
+}
 
 async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions): Promise<Cypress.PluginConfigOptions> {
-  
+
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
   await addCucumberPreprocessorPlugin(on, config);
 
@@ -39,6 +44,9 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
       },
     })
   );
+
+    // add simulator GIPOD data set
+    config.env.gipodDataSet = getFiles('../ldes-server-simulator/data/gipod');
 
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;

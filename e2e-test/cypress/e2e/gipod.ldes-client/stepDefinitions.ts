@@ -18,7 +18,7 @@ const apacheNifiUrl = 'https://localhost:8443';
 const simulatorUrl = 'http://localhost:9011';
 
 Before(() => {
-    dockerCompose.up(() => cy.exec(`curl ${apacheNifiUrl}/nifi`, {failOnNonZeroExit: false}).then(exec => exec.code === 60));
+    dockerCompose.up(() => workbench.isReady());
 });
 
 After(() => {
@@ -41,3 +41,5 @@ Given('I have aliased the simulator\'s pre-seeded data set', () => {
 Given('I have logged on to the Apache NiFi UI', () => {
     workbench.logon(credentials);
 });
+
+

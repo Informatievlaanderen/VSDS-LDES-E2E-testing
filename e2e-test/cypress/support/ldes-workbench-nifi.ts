@@ -1,14 +1,13 @@
 export class LdesWorkbenchNiFi {
-    private loginUrl: string;
-
     constructor(private baseUrl: string) { 
-        this.loginUrl = `${this.baseUrl}/nifi/login`;
     }
 
     logon(credentials: { username: string; password: string; }) {
-        return cy.visit(this.loginUrl)
+        const loaded = 'flowClusterSummary';
+        return cy.intercept(`${this.baseUrl}/nifi-api/flow/cluster/summary`).as(loaded)
+            .visit(`${this.baseUrl}/nifi/login`)
             .get('#username').type(credentials.username)
             .get('#password').type(credentials.password)
-            .get('#login-submission-button').click();
+            .get('#login-submission-button').click().wait(`@${loaded}`);
     }
 }

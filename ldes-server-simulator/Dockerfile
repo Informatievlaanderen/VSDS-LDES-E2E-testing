@@ -29,8 +29,10 @@ ARG SEED=
 ENV SEED=${SEED}
 ARG BASEURL=http://localhost
 ENV BASEURL=${BASEURL}
+ARG MAXBODYSIZE=
+ENV MAXBODYSIZE=${MAXBODYSIZE}
 ## set start command
 EXPOSE 80
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 USER node
-CMD ["sh", "-c", "node server.js --seed=${SEED} --baseUrl=${BASEURL} --host=0.0.0.0 --port=80"]
+CMD ["sh", "-c", "node server.js --maxBodySize=${MAXBODYSIZE} --seed=${SEED} --baseUrl=${BASEURL} --host=0.0.0.0 --port=80"]

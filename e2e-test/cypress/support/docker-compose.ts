@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import {credentials} from './credentials'
+import 'cypress-wait-until';
 
 export class DockerCompose {
     
@@ -17,8 +18,12 @@ export class DockerCompose {
         }
     }
 
-    public up() {
-        return cy.exec('docker compose up -d', {log:true, env: this.env});
+    public up(isReady?: () => Cypress.Chainable<boolean>) {
+        return cy.exec('docker compose up -d', {log:true, env: this.env}).then(() => {
+            if(isReady) {
+                cy.waitUntil(() => isReady(), {timeout: 60000, interval: 5000});
+            }
+        });
     }
 
     public down() {

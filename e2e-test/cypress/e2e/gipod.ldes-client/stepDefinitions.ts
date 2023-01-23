@@ -14,16 +14,19 @@ const dockerCompose = new DockerCompose("support/context/simulator-workflow-sink
     USECASE_NAME:"gipod-replicate-ldes",
 });
 
+const apacheNifiUrl = 'https://localhost:8443';
+const simulatorUrl = 'http://localhost:9011';
+
 Before(() => {
-    dockerCompose.up();
+    dockerCompose.up(() => cy.exec(`curl ${apacheNifiUrl}/nifi`, {failOnNonZeroExit: false}).then(exec => exec.code === 60));
 });
 
 After(() => {
     dockerCompose.down();
 });
 
-const simulator = new LdesServerSimulator('http://localhost:9011');
-const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
+const simulator = new LdesServerSimulator(simulatorUrl);
+const workbench = new LdesWorkbenchNiFi(apacheNifiUrl)
 
 Given('a Simulator-Workflow-Sink-Mongo context is started', () => {
     simulator.getAvailableFragmentsAndAliases().then(() => {

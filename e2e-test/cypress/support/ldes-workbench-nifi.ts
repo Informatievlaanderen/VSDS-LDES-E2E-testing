@@ -2,6 +2,10 @@ export class LdesWorkbenchNiFi {
     constructor(private baseUrl: string) { 
     }
 
+    /**
+     * Checks if the Apache NiFi workbench is ready to accept login attempts
+     * @returns true if ready, false otherwise
+     */
     isReady(): Cypress.Chainable<boolean> {
         return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 60);
     }

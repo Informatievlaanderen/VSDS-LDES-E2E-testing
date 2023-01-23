@@ -9,7 +9,6 @@ import { RouteGenericInterface } from 'fastify/types/route';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { IAlias } from './fragment-interfaces';
 
-const server = fastify({exposeHeadRoutes: true});
 const args = minimist(process.argv.slice(2));
 const silent: boolean = args['silent'] !== undefined;
 
@@ -22,10 +21,27 @@ const baseUrl = new URL(args['baseUrl'] || `http://${host}:${port}`);
 const repository = new LdesFragmentRepository();
 const service = new LdesFragmentService(baseUrl, repository);
 const controller = new LdesFragmentController(service);
+const bodyLimit = args['maxBodySize'] || (10 * 1024 * 1024); // 10 MB
 
-server.addHook('onRequest', (request, _reply, done) => {
+const server = fastify({exposeHeadRoutes: true, bodyLimit: bodyLimit});
+
+if (!silent) {
+  console.debug("settings: ", {
+    ...args,
+    port: port,
+    host: host,
+    baseUrl: baseUrl.toString(),
+    maxBodySize: bodyLimit,
+  });
+}
+
+server.addHook('onResponse', (request, reply, done) => {
   if (!silent) {
-    console.debug(`${request.method} ${request.url}`);
+    const method = request.method;
+    const statusCode = reply.statusCode;
+    console.debug(method === 'POST' 
+      ? `${method} ${request.url} ${request.headers['content-type']} ${statusCode}` 
+      : `${method} ${request.url} ${statusCode}`);
   }
   done();
 });

@@ -35,6 +35,7 @@ The simulator accepts the following command line arguments:
 * `--baseUrl=<protocol+origin>` allows to set the base URL the server will use for re-writing a fragment ID origin (see [Upload a Fragment](#upload-a-fragment) below), defaults to http://localhost:80
 * `--seed=<local-directory>` allows to seed the simulator with the fragments found in the given local directory, no default (will not serve any fragments), optional
 * `--silent` prevents any console debug output, optional
+* `--maxBodySize=<size-in-bytes>` allows to set the maximum payload, in bytes, the server is allowed to accept, defaults to 10485760 (10 MB)
 
 To start the simulator you need to run one of the following commands in a terminal (Bash, PowerShell, etc.):
 ```bash

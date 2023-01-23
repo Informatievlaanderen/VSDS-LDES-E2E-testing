@@ -1,7 +1,8 @@
 # build environment
 FROM node:18-bullseye-slim AS builder
 # fix vulnerabilities
-RUN npm install -g npm@9.2.0
+ARG NPM_TAG=9.3.1
+RUN npm install -g npm@${NPM_TAG}
 # build it
 WORKDIR /build
 COPY . .
@@ -34,7 +35,7 @@ RUN apt-get install dumb-init
 EXPOSE 80
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # fix vulnerabilities
-RUN npm install -g npm@9.2.0
+RUN npm install -g npm@${NPM_TAG}
 # install dependancies
 ENV NODE_ENV production
 RUN npm ci --omit=dev

@@ -1,7 +1,8 @@
 # build environment
 FROM node:18-bullseye-slim AS builder
 # fix vulnerabilities
-RUN npm install -g npm@9.2.0
+ARG NPM_TAG=9.3.1
+RUN npm install -g npm@${NPM_TAG}
 # build it
 WORKDIR /build
 COPY . .
@@ -15,7 +16,7 @@ FROM node:18.12.1-bullseye-slim
 RUN apt-get update && apt-get upgrade
 WORKDIR /usr/vsds/generator
 # fix vulnerabilities
-RUN npm install -g npm@9.2.0
+RUN npm install -g npm@${NPM_TAG}
 ## setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
 COPY --chown=node:node --from=builder /build/dist ./

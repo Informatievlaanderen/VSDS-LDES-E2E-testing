@@ -46,7 +46,8 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
   );
 
     // add simulator GIPOD data set
-    config.env.gipodDataSet = getFiles('../ldes-server-simulator/data/gipod');
+    const gipodDataFolder = '../ldes-server-simulator/data/gipod';
+    config.env.gipodDataSet = getFiles(gipodDataFolder).map(x => `${gipodDataFolder}/${x}`);
 
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;

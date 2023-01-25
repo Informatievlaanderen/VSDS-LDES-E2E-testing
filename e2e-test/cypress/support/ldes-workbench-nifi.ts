@@ -22,17 +22,15 @@ export class LdesWorkbenchNiFi {
     }
 
     uploadWorkflow(file: string){
-        return cy.get('#operation-context-id').then(div => div.text()).then(groupId =>
-            cy.readFile(file, 'utf8').then(binary => {
-                cy.log('file: ' + binary);
-                return binary;
-            }).then(binary => {
-                //const blob = Cypress.Blob.binaryStringToBlob(binary, 'application/json');
+        return cy.get('#operation-context-id').then(div => {
+            const groupId = div.text();
+            return cy.readFile(file, null).then(buffer => {
+                const blob = Cypress.Blob.base64StringToBlob(buffer.toString('base64'), 'application/json');
                 const formData = new FormData();
-                formData.append('file', binary);
+                formData.append('file', blob);
                 formData.append('disconnectedNodeAcknowledged', 'false');
                 formData.append('groupName', 'nifi-workflow');
-                formData.append('positionX', '400');
+                formData.append('positionX', '400'); 
                 formData.append('positionY', '60');
                 formData.append('clientId', uuidv4());
                 return cy.request({
@@ -43,6 +41,7 @@ export class LdesWorkbenchNiFi {
                       },
                     body: formData
                 });
-            }));
+            })
+        });
     }
 }

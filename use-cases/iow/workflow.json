@@ -1,17 +1,17 @@
 {
     "flowContents": {
-        "identifier": "793b3408-d22d-3b1f-a053-53128049cda8",
-        "instanceIdentifier": "7befdfc5-0184-1000-c143-6dc295867b0a",
+        "identifier": "131edde9-c003-35ad-8b2a-a9f791f02c1f",
+        "instanceIdentifier": "bf432ecd-0185-1000-a2e8-64b118c27569",
         "name": "workflow",
         "comments": "",
         "position": {
-            "x": 501.0,
-            "y": 170.0
+            "x": 435.0,
+            "y": 159.0
         },
         "processGroups": [
             {
                 "identifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                "instanceIdentifier": "7a2b26ef-2590-3da9-87c9-1b9d703d6daf",
+                "instanceIdentifier": "c3997a52-8a71-380d-f79a-83c626f951a9",
                 "name": "IoW - WaterQualityObserved",
                 "comments": "",
                 "position": {
@@ -23,7 +23,7 @@
                 "processors": [
                     {
                         "identifier": "aa6c6052-9227-373e-a14d-6e1bd01bc096",
-                        "instanceIdentifier": "34f8d5e4-f0a5-3b96-de61-6285f2f0d8ca",
+                        "instanceIdentifier": "e8447df6-facf-3903-5218-48074628b0a3",
                         "name": "Seed entities",
                         "comments": "",
                         "position": {
@@ -337,8 +337,59 @@
                         "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
                     },
                     {
+                        "identifier": "bb3981b0-e2c7-3f29-aca4-0cb17538e996",
+                        "instanceIdentifier": "bf450ef4-0185-1000-4fe8-29057cc191db",
+                        "name": "Translate NGSI-v2 to NGSI-LD",
+                        "comments": "",
+                        "position": {
+                            "x": 32.0,
+                            "y": 224.0
+                        },
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "bundle": {
+                            "group": "be.vlaanderen.informatievlaanderen",
+                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "version": "1.0.2-SNAPSHOT"
+                        },
+                        "properties": {
+                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
+                            "LD_CONTEXT": null
+                        },
+                        "propertyDescriptors": {
+                            "CORE_CONTEXT": {
+                                "name": "CORE_CONTEXT",
+                                "displayName": "NGSI LD core context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
+                            "LD_CONTEXT": {
+                                "name": "LD_CONTEXT",
+                                "displayName": "Data-specific NGSI LD context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            }
+                        },
+                        "style": {},
+                        "schedulingPeriod": "0 sec",
+                        "schedulingStrategy": "TIMER_DRIVEN",
+                        "executionNode": "ALL",
+                        "penaltyDuration": "30 sec",
+                        "yieldDuration": "1 sec",
+                        "bulletinLevel": "WARN",
+                        "runDurationMillis": 0,
+                        "concurrentlySchedulableTaskCount": 1,
+                        "autoTerminatedRelationships": [],
+                        "scheduledState": "ENABLED",
+                        "retryCount": 10,
+                        "retriedRelationships": [],
+                        "backoffMechanism": "PENALIZE_FLOWFILE",
+                        "maxBackoffPeriod": "10 mins",
+                        "componentType": "PROCESSOR",
+                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
+                    },
+                    {
                         "identifier": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
-                        "instanceIdentifier": "810c73bd-df54-3288-606a-30bb9f2e2fe5",
+                        "instanceIdentifier": "92d93476-f05c-3c4e-787d-3eebdfdfbbe5",
                         "name": "Send to LDES server",
                         "comments": "",
                         "position": {
@@ -647,59 +698,8 @@
                         "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
                     },
                     {
-                        "identifier": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                        "instanceIdentifier": "88b2d7e0-0040-39b8-9a07-7f106ffdf48e",
-                        "name": "Translate NGSI-v2 to NGSI-LD",
-                        "comments": "",
-                        "position": {
-                            "x": 32.0,
-                            "y": 232.0
-                        },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
-                        "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
-                        },
-                        "properties": {
-                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-                            "LD_CONTEXT": null
-                        },
-                        "propertyDescriptors": {
-                            "CORE_CONTEXT": {
-                                "name": "CORE_CONTEXT",
-                                "displayName": "NGSI LD core context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            },
-                            "LD_CONTEXT": {
-                                "name": "LD_CONTEXT",
-                                "displayName": "Data-specific NGSI LD context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            }
-                        },
-                        "style": {},
-                        "schedulingPeriod": "0 sec",
-                        "schedulingStrategy": "TIMER_DRIVEN",
-                        "executionNode": "ALL",
-                        "penaltyDuration": "30 sec",
-                        "yieldDuration": "1 sec",
-                        "bulletinLevel": "WARN",
-                        "runDurationMillis": 0,
-                        "concurrentlySchedulableTaskCount": 1,
-                        "autoTerminatedRelationships": [],
-                        "scheduledState": "ENABLED",
-                        "retryCount": 10,
-                        "retriedRelationships": [],
-                        "backoffMechanism": "PENALIZE_FLOWFILE",
-                        "maxBackoffPeriod": "10 mins",
-                        "componentType": "PROCESSOR",
-                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
-                    },
-                    {
                         "identifier": "0f2e9233-a193-342f-895a-3415e578edcc",
-                        "instanceIdentifier": "f9e2812b-6abb-3841-070c-df2aa1460805",
+                        "instanceIdentifier": "df1bbb14-3b53-3c83-4bc8-a794993dc3b4",
                         "name": "Extract data",
                         "comments": "",
                         "position": {
@@ -755,7 +755,7 @@
                     },
                     {
                         "identifier": "82fd6106-ade5-3383-8e8c-6f6072a0d1c7",
-                        "instanceIdentifier": "5f873eae-b38d-3ed2-e376-7aa52adac276",
+                        "instanceIdentifier": "35ed18cf-d894-3abe-a528-9ffc26c75269",
                         "name": "Create LDES member",
                         "comments": "",
                         "position": {
@@ -766,7 +766,7 @@
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
                             "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
+                            "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
                             "ID_JSON_PATH": "$['@id']",
@@ -834,7 +834,7 @@
                     },
                     {
                         "identifier": "ada00e1b-2308-38a9-bc67-a60f5a175359",
-                        "instanceIdentifier": "395225a8-0f56-3978-1d2e-26c72e4aa2dd",
+                        "instanceIdentifier": "f3669564-a0c6-31a1-460a-6833af99c206",
                         "name": "Split entities",
                         "comments": "",
                         "position": {
@@ -890,7 +890,7 @@
                     },
                     {
                         "identifier": "dc3615b9-f646-3427-ac65-a3dc64a9fac4",
-                        "instanceIdentifier": "97375533-7a1f-3c0b-0847-eac55805781b",
+                        "instanceIdentifier": "483594c2-87f7-33c1-8f83-5927c2356652",
                         "name": "JoltTransformJSON",
                         "comments": "",
                         "position": {
@@ -978,7 +978,7 @@
                     },
                     {
                         "identifier": "e2f6274d-7573-3dbc-b18f-637f92237d19",
-                        "instanceIdentifier": "db676c04-f5d9-3a10-a282-8fc2d7671c1f",
+                        "instanceIdentifier": "b47056aa-6091-3001-05c6-1f165c9d38fd",
                         "name": "Receive updates",
                         "comments": "",
                         "position": {
@@ -1137,60 +1137,24 @@
                 "outputPorts": [],
                 "connections": [
                     {
-                        "identifier": "1b965327-2035-34e6-b35f-2a04ad097fac",
-                        "instanceIdentifier": "7e1b8674-a421-3621-0a73-1d386d2a7830",
+                        "identifier": "145f7574-0c18-34ff-8eaf-9839a0030124",
+                        "instanceIdentifier": "bf45ff5c-0185-1000-c6a4-9cdc627b48a2",
                         "name": "",
                         "source": {
-                            "id": "e2f6274d-7573-3dbc-b18f-637f92237d19",
+                            "id": "ada00e1b-2308-38a9-bc67-a60f5a175359",
                             "type": "PROCESSOR",
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Receive updates",
+                            "name": "Split entities",
                             "comments": "",
-                            "instanceIdentifier": "db676c04-f5d9-3a10-a282-8fc2d7671c1f"
+                            "instanceIdentifier": "f3669564-a0c6-31a1-460a-6833af99c206"
                         },
                         "destination": {
-                            "id": "0f2e9233-a193-342f-895a-3415e578edcc",
-                            "type": "PROCESSOR",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Extract data",
-                            "comments": "",
-                            "instanceIdentifier": "f9e2812b-6abb-3841-070c-df2aa1460805"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "success"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
-                    },
-                    {
-                        "identifier": "17e75edd-1b01-3c62-bc23-200f5b278382",
-                        "instanceIdentifier": "feca1c62-7fef-3668-b19d-0f4650038431",
-                        "name": "",
-                        "source": {
-                            "id": "0f2e9233-a193-342f-895a-3415e578edcc",
-                            "type": "PROCESSOR",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Extract data",
-                            "comments": "",
-                            "instanceIdentifier": "f9e2812b-6abb-3841-070c-df2aa1460805"
-                        },
-                        "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "bb3981b0-e2c7-3f29-aca4-0cb17538e996",
                             "type": "PROCESSOR",
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Translate NGSI-v2 to NGSI-LD",
                             "comments": "",
-                            "instanceIdentifier": "88b2d7e0-0040-39b8-9a07-7f106ffdf48e"
+                            "instanceIdentifier": "bf450ef4-0185-1000-4fe8-29057cc191db"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -1209,29 +1173,29 @@
                         "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
                     },
                     {
-                        "identifier": "e01b4926-6e63-3991-8a7e-39f4be1b17f9",
-                        "instanceIdentifier": "cdb8ca0c-ee92-30be-d473-80ce2198cdd1",
+                        "identifier": "1b965327-2035-34e6-b35f-2a04ad097fac",
+                        "instanceIdentifier": "db61d269-69de-3767-fc61-48acb7f26984",
                         "name": "",
                         "source": {
-                            "id": "aa6c6052-9227-373e-a14d-6e1bd01bc096",
+                            "id": "e2f6274d-7573-3dbc-b18f-637f92237d19",
                             "type": "PROCESSOR",
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Seed entities",
+                            "name": "Receive updates",
                             "comments": "",
-                            "instanceIdentifier": "34f8d5e4-f0a5-3b96-de61-6285f2f0d8ca"
+                            "instanceIdentifier": "b47056aa-6091-3001-05c6-1f165c9d38fd"
                         },
                         "destination": {
-                            "id": "ada00e1b-2308-38a9-bc67-a60f5a175359",
+                            "id": "0f2e9233-a193-342f-895a-3415e578edcc",
                             "type": "PROCESSOR",
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Split entities",
+                            "name": "Extract data",
                             "comments": "",
-                            "instanceIdentifier": "395225a8-0f56-3978-1d2e-26c72e4aa2dd"
+                            "instanceIdentifier": "df1bbb14-3b53-3c83-4bc8-a794993dc3b4"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
                         "selectedRelationships": [
-                            "Response"
+                            "success"
                         ],
                         "backPressureObjectThreshold": 10000,
                         "backPressureDataSizeThreshold": "1 GB",
@@ -1245,16 +1209,16 @@
                         "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
                     },
                     {
-                        "identifier": "18ce99be-eed7-371c-b82e-54530a6fcea7",
-                        "instanceIdentifier": "b69ccdf5-6a7a-3f6c-6cf3-509ed4ec4bbb",
+                        "identifier": "0950228c-2907-3a11-a434-ec22158949e6",
+                        "instanceIdentifier": "bf460f5b-0185-1000-8a65-c897c2ac8cef",
                         "name": "",
                         "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "bb3981b0-e2c7-3f29-aca4-0cb17538e996",
                             "type": "PROCESSOR",
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Translate NGSI-v2 to NGSI-LD",
                             "comments": "",
-                            "instanceIdentifier": "88b2d7e0-0040-39b8-9a07-7f106ffdf48e"
+                            "instanceIdentifier": "bf450ef4-0185-1000-4fe8-29057cc191db"
                         },
                         "destination": {
                             "id": "dc3615b9-f646-3427-ac65-a3dc64a9fac4",
@@ -1262,7 +1226,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "JoltTransformJSON",
                             "comments": "",
-                            "instanceIdentifier": "97375533-7a1f-3c0b-0847-eac55805781b"
+                            "instanceIdentifier": "483594c2-87f7-33c1-8f83-5927c2356652"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -1281,8 +1245,80 @@
                         "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
                     },
                     {
+                        "identifier": "e01b4926-6e63-3991-8a7e-39f4be1b17f9",
+                        "instanceIdentifier": "99056445-cbd8-3579-776f-0609effe3229",
+                        "name": "",
+                        "source": {
+                            "id": "aa6c6052-9227-373e-a14d-6e1bd01bc096",
+                            "type": "PROCESSOR",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Seed entities",
+                            "comments": "",
+                            "instanceIdentifier": "e8447df6-facf-3903-5218-48074628b0a3"
+                        },
+                        "destination": {
+                            "id": "ada00e1b-2308-38a9-bc67-a60f5a175359",
+                            "type": "PROCESSOR",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Split entities",
+                            "comments": "",
+                            "instanceIdentifier": "f3669564-a0c6-31a1-460a-6833af99c206"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "Response"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
+                    },
+                    {
+                        "identifier": "77beaee1-b49d-3682-908c-5a9826ce903c",
+                        "instanceIdentifier": "bf461f8f-0185-1000-ad0a-73e24c3ef7d8",
+                        "name": "",
+                        "source": {
+                            "id": "bb3981b0-e2c7-3f29-aca4-0cb17538e996",
+                            "type": "PROCESSOR",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf450ef4-0185-1000-4fe8-29057cc191db"
+                        },
+                        "destination": {
+                            "id": "10c58ee1-78d0-3b45-8ccf-e6b45261b3ed",
+                            "type": "FUNNEL",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Funnel",
+                            "comments": "",
+                            "instanceIdentifier": "f4996a8e-a781-3cbc-b416-439dbe1c54ee"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "unparseable"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
+                    },
+                    {
                         "identifier": "15614f9c-9277-3dd3-8426-92396150b472",
-                        "instanceIdentifier": "0cb7a8a6-96c6-3e1d-d780-67c86c2f6018",
+                        "instanceIdentifier": "0c0467ca-9128-3dba-7cbd-010fca12a7ab",
                         "name": "",
                         "source": {
                             "id": "82fd6106-ade5-3383-8e8c-6f6072a0d1c7",
@@ -1290,7 +1326,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "5f873eae-b38d-3ed2-e376-7aa52adac276"
+                            "instanceIdentifier": "35ed18cf-d894-3abe-a528-9ffc26c75269"
                         },
                         "destination": {
                             "id": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
@@ -1298,7 +1334,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Send to LDES server",
                             "comments": "",
-                            "instanceIdentifier": "810c73bd-df54-3288-606a-30bb9f2e2fe5"
+                            "instanceIdentifier": "92d93476-f05c-3c4e-787d-3eebdfdfbbe5"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -1318,7 +1354,7 @@
                     },
                     {
                         "identifier": "65fd4521-113d-34ba-87cc-30151c39f390",
-                        "instanceIdentifier": "0b65c8bf-58d6-3fb0-a9da-3c5bd119e3f2",
+                        "instanceIdentifier": "4902c75f-a110-3042-f42b-a0dc676a17bf",
                         "name": "",
                         "source": {
                             "id": "82fd6106-ade5-3383-8e8c-6f6072a0d1c7",
@@ -1326,7 +1362,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "5f873eae-b38d-3ed2-e376-7aa52adac276"
+                            "instanceIdentifier": "35ed18cf-d894-3abe-a528-9ffc26c75269"
                         },
                         "destination": {
                             "id": "10c58ee1-78d0-3b45-8ccf-e6b45261b3ed",
@@ -1334,79 +1370,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Funnel",
                             "comments": "",
-                            "instanceIdentifier": "50760151-651c-32a1-ca75-30818426cc15"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "unparseable"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
-                    },
-                    {
-                        "identifier": "045d8fba-1529-318e-afc1-ca393d5d1ea9",
-                        "instanceIdentifier": "57b59e94-cf40-354f-ccf7-eb45053b31c2",
-                        "name": "",
-                        "source": {
-                            "id": "ada00e1b-2308-38a9-bc67-a60f5a175359",
-                            "type": "PROCESSOR",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Split entities",
-                            "comments": "",
-                            "instanceIdentifier": "395225a8-0f56-3978-1d2e-26c72e4aa2dd"
-                        },
-                        "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "88b2d7e0-0040-39b8-9a07-7f106ffdf48e"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "split"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
-                    },
-                    {
-                        "identifier": "f88ee26c-49ff-3410-8f9e-3f6dc113cfa7",
-                        "instanceIdentifier": "e045ed30-bf92-32ea-3018-43f63b9274a3",
-                        "name": "",
-                        "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "88b2d7e0-0040-39b8-9a07-7f106ffdf48e"
-                        },
-                        "destination": {
-                            "id": "10c58ee1-78d0-3b45-8ccf-e6b45261b3ed",
-                            "type": "FUNNEL",
-                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
-                            "name": "Funnel",
-                            "comments": "",
-                            "instanceIdentifier": "50760151-651c-32a1-ca75-30818426cc15"
+                            "instanceIdentifier": "f4996a8e-a781-3cbc-b416-439dbe1c54ee"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -1426,7 +1390,7 @@
                     },
                     {
                         "identifier": "613deb2e-912a-376b-b3fa-d486f2dddeb8",
-                        "instanceIdentifier": "a6aad67a-1e66-3a7a-f88f-b7e8b99807e6",
+                        "instanceIdentifier": "e0982d63-f06f-39ff-f2f2-c5feaa225765",
                         "name": "",
                         "source": {
                             "id": "dc3615b9-f646-3427-ac65-a3dc64a9fac4",
@@ -1434,7 +1398,7 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "JoltTransformJSON",
                             "comments": "",
-                            "instanceIdentifier": "97375533-7a1f-3c0b-0847-eac55805781b"
+                            "instanceIdentifier": "483594c2-87f7-33c1-8f83-5927c2356652"
                         },
                         "destination": {
                             "id": "82fd6106-ade5-3383-8e8c-6f6072a0d1c7",
@@ -1442,12 +1406,48 @@
                             "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "5f873eae-b38d-3ed2-e376-7aa52adac276"
+                            "instanceIdentifier": "35ed18cf-d894-3abe-a528-9ffc26c75269"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
                         "selectedRelationships": [
                             "success"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "c07e45bb-d97c-33c0-af68-6de36e584fa5"
+                    },
+                    {
+                        "identifier": "752c215a-67c2-3506-940d-b0da576326e1",
+                        "instanceIdentifier": "bf45ef1d-0185-1000-2921-0caf3598bd7c",
+                        "name": "",
+                        "source": {
+                            "id": "0f2e9233-a193-342f-895a-3415e578edcc",
+                            "type": "PROCESSOR",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Extract data",
+                            "comments": "",
+                            "instanceIdentifier": "df1bbb14-3b53-3c83-4bc8-a794993dc3b4"
+                        },
+                        "destination": {
+                            "id": "bb3981b0-e2c7-3f29-aca4-0cb17538e996",
+                            "type": "PROCESSOR",
+                            "groupId": "c07e45bb-d97c-33c0-af68-6de36e584fa5",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf450ef4-0185-1000-4fe8-29057cc191db"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "split"
                         ],
                         "backPressureObjectThreshold": 10000,
                         "backPressureDataSizeThreshold": "1 GB",
@@ -1465,7 +1465,7 @@
                 "funnels": [
                     {
                         "identifier": "10c58ee1-78d0-3b45-8ccf-e6b45261b3ed",
-                        "instanceIdentifier": "50760151-651c-32a1-ca75-30818426cc15",
+                        "instanceIdentifier": "f4996a8e-a781-3cbc-b416-439dbe1c54ee",
                         "position": {
                             "x": -256.0,
                             "y": 432.0
@@ -1483,11 +1483,11 @@
                 "componentType": "PROCESS_GROUP",
                 "flowFileConcurrency": "UNBOUNDED",
                 "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
-                "groupIdentifier": "793b3408-d22d-3b1f-a053-53128049cda8"
+                "groupIdentifier": "131edde9-c003-35ad-8b2a-a9f791f02c1f"
             },
             {
                 "identifier": "df049378-4c60-3278-bdf2-9ab686edad08",
-                "instanceIdentifier": "56a1a9ba-f351-33fe-ee93-238cc8dcd96a",
+                "instanceIdentifier": "dcaaa536-9885-3dd7-56d1-cfc2c2728402",
                 "name": "IoW - DeviceModel",
                 "comments": "",
                 "position": {
@@ -1499,7 +1499,7 @@
                 "processors": [
                     {
                         "identifier": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
-                        "instanceIdentifier": "8e5ea22f-0feb-3ef2-f55e-0896f59ad7f6",
+                        "instanceIdentifier": "ff8e6982-6672-36ea-055a-ce28ae677a7b",
                         "name": "Send to LDES server",
                         "comments": "",
                         "position": {
@@ -1808,59 +1808,8 @@
                         "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
                     },
                     {
-                        "identifier": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                        "instanceIdentifier": "9db7267f-aad0-309b-6e1a-fbc1c6ccdf7d",
-                        "name": "Translate NGSI-v2 to NGSI-LD",
-                        "comments": "",
-                        "position": {
-                            "x": 200.0,
-                            "y": 400.0
-                        },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
-                        "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
-                        },
-                        "properties": {
-                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-                            "LD_CONTEXT": null
-                        },
-                        "propertyDescriptors": {
-                            "CORE_CONTEXT": {
-                                "name": "CORE_CONTEXT",
-                                "displayName": "NGSI LD core context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            },
-                            "LD_CONTEXT": {
-                                "name": "LD_CONTEXT",
-                                "displayName": "Data-specific NGSI LD context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            }
-                        },
-                        "style": {},
-                        "schedulingPeriod": "0 sec",
-                        "schedulingStrategy": "TIMER_DRIVEN",
-                        "executionNode": "ALL",
-                        "penaltyDuration": "30 sec",
-                        "yieldDuration": "1 sec",
-                        "bulletinLevel": "WARN",
-                        "runDurationMillis": 0,
-                        "concurrentlySchedulableTaskCount": 1,
-                        "autoTerminatedRelationships": [],
-                        "scheduledState": "ENABLED",
-                        "retryCount": 10,
-                        "retriedRelationships": [],
-                        "backoffMechanism": "PENALIZE_FLOWFILE",
-                        "maxBackoffPeriod": "10 mins",
-                        "componentType": "PROCESSOR",
-                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
-                    },
-                    {
                         "identifier": "d2ca609e-1e95-3e78-a464-001113dfe8b3",
-                        "instanceIdentifier": "d965851e-2ed1-3db0-eb72-6d7580204366",
+                        "instanceIdentifier": "0a4b03ed-99c3-3d9b-68be-05929b2364a6",
                         "name": "Extract data",
                         "comments": "",
                         "position": {
@@ -1916,7 +1865,7 @@
                     },
                     {
                         "identifier": "4a496104-e157-3f80-8e1b-0d4bf1581729",
-                        "instanceIdentifier": "d7fe6f1f-7440-30c8-0e62-e4dff342690d",
+                        "instanceIdentifier": "a4972598-97d9-3178-4d85-301f6078c3c2",
                         "name": "Split entities",
                         "comments": "",
                         "position": {
@@ -1972,7 +1921,7 @@
                     },
                     {
                         "identifier": "33641c70-e241-33ba-a1e3-74805db3575b",
-                        "instanceIdentifier": "acbfc836-9958-3431-a09d-b7ee14835f32",
+                        "instanceIdentifier": "4aa23c4a-710f-34d7-9925-9fa36d7b824a",
                         "name": "JoltTransformJSON",
                         "comments": "",
                         "position": {
@@ -2060,7 +2009,7 @@
                     },
                     {
                         "identifier": "d1e55dfd-4b22-3044-bf0d-f0c95a9edb52",
-                        "instanceIdentifier": "304ad10a-7503-3a45-664e-63000fb82ff7",
+                        "instanceIdentifier": "b9bece2e-f9e1-35c3-2cff-157b2bb65aa9",
                         "name": "Create LDES member",
                         "comments": "",
                         "position": {
@@ -2071,7 +2020,7 @@
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
                             "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
+                            "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
                             "ID_JSON_PATH": "$['@id']",
@@ -2139,7 +2088,7 @@
                     },
                     {
                         "identifier": "4c3e4396-b9fa-34cb-a861-58804feea22d",
-                        "instanceIdentifier": "d4836803-bfea-3157-94f6-0f96a53471c2",
+                        "instanceIdentifier": "6b0d08ea-6074-3643-e9a6-2767fb4425f2",
                         "name": "Seed entities",
                         "comments": "",
                         "position": {
@@ -2453,8 +2402,59 @@
                         "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
                     },
                     {
+                        "identifier": "40ecc22a-1b12-3378-a4f1-2313b4706276",
+                        "instanceIdentifier": "bf476fc1-0185-1000-258b-8f9c0ae26920",
+                        "name": "Translate NGSI-v2 to NGSI-LD",
+                        "comments": "",
+                        "position": {
+                            "x": 208.0,
+                            "y": 408.0
+                        },
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "bundle": {
+                            "group": "be.vlaanderen.informatievlaanderen",
+                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "version": "1.0.2-SNAPSHOT"
+                        },
+                        "properties": {
+                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
+                            "LD_CONTEXT": null
+                        },
+                        "propertyDescriptors": {
+                            "CORE_CONTEXT": {
+                                "name": "CORE_CONTEXT",
+                                "displayName": "NGSI LD core context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
+                            "LD_CONTEXT": {
+                                "name": "LD_CONTEXT",
+                                "displayName": "Data-specific NGSI LD context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            }
+                        },
+                        "style": {},
+                        "schedulingPeriod": "0 sec",
+                        "schedulingStrategy": "TIMER_DRIVEN",
+                        "executionNode": "ALL",
+                        "penaltyDuration": "30 sec",
+                        "yieldDuration": "1 sec",
+                        "bulletinLevel": "WARN",
+                        "runDurationMillis": 0,
+                        "concurrentlySchedulableTaskCount": 1,
+                        "autoTerminatedRelationships": [],
+                        "scheduledState": "ENABLED",
+                        "retryCount": 10,
+                        "retriedRelationships": [],
+                        "backoffMechanism": "PENALIZE_FLOWFILE",
+                        "maxBackoffPeriod": "10 mins",
+                        "componentType": "PROCESSOR",
+                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
+                    },
+                    {
                         "identifier": "e2f6274d-7573-3dbc-b18f-637f92237d19",
-                        "instanceIdentifier": "0a79e75a-ab52-30d6-fab3-c7b5c965edd2",
+                        "instanceIdentifier": "bd50d216-d1f8-3ded-0b24-eeb992780598",
                         "name": "Receive updates",
                         "comments": "",
                         "position": {
@@ -2613,16 +2613,52 @@
                 "outputPorts": [],
                 "connections": [
                     {
-                        "identifier": "9b53e0af-174c-3778-a699-605d5a550da5",
-                        "instanceIdentifier": "f49be3b0-3f1a-35b7-6cd5-ee595049e14a",
+                        "identifier": "e03b87af-97a8-314a-9817-688d84d0b624",
+                        "instanceIdentifier": "bf47c552-0185-1000-dac2-1aeb5155eda2",
                         "name": "",
                         "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "40ecc22a-1b12-3378-a4f1-2313b4706276",
                             "type": "PROCESSOR",
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Translate NGSI-v2 to NGSI-LD",
                             "comments": "",
-                            "instanceIdentifier": "9db7267f-aad0-309b-6e1a-fbc1c6ccdf7d"
+                            "instanceIdentifier": "bf476fc1-0185-1000-258b-8f9c0ae26920"
+                        },
+                        "destination": {
+                            "id": "0bc86a8f-b5b3-30e9-ae18-4d64ee3cacb1",
+                            "type": "FUNNEL",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Funnel",
+                            "comments": "",
+                            "instanceIdentifier": "aabb44a2-6e2e-3bb4-32d2-434662da4ec7"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "unparseable"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
+                    },
+                    {
+                        "identifier": "6f787f1d-140f-3c7d-8610-348decc043b6",
+                        "instanceIdentifier": "bf47b37a-0185-1000-f545-f7a4eea22667",
+                        "name": "",
+                        "source": {
+                            "id": "40ecc22a-1b12-3378-a4f1-2313b4706276",
+                            "type": "PROCESSOR",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf476fc1-0185-1000-258b-8f9c0ae26920"
                         },
                         "destination": {
                             "id": "33641c70-e241-33ba-a1e3-74805db3575b",
@@ -2630,7 +2666,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "JoltTransformJSON",
                             "comments": "",
-                            "instanceIdentifier": "acbfc836-9958-3431-a09d-b7ee14835f32"
+                            "instanceIdentifier": "4aa23c4a-710f-34d7-9925-9fa36d7b824a"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -2650,7 +2686,7 @@
                     },
                     {
                         "identifier": "1f66050c-ec13-34f5-8846-079c8b87e3e6",
-                        "instanceIdentifier": "bb3a2a48-ccf2-3f38-2887-9c93d6216550",
+                        "instanceIdentifier": "f9037e9e-f5c7-3a70-a3cc-841505007cc9",
                         "name": "",
                         "source": {
                             "id": "4c3e4396-b9fa-34cb-a861-58804feea22d",
@@ -2658,7 +2694,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Seed entities",
                             "comments": "",
-                            "instanceIdentifier": "d4836803-bfea-3157-94f6-0f96a53471c2"
+                            "instanceIdentifier": "6b0d08ea-6074-3643-e9a6-2767fb4425f2"
                         },
                         "destination": {
                             "id": "4a496104-e157-3f80-8e1b-0d4bf1581729",
@@ -2666,7 +2702,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Split entities",
                             "comments": "",
-                            "instanceIdentifier": "d7fe6f1f-7440-30c8-0e62-e4dff342690d"
+                            "instanceIdentifier": "a4972598-97d9-3178-4d85-301f6078c3c2"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -2686,7 +2722,7 @@
                     },
                     {
                         "identifier": "563311a5-b5aa-37a4-8cc6-2ad06e863575",
-                        "instanceIdentifier": "8cca9b9b-7776-3794-c266-5f79b4e62fd1",
+                        "instanceIdentifier": "9529a264-eb01-372c-a4cd-6302ccd7fa08",
                         "name": "",
                         "source": {
                             "id": "d1e55dfd-4b22-3044-bf0d-f0c95a9edb52",
@@ -2694,7 +2730,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "304ad10a-7503-3a45-664e-63000fb82ff7"
+                            "instanceIdentifier": "b9bece2e-f9e1-35c3-2cff-157b2bb65aa9"
                         },
                         "destination": {
                             "id": "0bc86a8f-b5b3-30e9-ae18-4d64ee3cacb1",
@@ -2702,7 +2738,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Funnel",
                             "comments": "",
-                            "instanceIdentifier": "ba3fff88-173c-3144-f471-88915f3ded89"
+                            "instanceIdentifier": "aabb44a2-6e2e-3bb4-32d2-434662da4ec7"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -2721,44 +2757,8 @@
                         "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
                     },
                     {
-                        "identifier": "1cd01d12-047f-3003-bbbd-1bcec6e6700b",
-                        "instanceIdentifier": "c9fa7593-fe6f-39fe-440e-ff5603f5e18d",
-                        "name": "",
-                        "source": {
-                            "id": "d1e55dfd-4b22-3044-bf0d-f0c95a9edb52",
-                            "type": "PROCESSOR",
-                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
-                            "name": "Create LDES member",
-                            "comments": "",
-                            "instanceIdentifier": "304ad10a-7503-3a45-664e-63000fb82ff7"
-                        },
-                        "destination": {
-                            "id": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
-                            "type": "PROCESSOR",
-                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
-                            "name": "Send to LDES server",
-                            "comments": "",
-                            "instanceIdentifier": "8e5ea22f-0feb-3ef2-f55e-0896f59ad7f6"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "data"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
-                    },
-                    {
-                        "identifier": "f89e677f-23cf-3ef9-8659-b625d7fd87e0",
-                        "instanceIdentifier": "45e9ba4f-0765-331b-6c52-ae4e06d93ef4",
+                        "identifier": "746ce226-5b24-31a7-a706-964897e9802e",
+                        "instanceIdentifier": "bf47a090-0185-1000-1482-e60259b049c5",
                         "name": "",
                         "source": {
                             "id": "d2ca609e-1e95-3e78-a464-001113dfe8b3",
@@ -2766,15 +2766,15 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Extract data",
                             "comments": "",
-                            "instanceIdentifier": "d965851e-2ed1-3db0-eb72-6d7580204366"
+                            "instanceIdentifier": "0a4b03ed-99c3-3d9b-68be-05929b2364a6"
                         },
                         "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "4a496104-e157-3f80-8e1b-0d4bf1581729",
                             "type": "PROCESSOR",
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "name": "Split entities",
                             "comments": "",
-                            "instanceIdentifier": "9db7267f-aad0-309b-6e1a-fbc1c6ccdf7d"
+                            "instanceIdentifier": "a4972598-97d9-3178-4d85-301f6078c3c2"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -2793,8 +2793,44 @@
                         "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
                     },
                     {
-                        "identifier": "85ec6790-3b0f-3148-84b7-cae0344739f4",
-                        "instanceIdentifier": "b4630cc1-0ef1-33b9-d3da-ff7a1200ee37",
+                        "identifier": "1cd01d12-047f-3003-bbbd-1bcec6e6700b",
+                        "instanceIdentifier": "6f5911c9-1b53-342e-e8ad-8b39a7a99356",
+                        "name": "",
+                        "source": {
+                            "id": "d1e55dfd-4b22-3044-bf0d-f0c95a9edb52",
+                            "type": "PROCESSOR",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Create LDES member",
+                            "comments": "",
+                            "instanceIdentifier": "b9bece2e-f9e1-35c3-2cff-157b2bb65aa9"
+                        },
+                        "destination": {
+                            "id": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
+                            "type": "PROCESSOR",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Send to LDES server",
+                            "comments": "",
+                            "instanceIdentifier": "ff8e6982-6672-36ea-055a-ce28ae677a7b"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "data"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
+                    },
+                    {
+                        "identifier": "0ce3554c-5aa6-3efe-988e-0da17b8966c4",
+                        "instanceIdentifier": "bf47ee9a-0185-1000-fe51-4ea4df921d31",
                         "name": "",
                         "source": {
                             "id": "4a496104-e157-3f80-8e1b-0d4bf1581729",
@@ -2802,15 +2838,15 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Split entities",
                             "comments": "",
-                            "instanceIdentifier": "d7fe6f1f-7440-30c8-0e62-e4dff342690d"
+                            "instanceIdentifier": "a4972598-97d9-3178-4d85-301f6078c3c2"
                         },
                         "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "40ecc22a-1b12-3378-a4f1-2313b4706276",
                             "type": "PROCESSOR",
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Translate NGSI-v2 to NGSI-LD",
                             "comments": "",
-                            "instanceIdentifier": "9db7267f-aad0-309b-6e1a-fbc1c6ccdf7d"
+                            "instanceIdentifier": "bf476fc1-0185-1000-258b-8f9c0ae26920"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -2830,7 +2866,7 @@
                     },
                     {
                         "identifier": "f3c7f54e-94ab-3994-93d5-32fcab175fdd",
-                        "instanceIdentifier": "df674275-a032-38d6-df42-076e0e6fa60f",
+                        "instanceIdentifier": "78bfeb4a-4720-3d24-66ec-01587271c5a6",
                         "name": "",
                         "source": {
                             "id": "e2f6274d-7573-3dbc-b18f-637f92237d19",
@@ -2838,7 +2874,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Receive updates",
                             "comments": "",
-                            "instanceIdentifier": "0a79e75a-ab52-30d6-fab3-c7b5c965edd2"
+                            "instanceIdentifier": "bd50d216-d1f8-3ded-0b24-eeb992780598"
                         },
                         "destination": {
                             "id": "d2ca609e-1e95-3e78-a464-001113dfe8b3",
@@ -2846,12 +2882,48 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Extract data",
                             "comments": "",
-                            "instanceIdentifier": "d965851e-2ed1-3db0-eb72-6d7580204366"
+                            "instanceIdentifier": "0a4b03ed-99c3-3d9b-68be-05929b2364a6"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
                         "selectedRelationships": [
                             "success"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
+                    },
+                    {
+                        "identifier": "d6a9e03e-7ab8-30f8-9b29-a3d04d4f911e",
+                        "instanceIdentifier": "bf478617-0185-1000-1220-485b0297f83a",
+                        "name": "",
+                        "source": {
+                            "id": "d2ca609e-1e95-3e78-a464-001113dfe8b3",
+                            "type": "PROCESSOR",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Extract data",
+                            "comments": "",
+                            "instanceIdentifier": "0a4b03ed-99c3-3d9b-68be-05929b2364a6"
+                        },
+                        "destination": {
+                            "id": "40ecc22a-1b12-3378-a4f1-2313b4706276",
+                            "type": "PROCESSOR",
+                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf476fc1-0185-1000-258b-8f9c0ae26920"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "split"
                         ],
                         "backPressureObjectThreshold": 10000,
                         "backPressureDataSizeThreshold": "1 GB",
@@ -2866,7 +2938,7 @@
                     },
                     {
                         "identifier": "055a4b60-e223-3c9a-8190-105cf517b8ee",
-                        "instanceIdentifier": "1586fc42-4e1c-3348-4a92-c7913b84e29f",
+                        "instanceIdentifier": "96ea5c0f-8f92-3b6c-9bfb-107a6beb95ee",
                         "name": "",
                         "source": {
                             "id": "33641c70-e241-33ba-a1e3-74805db3575b",
@@ -2874,7 +2946,7 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "JoltTransformJSON",
                             "comments": "",
-                            "instanceIdentifier": "acbfc836-9958-3431-a09d-b7ee14835f32"
+                            "instanceIdentifier": "4aa23c4a-710f-34d7-9925-9fa36d7b824a"
                         },
                         "destination": {
                             "id": "d1e55dfd-4b22-3044-bf0d-f0c95a9edb52",
@@ -2882,48 +2954,12 @@
                             "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "304ad10a-7503-3a45-664e-63000fb82ff7"
+                            "instanceIdentifier": "b9bece2e-f9e1-35c3-2cff-157b2bb65aa9"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
                         "selectedRelationships": [
                             "success"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "df049378-4c60-3278-bdf2-9ab686edad08"
-                    },
-                    {
-                        "identifier": "340a7e30-3527-3b45-bcda-1622888146b2",
-                        "instanceIdentifier": "3d5942bc-2948-3bc7-6a2d-0e1d524a3106",
-                        "name": "",
-                        "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "9db7267f-aad0-309b-6e1a-fbc1c6ccdf7d"
-                        },
-                        "destination": {
-                            "id": "0bc86a8f-b5b3-30e9-ae18-4d64ee3cacb1",
-                            "type": "FUNNEL",
-                            "groupId": "df049378-4c60-3278-bdf2-9ab686edad08",
-                            "name": "Funnel",
-                            "comments": "",
-                            "instanceIdentifier": "ba3fff88-173c-3144-f471-88915f3ded89"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "unparseable"
                         ],
                         "backPressureObjectThreshold": 10000,
                         "backPressureDataSizeThreshold": "1 GB",
@@ -2941,7 +2977,7 @@
                 "funnels": [
                     {
                         "identifier": "0bc86a8f-b5b3-30e9-ae18-4d64ee3cacb1",
-                        "instanceIdentifier": "ba3fff88-173c-3144-f471-88915f3ded89",
+                        "instanceIdentifier": "aabb44a2-6e2e-3bb4-32d2-434662da4ec7",
                         "position": {
                             "x": -72.0,
                             "y": 592.0
@@ -2959,11 +2995,11 @@
                 "componentType": "PROCESS_GROUP",
                 "flowFileConcurrency": "UNBOUNDED",
                 "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
-                "groupIdentifier": "793b3408-d22d-3b1f-a053-53128049cda8"
+                "groupIdentifier": "131edde9-c003-35ad-8b2a-a9f791f02c1f"
             },
             {
                 "identifier": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                "instanceIdentifier": "9afa52d0-8366-3252-900c-77a46a4de1d9",
+                "instanceIdentifier": "de718475-6658-3b50-b778-02898ac233be",
                 "name": "IoW - Device",
                 "comments": "",
                 "position": {
@@ -2975,7 +3011,7 @@
                 "processors": [
                     {
                         "identifier": "3779d19e-a805-3896-a618-c6ded55f8f76",
-                        "instanceIdentifier": "fbf9b7b2-fbdc-32fb-9c3e-ec0c1b2db229",
+                        "instanceIdentifier": "e16c5c08-d6a6-3947-f3db-547961c1493e",
                         "name": "Seed entities",
                         "comments": "",
                         "position": {
@@ -3290,7 +3326,7 @@
                     },
                     {
                         "identifier": "70e511be-768d-333c-be1d-93080be8ca96",
-                        "instanceIdentifier": "bc2a2b3c-5022-3423-ae04-e6a021d2cee1",
+                        "instanceIdentifier": "cc98b7d8-d69b-3713-61ed-07573fa8c6b8",
                         "name": "Create LDES member",
                         "comments": "",
                         "position": {
@@ -3301,7 +3337,7 @@
                         "bundle": {
                             "group": "be.vlaanderen.informatievlaanderen",
                             "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
+                            "version": "1.0.2-SNAPSHOT"
                         },
                         "properties": {
                             "ID_JSON_PATH": "$['@id']",
@@ -3369,7 +3405,7 @@
                     },
                     {
                         "identifier": "c2512f08-462f-3ea3-b602-f29b7232d693",
-                        "instanceIdentifier": "1f1f124d-2e4c-3fcd-682c-3e2f1f5408f1",
+                        "instanceIdentifier": "dd028b7e-f5e8-3318-4e34-87e056c1c6dc",
                         "name": "Extract data",
                         "comments": "",
                         "position": {
@@ -3425,7 +3461,7 @@
                     },
                     {
                         "identifier": "7099ee4c-1ba1-3964-8753-c556fac7a3b2",
-                        "instanceIdentifier": "8ab4d887-6d64-3759-0a47-587ec78a2aea",
+                        "instanceIdentifier": "92153851-d05e-37f6-4ab5-355adc53786b",
                         "name": "Split entities",
                         "comments": "",
                         "position": {
@@ -3481,7 +3517,7 @@
                     },
                     {
                         "identifier": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
-                        "instanceIdentifier": "92452cc1-588e-34f7-86c5-6f5bba019fa8",
+                        "instanceIdentifier": "2a07d1a6-62ba-3c6c-d4f4-561f6a2116d2",
                         "name": "Send to LDES server",
                         "comments": "",
                         "position": {
@@ -3790,8 +3826,59 @@
                         "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
                     },
                     {
+                        "identifier": "8dd05d9c-984b-3ce0-9898-b5ec0dde4f5c",
+                        "instanceIdentifier": "bf46a491-0185-1000-e661-a842df037331",
+                        "name": "Translate NGSI-v2 to NGSI-LD",
+                        "comments": "",
+                        "position": {
+                            "x": 208.0,
+                            "y": 360.0
+                        },
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "bundle": {
+                            "group": "be.vlaanderen.informatievlaanderen",
+                            "artifact": "ngsiv2-to-ngsi-ld-processor",
+                            "version": "1.0.2-SNAPSHOT"
+                        },
+                        "properties": {
+                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
+                            "LD_CONTEXT": null
+                        },
+                        "propertyDescriptors": {
+                            "CORE_CONTEXT": {
+                                "name": "CORE_CONTEXT",
+                                "displayName": "NGSI LD core context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
+                            "LD_CONTEXT": {
+                                "name": "LD_CONTEXT",
+                                "displayName": "Data-specific NGSI LD context",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            }
+                        },
+                        "style": {},
+                        "schedulingPeriod": "0 sec",
+                        "schedulingStrategy": "TIMER_DRIVEN",
+                        "executionNode": "ALL",
+                        "penaltyDuration": "30 sec",
+                        "yieldDuration": "1 sec",
+                        "bulletinLevel": "WARN",
+                        "runDurationMillis": 0,
+                        "concurrentlySchedulableTaskCount": 1,
+                        "autoTerminatedRelationships": [],
+                        "scheduledState": "ENABLED",
+                        "retryCount": 10,
+                        "retriedRelationships": [],
+                        "backoffMechanism": "PENALIZE_FLOWFILE",
+                        "maxBackoffPeriod": "10 mins",
+                        "componentType": "PROCESSOR",
+                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
+                    },
+                    {
                         "identifier": "7ea0ff04-77d3-3904-abe1-6c6f2c5205e1",
-                        "instanceIdentifier": "970f6c01-664b-3761-2f37-7d6fc0a3cfeb",
+                        "instanceIdentifier": "46fb1f48-8313-3646-a877-cd3620ee4a33",
                         "name": "JoltTransformJSON",
                         "comments": "",
                         "position": {
@@ -3878,59 +3965,8 @@
                         "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
                     },
                     {
-                        "identifier": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                        "instanceIdentifier": "b2339d14-bff8-3932-b5ca-691cc86ceefa",
-                        "name": "Translate NGSI-v2 to NGSI-LD",
-                        "comments": "",
-                        "position": {
-                            "x": 200.0,
-                            "y": 368.0
-                        },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
-                        "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "create-version-object-processor",
-                            "version": "1.0-SNAPSHOT"
-                        },
-                        "properties": {
-                            "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
-                            "LD_CONTEXT": null
-                        },
-                        "propertyDescriptors": {
-                            "CORE_CONTEXT": {
-                                "name": "CORE_CONTEXT",
-                                "displayName": "NGSI LD core context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            },
-                            "LD_CONTEXT": {
-                                "name": "LD_CONTEXT",
-                                "displayName": "Data-specific NGSI LD context",
-                                "identifiesControllerService": false,
-                                "sensitive": false
-                            }
-                        },
-                        "style": {},
-                        "schedulingPeriod": "0 sec",
-                        "schedulingStrategy": "TIMER_DRIVEN",
-                        "executionNode": "ALL",
-                        "penaltyDuration": "30 sec",
-                        "yieldDuration": "1 sec",
-                        "bulletinLevel": "WARN",
-                        "runDurationMillis": 0,
-                        "concurrentlySchedulableTaskCount": 1,
-                        "autoTerminatedRelationships": [],
-                        "scheduledState": "ENABLED",
-                        "retryCount": 10,
-                        "retriedRelationships": [],
-                        "backoffMechanism": "PENALIZE_FLOWFILE",
-                        "maxBackoffPeriod": "10 mins",
-                        "componentType": "PROCESSOR",
-                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
-                    },
-                    {
                         "identifier": "e2f6274d-7573-3dbc-b18f-637f92237d19",
-                        "instanceIdentifier": "fa5ae8b1-62db-32b9-977b-374405238d96",
+                        "instanceIdentifier": "a66983a7-9cd4-3085-21ff-19318ef4cbec",
                         "name": "Receive updates",
                         "comments": "",
                         "position": {
@@ -4089,80 +4125,8 @@
                 "outputPorts": [],
                 "connections": [
                     {
-                        "identifier": "0598f9b0-a20d-3aaf-a4b1-43d825812f5d",
-                        "instanceIdentifier": "90063c49-2a72-32b7-ba45-85e26e8b0486",
-                        "name": "",
-                        "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "b2339d14-bff8-3932-b5ca-691cc86ceefa"
-                        },
-                        "destination": {
-                            "id": "df067ed7-26d7-38c1-beea-49b99af78f9d",
-                            "type": "FUNNEL",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Funnel",
-                            "comments": "",
-                            "instanceIdentifier": "d487e839-e27e-3302-839e-585883db267f"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "unparseable"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
-                    },
-                    {
-                        "identifier": "51a001cf-5570-306c-bea2-bf309e29aab2",
-                        "instanceIdentifier": "3c331d00-74b1-309f-b61b-4464e03639d7",
-                        "name": "",
-                        "source": {
-                            "id": "7099ee4c-1ba1-3964-8753-c556fac7a3b2",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Split entities",
-                            "comments": "",
-                            "instanceIdentifier": "8ab4d887-6d64-3759-0a47-587ec78a2aea"
-                        },
-                        "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "b2339d14-bff8-3932-b5ca-691cc86ceefa"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "split"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
-                    },
-                    {
                         "identifier": "acf1f51c-8213-3f30-9aa5-119471c24f60",
-                        "instanceIdentifier": "ded686c5-d35b-300c-016b-9f72ff226018",
+                        "instanceIdentifier": "00ffd1f6-bd40-3967-530e-d9f6a8dcdadd",
                         "name": "",
                         "source": {
                             "id": "70e511be-768d-333c-be1d-93080be8ca96",
@@ -4170,7 +4134,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "bc2a2b3c-5022-3423-ae04-e6a021d2cee1"
+                            "instanceIdentifier": "cc98b7d8-d69b-3713-61ed-07573fa8c6b8"
                         },
                         "destination": {
                             "id": "df067ed7-26d7-38c1-beea-49b99af78f9d",
@@ -4178,7 +4142,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Funnel",
                             "comments": "",
-                            "instanceIdentifier": "d487e839-e27e-3302-839e-585883db267f"
+                            "instanceIdentifier": "c47020af-0e7d-3989-2c1d-78611fe601c1"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -4198,7 +4162,7 @@
                     },
                     {
                         "identifier": "206761e9-7049-3595-846e-69110a27a7c1",
-                        "instanceIdentifier": "04eadb57-6ae8-37a5-6c87-57ce58f3a5d8",
+                        "instanceIdentifier": "7d89ff48-c06d-38aa-1a0b-270f2813e201",
                         "name": "",
                         "source": {
                             "id": "7ea0ff04-77d3-3904-abe1-6c6f2c5205e1",
@@ -4206,7 +4170,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "JoltTransformJSON",
                             "comments": "",
-                            "instanceIdentifier": "970f6c01-664b-3761-2f37-7d6fc0a3cfeb"
+                            "instanceIdentifier": "46fb1f48-8313-3646-a877-cd3620ee4a33"
                         },
                         "destination": {
                             "id": "70e511be-768d-333c-be1d-93080be8ca96",
@@ -4214,7 +4178,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "bc2a2b3c-5022-3423-ae04-e6a021d2cee1"
+                            "instanceIdentifier": "cc98b7d8-d69b-3713-61ed-07573fa8c6b8"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -4233,60 +4197,24 @@
                         "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
                     },
                     {
-                        "identifier": "c98b4a5e-6a20-30f0-8ee7-590420c9d1ce",
-                        "instanceIdentifier": "0230a598-e188-38b6-508e-00f7575236ea",
+                        "identifier": "975e2178-c5f4-335e-8a3f-1d566602cf44",
+                        "instanceIdentifier": "bf46ca73-0185-1000-032d-7e5473d24a51",
                         "name": "",
                         "source": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
+                            "id": "7099ee4c-1ba1-3964-8753-c556fac7a3b2",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Split entities",
+                            "comments": "",
+                            "instanceIdentifier": "92153851-d05e-37f6-4ab5-355adc53786b"
+                        },
+                        "destination": {
+                            "id": "8dd05d9c-984b-3ce0-9898-b5ec0dde4f5c",
                             "type": "PROCESSOR",
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Translate NGSI-v2 to NGSI-LD",
                             "comments": "",
-                            "instanceIdentifier": "b2339d14-bff8-3932-b5ca-691cc86ceefa"
-                        },
-                        "destination": {
-                            "id": "7ea0ff04-77d3-3904-abe1-6c6f2c5205e1",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "JoltTransformJSON",
-                            "comments": "",
-                            "instanceIdentifier": "970f6c01-664b-3761-2f37-7d6fc0a3cfeb"
-                        },
-                        "labelIndex": 1,
-                        "zIndex": 0,
-                        "selectedRelationships": [
-                            "outgoing"
-                        ],
-                        "backPressureObjectThreshold": 10000,
-                        "backPressureDataSizeThreshold": "1 GB",
-                        "flowFileExpiration": "0 sec",
-                        "prioritizers": [],
-                        "bends": [],
-                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
-                        "partitioningAttribute": "",
-                        "loadBalanceCompression": "DO_NOT_COMPRESS",
-                        "componentType": "CONNECTION",
-                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
-                    },
-                    {
-                        "identifier": "7e7c5bd4-9761-3cd6-a564-c5ce76586f82",
-                        "instanceIdentifier": "22258e2c-d7ee-3bce-b8bd-e0bcfcb8a857",
-                        "name": "",
-                        "source": {
-                            "id": "c2512f08-462f-3ea3-b602-f29b7232d693",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Extract data",
-                            "comments": "",
-                            "instanceIdentifier": "1f1f124d-2e4c-3fcd-682c-3e2f1f5408f1"
-                        },
-                        "destination": {
-                            "id": "daca1054-11e5-386b-bcad-9378ede61cd8",
-                            "type": "PROCESSOR",
-                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
-                            "name": "Translate NGSI-v2 to NGSI-LD",
-                            "comments": "",
-                            "instanceIdentifier": "b2339d14-bff8-3932-b5ca-691cc86ceefa"
+                            "instanceIdentifier": "bf46a491-0185-1000-e661-a842df037331"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -4305,8 +4233,80 @@
                         "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
                     },
                     {
+                        "identifier": "aaf9ba48-d397-3e2d-8207-3d841fbaeacc",
+                        "instanceIdentifier": "bf46f7bf-0185-1000-17df-595bb6e2074f",
+                        "name": "",
+                        "source": {
+                            "id": "8dd05d9c-984b-3ce0-9898-b5ec0dde4f5c",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf46a491-0185-1000-e661-a842df037331"
+                        },
+                        "destination": {
+                            "id": "df067ed7-26d7-38c1-beea-49b99af78f9d",
+                            "type": "FUNNEL",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Funnel",
+                            "comments": "",
+                            "instanceIdentifier": "c47020af-0e7d-3989-2c1d-78611fe601c1"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "unparseable"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
+                    },
+                    {
+                        "identifier": "d9c293cd-9ba2-38dc-a41b-b40cd0cfd63a",
+                        "instanceIdentifier": "bf46e0c5-0185-1000-1698-ad88bc96467f",
+                        "name": "",
+                        "source": {
+                            "id": "8dd05d9c-984b-3ce0-9898-b5ec0dde4f5c",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf46a491-0185-1000-e661-a842df037331"
+                        },
+                        "destination": {
+                            "id": "7ea0ff04-77d3-3904-abe1-6c6f2c5205e1",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "JoltTransformJSON",
+                            "comments": "",
+                            "instanceIdentifier": "46fb1f48-8313-3646-a877-cd3620ee4a33"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "outgoing"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
+                    },
+                    {
                         "identifier": "4529dd81-8641-3177-8d37-86c5cf12ec66",
-                        "instanceIdentifier": "d12c8117-0f7d-38d1-3355-1c1a09a42273",
+                        "instanceIdentifier": "22a9217a-0929-3f20-7ff5-a77f1adec2df",
                         "name": "",
                         "source": {
                             "id": "70e511be-768d-333c-be1d-93080be8ca96",
@@ -4314,7 +4314,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Create LDES member",
                             "comments": "",
-                            "instanceIdentifier": "bc2a2b3c-5022-3423-ae04-e6a021d2cee1"
+                            "instanceIdentifier": "cc98b7d8-d69b-3713-61ed-07573fa8c6b8"
                         },
                         "destination": {
                             "id": "b1a70583-2d5b-3412-a4db-fbb81d47db74",
@@ -4322,7 +4322,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Send to LDES server",
                             "comments": "",
-                            "instanceIdentifier": "92452cc1-588e-34f7-86c5-6f5bba019fa8"
+                            "instanceIdentifier": "2a07d1a6-62ba-3c6c-d4f4-561f6a2116d2"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -4342,7 +4342,7 @@
                     },
                     {
                         "identifier": "12688616-7881-3ee4-be29-739a07e46e8d",
-                        "instanceIdentifier": "552646b9-13ec-312a-233d-a550cd5df521",
+                        "instanceIdentifier": "73e44148-02a9-3c68-bcf1-e5dc8da9e228",
                         "name": "",
                         "source": {
                             "id": "3779d19e-a805-3896-a618-c6ded55f8f76",
@@ -4350,7 +4350,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Seed entities",
                             "comments": "",
-                            "instanceIdentifier": "fbf9b7b2-fbdc-32fb-9c3e-ec0c1b2db229"
+                            "instanceIdentifier": "e16c5c08-d6a6-3947-f3db-547961c1493e"
                         },
                         "destination": {
                             "id": "7099ee4c-1ba1-3964-8753-c556fac7a3b2",
@@ -4358,7 +4358,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Split entities",
                             "comments": "",
-                            "instanceIdentifier": "8ab4d887-6d64-3759-0a47-587ec78a2aea"
+                            "instanceIdentifier": "92153851-d05e-37f6-4ab5-355adc53786b"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
@@ -4378,7 +4378,7 @@
                     },
                     {
                         "identifier": "f3c7f54e-94ab-3994-93d5-32fcab175fdd",
-                        "instanceIdentifier": "1ad2accb-3714-341c-9336-e0e2d2f5726d",
+                        "instanceIdentifier": "6f6abd3d-16ee-3a82-49ab-2d7785509433",
                         "name": "",
                         "source": {
                             "id": "e2f6274d-7573-3dbc-b18f-637f92237d19",
@@ -4386,7 +4386,7 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Receive updates",
                             "comments": "",
-                            "instanceIdentifier": "fa5ae8b1-62db-32b9-977b-374405238d96"
+                            "instanceIdentifier": "a66983a7-9cd4-3085-21ff-19318ef4cbec"
                         },
                         "destination": {
                             "id": "c2512f08-462f-3ea3-b602-f29b7232d693",
@@ -4394,12 +4394,48 @@
                             "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
                             "name": "Extract data",
                             "comments": "",
-                            "instanceIdentifier": "1f1f124d-2e4c-3fcd-682c-3e2f1f5408f1"
+                            "instanceIdentifier": "dd028b7e-f5e8-3318-4e34-87e056c1c6dc"
                         },
                         "labelIndex": 1,
                         "zIndex": 0,
                         "selectedRelationships": [
                             "success"
+                        ],
+                        "backPressureObjectThreshold": 10000,
+                        "backPressureDataSizeThreshold": "1 GB",
+                        "flowFileExpiration": "0 sec",
+                        "prioritizers": [],
+                        "bends": [],
+                        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+                        "partitioningAttribute": "",
+                        "loadBalanceCompression": "DO_NOT_COMPRESS",
+                        "componentType": "CONNECTION",
+                        "groupIdentifier": "172610a5-1039-3595-9e30-b4c7af7460f5"
+                    },
+                    {
+                        "identifier": "d7cac9c5-08bf-339e-86a7-4b22a6a4a11b",
+                        "instanceIdentifier": "bf46bdbb-0185-1000-7d08-b46994955337",
+                        "name": "",
+                        "source": {
+                            "id": "c2512f08-462f-3ea3-b602-f29b7232d693",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Extract data",
+                            "comments": "",
+                            "instanceIdentifier": "dd028b7e-f5e8-3318-4e34-87e056c1c6dc"
+                        },
+                        "destination": {
+                            "id": "8dd05d9c-984b-3ce0-9898-b5ec0dde4f5c",
+                            "type": "PROCESSOR",
+                            "groupId": "172610a5-1039-3595-9e30-b4c7af7460f5",
+                            "name": "Translate NGSI-v2 to NGSI-LD",
+                            "comments": "",
+                            "instanceIdentifier": "bf46a491-0185-1000-e661-a842df037331"
+                        },
+                        "labelIndex": 1,
+                        "zIndex": 0,
+                        "selectedRelationships": [
+                            "split"
                         ],
                         "backPressureObjectThreshold": 10000,
                         "backPressureDataSizeThreshold": "1 GB",
@@ -4417,7 +4453,7 @@
                 "funnels": [
                     {
                         "identifier": "df067ed7-26d7-38c1-beea-49b99af78f9d",
-                        "instanceIdentifier": "d487e839-e27e-3302-839e-585883db267f",
+                        "instanceIdentifier": "c47020af-0e7d-3989-2c1d-78611fe601c1",
                         "position": {
                             "x": -56.0,
                             "y": 568.0
@@ -4435,7 +4471,7 @@
                 "componentType": "PROCESS_GROUP",
                 "flowFileConcurrency": "UNBOUNDED",
                 "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
-                "groupIdentifier": "793b3408-d22d-3b1f-a053-53128049cda8"
+                "groupIdentifier": "131edde9-c003-35ad-8b2a-a9f791f02c1f"
             }
         ],
         "remoteProcessGroups": [],

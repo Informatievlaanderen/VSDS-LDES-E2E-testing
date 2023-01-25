@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class LdesWorkbenchNiFi {
     constructor(private baseUrl: string) { 
     }
@@ -7,7 +9,7 @@ export class LdesWorkbenchNiFi {
      * @returns true if ready, false otherwise
      */
     isReady(): Cypress.Chainable<boolean> {
-        return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 60);
+        return cy.exec(`curl --insecure ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
     logon(credentials: { username: string; password: string; }) {
@@ -17,5 +19,30 @@ export class LdesWorkbenchNiFi {
             .get('#username').type(credentials.username)
             .get('#password').type(credentials.password)
             .get('#login-submission-button').click().wait(`@${loaded}`);
+    }
+
+    uploadWorkflow(file: string){
+        return cy.get('#operation-context-id').then(div => div.text()).then(groupId =>
+            cy.readFile(file, 'utf8').then(binary => {
+                cy.log('file: ' + binary);
+                return binary;
+            }).then(binary => {
+                //const blob = Cypress.Blob.binaryStringToBlob(binary, 'application/json');
+                const formData = new FormData();
+                formData.append('file', binary);
+                formData.append('disconnectedNodeAcknowledged', 'false');
+                formData.append('groupName', 'nifi-workflow');
+                formData.append('positionX', '400');
+                formData.append('positionY', '60');
+                formData.append('clientId', uuidv4());
+                return cy.request({
+                    url: `${this.baseUrl}/nifi-api/process-groups/${groupId}/process-groups/upload`,
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                      },
+                    body: formData
+                });
+            }));
     }
 }

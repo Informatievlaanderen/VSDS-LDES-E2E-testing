@@ -25,7 +25,7 @@ services:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/nifi:${NIFI_TAG:-1.17.0-jdk17}
+    image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}

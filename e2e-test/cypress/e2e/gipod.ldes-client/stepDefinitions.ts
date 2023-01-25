@@ -22,7 +22,7 @@ Before(() => {
 });
 
 After(() => {
-    dockerCompose.down();
+    //dockerCompose.down();
 });
 
 const simulator = new LdesServerSimulator(simulatorUrl);
@@ -42,4 +42,9 @@ Given('I have logged on to the Apache NiFi UI', () => {
     workbench.logon(credentials);
 });
 
+Given('I have uploaded a workflow with an LDES client', () => {
+    // POST TO: https://localhost:8443/nifi-api/process-groups/e459c8b8-0185-1000-1c20-0a05dabdcd88/process-groups/upload
+    // file: (binary)
 
+    workbench.uploadWorkflow("use-cases/gipod/1.replicate-ldes/nifi-workflow.json");
+})

@@ -12,7 +12,7 @@ export class DockerCompose {
             SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
             SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
             // TEMP: set tags
-            LDES_WORKBENCH_NIFI_TAG:"latest",
+            LDES_WORKBENCH_NIFI_TAG:"20230124t140316",
             LDES_SERVER_SIMULATOR_TAG:"latest",
             LDES_CLIENT_SINK_TAG:"latest",
         }

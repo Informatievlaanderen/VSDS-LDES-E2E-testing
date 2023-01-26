@@ -6,7 +6,7 @@ This context is used for validating the LDES client and other custom-built NiFi 
 ## Setup the Context
 To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
-* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password - min 8 char)
 * NIFI_DATA_FOLDER (e.g.: `~/data/my-use-case`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:

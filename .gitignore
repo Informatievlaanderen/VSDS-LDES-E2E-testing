@@ -3,3 +3,4 @@
 user.env
 e2e-poc/**
 !e2e-poc/README.md
+node_modules

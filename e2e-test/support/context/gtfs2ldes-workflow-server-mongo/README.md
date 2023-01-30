@@ -39,7 +39,7 @@ In addition, for the GTFS to LDES conversion, various other arguments are requir
 * GTFS2LDES_DATA_FOLDER (location of GTFS data permanent storage, no default)
 
 Optionally, you can currently tune the following parameters: 
-* GTFS2LDES_TAG (default: `20220928t1555`)
+* GTFS2LDES_TAG (default: `20230129t1743`)
 * RUN_ON_LAUNCH (`true` or `false`, default: `true`)
 * THROTTLE_RATE (default: 10)
 * GTFS_CRON (cron for reading GTFS source, default: `0 0 3 1 * *`)

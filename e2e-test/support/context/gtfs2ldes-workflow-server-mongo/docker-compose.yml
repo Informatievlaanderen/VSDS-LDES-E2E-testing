@@ -2,7 +2,7 @@ version: '3.3'
 services:
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20220928t1555}
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
     profiles:
       - delayed-started
     environment:

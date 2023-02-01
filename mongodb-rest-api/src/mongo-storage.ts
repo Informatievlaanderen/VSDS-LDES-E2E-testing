@@ -7,8 +7,8 @@ export class MongoStorage {
         this._client = new MongoClient(connectionUri);
     }
 
-    public async initialize() {
-        await this._client.connect();
+    public initialize() {
+        return this._client.connect();
     }
     public terminate() {
         return this._client.close();

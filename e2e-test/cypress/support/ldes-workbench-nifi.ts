@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export class LdesWorkbenchNiFi {
-    constructor(private baseUrl: string) { 
+    constructor(private baseUrl: string) {
     }
 
     /**
@@ -21,27 +21,38 @@ export class LdesWorkbenchNiFi {
             .get('#login-submission-button').click().wait(`@${loaded}`);
     }
 
-    uploadWorkflow(file: string){
-        return cy.get('#operation-context-id').then(div => {
-            const groupId = div.text();
-            return cy.readFile(file, null).then(buffer => {
-                const blob = Cypress.Blob.base64StringToBlob(buffer.toString('base64'), 'application/json');
-                const formData = new FormData();
-                formData.append('file', blob);
-                formData.append('disconnectedNodeAcknowledged', 'false');
-                formData.append('groupName', 'nifi-workflow');
-                formData.append('positionX', '400'); 
-                formData.append('positionY', '60');
-                formData.append('clientId', uuidv4());
-                return cy.request({
-                    url: `${this.baseUrl}/nifi-api/process-groups/${groupId}/process-groups/upload`,
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'multipart/form-data',
-                      },
-                    body: formData
-                });
+    uploadWorkflow(file: string) {
+        cy.get('#splash').should('not.be.visible');
+       
+        cy.get("#group-component")
+            .trigger("mousedown", 1, 1, {
+                button: 0,
+                force: true,
+                eventConstructor: "MouseEvent"
             })
+            .trigger("mousemove", 200, 200, {
+                button: 0,
+                force: true,
+                eventConstructor: "MouseEvent"
+            })
+            .trigger("mouseup", 200, 200, {
+                button: 0,
+                force: true,
+                eventConstructor: "MouseEvent"
+            });
+
+        return cy.readFile(file, null).then(buffer => {
+            cy.get('#upload-file-field').selectFile({
+                contents: buffer,
+                fileName: 'nifi-workflow.json',
+                mimeType: 'application/json',
+                lastModified: Date.now(),
+            }, {force: true});
+            cy.get('#new-process-group-dialog > .dialog-buttons > div').first().click({force: true});
         });
+    }
+
+    pushStart() {
+        cy.get('#operate-start').click();
     }
 }

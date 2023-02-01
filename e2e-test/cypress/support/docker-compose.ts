@@ -27,7 +27,6 @@ export class DockerCompose {
     }
 
     public down() {
-        return cy.exec('docker compose down', {log:true, env: this.env});
+        return cy.exec('docker compose down', {log:true, env: this.env, timeout: 60000}).then(exec => expect(exec.code).to.equals(0));;
     }
-
 }

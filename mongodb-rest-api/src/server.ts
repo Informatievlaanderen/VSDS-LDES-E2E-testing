@@ -30,7 +30,8 @@ interface CountParameters {
 
 server.get('/:databaseName/:collectionName', async (request, reply) => {
   const parameters = request.params as CountParameters;
-  reply.send({count: await storage.count(parameters.databaseName, parameters.collectionName)});
+  const count = await storage.count(parameters.databaseName, parameters.collectionName);
+  reply.send({count: count});
 });
 
 async function closeGracefully(signal: any) {

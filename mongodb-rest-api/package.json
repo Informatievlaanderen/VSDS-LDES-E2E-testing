@@ -1,0 +1,33 @@
+{
+  "name": "mongodb-rest-api",
+  "version": "1.0.0",
+  "description": "MongoDB simple REST API",
+  "main": "./dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing.git"
+  },
+  "keywords": [
+    "MongoDB",
+    "REST",
+    "API"
+  ],
+  "author": "RubenHuybrighs",
+  "license": "EUPL-1.2",
+  "bugs": {
+    "url": "https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/issues"
+  },
+  "homepage": "https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing#readme",
+  "dependencies": {
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^18.11.18",
+    "fastify": "^4.12.0",
+    "minimist": "^1.2.7",
+    "mongodb": "^5.0.0",
+    "typescript": "^4.9.5"
+  }
+}

@@ -1,6 +1,6 @@
 # Convert Water Quality NGSI to OSLO Model
 
-This test verifies the convertion towards OSLO models, more specific, it demonstrates converting the [NGSI water quality model](https://github.com/smart-data-models/dataModel.WaterQuality) into its [OSLO model](https://data.vlaanderen.be/standaarden/standaard-in-ontwikkeling/vocabularium-en-applicatieprofiel-oslo-waterkwaliteit.html).
+This test verifies the convertion towards OSLO models, more specific, it demonstrates converting the [NGSI water quality model](https://github.com/smart-data-models/dataModel.WaterQuality) into its [OSLO model](https://data.vlaanderen.be/standaarden/kandidaat-standaard/vocabularium-en-applicatieprofiel-oslo-waterkwaliteit.html).
 
 The test uses the same setup as the [NGSI-v2 to NGSI-LD conversion test](../3.ngsi-v2-to-ldes/README.md) but adds an additional component in the Apache NiFi workflow to convert the NGSI-LD to the OSLO model. This conversion happens after converting the incoming NGSI-v2 model to the NGSI-LD model and before creating a version object and sending that to an LDES server.
 
@@ -98,9 +98,9 @@ In order to execute the test, you need to load & configure a workflow and send s
 ### Load & Configure Workflow
 Please logon to the Apache Nifi system at https://localhost:8443/nifi and add the [workflow](./nifi-workflow.json) (see [here](../../../support/context/workflow/README.md#creating-a-workflow) for details).
 
-Note that the workflow contains several warnings because the JOLT processors are (deliberately) missing a transformation specification. Please add the provided JOLT specifications for [models](./data/transforms/device-model.jolt-transform.json), [devices](./data/transforms/device.jolt-transform.json) and water quality [observations](./data/transforms/wqo.jolt-transform.json) into the correct JOLT processor's `Jolt Specification` property.
+We have already added the provided JOLT specifications for [models](./data/transforms/device-model.jolt-transform.json), [devices](./data/transforms/device.jolt-transform.json) and water quality [observations](./data/transforms/wqo.jolt-transform.json) into the correct JOLT processor's `Jolt Specification` property.
 
-In addition, for the observations you need to add the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the second JOLT transform because the OSLO model can not handle geojson.
+In addition, for the observations we added the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the second JOLT transform because the OSLO model can not handle geojson.
 
 Start the workflow and verify that the workflow's HTTP listeners are ready to accept entities.
 * http://localhost:9013/ngsi/device-model/healthcheck

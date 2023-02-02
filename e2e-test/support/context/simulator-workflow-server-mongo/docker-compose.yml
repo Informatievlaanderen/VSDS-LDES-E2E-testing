@@ -8,10 +8,10 @@ services:
       - SEED=/tmp/data
     ports:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
-    volumes:
-      - type: bind
-        source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER}
-        target: /tmp/data
+    # volumes:
+    #   - type: bind
+    #     source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER}
+    #     target: /tmp/data
     networks:
       - ldes
   nifi-workflow:
@@ -70,10 +70,10 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
+    # volumes:
+    #   - type: bind
+    #     source: ${MONGODB_DATA_FOLDER}
+    #     target: /data/db
     networks:
       - ldes
   mongodb-rest-api:

@@ -27,11 +27,16 @@
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^15.1.1",
     "@cypress/webpack-preprocessor": "^5.16.1",
+    "@types/n3": "^1.10.4",
     "@types/uuid": "^9.0.0",
     "cypress": "^12.3.0",
     "cypress-wait-until": "^1.7.2",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.4",
     "uuid": "^9.0.0"
+  },
+  "dependencies": {
+    "n3": "^1.16.3",
+    "string_decoder": "^1.3.0"
   }
 }

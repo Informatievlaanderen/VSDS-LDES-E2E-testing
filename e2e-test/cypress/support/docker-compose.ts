@@ -5,7 +5,7 @@ import 'cypress-wait-until';
 
 export class DockerCompose {
     
-    constructor(file: string, private env: object) {
+    constructor(file: string, private env: object = {}) {
         this.env = { 
             ... this.env,
             COMPOSE_FILE: file,

@@ -3,8 +3,8 @@
 export class LdesServerSimulator {
     constructor(private baseUrl: string) { };
 
-    public getAvailableFragmentsAndAliases() {
-        return cy.request(this.baseUrl);
+    public isAvailable() {
+        return cy.request(this.baseUrl).then(response => expect(response.isOkStatusCode).to.be.true);
     }
 
     public seed(files: string[]) {

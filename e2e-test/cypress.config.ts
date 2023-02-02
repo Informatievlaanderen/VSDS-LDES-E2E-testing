@@ -18,6 +18,9 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
       webpackOptions: {
         resolve: {
           extensions: [".ts", ".js"],
+          fallback: {
+            "string_decoder": require.resolve("string_decoder/")
+          },
         },
         module: {
           rules: [
@@ -45,9 +48,9 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     })
   );
 
-    // add simulator GIPOD data set
-    const gipodDataFolder = '../ldes-server-simulator/data/gipod';
-    config.env.gipodDataSet = getFiles(gipodDataFolder).map(x => `${gipodDataFolder}/${x}`);
+  // add simulator GIPOD data set
+  const gipodDataFolder = '../ldes-server-simulator/data/gipod';
+  config.env.gipodDataSet = getFiles(gipodDataFolder).map(x => `${gipodDataFolder}/${x}`);
 
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;

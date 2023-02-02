@@ -22,10 +22,6 @@ export class LdesClientSink {
                 cy.log('Actual count: ' + result[collectionName].total).then(() => 
                     result[collectionName].total === count)
             );
-        // NOTE: example for GIPOD tests 2 and 4
-        // return cy.request(`http://localhost:9012/GIPOD/${collectionName}`)
-        //     .then(response => response.body)
-        //     .then((result: { count: number }) => cy.log('Actual count: ' + result.count).then(() => result.count === count));
     }
 
     public deleteMember() {

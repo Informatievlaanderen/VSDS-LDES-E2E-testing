@@ -56,6 +56,8 @@ services:
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
     ports:
       - ${MONGODB_REST_API_PORT:-9012}:80
+    networks:
+      - ldes
 networks:
   ldes:
     name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_network

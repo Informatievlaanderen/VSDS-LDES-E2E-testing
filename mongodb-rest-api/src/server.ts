@@ -24,6 +24,17 @@ server.addHook('onClose', async () => {
   await mongo.close();
 })
 
+server.addHook('onResponse', (request, reply, done) => {
+  if (!silent) {
+    const method = request.method;
+    const statusCode = reply.statusCode;
+    console.debug(method === 'POST' 
+      ? `${method} ${request.url} ${request.headers['content-type']} ${statusCode}` 
+      : `${method} ${request.url} ${statusCode}`);
+  }
+  done();
+});
+
 interface CountParameters {
   database: string;
   collection: string;

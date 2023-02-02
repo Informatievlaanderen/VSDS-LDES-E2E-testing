@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import minimist from 'minimist'
-import { MongoStorage } from './mongo-storage';
+import { MongoClient } from "mongodb";
 
 const server = fastify();
 
@@ -13,24 +13,25 @@ if (!silent) {
 const port = args['port'] || 9000;
 const host = args['host'] || 'localhost';
 const connectionUri = args['connection-uri'] || 'mongodb://localhost:27017';
-const storage = new MongoStorage(connectionUri);
+
+const mongo = new MongoClient(connectionUri);
 
 server.addHook('onReady', async () => {
-  await storage.initialize();
+  await mongo.connect();
 });
 
 server.addHook('onClose', async () => {
-  await storage.terminate();
+  await mongo.close();
 })
 
 interface CountParameters {
-  databaseName: string;
-  collectionName: string;
+  database: string;
+  collection: string;
 }
 
-server.get('/:databaseName/:collectionName', async (request, reply) => {
+server.get('/:database/:collection', async (request, reply) => {
   const parameters = request.params as CountParameters;
-  const count = await storage.count(parameters.databaseName, parameters.collectionName);
+  const count = await mongo.db(parameters.database).collection(parameters.collection).estimatedDocumentCount({});
   reply.send({count: count});
 });
 

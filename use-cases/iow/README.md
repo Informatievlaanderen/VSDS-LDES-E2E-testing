@@ -3,7 +3,7 @@ For the Internet of Water (IoW) use case, the current architecture exposes water
 
 To receive the current state of the entities of interest, including the last observations (the initial data set), the Orion broker can be [queried](https://fiware-ges.github.io/orion/archive/api/v2/cookbook/) using HTTP(S) calls. To receive updates for these entities, a [subscription](https://fiware.github.io/specifications/ngsiv2/stable/) must be created which ensures the Orion broker sends HTTP(S) messages to an endpoint of choice.
 
-To use this data set in an LDES (Linked Data Event Stream) environment, the data received as response from querying the initial data set and the subsequent messages received as result of the subscriptions, is converted to a linked data equivalent model using an [Apache NiFi](https://nifi.apache.org/) workflow. The received NGSI-v2 data is first convert to a NGSI-LD equivalent model ([Smart Data Model for water quality](https://github.com/smart-data-models/dataModel.WaterQuality)) and then to the [OSLO equivalent model](https://data.vlaanderen.be/doc/applicatieprofiel/waterkwaliteit). Finally, the resulting model, which is a entity state, is used to create an LDES member, which is a version object.
+To use this data set in an LDES (Linked Data Event Stream) environment, the data received as response from querying the initial data set and the subsequent messages received as result of the subscriptions, is converted to a linked data equivalent model using an [Apache NiFi](https://nifi.apache.org/) workflow. The received NGSI-v2 data is first convert to a NGSI-LD equivalent model ([Smart Data Model for water quality](https://github.com/smart-data-models/dataModel.WaterQuality)) and then to the [OSLO equivalent model](https://data.vlaanderen.be/doc/applicatieprofiel/waterkwaliteit)(only the water quality observation). Finally, the resulting model, which is a entity state, is used to create an LDES member, which is a version object.
 
 ## Architecture
 In the IoW use case we deploy one [Apache NiFi system](https://localhost:8443/nifi) to convert the NGSI-v2 data into LDES member, three individual LDES Servers to ingest and serve the observations, devices and device models and one MongoDB to store the ingested data and LDES fragments. Here is a context diagram of those systems:
@@ -13,9 +13,13 @@ In the IoW use case we deploy one [Apache NiFi system](https://localhost:8443/ni
 As an example we provide a [Docker Compose](./docker-compose.yml) file containing the above systems and an [environment](./.env) file containing the most relevant environment variables that can be tuned. Alternatively, if needed, you can change or extend the compose file and the environment file for your need.
 
 ## Workflow(s)
-To ingest the water quality observations and related models (device and device model) we use one Apache NiFi [workflow](./workflow.json) consisting of 3 almost identical flows. Each flow allows to seed the initial data set, that is, request and handle the current state of observations, devices and models. In addition, each flow contains a listener that captures the messages sent from the Orion broker because of a subscription. Here is an example of the observations flow:
+To ingest the water quality observations and related models (device and device model) we use one Apache NiFi [workflow](./workflow.json) consisting of 3 almost identical flows. 
 
 ![workflow](./workflow.png)
+
+Each flow allows to seed the initial data set, that is, request and handle the current state of observations, devices and models. In addition, each flow contains a listener that captures the messages sent from the Orion broker because of a subscription. Here is an example of the observations flow:
+
+![observations](./observations.png)
 
 ### Seeding the Initial Data Set
 To retrieve the initial data set, each flow uses a default `InvokeHTTP` processor to query an Orion broker of your choice protected by an `X-API-KEY` (found in an Apache NiFi parameter context named `IOW`):
@@ -30,30 +34,33 @@ In order to actually seed the initial data set, run the `Seed entities` processo
 
 ### Listening for Entity Updates
 The `Receive updates` workflow listeners are by default configured here:
-* devices: http://localhost:9012 (the Orion broker should POST device update messages here) - check if running at: http://localhost:9012/healthcheck
-* models: http://localhost:9013 (typically, no updates are posted for models) - check if running at: http://localhost:9013/healthcheck
-* observations: http://localhost:9014 (the Orion broker should POST observation update messages here) - check if running at: http://localhost:9014/healthcheck
+* devices: http://localhost:9012/ngsi/device (the Orion broker should POST device update messages here) - check if running at: http://localhost:9012/ngsi/device/healthcheck
+* models: http://localhost:9013/ngsi/device-model (typically, no updates are posted for models) - check if running at: http://localhost:9013/ngsi/device-model/healthcheck
+* observations: http://localhost:9014/ngsi/water-quality-observed (the Orion broker should POST observation update messages here) - check if running at: http://localhost:9014/ngsi/water-quality-observed/healthcheck
 
 The `Extract data` (SplitJson) processor extracts the entity from the update message received from the Orion broker.
 
-To start receiving updates start both processors.
+To start receiving updates start these processors.
 
 ### Converting the Entities to LDES Members
-To convert the received entities (both initial state or update), the NGSI-v2 formatted entity is converted to NGSI-LD using a [custom processor](https://github.com/Informatievlaanderen/VSDS-LDESWorkbench-NiFi/tree/main/create-version-object-processor), the NGSI-LD is then converted to its OSLO equivalent model using a standard JSON-to-JSON processor (JoltTransformJSON) and a custom specification (e.g. [transform for observations](../../e2e-test/use-cases/iow/4.oslo-model-using-jolt/data/transforms/wqo.jolt-transform.json)) and finally to an LDES member (version object creation) using [another custom processor](https://github.com/Informatievlaanderen/VSDS-LDESWorkbench-NiFi/tree/main/create-version-object-processor).
+To convert the received entities (both initial state or update), the NGSI-v2 formatted entity is converted to NGSI-LD using a [custom processor](https://github.com/Informatievlaanderen/VSDS-LDESWorkbench-NiFi/tree/34a5d6a053670af56aede95711ac738a71917e3a/ngsiv2-to-ngsi-ld-processor), the NGSI-LD is then converted to its OSLO equivalent model using a standard JSON-to-JSON processor (JoltTransformJSON) and a custom specification (e.g. [transform for observations](../../e2e-test/use-cases/iow/4.oslo-model-using-jolt/data/transforms/wqo.jolt-transform.json)) and finally to an LDES member (version object creation) using [another custom processor](https://github.com/Informatievlaanderen/VSDS-LDESWorkbench-NiFi/tree/34a5d6a053670af56aede95711ac738a71917e3a/ngsi-ld-to-ldes-processor).
 
 You can tune each of these processors to your needs, see [here](https://github.com/Informatievlaanderen/VSDS-LDESWorkbench-NiFi) and the [Apache NiFi documentation](https://nifi.apache.org/docs.html).
 
 To convert the received entities start these processors.
 
 ### Ingesting the LDES Members
-To ingest the observation, device and device model LDES members we use a standard InvokeHTTP processor to POST to the configured endpoints. By default, these endpoints are configured to send the LDES members to the LDES Server Docker containers (by using their internal names). Please tune as needed.
+To ingest the observation, device and device model LDES members we use a standard InvokeHTTP processor to POST to the configured endpoints. By default, these endpoints are configured to send the LDES members to the LDES Server Docker containers (by using their internal names). Please tune as needed in the Apache NiFi parameter context named `LDES`:
+* parameter `ldes-server-observations-url`: URL for LDES server containing water quality observations
+* parameter `ldes-server-devices-url`: URL for LDES server containing devices
+* parameter `ldes-server-models-url`: URL for LDES server containing device models
 
 To send the LDES members to the LDES server, start the processor.
 
 After a very brief moment you can request the LDES'es:
-* LDES: http://localhost:8073/water-quality-observations, view: http://localhost:8073/water-quality-observations/by-time
-* LDES: http://localhost:8072/device-models, view: http://localhost:8072/device-models/by-time
-* LDES: http://localhost:8071/devices, view: http://localhost:8071/devices/by-time
+* LDES: http://localhost:8073/water-quality-observations, view: http://localhost:8073/water-quality-observations-by-time
+* LDES: http://localhost:8072/device-models, view: http://localhost:8072/device-models-by-time
+* LDES: http://localhost:8071/devices, view: http://localhost:8071/devices-by-time
 
 ## More information
 If you need more info on the above systems or configuration please find here the repositories and Docker images:

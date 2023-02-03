@@ -17,7 +17,7 @@ docker compose --env-file user.env start ldes-server-simulator
 ## Test Execution and Verification
 Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json) - in a new terminal window (bash shell):
 ```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 > **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
@@ -54,7 +54,7 @@ curl http://localhost:9011/
 ### Verify Synchronization
 Ingest the [data set update](./data/delta.jsonld) containing the additional members and see the LDES Client CLI output them as well:
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/delta.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
 ```
 
 Stop following the log file and output the log to a file:

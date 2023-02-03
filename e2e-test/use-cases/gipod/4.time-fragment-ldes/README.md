@@ -94,7 +94,7 @@ For testing the second scenario we need to send the [scenario 2 alfa.jsonld](./d
 
 1. Upload the `alfa.jsonld` file to the [simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario2/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario2/alfa.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 2. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
@@ -134,8 +134,8 @@ For testing the third scenario we need to send the [scenario 3 alfa.jsonld](./da
 1. Recreate the container as described [here](#recreate-containers-between-the-scenarios).
 2. Upload the `alfa.jsonld` and `beta.jsonld` files to the [simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario3/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario3/beta.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario3/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario3/beta.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
@@ -152,9 +152,9 @@ For testing the fourth scenario we need to send the the [scenario 4 alfa.jsonld]
 1. Recreate the container as described [here](#recreate-containers-between-the-scenarios).
 2. Upload the `alfa.jsonld`, `beta.jsonld` and `epsilon.jsonld` fils to the [simulator](http://localhost:9011/):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/beta.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/scenario4/epsilon.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario4/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario4/beta.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/scenario4/epsilon.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 3. Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).

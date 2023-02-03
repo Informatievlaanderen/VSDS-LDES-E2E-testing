@@ -93,9 +93,9 @@ curl http://localhost:8080/mobility-hindrances/by-longer-time
 
 2. send initial data set and verify simulator at http://localhost:9011:
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/beta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
@@ -115,8 +115,8 @@ curl http://localhost:8080/mobility-hindrances/by-longer-time
 
 8. feed more data:
 ```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/delta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/epsilon.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
 ```
 
 9. verify that in each view one additional fragment is created and the previous fragment is marked immutable, and that the member count has increased (because new members have been received)

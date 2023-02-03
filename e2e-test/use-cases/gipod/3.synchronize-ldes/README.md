@@ -57,18 +57,18 @@ We need to upload all but the last fragment as an immutable fragment and the las
 
 To do so, please use an HTTP client that can POST to a URL, such as [Postman](https://www.postman.com/) (graphical tool) or [curl](https://curl.se/) (command line tool, just celebrated its [23th birthday](https://daniel.haxx.se/blog/2021/03/20/curl-is-23-years-old-today/)!). The command line instructions are:
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/beta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/gamma.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
 ```
 
 **Note** the `?max-age=10` part in the last command limiting the freshness to 10 seconds.
 
 The simulator (http://localhost:9011) will respond with:
 ```json
-{"content-type":"application/json-ld","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"}
-{"content-type":"application/json-ld","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-25T10:22:45.82Z"}
-{"content-type":"application/json-ld","cache-control":"public, max-age=10","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"}
+{"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"}
+{"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-25T10:22:45.82Z"}
+{"content-type":"application/ld+json","cache-control":"public, max-age=10","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"}
 ```
 
 **Note** the `"cache-control":"public, max-age=604800, immutable"` for the first two fragments and the `"cache-control":"public, max-age=10"` for the last one.
@@ -115,7 +115,7 @@ If you upload an update for the last fragment, you will notice that the sink wil
 
 To upload the updated last fragment:
 ```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/delta.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
 ```
 
 ### 6. Verify Update Received
@@ -133,7 +133,7 @@ You can upload the second update for the last fragment and again validate the ne
 
 To upload the last update for the last fragment:
 ```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/json-ld' -d '@data/epsilon.jsonld'
+curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
 ```
 **Note** that after a short while the result should be (alfa + beta + epsilon):
 ```json

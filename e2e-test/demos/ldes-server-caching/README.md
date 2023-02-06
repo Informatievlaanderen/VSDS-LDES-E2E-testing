@@ -160,7 +160,7 @@ Content-Length: 0
 Connection: keep-alive
 ```
 
-### Verify CORS and Suppored HTTP Verbs
+### Verify CORS and Supported HTTP Verbs
 The LDES Server is setup to accept requests from anywhere and, if needed, access should be restricted in another way. You can easily verify CORS using:
 ```bash
 curl -i -X OPTIONS -H "Origin: http://www.example.com" -H "Access-Control-Request-Method: GET" http://localhost:8080/mobility-hindrances/by-time

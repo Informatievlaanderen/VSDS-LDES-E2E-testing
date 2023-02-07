@@ -2,7 +2,7 @@ version: '3.3'
 services:
   ldes-server:
     container_name: ${USECASE_NAME:-setup-caching}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230131t0819}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod
@@ -47,7 +47,7 @@ services:
     networks:
       - ldes
   ldes-cli:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230116t1123}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230130T1553}
     container_name: ${USECASE_NAME:-setup-caching}_ldes-client-cli
     command: "--url http://localhost:${NGINX_PORT:-8080}/${COLLECTION_NAME:-mobility-hindrances}/${VIEW_NAME:-by-time} --input-format text/turtle"
     profiles:

@@ -82,7 +82,7 @@ Now you can plot the [shape](./wkt/out.wkt) using the [online tool](https://clyd
 #### 2. Ingest the Data Set
 You need to ingest the data set ([single file containing one member](./data/one-member.jsonld)) and [alias it](./create-alias.json):
 ```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/json-ld' -d '@data/one-member.jsonld'
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/one-member.jsonld'
 curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 

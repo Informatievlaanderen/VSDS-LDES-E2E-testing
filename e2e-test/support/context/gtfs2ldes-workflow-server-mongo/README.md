@@ -21,7 +21,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
-* LDES_SERVER_TAG (default: `20230112t1553`)
+* LDES_SERVER_TAG (default: `20230131t0819`)
 * LDES_COLLECTIONNAME (default `connections`)
 * LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)
 * LDES_SERVER_PORT (default: 8080)

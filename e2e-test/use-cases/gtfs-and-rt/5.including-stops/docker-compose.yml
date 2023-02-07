@@ -51,7 +51,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230112t1553}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230131t0819}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}

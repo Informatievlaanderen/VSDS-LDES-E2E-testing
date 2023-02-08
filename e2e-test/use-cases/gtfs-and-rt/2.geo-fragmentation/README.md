@@ -32,16 +32,14 @@ The geospatial fragmentizer currently does not cover the following acceptance cr
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use a adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (geospatial-fragment.env)](./geospatial-fragment.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments.
+To demonstrate the geospatial fragmentation, we use a adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation). Please note the specific configuration properties which allow to configure which fragmentizer to use as well as the specific geospatial bucketizer and fragmentizer properties:
 * GEOSPATIAL_MAXZOOMLEVEL=15 (tune as needed)
 
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
 You can then run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
@@ -104,5 +102,5 @@ We have configured the zoom level (= 15) in such a way that the geospatial fragm
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

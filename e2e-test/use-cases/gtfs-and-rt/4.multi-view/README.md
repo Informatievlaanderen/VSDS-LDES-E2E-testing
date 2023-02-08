@@ -9,7 +9,7 @@ The LDES Server provides some configuration to cover the following acceptance cr
 * views are consulted via the endpoint '/{viewname}'
 
 ### Test Setup
-To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (multiview.env)](./multiview.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
+To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. 
 
 The environment file is already configured for two view (one geospatial & timebased and one timebased) but you can adapt the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#multiview). 
 Please note the specific configuration properties which allow to configure the amount of views and types of fragmentations (`X` represents the view number starting at 0, `Y` represents the fragmentation number starting at 0):
@@ -17,11 +17,9 @@ Please note the specific configuration properties which allow to configure the a
 * VIEWS_X_FRAGMENTATIONS_Y_NAME=name of fragmentation (currently, only "timebased" and "geospatial" are supported)
 * VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`FRAGMENTATION_PROPERTY_KEY`=`FRAGMENTATION_PROPERTY_VALUE` (specific to the kind of fragmentation, e.g. `FRAGMENTATION_PROPERTY_KEY` = "maxzoomlevel" and `FRAGMENTATION_PROPERTY_VALUE` = "15" for geospatial fragmentation)
 
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
 You can then run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
@@ -100,13 +98,13 @@ Try out different views and fragmentation strategies by
 2. Deleting the database for example using [Mongo Compass](https://www.mongodb.com/products/compass)
 3. Recreating the ldes-server:
    ```
-    docker compose --env-file user.env stop ldes-server  
-    docker compose --env-file user.env create ldes-server
-    docker compose --env-file user.env start ldes-server   
+    docker compose stop ldes-server  
+    docker compose create ldes-server
+    docker compose start ldes-server   
     ``` 
 
 ### Test Teardown
 First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

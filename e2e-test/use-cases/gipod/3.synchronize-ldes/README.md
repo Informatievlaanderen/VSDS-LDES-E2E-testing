@@ -23,7 +23,7 @@ Then only the new LDES members are forwarded
 ```
 
 ### Test Setup
-For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. Please copy the [environment file (synchronize.env)](./synchronize.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
+For this scenario we can use the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. 
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -34,7 +34,7 @@ export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/dock
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
 
 ### Test Execution
@@ -143,5 +143,5 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

@@ -18,12 +18,8 @@ This demo shows the mechanisms provided in the LDES server to allow for ingestin
 ## Test Setup
 To demonstrate the above features we use a number of Docker containers as part of a [context](./docker-compose.yml), more specific an LDES Server with a MongoDB for its storage and an nginx [configured](./nginx.conf) to show the cacheability capabilities.
 
-The Docker compose context is setup to require a minimal set of settings. You need to copy the default environment [file](./setup-caching.env) to a user file (i.e. `user.env`) so you can configure these required settings and optionally change some other settings to tailor the systems to your needs.
+The Docker compose context is setup to require no custom settings. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-Required settings:
-* MONGODB_DATA_FOLDER (local directory for storing the mongoDB database)
-
-You can also change the following optional settings to tune the LDES Server as you see fit:
 * COLLECTION_NAME (base URL for ingesting/serving the collection, default: `mobility-hindrances`)
 * VIEW_NAME (name of the view, used for serving the view, default: `by-time`)
 * MEMBER_LIMIT (maximum number of members per fragment, default: `2`)
@@ -35,8 +31,9 @@ You can also change the following optional settings to tune the LDES Server as y
 
 To start all the systems in the context execute the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
+> **Note**: you may need to wait approximately 30 seconds for the LDES server to start (you can check the docker logs), otherwise the cache server may return a `Bad Gateway` response and not re-query the LDES server until the cache expires.
 
 ### Verify URL Naming Strategy
 As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/mobility-hindrances and the view at http://localhost:8080/mobility-hindrances/by-time, or using bash commands:
@@ -46,19 +43,15 @@ curl http://localhost:8080/mobility-hindrances/by-time
 this results in:
 ```
 @prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
 @prefix tree:                <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z>
-                       ] .
+mobility-hindrances:by-time
+        a       tree:Node .
 
 <http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
+        a          ldes:EventStream ;
+        tree:view  mobility-hindrances:by-time .
 ```
 
 ### Verify Acceptable Fragment Formats
@@ -73,53 +66,32 @@ curl -H "accept: application/n-triples" http://localhost:8080/mobility-hindrance
 this results in:
 ```
 @prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
+@prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
 @prefix tree:                <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z>
-                       ] .
+mobility-hindrances:by-time
+        a       tree:Node .
 
 <http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
+        a          ldes:EventStream ;
+        tree:view  mobility-hindrances:by-time .
 ```
 ```
-<http://localhost:8080/mobility-hindrances/by-time> <https://w3id.org/tree#relation> _:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 .
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
-<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
-_:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Relation> .
-_:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 <https://w3id.org/tree#node> <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .      
+<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> . 
 ```
 ```
 {
     "@graph": [
         {
-            "@id": "http://localhost:8080/mobility-hindrances/by-time",
-            "tree:relation": {
-                "@id": "_:b0"
-            },
+            "@id": "mobility-hindrances:by-time",
             "@type": "tree:Node"
-        },
-        {
-            "@id": "_:b0",
-            "@type": "tree:Relation",
-            "tree:node": {
-                "@id": "http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z"
-            }
         },
         {
             "@id": "http://localhost:8080/mobility-hindrances",
             "tree:view": {
-                "@id": "http://localhost:8080/mobility-hindrances/by-time"
-            },
-            "tree:shape": {
-                "@id": "mobility-hindrances:shape"
+                "@id": "mobility-hindrances:by-time"
             },
             "@type": "ldes:EventStream"
         }
@@ -127,18 +99,14 @@ _:Bc6519948X2Da78bX2D4c2fX2D8301X2Dcb3ef44c6c65 <https://w3id.org/tree#node> <ht
     "@context": {
         "tree": "https://w3id.org/tree#",
         "ldes": "https://w3id.org/ldes#",
-        "mobility-hindrances": "https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/"
+        "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
     }
 }
 ```
 ```
-<http://localhost:8080/mobility-hindrances/by-time> <https://w3id.org/tree#relation> _:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e .
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#shape> <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape> .
 <http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
-_:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Relation> .
-_:B08a09ef5X2Dcd14X2D4b0dX2Db5fdX2Dc12cc7c9e12e <https://w3id.org/tree#node> <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T18:51:26.893Z> .
 ```
 > **Note** that `application/n-triples` and `application/n-quads` return the same result as the ingested members are all in the default graph.
 
@@ -151,7 +119,7 @@ curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: appl
 curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/ld+json' -d '@data/member.jsonld'
 curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/n-triples' -d '@data/member.nt'
 ```
-these commands all results in somthing similar to:
+these commands all results in something similar to:
 ```
 HTTP/1.1 200 
 Server: nginx/1.23.3
@@ -188,7 +156,7 @@ curl -I http://localhost:8080/mobility-hindrances/by-time
 ```
 > **Note** that you can use `-I` or `--head` which are equivalent.
 
-Which results in:
+Which results in something similar to:
 ```
 HTTP/1.1 200 
 Server: nginx/1.23.3
@@ -347,13 +315,15 @@ rm view.ttl
 ### Verify HTTP 304 Handling
 To launch the LDES client and follow its behavior run the following command:
 ```bash
-docker compose --env-file user.env up ldes-cli
+docker compose create ldes-cli
+docker compose up ldes-cli -d
 ```
 > **NOTE**: it is not yet possible to validate that the HTTP 304 (Not Modified) header is correctly handled by the LDES client. The behavior is implemented but not yet logged. We are adding logging to the LDES client so very soon this will be available.
 
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose --env-file user.env --profile delay-started down
-docker compose --env-file user.env down
+docker compose stop ldes-cli 
+docker compose --profile delayed-started down
+docker compose down
 ```

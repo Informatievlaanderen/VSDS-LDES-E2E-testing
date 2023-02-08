@@ -4,13 +4,8 @@ services:
     container_name: ${USECASE_NAME:-persisted-state}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
-      - SEED=/tmp/data
     ports:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
-    volumes:
-      - type: bind
-        source: ${LDES_SERVER_SIMULATOR_SEED_FOLDER:-../../ldes-server-simulator/data/gipod}
-        target: /tmp/data
     networks:
       - ldes
   nifi-workflow:
@@ -21,8 +16,6 @@ services:
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
-    volumes:
-      - "./flows:/opt/nifi/nifi-current/flows"
     networks:
       - ldes
   ldes-client-sink:

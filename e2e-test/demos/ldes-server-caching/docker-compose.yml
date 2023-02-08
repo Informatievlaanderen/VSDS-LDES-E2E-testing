@@ -29,10 +29,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
   nginx:
@@ -41,9 +37,7 @@ services:
     ports:
       - ${NGINX_PORT:-8080}:8080
     volumes:
-      - type: bind
-        source: ${NGINX_CONFIG_FILE:-./nginx.conf}
-        target: /etc/nginx/conf.d/fwd-ldes-server.conf
+      - ./nginx.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro
     networks:
       - ldes
   ldes-cli:

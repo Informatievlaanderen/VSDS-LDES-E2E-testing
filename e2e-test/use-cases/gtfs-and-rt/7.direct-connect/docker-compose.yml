@@ -1,0 +1,118 @@
+version: '3.3'
+services:
+
+# NOTE: the memory restrictions are tuned for a 16 GB machine, adjust accordingly for your system
+
+  gtfs2ldes-js:
+    container_name: ${USECASE_NAME:-gtfs-direct-connect}_gtfs2ldes-js
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=5120 # NOTE: set this a bit lower than the memory limit
+      - GTFS_SOURCE=${GTFS_SOURCE}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE}
+      - BASE_IRI=${GTFS_BASE_IRI}
+      - TARGET_URL=http://ldes-server:8080/connections
+      - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
+      - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
+      - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
+      - THROTTLE_RATE=${THROTTLE_RATE:-100}
+      - AUTH_HEADER=${AUTH_HEADER:-X-API-KEY}
+      - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
+    volumes:
+      - type: bind
+        source: ${GTFS2LDES_DATA_FOLDER}
+        target: /data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: '1.5GB'
+        reservations:
+          cpus: '0.3'
+          memory: '512MB'
+    networks:
+      - ldes
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-server
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230127t1614}
+    environment:
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_AUTO-INDEX-CREATION=true
+      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - LDES_COLLECTIONNAME=connections
+      - LDES_MEMBERTYPE=http://semweb.mmlab.be/ns/linkedconnections#Connection
+      - LDES_SHAPE=
+      - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
+      - VIEWS_0_NAME=by-location-and-time
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=noop
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=13
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
+      - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
+      - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=100
+      - VIEWS_0_RETENTIONPOLICIES_0_NAME=timebased
+      - VIEWS_0_RETENTIONPOLICIES_0_CONFIG_DURATION=P3D # keep data for max 3 days
+    volumes:
+      - type: bind
+        source: ${LDES_SERVER_TMP_FOLDER}
+        target: /tmp
+    ports:
+      - ${LDES_SERVER_PORT:-8080}:8080
+    deploy:
+      resources:
+        limits:
+          cpus: '1.25'
+          memory: '1.5GB'
+        reservations:
+          cpus: '0.3'
+          memory: '512MB'
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.3}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - type: bind
+        source: ${MONGODB_DATA_FOLDER}
+        target: /data/db
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '4GB'
+        reservations:
+          cpus: '0.3'
+          memory: '768MB'
+    networks:
+      - ldes
+
+  ldes-list-fragments:
+    container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-list-fragments
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230130t0856}
+    profiles:
+      - delayed-started
+    environment:
+      - FOLLOW=http://localhost:${LDES_SERVER_PORT:-8080}/connections/by-location-and-time
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '512MB'
+        reservations:
+          cpus: '0.1'
+          memory: '256MB'
+    network_mode: "host"
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-gtfs-direct-connect}_network

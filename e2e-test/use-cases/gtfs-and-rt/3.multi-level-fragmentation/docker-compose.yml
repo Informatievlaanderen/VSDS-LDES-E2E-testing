@@ -5,21 +5,16 @@ services:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230130t0856}
     environment:
       - BASEURL=http://ldes-server-simulator
-      - SEED=/tmp/data
     ports:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
-    volumes:
-      - type: bind
-        source: ../../../../ldes-server-simulator/data/empty
-        target: /tmp/data
     networks:
       - ldes
   nifi-workflow:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230127T135852}
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-workbench-nifi
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
     networks:
@@ -67,10 +62,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
 networks:

@@ -6,10 +6,10 @@ services:
     profiles:
       - delayed-started
     environment:
-      - NODE_OPTIONS=${NODE_OPTIONS:-}
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
       - BASE_IRI=${GTFS_BASE_IRI}
+      - NODE_OPTIONS=${NODE_OPTIONS:-}
       - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
@@ -17,46 +17,29 @@ services:
       - THROTTLE_RATE=${THROTTLE_RATE:-10}
       - AUTH_HEADER=${AUTH_HEADER:-X-API-KEY}
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
-    volumes:
-      - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER}
-        target: /data
     networks:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
     image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
       - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
       - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
     ports:
       - ${NIFI_UI_PORT:-8443}:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
-    # volumes:
-    #   - type: bind
-    #     source: ${NIFI_BASE_FOLDER}/content_repository
-    #     target: /opt/nifi/nifi-current/content_repository
-    #   - type: bind
-    #     source: ${NIFI_BASE_FOLDER}/database_repository
-    #     target: /opt/nifi/nifi-current/database_repository
-    #   - type: bind
-    #     source: ${NIFI_BASE_FOLDER}/flowfile_repository
-    #     target: /opt/nifi/nifi-current/flowfile_repository
-    #   - type: bind
-    #     source: ${NIFI_BASE_FOLDER}/provenance_repository
-    #     target: /opt/nifi/nifi-current/provenance_repository
     networks:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230131t0819}
     environment:
-      - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
+      - SIS_DATA=/tmp
       - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
       - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME:-connections}
       - LDES_MEMBERTYPE=${LDES_MEMBERTYPE:-http://semweb.mmlab.be/ns/linkedconnections#Connection}
@@ -84,10 +67,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
 networks:

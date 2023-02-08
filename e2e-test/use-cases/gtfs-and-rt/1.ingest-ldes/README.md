@@ -19,15 +19,7 @@ Then that service should POST the updated Linked Connections Event Stream member
 ### Test Setup
 For this scenario we can use the [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (ingest.env)](./ingest.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments or, if available, append the specific `<gtfs-use-case>.env` file to your personal file.
 
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then. E.g.:
->
-> for NMBS data set: `mkdir -p ~/data/gtfs/nmbs/lc/; mkdir ~/data/gtfs/nmbs/db/`
->
-> for De Lijn data set: `mkdir -p ~/data/gtfs/delijn/lc/; mkdir ~/data/gtfs/delijn/db/`
-
 > **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
-
-> **Note**: when using the GTFS data from NMBS you will encounter issues with the generated linked connections because the [URI templates from the gtfs2ldes-js system](https://github.com/julianrojas87/gtfs2ldes-js/blob/main/config.json) are currently fixed when creating the docker image.
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/gtfs2ldes-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -36,9 +28,8 @@ export COMPOSE_FILE="../../../support/context/gtfs2ldes-workflow-server-mongo/do
 
 Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose --env-file user.env up -d
 ```
-
 > **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
 
 ### Test Execution
@@ -65,7 +56,7 @@ Start the GTFS to LDES convertor as described [here](../../../support/context/gt
 
 To start the GTFS to LDES convertor:
 ```bash
-docker compose --env-file user.env up gtfs2ldes-js
+docker compose --env-file user.env up gtfs2ldes-js -d
 ```
 
 Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
@@ -83,5 +74,6 @@ curl http://localhost:8080/connections/by-time
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
+docker compose --env-file user.env stop gtfs2ldes-js
 docker compose --env-file user.env --profile delay-started down
 ```

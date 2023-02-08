@@ -6,29 +6,25 @@ services:
     profiles:
       - delayed-started
     environment:
-      - NODE_OPTIONS=${NODE_OPTIONS}
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
       - BASE_IRI=${GTFS_BASE_IRI}
+      - NODE_OPTIONS=${NODE_OPTIONS:-}
       - TARGET_URL=http://nifi-workflow:9005/gtfs
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
       - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
       - THROTTLE_RATE=${THROTTLE_RATE:-10}
-      - AUTH_HEADER=${AUTH_HEADER}
-      - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE}
-    volumes:
-      - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER}
-        target: /data
+      - AUTH_HEADER=${AUTH_HEADER:-}
+      - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
     networks:
       - ldes
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
     image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
       - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
       - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
     ports:
@@ -66,10 +62,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
 networks:

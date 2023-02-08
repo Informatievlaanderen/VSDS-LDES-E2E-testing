@@ -34,15 +34,13 @@ Currently, the following criteria are not yet implemented:
 The current implementation takes a simplified view on how the fragments are related: every fragment contains one or more relations of type `tree:GeospatiallyContainsRelation` with its `tree:path` containing the tile's bounding box expressed as WKT. This allows a fragment to point to its neighboring fragments. In addition, every fragment already contains members.
 
 ### Test Setup
-To demonstrate the geospatial fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (geospatial-fragment.env)](./geospatial-fragment.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
+To demonstrate the geospatial fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 The environment file is already configured for geospatial fragmentation but you can tune the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#geospatial-fragmentation).
 
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc.
-
 You can then run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
@@ -91,14 +89,14 @@ To try out a different fragmentation strategy you need to tune the [Docker Compo
 2. Delete the MongoDB database (e.g. using [Mongo Compass](https://www.mongodb.com/products/compass))
 3. Recreate the ldes-server:
    ```
-    docker compose --env-file user.env stop ldes-server  
-    docker compose --env-file user.env create ldes-server
-    docker compose --env-file user.env start ldes-server   
+    docker compose stop ldes-server  
+    docker compose create ldes-server
+    docker compose start ldes-server   
     ``` 
-4. Restart the workflow
+4. Re-create the workflow (delete and upload again)
 
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

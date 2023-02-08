@@ -7,7 +7,7 @@ services:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
     environment:
-      - NODE_OPTIONS=--max-old-space-size=5120 # NOTE: set this a bit lower than the memory limit
+      - NODE_OPTIONS=--max-old-space-size=768 # NOTE: in MB, set this a bit lower than the memory limit
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
       - BASE_IRI=${GTFS_BASE_IRI}
@@ -18,18 +18,14 @@ services:
       - THROTTLE_RATE=${THROTTLE_RATE:-100}
       - AUTH_HEADER=${AUTH_HEADER:-X-API-KEY}
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
-    volumes:
-      - type: bind
-        source: ${GTFS2LDES_DATA_FOLDER}
-        target: /data
     deploy:
       resources:
         limits:
-          cpus: '1.5'
-          memory: '1.5GB'
+          cpus: '2'
+          memory: '1GB'
         reservations:
           cpus: '0.3'
-          memory: '512MB'
+          memory: '256MB'
     networks:
       - ldes
 
@@ -57,17 +53,13 @@ services:
       - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=100
       - VIEWS_0_RETENTIONPOLICIES_0_NAME=timebased
       - VIEWS_0_RETENTIONPOLICIES_0_CONFIG_DURATION=P3D # keep data for max 3 days
-    volumes:
-      - type: bind
-        source: ${LDES_SERVER_TMP_FOLDER}
-        target: /tmp
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
     deploy:
       resources:
         limits:
-          cpus: '1.25'
-          memory: '1.5GB'
+          cpus: '1'
+          memory: '1GB'
         reservations:
           cpus: '0.3'
           memory: '512MB'
@@ -81,15 +73,11 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     deploy:
       resources:
         limits:
-          cpus: '1'
-          memory: '4GB'
+          cpus: '0.9'
+          memory: '5GB'
         reservations:
           cpus: '0.3'
           memory: '768MB'
@@ -106,7 +94,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
+          cpus: '0.1'
           memory: '512MB'
         reservations:
           cpus: '0.1'

@@ -78,6 +78,7 @@ Then you can run the systems by executing the following command:
 ```bash
 docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 ## Test Execution
 To execute this test scenario, run the following steps:

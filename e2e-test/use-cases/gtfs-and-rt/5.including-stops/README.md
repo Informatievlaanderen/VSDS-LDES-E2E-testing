@@ -10,6 +10,8 @@ Then you can create the images and run all systems (except the gtfs2ldes-js syst
 ```bash
 docker compose --env-file user.env up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
+
 > **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
 
 ### Test Execution

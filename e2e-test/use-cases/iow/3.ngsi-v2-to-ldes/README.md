@@ -40,6 +40,7 @@ To create and start all systems except for the JSON Data Generator:
 ```bash
 docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 > **Note** that we do not create nor start the generator yet as we first need to create a workflow containing the HTTP listeners.
 

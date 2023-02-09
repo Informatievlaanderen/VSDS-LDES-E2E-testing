@@ -10,6 +10,7 @@ Then you can create the images and run all systems by executing the following co
 ```bash
 docker compose --env-file user.env up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 ### Test Execution
 To run the test, you need to:

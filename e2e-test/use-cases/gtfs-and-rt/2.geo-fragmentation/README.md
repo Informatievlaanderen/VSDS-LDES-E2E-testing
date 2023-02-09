@@ -41,6 +41,7 @@ You can then run the systems by executing the following command:
 ```bash
 docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 

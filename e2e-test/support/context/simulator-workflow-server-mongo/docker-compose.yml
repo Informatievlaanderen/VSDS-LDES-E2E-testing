@@ -78,7 +78,7 @@ services:
       - ldes
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_mongodb-rest-api
-    image: vsds/mongodb-rest-api:latest # TODO: change to github image
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230209T1332}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017

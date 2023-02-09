@@ -13,7 +13,8 @@ RUN npm run build
 FROM node:18.12.1-bullseye-slim
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apt-get update && apt-get upgrade
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install apt-utils
 WORKDIR /usr/ldes
 # setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
@@ -27,7 +28,7 @@ ENV MIME_TYPE=${MIME_TYPE}
 ARG POLL_INTERVAL=
 ENV POLL_INTERVAL=${POLL_INTERVAL}
 # install signal-handler wrapper
-RUN apt-get install dumb-init
+RUN apt-get -y install dumb-init
 # set start command
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # fix vulnerabilities

@@ -13,7 +13,8 @@ RUN npm run build
 FROM node:18.12.1-bullseye-slim
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apt-get update && apt-get upgrade
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install apt-utils
 WORKDIR /usr/vsds/simulator
 # fix vulnerabilities
 RUN npm install -g npm@${NPM_TAG}
@@ -23,7 +24,7 @@ COPY --chown=node:node --from=builder /build/dist ./
 ENV NODE_ENV production
 RUN npm ci --omit=dev
 ## install signal-handler wrapper
-RUN apt-get install dumb-init
+RUN apt-get -y install dumb-init
 ## allow passing variables
 ARG SEED=
 ENV SEED=${SEED}

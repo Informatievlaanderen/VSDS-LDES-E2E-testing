@@ -11,12 +11,10 @@ RUN npm run build
 
 # run environment
 FROM node:18.12.1-bullseye-slim
-# on Debian, we need to tell apt-get to run non-interactive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 # fix vulnerabilities
 # note: trivy insists this to be on the same RUN line
-RUN apt-get update && apt-get upgrade
-RUN apt-get install apt-utils
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install apt-utils
 WORKDIR /usr/vsds/sink
 # setup to run as less-privileged user
 COPY --chown=node:node --from=builder /build/package*.json ./
@@ -30,7 +28,7 @@ ENV DATABASE_NAME=
 ENV COLLECTION_NAME=
 ENV MEMORY=
 # install signal-handler wrapper
-RUN apt-get install dumb-init
+RUN apt-get -y install dumb-init
 # set start command
 EXPOSE 80
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]

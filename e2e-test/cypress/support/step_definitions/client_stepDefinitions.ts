@@ -12,23 +12,17 @@ Given('I have aliased the {string} simulators pre-seeded data set', (testName: s
     simulator.isAvailable();
     simulator.seed(Cypress.env('gipodDataSet'));
     simulator.postAlias(`use-cases/gipod/${testName}/create-alias.json`);
-  })
+})
 
 Given('I have logged on to the Apache NiFi UI', () => {
     workbench.logon(credentials);
 });
 
 Given('I have uploaded {string} workflow', (testName: string) => {
-    cy.intercept('**/upload').as('upload');
     workbench.uploadWorkflow(`use-cases/gipod/${testName}/nifi-workflow.json`);
 })
 
 When('I start the workflow', () => {
-    cy.wait('@upload').then(upload => {
-        const processGroupId = upload.response.body.id;
-        return cy.get('#operation-context-id').should('have.text', processGroupId);
-    });
-
     workbench.pushStart();
 })
 

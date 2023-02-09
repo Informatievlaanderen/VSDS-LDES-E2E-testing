@@ -22,6 +22,8 @@ export class LdesWorkbenchNiFi {
     }
 
     uploadWorkflow(file: string) {
+        cy.intercept('**/upload').as('upload');
+
         cy.get('#splash').should('not.be.visible');
        
         cy.get("#group-component")
@@ -49,6 +51,10 @@ export class LdesWorkbenchNiFi {
                 lastModified: Date.now(),
             }, {force: true});
             cy.get('#new-process-group-dialog > .dialog-buttons > div').first().click({force: true});
+            return cy.wait('@upload').then(upload => {
+                const processGroupId = upload.response.body.id;
+                return cy.get('#operation-context-id').should('have.text', processGroupId);
+            });
         });
     }
 

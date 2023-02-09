@@ -1,6 +1,5 @@
 import { After, Given } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose } from "../docker-compose";
-import { LdesWorkbenchNiFi } from "../ldes-workbench-nifi";
+import { DockerCompose, LdesWorkbenchNiFi } from "..";
 
 let dockerCompose : DockerCompose;
 export let dockerComposeEnvironment: {[key : string] : any} = {};

@@ -1,6 +1,5 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { LdesServer } from "../ldes-server";
-import { MongoRestApi } from "../mongo-rest-api";
+import { LdesServer, MongoRestApi } from "..";
 import { dockerComposeEnvironment } from "./step_definitions";
 
 const server = new LdesServer('http://localhost:8080');

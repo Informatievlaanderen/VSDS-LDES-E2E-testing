@@ -1,6 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { credentials, LdesServerSimulator, LdesWorkbenchNiFi } from '..'
-import { LdesClientSink } from "../ldes-client-sink";
+import { credentials, LdesServerSimulator, LdesWorkbenchNiFi, LdesClientSink } from '..'
 
 const apacheNifiUrl = 'https://localhost:8443';
 const simulatorUrl = 'http://localhost:9011';

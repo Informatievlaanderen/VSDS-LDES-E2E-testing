@@ -14,9 +14,8 @@ services:
       - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
       - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
     volumes:
-      - type: bind
-        source: ./data
-        target: /tmp/data
+      - ./data/address.template.json:/tmp/data/address.template.json:ro
+      - ./data/address.mapping.json:/tmp/data/address.mapping.json:ro
     networks:
       - ldes
   nifi-workflow:
@@ -26,8 +25,8 @@ services:
       - ${NIFI_UI_PORT:-8443}:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT_ADDRESS:-9012}:9012
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     networks:
       - ldes
   ldes-mongodb:
@@ -35,10 +34,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
   ldes-server:

@@ -48,7 +48,7 @@ And the response of the last fragment should contain a Cache-Control header
 ```
 
 ### Test Setup
-For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. Please copy the [environment file (time-fragment.env)](./time-fragment.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments. 
+For all these scenarios we can use the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 > **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/simulator-workflow-server-mongo/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
 ```bash
@@ -57,8 +57,9 @@ export COMPOSE_FILE="../../../support/context/simulator-workflow-server-mongo/do
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
 
@@ -78,11 +79,11 @@ So, the total data set contains 617 items. We have [configured our LDES Server](
 #### Recreate Containers Between the Scenarios
 All scenarios but the first use a **different subset** of the data set used for [testing synchronization](../3.synchronize-ldes/README.md). Therefore, to test the scenarios you need to recreate all containers between scenarios to ensure a clean environment. To destroy the containers:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```
 > **Note**: as we use a permanent storage for MongoDB, you also need to delete the database before restarting the containers:
 ```bash
-docker compose --env-file user.env up
+docker compose up
 ```
 You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
@@ -172,5 +173,5 @@ In this fragment  search for the `tree#relation`, note the `LesserThanOrEqualToR
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

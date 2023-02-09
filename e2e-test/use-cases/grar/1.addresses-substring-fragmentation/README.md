@@ -27,11 +27,7 @@ Because we have no control over the GRAR system, we need to use some simulator o
 ## Test Setup
 We use a [JSON Data Generator](/json-data-generator/README.md) which produces a continues stream of addresses (as a controlled alternative to the GRAR system over which we have no control), an Apache NiFi instance containing an HTTP listener that receives the address messages, a few standard NiFi components fixing some issues in these address messages, the custom NiFi component creating the LDES members (version objects) from the address entities, a standard NiFi component to push the version objects to the LDES server, and finally, the LDES server configured to capture the LDES members and do substring fragmentation in addition to time-based fragmentation.
 
-To setup the context, copy the `.env` file as `user.env` and specify the missing, required arguments:
-* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
-* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-
-Optionally, you can change the component tags:
+If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. Optionally, you can change the component tags:
 * JSON_DATA_GENERATOR_TAG (default: `20230130t0856`)
 * LDES_WORKBENCH_NIFI_TAG (default: `20230127T135852`)
 * LDES_SERVER_TAG (default: `20230131t0819`)
@@ -44,6 +40,8 @@ Optionally, you can change the port numbers:
 * LDES_SERVER_PORT (default: `8080`)
 
 Optionally, you can change the other variables:
+* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: e2etest)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: e2etest2022DEMO)
 * USECASE_NAME (default: `grar-context`)
 * JSON_DATA_GENERATOR_SILENT (default: `true`)
 * JSON_DATA_GENERATOR_CRON (default: `* * * * * *`)
@@ -55,8 +53,9 @@ Optionally, you can change the other variables:
 
 To create and start all systems except for the JSON Data Generator:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 > **Note** that we do not create nor start the generator yet as we first need to create a workflow containing the HTTP listener.
 
@@ -132,7 +131,7 @@ Verify that the [HTTP listener](http://localhost:9012/grar/addresses/healthcheck
 ### 3. Start the Address Updates Message Generation
 To create the Docker container and start generating address messages launch the JSON Data Generator:
 ```bash
-docker compose --env-file user.env up json-data-generator
+docker compose up json-data-generator -d
 ```
 
 ## Test Verification
@@ -145,6 +144,7 @@ curl http://localhost:8080/addresses/by-time
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file user.env --profile delay-started down
+docker compose stop json-data-generator
+docker compose --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.

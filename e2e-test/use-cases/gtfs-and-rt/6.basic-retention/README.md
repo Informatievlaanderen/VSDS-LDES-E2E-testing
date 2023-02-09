@@ -72,14 +72,13 @@ Finally, we wait a bit longer until the immutable fragments in both views expire
 *Fig. 6: all immutable fragments expired*
 
 ## Test Setup
-Please copy the [environment file (retention.env)](./retention.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments.
-
-> **Note**: because the MongoDB service is configured to permanently store the database, you need to empty the permanent storage before re-running this systems.
+If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
 
 ## Test Execution
 To execute this test scenario, run the following steps:
@@ -126,5 +125,5 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 ## Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

@@ -14,9 +14,8 @@ services:
       - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
       - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
     volumes:
-      - type: bind
-        source: ./data
-        target: /tmp/data
+      - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
+      - ./data/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
     networks:
       - ldes
     depends_on:
@@ -31,8 +30,8 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:9013
       - ${NIFI_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:9014
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     networks:
       - ldes
   ldes-mongodb:
@@ -40,10 +39,6 @@ services:
     image: mongo:${MONGODB_TAG:-6.0.3}
     ports:
       - ${MONGODB_PORT:-27017}:27017
-    volumes:
-      - type: bind
-        source: ${MONGODB_DATA_FOLDER}
-        target: /data/db
     networks:
       - ldes
   # Using 3 consecutive ports for the 3 LDES servers -- see https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=8073

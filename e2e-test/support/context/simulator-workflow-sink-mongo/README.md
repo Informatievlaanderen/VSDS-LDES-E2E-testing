@@ -4,13 +4,9 @@ This context is used for validating the LDES client.
 We use an [LDES Server Simulator](/ldes-server-simulator/README.md) which serves (a subset of) a data set (e.g. alternative for GIPOD LDES server which contains too much data), an Apache NiFi instance containing the LDES client NiFi processor and, a small HTTP server which serves as a [sink](/ldes-client-sink/README.md) that allows to capture the LDES members emitted by the LDES client NiFi processor.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
-* LDES_SERVER_SIMULATOR_SEED_FOLDER (folder with JSON files to seed the simulator, can be an empty folder, no default)
-* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
-* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
-* MONGODB_DATA_FOLDER (location of MongoDB permanent storage, no default)
-
-Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
+If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. You can specify different (external) port numbers for the components and other overridable variables:
+* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
 * LDES_SERVER_SIMULATOR_TAG (default: `20230130t0856`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
@@ -28,7 +24,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 ## Run the Systems
 To create and start all systems in the context:
 ```bash
-docker compose --env-file user.env up
+docker compose up
 ```
 
 ## Verify Context
@@ -71,7 +67,7 @@ This means that the MongoDB is correctly started. To actually view the contents 
 ## Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```
 This will gracefully shutdown all systems in the context and remove them.
 

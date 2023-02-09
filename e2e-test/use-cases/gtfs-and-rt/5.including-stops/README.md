@@ -2,20 +2,16 @@
 This test validates user story **Ingest GTFS-RT De Lijn for acceptance** (VSDSPUB-299).
 
 ### Test Setup
-For this scenario we can use the a [custom context](./docker-compose.yml) derived from [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (stops.env)](./stops.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments and append the specific `<gtfs-use-case>.env` file to your personal file.
-
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then. E.g.:
->
-> for NMBS data set: `mkdir -p ~/data/gtfs/nmbs/lc/; mkdir ~/data/gtfs/nmbs/db/`
->
-> for De Lijn data set: `mkdir -p ~/data/gtfs/delijn/lc/; mkdir ~/data/gtfs/delijn/db/`
+For this scenario we can use the a [custom context](./docker-compose.yml) derived from [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments and append the specific `<gtfs-use-case>.env` file to your personal file.
 
 > **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 
 Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose --env-file user.env up -d
 ```
+> **Note**: it may take a minute for all the servers to start.
+
 > **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
 
 ### Test Execution
@@ -41,7 +37,7 @@ Start the GTFS to LDES convertor as described [here](../../../support/context/gt
 
 To start the GTFS to LDES convertor:
 ```bash
-docker compose --env-file user.env up gtfs2ldes-js
+docker compose --env-file user.env up gtfs2ldes-js -d
 ```
 Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
 
@@ -63,5 +59,6 @@ Because the LDES server is configured to fragment the members geospatially and t
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
+docker compose --env-file user.env stop gtfs2ldes-js
 docker compose --env-file user.env --profile delay-started down
 ```

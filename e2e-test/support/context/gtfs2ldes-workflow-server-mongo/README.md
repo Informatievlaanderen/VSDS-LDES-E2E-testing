@@ -8,15 +8,18 @@ We use an Apache NiFi instance which should be configured with a workflow contai
 If required, the workflow can contain other processors to transfor the LD object as needed. Alternatively, custom processors can also be provided to listen to the GTFS2LDES system and/or POST to the LDES server.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
-* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
-* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password)
+To setup the context, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and specify the missing, required arguments:
 * SPRING_DATA_MONGODB_DATABASE (e.g. `DeLijn`)
-* MONGODB_DATA_FOLDER (location of MongoDB permanent storage, no default)
+
+In addition, for the GTFS to LDES conversion, various other arguments are required (for more information see [here](https://github.com/julianrojas87/gtfs2ldes-js)):
+* GTFS_SOURCE (static GTFS file container path or URL, no default)
+* GTFSRT_SOURCE (GTFS/RT URL, no default)
 * GTFS_BASE_IRI with trailing `/` (e.g. `https://data.delijn.be/`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
-* NIFI_TAG (default: `1.17.0-jdk17`)
+* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: e2etest)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: e2etest2022DEMO)
+* NIFI_TAG (default: `1.19.1`)
 * NIFI_JVM_HEAP_INIT (initial JVM heap size, default: `2g`)
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
@@ -33,24 +36,19 @@ Optionally, you can also specify different (external) port numbers for the compo
 * MONGODB_TAG (default: `6.0.3`)
 * MONGODB_PORT (default: `27017`)
 
-In addition, for the GTFS to LDES conversion, various other arguments are required (for more information see [here](https://github.com/julianrojas87/gtfs2ldes-js)):
-* GTFS_SOURCE (static GTFS file container path or URL, no default)
-* GTFSRT_SOURCE (GTFS/RT URL, no default)
-* GTFS2LDES_DATA_FOLDER (location of GTFS data permanent storage, no default)
-
-Optionally, you can currently tune the following parameters: 
+And, you can currently tune the following parameters: 
 * GTFS2LDES_TAG (default: `20230129t1743`)
 * RUN_ON_LAUNCH (`true` or `false`, default: `true`)
 * THROTTLE_RATE (default: 10)
 * GTFS_CRON (cron for reading GTFS source, default: `0 0 3 1 * *`)
 * GTFSRT_CRON (cron for reading GTFS/RT source, default: `*/30 * * * * *`)
-* AUTH_HEADER (optional, authentication type for requesting GTFS/RT, no default)
-* AUTH_HEADER_VALUE (optional, authentication value for requesting GTFS/RT, no default)
+* AUTH_HEADER (optional, authentication type for requesting GTFS/RT, if needed, default: empty)
+* AUTH_HEADER_VALUE (optional, authentication value for requesting GTFS/RT, if needed, default: empty)
 
 ## Run the Systems
 To create and start all systems in the context:
 ```bash
-docker compose --env-file user.env up
+docker compose --env-file user.env up -d
 ```
 
 > **Note**: the GTFS to LDES convertor is configured to not start immediately (tagged with a profile) because currently we cannot automatically upload the workflow to the Apache NiFi system. Therefore, you need to start the GTFS to LDES convertor, manually after loading and starting the workflow.
@@ -58,7 +56,8 @@ docker compose --env-file user.env up
 ### Start the GTFS to LDES convertor
 To start the GTFS to LDES convertor (after running the workflow) use the following Bash command:
 ```bash
-docker compose --env-file user.env up gtfs2ldes-js
+docker compose --env-file user.env create gtfs2ldes-js
+docker compose --env-file user.env start gtfs2ldes-js -d
 ```
 
 ## Verify Context
@@ -90,7 +89,7 @@ This means that the MongoDB is correctly started. To actually view the contents 
 ### Stop the Systems
 To stop all systems in the context:
 ```bash
-docker compose down
+docker compose stop gtfs2ldes-js
 docker compose --profile delay-started down
 ```
 This will gracefully shutdown all systems in the context and remove them.

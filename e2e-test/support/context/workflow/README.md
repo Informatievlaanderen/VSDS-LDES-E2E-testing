@@ -4,12 +4,12 @@ The LDES client is currently provided as a Apache NiFi processor and therefore r
 This context is used for validating the LDES client and other custom-built NiFi processors.
 
 ## Setup the Context
-To setup the context, combine the contents of all the `<component>.env` files into an `user.env` and specify the missing, required arguments:
-* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name)
-* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password - min 8 char)
+To setup the context, copy the `.env` file into an `user.env` and specify the missing, required arguments:
 * NIFI_DATA_FOLDER (e.g.: `~/data/my-use-case`)
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
+* SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
+* SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
 * LDES_WORKBENCH_NIFI_TAG (default `20230127T135852`)
 * USECASE_NAME (default: `workflow`)
 * NIFI_UI_PORT (default: `8443`)

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   nifi-workflow:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230127T135852}
-    container_name: ${USECASE_NAME:-workflow}_ldes-workbench-nifi
+    container_name: ${USECASE_NAME:-translate-ngsi-v2-to-ld}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
@@ -10,10 +10,10 @@ services:
       - ${NIFI_UI_PORT:-8443}:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9010}:9010
     volumes:
-      - ${NIFI_DATA_FOLDER}:/mnt/data:rw
+      - ./data/output:/mnt/data:rw
     networks:
       - ldes
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-workflow}_network
+    name: ${USECASE_NAME:-translate-ngsi-v2-to-ld}_network

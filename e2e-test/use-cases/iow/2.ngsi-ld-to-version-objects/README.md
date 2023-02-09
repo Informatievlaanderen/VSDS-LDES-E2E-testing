@@ -4,25 +4,11 @@ This test validates user story **Publish IoW data using time-based fragmentation
 IoW data contains objects of type `WaterQualityObserved`, `Device` and `DeviceModel`. The updates received (mostly `WaterQualityObserved`) represent the actual state of the objects and each subsequent update overwrites this state. In order to conform the LDES specification, an LDES contains immutable (version) objects. This test verifies the correct working of the NiFi processor that creates these version objects.
 
 ## Test Setup
-For this test we can use the [Workflow](../../../support/context/workflow/README.md) context. Please copy the [environment file (create-versions.env)](./create-versions.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments.
-
-You can change the location of generated files containing the modified NGSI-LD output.
-
-> **Note**: make sure to verify the settings in your personal `user.env` file to contain the correct file paths, relative to your system or the container where appropriate, etc. Also ensure that the file paths actually exist, if not, create then.
-
-> **Note**: you can set the `COMPOSE_FILE` environment property to the [docker compose file](../../../support/context/workflow/docker-compose.yml) so you do not need to provide it in each docker compose command. E.g.:
-```bash
-export COMPOSE_FILE="../../../support/context/workflow/docker-compose.yml"
-```
-
-> **Note**: because of the way Docker and Docker Compose work, it is best to pass the volume mapped location by creating an environment variable, e.g.:
-```bash
-export NIFI_DATA_FOLDER=$(pwd)/data/output
-```
+For this test we can use the [Workflow](../../../support/context/workflow/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 Then you can run the systems by executing the following command:
 ```bash
-docker compose --env-file user.env up
+docker compose up -d
 ```
 
 ## Test Execution
@@ -87,5 +73,5 @@ The online tool results in output similar to (only showing relevant properties):
 ## Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose --env-file user.env down
+docker compose down
 ```

@@ -9,12 +9,18 @@ export class DockerCompose {
         this.env = { 
             ... this.env,
             COMPOSE_FILE: file,
+
+            // Use own credentials
             SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
             SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
-            // TEMP: set tags
-            LDES_WORKBENCH_NIFI_TAG:"20230124t140316",
-            LDES_SERVER_SIMULATOR_TAG:"latest",
-            LDES_CLIENT_SINK_TAG:"latest",
+
+            // Use latest tags
+            LDES_SERVER_SIMULATOR_TAG:'latest',
+            LDES_WORKBENCH_NIFI_TAG:'latest',
+            LDES_CLIENT_SINK_TAG:'latest',
+            MONGODB_TAG:'latest',
+            LDES_SERVER_TAG:'latest',
+            MONGODB_REST_API_TAG:'latest',
         }
     }
 

@@ -4,10 +4,10 @@ import N3 = require('n3');
 export class LdesServer {
     private parser = new N3.Parser({ format: 'text/turtle' });
     private rdfType = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
-    private treeView = 'https://w3id.org/tree#view';
-    private treeNode = 'https://w3id.org/tree#node';
-    private treeGtOrEq = 'https://w3id.org/tree#GreaterThanOrEqualToRelation';
-    private treeLtOrEq = 'https://w3id.org/tree#LessThanOrEqualToRelation';
+
+    public treePrefix = 'https://w3id.org/tree#';
+    private treeView = this.treePrefix + 'view';
+    private treeNode = this.treePrefix + 'node';
 
     constructor(private baseUrl: string) { }
 
@@ -26,7 +26,7 @@ export class LdesServer {
             );
     }
 
-    private expectMutableFragment(response: Cypress.Response<any>, isImmutable: boolean) {
+    expectMutableFragment(response: Cypress.Response<any>, isImmutable: boolean) {
         if (isImmutable) {
             expect(response.headers['cache-control']).to.contain('immutable');
         } else {
@@ -34,45 +34,27 @@ export class LdesServer {
         }
     }
 
-    private expectRelation(store: any, relationType: string, exists: boolean) {
+    parseQuads(response: Cypress.Response<any>) {
+        return new N3.Store(this.parser.parse(response.body));
+    }
+
+    expectNoRelation(store: any, relationType: string): void {
+        this.expectRelationCount(store, relationType, 0);
+    }
+
+    expectOneRelation(store: any, relationType: string): string {
+        return this.expectRelationCount(store, relationType, 1)[0];
+    }
+
+    expectRelationCount(store: any, relationType: string, count: number): string[] {
         const ids = store.getSubjects(this.rdfType, relationType, null);
-        if (!exists) {
+        if (!count) {
             expect(ids).to.be.empty;
-            return undefined;
+            return;
         }
 
-        expect(ids).to.have.length(1);
-        return store.getObjects(ids[0], 'https://w3id.org/tree#node', null)[0].value;
-    }
-
-    checkFirstFragmentAndGetMiddleFragmentUrl(firstFragmentUrl: string) {
-        return cy.request(firstFragmentUrl).then(response => {
-            this.expectMutableFragment(response, true);
-
-            const store = new N3.Store(this.parser.parse(response.body));
-            this.expectRelation(store, this.treeLtOrEq, false);
-            return this.expectRelation(store, this.treeGtOrEq, true);
-        });
-    }
-
-    checkMiddleFragmentAndGetLastFragmentUrl(middleFragmentUrl: string) {
-        return cy.request(middleFragmentUrl).then(response => {
-            this.expectMutableFragment(response, true);
-
-            const store = new N3.Store(this.parser.parse(response.body));
-            this.expectRelation(store, this.treeLtOrEq, true);
-            return this.expectRelation(store, this.treeGtOrEq, true);
-        });
-    }
-
-    checkLastFragment(lastFragmentUrl: string) {
-        return cy.request(lastFragmentUrl).then(response => {
-            this.expectMutableFragment(response, false);
-
-            const store = new N3.Store(this.parser.parse(response.body));
-            this.expectRelation(store, this.treeGtOrEq, false);
-            return this.expectRelation(store, this.treeLtOrEq, true);
-        });
+        expect(ids).to.have.length(count);
+        return ids.map((id: any) => store.getObjects(id, 'https://w3id.org/tree#node', null)[0].value);
     }
 
 }

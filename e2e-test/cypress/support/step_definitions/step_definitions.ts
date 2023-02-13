@@ -1,10 +1,12 @@
-import { After, Given } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, LdesWorkbenchNiFi } from "..";
+import { After, Given, When } from "@badeball/cypress-cucumber-preprocessor";
+import { DockerCompose, LdesWorkbenchNiFi, credentials, LdesServerSimulator } from "..";
 
 let dockerCompose : DockerCompose;
 export let dockerComposeEnvironment: {[key : string] : any} = {};
-const apacheNifiUrl = 'https://localhost:8443';
-const workbench = new LdesWorkbenchNiFi(apacheNifiUrl)
+export const simulator = new LdesServerSimulator('http://localhost:9011');
+
+
+const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
 
 Given('context {string} is started', (composeFile: string) => {
     dockerCompose = new DockerCompose(`${composeFile}/docker-compose.yml`, dockerComposeEnvironment);
@@ -14,3 +16,16 @@ Given('context {string} is started', (composeFile: string) => {
 After(() => {
     dockerCompose.down();
 });
+
+
+Given('I have logged on to the Apache NiFi UI', () => {
+    workbench.logon(credentials);
+});
+
+Given('I have uploaded {string} workflow', (testName: string) => {
+    workbench.uploadWorkflow(`use-cases/gipod/${testName}/nifi-workflow.json`);
+})
+
+When('I start the workflow', () => {
+    workbench.pushStart();
+})

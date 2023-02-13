@@ -1,4 +1,4 @@
-Feature: GIPOD use case
+Feature: GIPOD use case (client tests)
 
   Background: 
     Given context 'support/context/simulator-workflow-sink-mongo' is started
@@ -14,8 +14,8 @@ Feature: GIPOD use case
     Given I have seeded the simulator with an initial data set
     And I have logged on to the Apache NiFi UI
     And I have uploaded '3.synchronize-ldes' workflow
-    And I started the workflow
-    And the sync contains 501 members
+    When I start the workflow
+    And the sink contains 501 members
     When I seed a data set update
     Then the sink contains 550 members
     When I seed another data set update

@@ -56,7 +56,7 @@ services:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
     ports:
-      - ${MONGODB_REST_API_PORT:-9012}:80
+      - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
 networks:

@@ -34,7 +34,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230131t0819}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
     environment:
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
@@ -64,7 +64,7 @@ services:
       - ldes-mongodb
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.3}
+    image: mongo:${MONGODB_TAG:-6.0.4}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:

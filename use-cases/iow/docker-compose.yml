@@ -16,7 +16,7 @@ services:
       - ldes
   ldes-mongodb:
     container_name: ${USECASE_NAME:-iow-context}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.3}
+    image: mongo:${MONGODB_TAG:-6.0.4}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     volumes:

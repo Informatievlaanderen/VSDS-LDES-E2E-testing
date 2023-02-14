@@ -10,12 +10,12 @@ export class DockerCompose {
         SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
 
         // Use latest tags
-        LDES_SERVER_SIMULATOR_TAG:'latest',
-        LDES_WORKBENCH_NIFI_TAG:'latest',
-        LDES_CLIENT_SINK_TAG:'latest',
-        MONGODB_TAG:'latest',
-        LDES_SERVER_TAG:'latest',
-        MONGODB_REST_API_TAG:'latest',
+        // LDES_SERVER_SIMULATOR_TAG:'latest',
+        // LDES_WORKBENCH_NIFI_TAG:'latest',
+        // LDES_CLIENT_SINK_TAG:'latest',
+        // MONGODB_TAG:'latest',
+        // LDES_SERVER_TAG:'latest',
+        // MONGODB_REST_API_TAG:'latest',
     };
 
     public up(dockerComposeFile: string, environmentFile?: string) {

@@ -31,7 +31,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230127t1614}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -70,7 +70,7 @@ services:
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.3}
+    image: mongo:${MONGODB_TAG:-6.0.4}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     deploy:
@@ -86,7 +86,7 @@ services:
 
   ldes-list-fragments:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-list-fragments
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230130t0856}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230214t1503}
     profiles:
       - delayed-started
     environment:

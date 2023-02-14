@@ -24,7 +24,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
-* LDES_SERVER_TAG (default: `20230131t0819`)
+* LDES_SERVER_TAG (default: `20230214t1234`)
 * LDES_COLLECTIONNAME (default `connections`)
 * LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)
 * LDES_SERVER_PORT (default: 8080)
@@ -33,7 +33,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * VIEW_VERSIONOFPATH (default: `http://purl.org/dc/terms/isVersionOf`)
 * VIEWS_0_NAME (default: `by-time`)
 * VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT (number of members per fragment, default: `100`)
-* MONGODB_TAG (default: `6.0.3`)
+* MONGODB_TAG (default: `6.0.4`)
 * MONGODB_PORT (default: `27017`)
 
 And, you can currently tune the following parameters: 

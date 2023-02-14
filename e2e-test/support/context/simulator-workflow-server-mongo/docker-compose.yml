@@ -2,7 +2,7 @@ version: '3.3'
 services:
   ldes-server-simulator:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-server-simulator
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230130t0856}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230214t1503}
     environment:
       - BASEURL=http://ldes-server-simulator
     ports:
@@ -10,7 +10,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230127T135852}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
@@ -21,7 +21,7 @@ services:
       - ldes
   ldes-server:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230131t0819}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
     environment:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -62,14 +62,14 @@ services:
       - ldes-mongodb
   ldes-mongodb:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.3}
+    image: mongo:${MONGODB_TAG:-6.0.4}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-simulator-workflow-server-mongo}_mongodb-rest-api
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230209T1332}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017

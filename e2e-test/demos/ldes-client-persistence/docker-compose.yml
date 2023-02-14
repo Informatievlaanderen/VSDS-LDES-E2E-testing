@@ -1,6 +1,6 @@
 services:
   ldes-server-simulator:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230130t0856}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230214t1503}
     container_name: ${USECASE_NAME:-persisted-state}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
@@ -9,7 +9,7 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230127T135852}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
     container_name: ${USECASE_NAME:-persisted-state}_ldes-workbench-nifi
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
@@ -19,7 +19,7 @@ services:
     networks:
       - ldes
   ldes-client-sink:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20230130t0856}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-20230214t1503}
     container_name: ${USECASE_NAME:-persisted-state}_ldes-client-sink
     environment:
       - MEMORY=true

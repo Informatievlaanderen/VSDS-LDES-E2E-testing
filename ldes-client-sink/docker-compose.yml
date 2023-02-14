@@ -12,7 +12,7 @@ services:
     networks:
       - ldes
   ldes-mongodb:
-    image: mongo:${MONGODB_TAG:-6.0.3}
+    image: mongo:${MONGODB_TAG:-6.0.4}
     container_name: ${USECASE_NAME:-sink-mongo}_ldes-mongodb
     ports:
       - ${MONGODB_PORT}:27017

@@ -7,10 +7,10 @@ We use a [JSON Data Generator](/json-data-generator/README.md) which produces a 
 If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 Optionally, you can change the component tags:
-* JSON_DATA_GENERATOR_TAG (default: `20230130t0856`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230127T135852`)
-* LDES_SERVER_TAG (default: `20230131t0819`)
-* MONGODB_TAG (default: `6.0.3`)
+* JSON_DATA_GENERATOR_TAG (default: `20230214t1503`)
+* LDES_WORKBENCH_NIFI_TAG (default: `20230214t123440`)
+* LDES_SERVER_TAG (default: `20230214t1234`)
+* MONGODB_TAG (default: `6.0.4`)
 
 Optionally, you can change the port numbers:
 * NIFI_UI_PORT (default: `8443`)

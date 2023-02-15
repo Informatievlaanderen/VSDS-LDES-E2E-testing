@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 import N3 = require('n3');
 
-
 export abstract class UrlResponse {
     private _immutable: boolean | undefined = undefined;
 
@@ -9,10 +8,7 @@ export abstract class UrlResponse {
     protected store: N3.Store | undefined;
 
 
-    constructor(private url: string) { }
-
-
-    public get immutable() { return this._immutable; };
+    constructor(public url: string) { }
 
     visit() {
         return cy.request(this.url)
@@ -27,5 +23,13 @@ export abstract class UrlResponse {
                 this.store = new N3.Store(quads);
                 return this;
             });
+    }
+
+    expectImmutable() {
+        expect(this._immutable).to.be.true;
+    }
+
+    expectMutable() {
+        expect(this._immutable).to.be.false;
     }
 }

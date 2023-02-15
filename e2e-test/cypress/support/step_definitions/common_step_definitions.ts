@@ -1,7 +1,7 @@
 import { After, Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, LdesWorkbenchNiFi, credentials, LdesServerSimulator, LdesClientSink, MongoRestApi } from "..";
+import { DockerCompose, LdesWorkbenchNiFi, credentials, LdesServerSimulator, LdesClientSink, MongoRestApi, DockerComposeOptions } from "..";
 
-const testContext = { testPartialPath: '' };
+const testContext = { testPartialPath: '', additionalEnvironmentSetting: {} };
 
 const dockerCompose = new DockerCompose();
 const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
@@ -20,7 +20,12 @@ Given('the {string} test is setup', (testPartialPath: string) => {
 });
 
 Given('context {string} is started', (composeFilePath: string) => {
-    dockerCompose.up(`${composeFilePath}/docker-compose.yml`, `${testContext.testPartialPath}/.env`)
+    const options: DockerComposeOptions = {
+        dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
+        environmentFile: `${testContext.testPartialPath}/.env`,
+        additionalEnvironmentSetting: testContext.additionalEnvironmentSetting
+    };
+    dockerCompose.up(options)
         .then(() => cy.waitUntil(() => workbench.isReady(), { timeout: 600000, interval: 5000 }))
         .then(() => simulator.isAvailable());
 })
@@ -49,6 +54,10 @@ Given('I have uploaded the data files: {string} with a duration of {int} seconds
 
 Given('I have aliased the data set', () => {
     simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
+})
+
+Given('I have configured the {string} as {string}', (property: string, value: string) => {
+    testContext.additionalEnvironmentSetting[property] = value;
 })
 
 // When stuff

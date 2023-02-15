@@ -70,6 +70,10 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
+When('I start the service named {string}', (service: string) => {
+    dockerCompose.up(service);
+})
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {
@@ -79,3 +83,5 @@ Then('the sink contains {int} members', (count: number) => {
 Then('the LDES contains {int} members', (count: number) => {
     mongo.checkCount('gipod', 'ldesmember', count);
 })
+
+

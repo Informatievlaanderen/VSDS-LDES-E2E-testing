@@ -3,13 +3,13 @@
 import { credentials } from './credentials'
 import 'cypress-wait-until';
 
-export interface EnvironmentSettings { 
-    [key: string]: any 
+export interface EnvironmentSettings {
+    [key: string]: any
 };
 
 export interface DockerComposeOptions {
-    dockerComposeFile: string, 
-    environmentFile?: string, 
+    dockerComposeFile: string,
+    environmentFile?: string,
     additionalEnvironmentSetting?: EnvironmentSettings
 };
 
@@ -28,13 +28,19 @@ export class DockerCompose {
         // MONGODB_REST_API_TAG:'latest',
     };
 
-    public up(options: DockerComposeOptions) {
-        this.env = {
-            COMPOSE_FILE: options.dockerComposeFile,
-            ...this.env,
-            ...options.additionalEnvironmentSetting
-        };
-        const command = options.environmentFile ? `docker compose --env-file ${options.environmentFile} up -d` : 'docker compose up -d';
+    private environmentFile: string;
+
+    public up(options: DockerComposeOptions = undefined, delayedService: string = '') {
+        if (options) {
+            this.environmentFile = options.environmentFile;
+            this.env = {
+                ...this.env,
+                COMPOSE_FILE: options.dockerComposeFile,
+                ...options.additionalEnvironmentSetting
+            };
+        }
+        const envFile = this.environmentFile ? `--env-file ${this.environmentFile}` : '';
+        const command = `docker compose ${envFile} up ${delayedService} -d`;
         return cy.exec(command, { log: true, env: this.env });
     }
 

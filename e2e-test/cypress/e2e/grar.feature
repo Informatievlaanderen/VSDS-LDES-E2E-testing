@@ -6,5 +6,6 @@ Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream availa
     And I have logged on to the Apache NiFi UI
     And I have uploaded the workflow
     When I start the workflow
-    And I start the service named 'json-data-generator'
-    # Then a substring fragmented LDES view is created
+    And I start the JSON Data Generator
+    # Then the root fragment is not immutable
+    # And the root fragment contains 'SubstringRelation' relations with values: 's,g,f,a,v'

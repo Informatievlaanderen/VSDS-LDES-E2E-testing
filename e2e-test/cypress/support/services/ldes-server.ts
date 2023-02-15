@@ -1,4 +1,6 @@
-import { EventStream } from './ldes';
+/// <reference types="cypress" />
+
+import { EventStream } from '../ldes';
 
 export class LdesServer {
 

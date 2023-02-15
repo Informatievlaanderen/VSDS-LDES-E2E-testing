@@ -19,6 +19,10 @@ export class LdesServer {
     }
 
     getFirstFragmentUrl() {
+        // return new EventStream(`${this.baseUrl}/mobility-hindrances`).visit()
+        //     .then(ldes => new Fragment(ldes.viewUrl).visit()
+        //         .then(fragment => fragment.relation.link)
+        //     );
         return cy.request(`${this.baseUrl}/mobility-hindrances`)
             .then(response => this.searchByPredicate(response.body, this.treeView))
             .then(view => cy.request(view)

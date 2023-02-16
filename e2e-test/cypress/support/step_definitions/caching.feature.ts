@@ -1,9 +1,7 @@
 /// <reference types="cypress" />
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { LdesServer } from "../services";
-
-const server = new LdesServer('http://localhost:8080');
+import { server } from "./common_step_definitions";
 
 let ldes: EventStream;
 

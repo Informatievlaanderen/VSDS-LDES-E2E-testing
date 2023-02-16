@@ -1,7 +1,8 @@
 import { After, Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { DockerCompose, credentials, DockerComposeOptions } from "..";
 import {
-    LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink, MongoRestApi, JsonDataGenerator
+    LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink, 
+    MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
 
 const testContext = {
@@ -9,12 +10,13 @@ const testContext = {
     additionalEnvironmentSetting: {}
 };
 
-const dockerCompose = new DockerCompose();
-const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
-const sink = new LdesClientSink('http://localhost:9003');
-const simulator = new LdesServerSimulator('http://localhost:9011');
-const mongo = new MongoRestApi('http://localhost:9019');
-const jsonDataGenerator = new JsonDataGenerator();
+export const dockerCompose = new DockerCompose();
+export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
+export const sink = new LdesClientSink('http://localhost:9003');
+export const simulator = new LdesServerSimulator('http://localhost:9011');
+export const mongo = new MongoRestApi('http://localhost:9019');
+export const jsonDataGenerator = new JsonDataGenerator();
+export const server = new LdesServer('http://localhost:8080');
 
 After(() => {
     dockerCompose.down();

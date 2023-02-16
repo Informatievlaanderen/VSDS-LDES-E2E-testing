@@ -2,20 +2,17 @@
 import N3 = require('n3');
 
 export abstract class UrlResponse {
-    private _immutable: boolean | undefined = undefined;
+    private _response: Cypress.Response<any>;
 
     protected parser = new N3.Parser({ format: 'text/turtle' });
     protected store: N3.Store | undefined;
-
-
+    
     constructor(public url: string) { }
 
     visit() {
         return cy.request(this.url)
             .then(response => {
-                const value = response.headers['cache-control'];
-                const cacheControl: string = typeof value === 'string' ? value : value[0];
-                this._immutable = cacheControl.includes('immutable');
+                this._response = response;
                 return response.body;
             })
             .then(body => {
@@ -25,11 +22,21 @@ export abstract class UrlResponse {
             });
     }
 
+    public get immutable() {
+        const value = this._response.headers['cache-control'];
+        const cacheControl = typeof value === 'string' ? value : value[0];
+        return cacheControl.includes('immutable');
+    }
+
+    public get success() {
+        return this._response.isOkStatusCode;
+    }
+
     expectImmutable() {
-        expect(this._immutable).to.be.true;
+        expect(this.immutable).to.be.true;
     }
 
     expectMutable() {
-        expect(this._immutable).to.be.false;
+        expect(this.immutable).to.be.false;
     }
 }

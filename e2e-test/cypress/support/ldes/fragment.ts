@@ -1,4 +1,4 @@
-import { tree } from './rdf-common';
+import { ldes, rdf, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
@@ -13,6 +13,14 @@ export class Fragment extends UrlResponse {
         const relations = this.relations;
         expect(relations.length).to.equal(1);
         return relations[0];
+    }
+
+    get isNode(): boolean {
+        return this.store.getQuads(this.url, rdf.type, tree.Node, null).length === 1;
+    }
+
+    isViewOf(ldesUrl: string): boolean {
+        return this.store.getQuads(ldesUrl, tree.view, this.url, null).length === 1;
     }
 
     expectNoOtherRelationThan(type: string): void {

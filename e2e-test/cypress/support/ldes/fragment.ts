@@ -1,4 +1,4 @@
-import { ldes, rdf, tree } from './rdf-common';
+import { rdf, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
@@ -24,17 +24,17 @@ export class Fragment extends UrlResponse {
     }
 
     expectNoOtherRelationThan(type: string): void {
-        expect(this.relations.every(x => x.type === tree[type])).to.be.true;
+        expect(this.relations.every(x => x.type === tree.prefix(type))).to.be.true;
     }
 
     expectSingleRelationOf(type: string): Relation {
-        const relations = this.relations.filter(x => x.type === tree[type]);
+        const relations = this.relations.filter(x => x.type === tree.prefix(type));
         expect(relations.length).to.equal(1);
         return relations[0];
     }
 
     expectMultipleRelationOf(type: string, count: number): Relation[] {
-        const relations = this.relations.filter(x => x.type === tree[type]);
+        const relations = this.relations.filter(x => x.type === tree.prefix(type));
         expect(relations.length).to.equal(count);
         return relations;
     }

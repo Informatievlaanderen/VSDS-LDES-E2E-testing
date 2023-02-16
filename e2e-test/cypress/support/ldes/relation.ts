@@ -13,6 +13,7 @@ export class Relation {
     get type(): string {
         return this.store.getObjects(null, rdf.type, null)[0].value;
     }
+    
     get link(): string {
         return this.store.getObjects(null, tree.node, null)[0].value;
     }

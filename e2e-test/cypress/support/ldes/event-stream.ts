@@ -3,12 +3,20 @@ import { UrlResponse } from "./url-response";
 
 export class EventStream extends UrlResponse {
 
-    get viewUrl(): string {
-        return this.store.getObjects(null, tree.view, null)[0].value;
+    viewUrl(name?: string): string {
+        const views = this.store.getObjects(null, tree.view, null);
+        if (name) {
+            return views.filter(x => x.value.endsWith(name)).shift()?.value;
+        }
+        switch (views.length) {
+            case 0: return undefined;
+            case 1: return views[0].value;
+            default: throw new Error(`found multiple views: ${views.map(x => x.value).join(',')}`);
+        }
     }
 
     get isEventStream(): boolean {
         return this.store.getQuads(this.url, rdf.type, ldes.EventStream, null).length === 1;
     }
-        
+
 }

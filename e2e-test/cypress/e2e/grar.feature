@@ -7,5 +7,10 @@ Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream availa
     And I have uploaded the workflow
     When I start the workflow
     And I start the JSON Data Generator
-    # Then the root fragment is not immutable
-    # And the root fragment contains 'SubstringRelation' relations with values: 's,g,f,a,v'
+    And the LDES contains at least 13 members
+    Then the root fragment is not immutable
+    And the root fragment contains 'SubstringRelation' relations with values: 'k,h,g'
+    # TODO: enable this when tokenizing works
+    # And the root fragment contains 'SubstringRelation' relations with values: 'k,1,9,l,g,h,2'
+    When the LDES contains at least 43 members
+    Then the fragment exists for substring 'ka,ho,gr'

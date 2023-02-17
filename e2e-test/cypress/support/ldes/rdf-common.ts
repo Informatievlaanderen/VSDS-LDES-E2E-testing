@@ -4,6 +4,8 @@ export const tree = {
     node: treePrefix + 'node',
     Node: treePrefix + 'Node',
     relation: treePrefix + 'relation',
+    value: treePrefix + 'value',
+    path: treePrefix + 'path',
     prefix: (term: string) => treePrefix + term,
 }
 

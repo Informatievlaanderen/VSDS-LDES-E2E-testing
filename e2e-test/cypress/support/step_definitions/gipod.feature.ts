@@ -2,8 +2,12 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { LdesServer } from "..";
 import { Fragment } from '../ldes';
+import { testContext } from "./common_step_definitions";
 
 const server = new LdesServer('http://localhost:8080');
+
+testContext.database = 'gipod';
+testContext.collection = 'ldesmember';
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
@@ -11,7 +15,7 @@ let lastFragment: Fragment;
 
 Then('the first fragment is immutable', () => {
     server.getLdes('mobility-hindrances')
-        .then(ldes => new Fragment(ldes.viewUrl).visit())
+        .then(ldes => new Fragment(ldes.viewUrl()).visit())
         .then(view => new Fragment(view.relation.link).visit())
         .then(fragment => {
             firstFragment = fragment;

@@ -5,9 +5,11 @@ import {
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
 
-const testContext = {
+export const testContext = {
     testPartialPath: '',
-    additionalEnvironmentSetting: {}
+    additionalEnvironmentSetting: {},
+    database: '',
+    collection: '',
 };
 
 export const dockerCompose = new DockerCompose();
@@ -94,6 +96,10 @@ When('I start the JSON Data Generator', () => {
     jsonDataGenerator.waitAvailable();
 })
 
+When('the LDES contains at least {int} members', (count: number) => {
+    mongo.checkCount(testContext.database, testContext.collection, count, (x,y) => x >= y);
+})
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {
@@ -101,6 +107,6 @@ Then('the sink contains {int} members', (count: number) => {
 })
 
 Then('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount('gipod', 'ldesmember', count);
+    mongo.checkCount(testContext.database, testContext.collection, count);
 })
 

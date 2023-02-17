@@ -17,4 +17,12 @@ export class Relation {
     get link(): string {
         return this.store.getObjects(null, tree.node, null)[0].value;
     }
+
+    get path(): string {
+        return this.store.getObjects(null, tree.path, null)[0].value;
+    }
+
+    get value(): string {
+        return this.store.getObjects(null, tree.value, null)[0].value;
+    }
 }

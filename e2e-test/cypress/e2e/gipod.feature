@@ -1,5 +1,8 @@
 Feature: GIPOD use case
 
+  Background:
+    Given the members are stored in collection 'ldesmember' in database 'gipod'
+
   Scenario: Replicate LDES
     Given the 'use-cases/gipod/1.replicate-ldes' test is setup
     And context 'support/context/simulator-workflow-sink-mongo' is started

@@ -2,13 +2,9 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { LdesServer } from "..";
 import { Fragment } from '../ldes';
-import { testContext } from "./common_step_definitions";
 
 const server = new LdesServer('http://localhost:8080');
 let rootFragment: Fragment;
-
-testContext.database = 'grar';
-testContext.collection = 'ldesmember';
 
 Then('the root fragment is not immutable', () => {
     server.waitAvailable();

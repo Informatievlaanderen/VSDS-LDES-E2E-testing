@@ -1,5 +1,8 @@
 Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream available as LDES
 
+  Background:
+    Given the members are stored in collection 'ldesmember' in database 'grar'
+
   Scenario: Provide addresses as substring fragmentation
     Given the 'use-cases/grar/1.addresses-substring-fragmentation' test is setup
     And context 'use-cases/grar/1.addresses-substring-fragmentation' is started

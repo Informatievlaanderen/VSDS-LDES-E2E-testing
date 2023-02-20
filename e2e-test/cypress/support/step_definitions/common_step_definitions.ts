@@ -1,11 +1,11 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
 import { DockerCompose, credentials, DockerComposeOptions } from "..";
 import {
-    LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink, 
+    LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
 
-export let testContext: any;
+let testContext: any;
 
 export const dockerCompose = new DockerCompose();
 export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
@@ -29,6 +29,12 @@ After(() => {
 });
 
 // Given stuff
+
+Given('the members are stored in collection {string} in database {string}', (collection: string, database: string) => {
+    testContext.database = database;
+    testContext.collection = collection;
+});
+
 
 Given('the {string} test is setup', (testPartialPath: string) => {
     testContext.testPartialPath = testPartialPath;
@@ -101,7 +107,7 @@ When('I start the JSON Data Generator', () => {
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, testContext.collection, count, (x,y) => x >= y);
+    mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
 })
 
 // Then stuff

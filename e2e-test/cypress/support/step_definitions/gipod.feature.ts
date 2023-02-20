@@ -2,12 +2,8 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { LdesServer } from "..";
 import { Fragment } from '../ldes';
-import { testContext } from "./common_step_definitions";
 
 const server = new LdesServer('http://localhost:8080');
-
-testContext.database = 'gipod';
-testContext.collection = 'ldesmember';
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;

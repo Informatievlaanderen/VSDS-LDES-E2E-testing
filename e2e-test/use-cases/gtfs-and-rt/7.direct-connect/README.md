@@ -21,7 +21,7 @@ To run the test, you need to:
 Watch the Docker logs for the GTFS to LDES convertor to know when it starts sending GTFS connections to the workflow.
 > **Note**: you can lookup the container ID using `docker ps`, so to get the logs you can use:
 ```bash
-docker logs --follow $(docker ps -f "name=gtfs2ldes-js" -q)
+docker logs --follow $(docker ps -f "name=gtfs2ldes-js$" -q)
 ```
 
 #### 2. Verify LDES Members Received And Fragments Created

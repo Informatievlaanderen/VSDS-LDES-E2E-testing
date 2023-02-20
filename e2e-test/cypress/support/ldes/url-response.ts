@@ -4,17 +4,13 @@ import { mimeTypes } from './rdf-common';
 
 export abstract class UrlResponse {
     private _response: Cypress.Response<any>;
+    private _store: N3.Store | undefined;
 
     constructor(public url: string) { }
 
     visit(mimeType: string = mimeTypes.turtle) {
-        const request = mimeType
-            ? { url: this.url, headers: { accept: mimeType } }
-            : { url: this.url };
-        return cy.request(request).then(response => {
-            this._response = response;
-            return this;
-        });
+        const request = mimeType ? { url: this.url, headers: { accept: mimeType } } : { url: this.url };
+        return cy.request(request).then(response => this._response = response).then(() => this);
     }
 
     protected get store(): N3.Store | undefined {
@@ -22,7 +18,7 @@ export abstract class UrlResponse {
         if (mimeType === mimeTypes.jsonld) {
             return undefined;
         } else {
-            return this.parseRdf(this.body, mimeType);
+            return this._store ? this._store : (this._store = this.parseRdf(this.body, mimeType));
         }
     }
 
@@ -57,10 +53,12 @@ export abstract class UrlResponse {
 
     expectImmutable() {
         expect(this.immutable).to.be.true;
+        return this;
     }
 
     expectMutable() {
         expect(this.immutable).to.be.false;
+        return this;
     }
 
     private roundTripRdf(content: string, mimeType: string): string {

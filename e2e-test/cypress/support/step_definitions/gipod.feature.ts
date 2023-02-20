@@ -14,10 +14,7 @@ Then('the first fragment is immutable', () => {
         server.getLdes('mobility-hindrances')
             .then(ldes => new Fragment(ldes.viewUrl).visit())
             .then(view => new Fragment(view.relation.link).visit())
-            .then(fragment => {
-                firstFragment = fragment;
-                firstFragment.expectImmutable();
-            })
+            .then(fragment => firstFragment = fragment.expectImmutable())
     );
 })
 

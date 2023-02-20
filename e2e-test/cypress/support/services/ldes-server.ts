@@ -4,7 +4,7 @@ import { EventStream } from '../ldes';
 
 export class LdesServer {
 
-    constructor(private baseUrl: string, private _serviceName?: string) { }
+    constructor(public baseUrl: string, private _serviceName?: string) { }
     
     public get serviceName() {
         return this._serviceName || 'ldes-server';

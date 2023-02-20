@@ -18,3 +18,8 @@ export const ldes = {
     EventStream: ldesPrefix + 'EventStream',
     prefix: (term: string) => ldesPrefix + term,
 }
+
+export const mimeTypes = {
+    turtle: 'text/turtle',
+    jsonld: 'application/ld+json',
+}

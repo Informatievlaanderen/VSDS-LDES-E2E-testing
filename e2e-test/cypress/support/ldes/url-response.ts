@@ -70,7 +70,7 @@ export abstract class UrlResponse {
         return JSON.stringify(content, null, 0);
     }
 
-    expectContent(content: string) {
+    expectContent(content: string | object) {
         const mimeType = this.mimeType;
         if (mimeType === mimeTypes.jsonld) {
             expect(this.roundTripJson(this.body)).to.equal(this.roundTripJson(content));

@@ -35,7 +35,7 @@ When('I request the view formatted as {string}', (mimeType: string) => {
 })
 
 Then('I receive a response similar to {string}', (fileName: string) => {
-    cy.fixture(`ldes-server-caching/${fileName}`).then((content: string) => {
+    cy.fixture(`ldes-server-caching/${fileName}`).then((content: string | object) => {
         view.expectContent(content);
     });
 })

@@ -1,0 +1,20 @@
+{
+    "@graph": [
+        {
+            "@id": "mobility-hindrances:by-time",
+            "@type": "tree:Node"
+        },
+        {
+            "@id": "http://localhost:8080/mobility-hindrances",
+            "tree:view": {
+                "@id": "mobility-hindrances:by-time"
+            },
+            "@type": "ldes:EventStream"
+        }
+    ],
+    "@context": {
+        "tree": "https://w3id.org/tree#",
+        "ldes": "https://w3id.org/ldes#",
+        "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
+    }
+}

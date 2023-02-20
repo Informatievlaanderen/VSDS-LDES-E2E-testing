@@ -14,13 +14,12 @@ let middleFragment: Fragment;
 let lastFragment: Fragment;
 
 Then('the first fragment is immutable', () => {
-    server.getLdes('mobility-hindrances')
-        .then(ldes => new Fragment(ldes.viewUrl()).visit())
-        .then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => {
-            firstFragment = fragment;
-            firstFragment.expectImmutable();
-        });
+    server.waitAvailable().then(() =>
+        server.getLdes('mobility-hindrances')
+            .then(ldes => new Fragment(ldes.viewUrl()).visit())
+            .then(view => new Fragment(view.relation.link).visit())
+            .then(fragment => firstFragment = fragment.expectImmutable())
+    );
 })
 
 Then('the first fragment only has a {string} to the middle fragment', (type: string) => {

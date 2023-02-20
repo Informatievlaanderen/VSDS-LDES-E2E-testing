@@ -16,22 +16,30 @@ export interface DockerComposeOptions {
 
 export class DockerCompose {
     private environmentFile: string;
-    private environment: object = {
-        // Use own credentials
-        SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
-        SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
+    private environment: object
 
-        // Use latest tags
-        LDES_SERVER_SIMULATOR_TAG:'latest',
-        LDES_WORKBENCH_NIFI_TAG:'latest',
-        LDES_CLIENT_SINK_TAG:'latest',
-        MONGODB_TAG:'latest',
-        LDES_SERVER_TAG:'latest',
-        MONGODB_REST_API_TAG:'latest',
-    };
+    constructor() {
+        this.environment = this.initialEnvironment;
+    }
+
+    private get initialEnvironment() {
+        return {
+            // Use own credentials
+            SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
+            SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
+
+            // Use latest tags
+            LDES_SERVER_SIMULATOR_TAG: 'latest',
+            LDES_WORKBENCH_NIFI_TAG: 'latest',
+            LDES_CLIENT_SINK_TAG: 'latest',
+            MONGODB_TAG: 'latest',
+            LDES_SERVER_TAG: 'latest',
+            MONGODB_REST_API_TAG: 'latest',
+        };
+    }
 
     public up(options: Partial<DockerComposeOptions>) {
-        if (options.dockerComposeFile)        {
+        if (options.dockerComposeFile) {
             this.environment['COMPOSE_FILE'] = options.dockerComposeFile;
         }
 
@@ -55,6 +63,10 @@ export class DockerCompose {
     public down() {
         const environmentFile = this.environmentFile ? `--env-file ${this.environmentFile}` : '';
         const command = `docker compose ${environmentFile} down`;
-        return cy.exec(command, { log: true, env: this.environment, timeout: 60000 }).then(exec => expect(exec.code).to.equals(0));;
+        return cy.exec(command, { log: true, env: this.environment, timeout: 60000 }).then(exec => {
+            this.environment = this.initialEnvironment;
+            this.environmentFile = '';
+            expect(exec.code).to.equals(0)
+        });
     }
 }

@@ -26,11 +26,12 @@ Then('the view is available at {string}', (url: string) => {
 })
 
 When('I request the view formatted as {string}', (mimeType: string) => {
-    server.waitAvailable();
-    new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit(mimeType).then(page => {
-        expect(page.success).to.be.true;
-        view = page;
-    });
+    server.waitAvailable().then(() => 
+        new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit(mimeType).then(page => {
+            expect(page.success).to.be.true;
+            view = page;
+        })
+    );
 })
 
 Then('I receive a response similar to {string}', (fileName: string) => {

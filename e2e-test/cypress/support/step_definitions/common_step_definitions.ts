@@ -1,14 +1,11 @@
-import { After, Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
 import { DockerCompose, credentials, DockerComposeOptions } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink, 
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
 
-const testContext = {
-    testPartialPath: '',
-    additionalEnvironmentSetting: {}
-};
+let testContext: any;
 
 export const dockerCompose = new DockerCompose();
 export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
@@ -17,6 +14,13 @@ export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
+
+Before(() => {
+    testContext = {
+        testPartialPath: '',
+        additionalEnvironmentSetting: {}
+    }
+});
 
 After(() => {
     dockerCompose.down();

@@ -32,7 +32,7 @@ services:
     networks:
       - ldes
   nginx:
-    image: nginx:${NGINX_TAG:-1.23.3-alpine}
+    image: nginx:${NGINX_TAG:-1.23.3}
     container_name: ${USECASE_NAME:-setup-caching}_nginx
     ports:
       - ${NGINX_PORT:-8080}:8080

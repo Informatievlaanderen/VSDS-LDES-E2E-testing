@@ -1,6 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
+/// <reference types="cypress" />
 
-export class LdesWorkbenchNiFi {
+import { CanCheckAvailability } from "./interfaces";
+
+export class LdesWorkbenchNiFi implements CanCheckAvailability{
+
     constructor(private baseUrl: string) {
     }
 
@@ -8,8 +11,12 @@ export class LdesWorkbenchNiFi {
      * Checks if the Apache NiFi workbench is ready to accept login attempts
      * @returns true if ready, false otherwise
      */
-    isReady(): Cypress.Chainable<boolean> {
+    private isReady(): Cypress.Chainable<boolean> {
         return cy.exec(`curl --insecure ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+    }
+
+    waitAvailable() {
+        return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
     }
 
     logon(credentials: { username: string; password: string; }) {

@@ -1,10 +1,16 @@
 /// <reference types="cypress" />
 
-export class LdesServerSimulator {
+import { CanCheckAvailability } from "./interfaces";
+
+export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
 
-    public isAvailable() {
-        return cy.request(this.baseUrl).then(response => expect(response.isOkStatusCode).to.be.true);
+    public waitAvailable() {
+        return cy.waitUntil(() => this.isReady(), { timeout: 15000, interval: 5000 });
+    }
+
+    private isReady() {
+        return cy.exec(`curl ${this.baseUrl}`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
     public seed(files: string[]) {

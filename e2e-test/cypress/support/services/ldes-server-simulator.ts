@@ -12,10 +12,8 @@ export class LdesServerSimulator implements CanCheckAvailability {
     private isReady() {
         return cy.request({
             url: this.baseUrl, 
-            followRedirect: true, 
             failOnStatusCode: false, 
-            retryOnNetworkFailure: true,
-        }).then(response => expect(response.isOkStatusCode).to.be.true);
+        }).then(response => response.isOkStatusCode);
     }
 
     public seed(files: string[]) {

@@ -12,8 +12,9 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     private isReady() {
-        return cy.exec(`docker logs $(docker ps -f "name=${this.serviceName}$" -q)`)
-            .then(result => result.stdout.includes("Tomcat started on port(s): 8080 (http) with context path ''"));
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => cy.exec(`docker logs ${result.stdout}`)
+            .then(result => result.stdout.includes("Tomcat started on port(s): 8080 (http) with context path ''")));
     }
 
     waitAvailable() {

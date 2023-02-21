@@ -9,8 +9,9 @@ export class JsonDataGenerator implements CanCheckAvailability {
     }
 
     private isReady() {
-        return cy.exec(`docker logs $(docker ps -f "name=${this.serviceName}$" -q)`)
-            .then(result => result.stdout.includes('Runs at:'));
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => cy.exec(`docker logs ${result.stdout}`)
+            .then(result => result.stdout.includes('Runs at:')));
     }
 
     waitAvailable() {

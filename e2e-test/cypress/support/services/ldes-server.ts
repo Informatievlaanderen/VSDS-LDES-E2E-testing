@@ -21,7 +21,6 @@ export class LdesServer implements CanCheckAvailability {
         return cy.waitUntil(() => this.isReady(), { timeout: 60000, interval: 5000 });
     }
 
-
     getLdes(collection: string) {
         return new EventStream(`${this.baseUrl}/${collection}`).visit();
     }

@@ -6,7 +6,16 @@ export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
 
     public waitAvailable() {
-        return cy.request(this.baseUrl).then(response => expect(response.isOkStatusCode).to.be.true);
+        return cy.waitUntil(() => this.isReady(), { timeout: 15000, interval: 5000 });
+    }
+
+    private isReady() {
+        return cy.request({
+            url: this.baseUrl, 
+            followRedirect: true, 
+            failOnStatusCode: false, 
+            retryOnNetworkFailure: true,
+        }).then(response => expect(response.isOkStatusCode).to.be.true);
     }
 
     public seed(files: string[]) {

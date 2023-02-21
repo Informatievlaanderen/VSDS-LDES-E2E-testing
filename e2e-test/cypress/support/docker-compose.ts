@@ -19,7 +19,7 @@ export class DockerCompose {
     private _environmentFile: string;
     private _environment: object
 
-    constructor(private useLatestTags = true) {}
+    constructor(private useLatestTags = true) { }
 
     public initialize() {
         this._environment = this.initialEnvironment;
@@ -73,7 +73,7 @@ export class DockerCompose {
     }
 
     private waitNoContainersRunning() {
-        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), {timeout: 60000, interval: 5000})
+        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), { timeout: 60000, interval: 5000 })
     }
 
     public down() {
@@ -81,8 +81,8 @@ export class DockerCompose {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
             const command = `docker compose ${environmentFile} down`;
             return cy.exec(command, { log: true, env: this._environment, timeout: 60000 })
-            .then(exec => expect(exec.code).to.equals(0))
-            .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
+                .then(exec => expect(exec.code).to.equals(0))
+                .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
         }
     }
 }

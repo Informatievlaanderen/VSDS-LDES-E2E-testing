@@ -19,7 +19,7 @@ export class DockerCompose {
     private _environmentFile: string;
     private _environment: object
 
-    constructor(private useLatestTags = true) { }
+    constructor(private useDefaultTags: boolean) { }
 
     public initialize() {
         this._environment = this.initialEnvironment;
@@ -44,7 +44,7 @@ export class DockerCompose {
             MONGODB_REST_API_TAG: 'latest',
         }
 
-        return this.useLatestTags ? { ...ownCredentials, ...latestTags } : { ...ownCredentials };
+        return this.useDefaultTags ? { ...ownCredentials } : { ...ownCredentials, ...latestTags };
     }
 
     public up(options: Partial<DockerComposeOptions>) {
@@ -66,10 +66,11 @@ export class DockerCompose {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const delayedService = options.delayedService ? options.delayedService : ''
         const command = `docker compose ${environmentFile} up ${delayedService} -d`;
-        return cy.exec(command, { log: true, env: this._environment }).then(result => {
-            this._isUp = result.code === 0;
-            return result;
-        });
+        return cy.log(`Using latest tags: ${!this.useDefaultTags}`)
+            .exec(command, { log: true, env: this._environment }).then(result => {
+                this._isUp = result.code === 0;
+                return result;
+            });
     }
 
     private waitNoContainersRunning() {

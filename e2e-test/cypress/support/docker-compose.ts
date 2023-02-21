@@ -72,15 +72,17 @@ export class DockerCompose {
         });
     }
 
+    private waitNoContainersRunning() {
+        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), {timeout: 60000, interval: 5000})
+    }
+
     public down() {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
             const command = `docker compose ${environmentFile} down`;
             return cy.exec(command, { log: true, env: this._environment, timeout: 60000 })
-                .then(exec => {
-                    this._isUp = false;
-                    expect(exec.code).to.equals(0);
-                });
+            .then(exec => expect(exec.code).to.equals(0))
+            .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
         }
     }
 }

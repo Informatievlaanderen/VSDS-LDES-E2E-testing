@@ -27,7 +27,7 @@ docker logs --follow $(docker ps -f "name=gtfs2ldes-js" -q)
 #### 2. Verify LDES Members Received And Fragments Created
 To verify that the LDES server can keep up with the stream of linked connections from the GTFS to the LDES converter, you can use the [LDES list fragments tool](/ldes-list-fragments/README.md).\
 By default, the throttle rate ```(THROTTLE_RATE)``` and the fragment member limit ```(VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT)``` are set to the same value (100), so for every batch of linked connections being ingested, the LDES server creates one fragment. \
-The LDES list fragments tool follows the newly created fragments. That way you can verify that the LDES server keeps up with the rat
+The LDES list fragments tool follows the newly created fragments. That way you can verify that the LDES server keeps up with the rate
 
 To start following the fragments being created:
 ```bash

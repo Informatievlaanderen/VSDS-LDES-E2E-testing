@@ -38,6 +38,8 @@ services:
       - ${NGINX_PORT:-8080}:8080
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro
+    depends_on:
+      - ldes-server
     networks:
       - ldes
   ldes-cli:

@@ -15,19 +15,26 @@ export interface DockerComposeOptions {
 };
 
 export class DockerCompose {
-    private environmentFile: string;
-    private environment: object
+    private _isUp: boolean;
+    private _environmentFile: string;
+    private _environment: object
 
-    constructor() {
-        this.environment = this.initialEnvironment;
+    constructor(private useLatestTags = true) {}
+
+    public initialize() {
+        this._environment = this.initialEnvironment;
+        this._environmentFile = '';
+        this._isUp = false;
     }
 
     private get initialEnvironment() {
-        return {
+        const ownCredentials = {
             // Use own credentials
             SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
             SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
+        };
 
+        const latestTags = {
             // Use latest tags
             LDES_SERVER_SIMULATOR_TAG: 'latest',
             LDES_WORKBENCH_NIFI_TAG: 'latest',
@@ -35,38 +42,45 @@ export class DockerCompose {
             MONGODB_TAG: 'latest',
             LDES_SERVER_TAG: 'latest',
             MONGODB_REST_API_TAG: 'latest',
-        };
+        }
+
+        return this.useLatestTags ? { ...ownCredentials, ...latestTags } : { ...ownCredentials };
     }
 
     public up(options: Partial<DockerComposeOptions>) {
         if (options.dockerComposeFile) {
-            this.environment['COMPOSE_FILE'] = options.dockerComposeFile;
+            this._environment['COMPOSE_FILE'] = options.dockerComposeFile;
         }
 
         if (options.environmentFile) {
-            this.environmentFile = options.environmentFile;
+            this._environmentFile = options.environmentFile;
         }
 
         if (options.additionalEnvironmentSetting) {
-            this.environment = {
-                ...this.environment,
+            this._environment = {
+                ...this._environment,
                 ...options.additionalEnvironmentSetting
             };
         }
 
-        const environmentFile = this.environmentFile ? `--env-file ${this.environmentFile}` : '';
+        const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const delayedService = options.delayedService ? options.delayedService : ''
         const command = `docker compose ${environmentFile} up ${delayedService} -d`;
-        return cy.exec(command, { log: true, env: this.environment });
+        return cy.exec(command, { log: true, env: this._environment }).then(result => {
+            this._isUp = result.code === 0;
+            return result;
+        });
     }
 
     public down() {
-        const environmentFile = this.environmentFile ? `--env-file ${this.environmentFile}` : '';
-        const command = `docker compose ${environmentFile} down`;
-        return cy.exec(command, { log: true, env: this.environment, timeout: 60000 }).then(exec => {
-            this.environment = this.initialEnvironment;
-            this.environmentFile = '';
-            expect(exec.code).to.equals(0)
-        });
+        if (this._isUp) {
+            const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
+            const command = `docker compose ${environmentFile} down`;
+            return cy.exec(command, { log: true, env: this._environment, timeout: 60000 })
+                .then(exec => {
+                    this._isUp = false;
+                    expect(exec.code).to.equals(0);
+                });
+        }
     }
 }

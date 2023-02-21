@@ -1,9 +1,8 @@
 /// <reference types="cypress" />
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
-import { LdesServer } from "..";
 import { Fragment } from '../ldes';
+import { server } from "./common_step_definitions";
 
-const server = new LdesServer('http://localhost:8080');
 let rootFragment: Fragment;
 
 Then('the root fragment is not immutable', () => {

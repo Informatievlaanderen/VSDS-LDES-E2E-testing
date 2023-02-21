@@ -7,7 +7,7 @@ import {
 
 let testContext: any;
 
-export const dockerCompose = new DockerCompose();
+export const dockerCompose = new DockerCompose(true); // TODO: use from cypress environment
 export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
@@ -16,6 +16,9 @@ export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 
 Before(() => {
+    dockerCompose.down();
+    dockerCompose.initialize();
+    
     testContext = {
         testPartialPath: '',
         additionalEnvironmentSetting: {},

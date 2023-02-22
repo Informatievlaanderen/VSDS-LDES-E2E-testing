@@ -5,6 +5,7 @@ Feature: LDES Server Caching et al.
     And I have configured the 'VIEW_NAME' as '<view-name>'
     When the 'demos/ldes-server-caching' test is setup
     And context 'demos/ldes-server-caching' is started
+    And the server is available
     Then the collection is available at '<collection-url>'
     And the view is available at '<view-url>'
 
@@ -16,6 +17,7 @@ Feature: LDES Server Caching et al.
   Scenario: Verify Acceptable Fragment Formats
     Given the 'demos/ldes-server-caching' test is setup
     And context 'demos/ldes-server-caching' is started
+    And the server is available
     When I request the view formatted as 'text/turtle '
     Then I receive a response similar to 'view.ttl'
     When I request the view formatted as 'application/n-quads'
@@ -24,3 +26,34 @@ Feature: LDES Server Caching et al.
     Then I receive a response similar to 'view.json'
     When I request the view formatted as 'application/n-triples'
     Then I receive a response similar to 'view.nt'
+
+  Scenario: Verify Acceptable Member Formats
+    Given the 'demos/ldes-server-caching' test is setup
+    And context 'demos/ldes-server-caching' is started
+    And the server is available
+    When I send the member file 'data/member.ttl' of type 'text/turtle'
+    Then the server accepts this member file
+    When I send the member file 'data/member.nq' of type 'application/n-quads'
+    Then the server accepts this member file
+    When I send the member file 'data/member.jsonld' of type 'application/ld+json'
+    Then the server accepts this member file
+    When I send the member file 'data/member.nt' of type 'application/n-triples'
+    Then the server accepts this member file
+
+  Scenario: Verify CORS and Supported HTTP Verbs
+    Given the 'demos/ldes-server-caching' test is setup
+    And context 'demos/ldes-server-caching' is started
+    And the server is available
+    When I request the view from a different url 'http://example.com'
+    Then the server returns the supported HTTP Verbs
+    When I only request the view headers
+    Then the headers include an Etag which is used for caching purposes
+
+  Scenario: Verify Actual Caching
+    Given the 'demos/ldes-server-caching' test is setup
+    And context 'demos/ldes-server-caching' is started
+    And the server is available
+    When I request the LDES
+    Then the LDES is not yet cached
+    When I request the LDES
+    Then the LDES comes from the cache

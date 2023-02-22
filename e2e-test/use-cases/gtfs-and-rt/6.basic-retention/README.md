@@ -19,7 +19,7 @@ The LDES server is configured to ingest the items and serves two time-based frag
 * One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds)	
 * the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).	
 
-The retention periods are indicated in a standard way (ISO 8601 durations), e.g. P3D (3 days). 	
+The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. P3D (3 days). 	
 
 ### Start Systems
 When started, we expect that the LDES server creates the initial state: the LDES itself (L) and the two views (V and W).

@@ -79,3 +79,12 @@ When('I request the LDES', () => {
     const command = `curl -i http://localhost:8080/mobility-hindrances`;
     return cy.exec(command).then(result => execResult = result.stdout);
 })
+
+When('I request the view compressed', () => {
+    const command = `curl -I -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-time`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+Then('I receive a zip file containing my view', () => {
+    expect(execResult).to.include('Content-Encoding: gzip');
+})

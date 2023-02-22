@@ -57,3 +57,10 @@ Feature: LDES Server Caching et al.
     Then the LDES is not yet cached
     When I request the LDES
     Then the LDES comes from the cache
+
+  Scenario: Verify Actual Caching
+    Given the 'demos/ldes-server-caching' test is setup
+    And context 'demos/ldes-server-caching' is started
+    And the server is available
+    When I request the view compressed
+    Then I receive a zip file containing my view

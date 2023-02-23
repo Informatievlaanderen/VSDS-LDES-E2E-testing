@@ -5,14 +5,8 @@ import { server } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 
-Then('the root fragment is not immutable', () => {
-    server.getLdes('addresses')
-        .then(ldes => new Fragment(ldes.viewUrl('by-name')).visit())
-        .then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => {
-            rootFragment = fragment;
-            rootFragment.expectMutable();
-        });
+Then('the substring root fragment is not immutable', () => {
+    server.checkRootFragmentMutable('addresses', 'by-name').then(fragment => rootFragment = fragment);
 })
 
 Then('the root fragment contains {string} relations with values: {string}', (relationType: string, relationValues: string) => {

@@ -1,5 +1,7 @@
 Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream available as LDES
 
+Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/grar
+
   Background:
     Given the members are stored in collection 'ldesmember' in database 'grar'
 

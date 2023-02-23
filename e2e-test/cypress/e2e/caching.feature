@@ -1,5 +1,7 @@
 Feature: LDES Server Caching et al.
 
+Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/demos/ldes-server-caching 
+
   Scenario Outline: Verify URL Naming Strategy
     Given I have configured the 'COLLECTION_NAME' as '<collection-name>'
     And I have configured the 'VIEW_NAME' as '<view-name>'
@@ -14,7 +16,7 @@ Feature: LDES Server Caching et al.
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | by-page   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/by-page            |
 
-  Scenario: Verify Acceptable Fragment Formats
+  Scenario: Verify Acceptable Fragment Formatsmin
     Given the 'demos/ldes-server-caching' test is setup
     And context 'demos/ldes-server-caching' is started
     And the LDES server is available

@@ -14,7 +14,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     When I start the workflow
     And I start the JSON Data Generator
     And the LDES contains at least 13 members
-    Then the root fragment is not immutable
+    Then the substring root fragment is not immutable
     And the root fragment contains 'SubstringRelation' relations with values: 'k,1,9,l,g,h,2'
     When the LDES contains at least 73 members
     Then the fragment exists for substring 'ka,ho,gr'

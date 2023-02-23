@@ -90,7 +90,7 @@ Given('I have configured the {string} as {string}', (property: string, value: st
     testContext.additionalEnvironmentSetting[property] = value;
 })
 
-Given('the server is available', () => {
+Given('the LDES server is available', () => {
     return server.waitAvailable();
 })
 

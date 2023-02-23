@@ -8,7 +8,7 @@ Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream availa
     And context 'use-cases/grar/1.addresses-substring-fragmentation' is started
     And I have logged on to the Apache NiFi UI
     And I have uploaded the workflow
-    And the server is available
+    And the LDES server is available
     When I start the workflow
     And I start the JSON Data Generator
     And the LDES contains at least 13 members

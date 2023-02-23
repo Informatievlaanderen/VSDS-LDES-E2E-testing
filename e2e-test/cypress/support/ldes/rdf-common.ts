@@ -6,6 +6,7 @@ export const tree = {
     relation: treePrefix + 'relation',
     value: treePrefix + 'value',
     path: treePrefix + 'path',
+    member: treePrefix + 'member',
     prefix: (term: string) => treePrefix + term,
 }
 

@@ -18,7 +18,7 @@ export const server = new LdesServer('http://localhost:8080');
 Before(() => {
     dockerCompose.down();
     dockerCompose.initialize();
-    
+
     testContext = {
         testPartialPath: '',
         additionalEnvironmentSetting: {},
@@ -30,6 +30,10 @@ Before(() => {
 After(() => {
     dockerCompose.down();
 });
+
+export function testPartialPath() {
+    return testContext && testContext.testPartialPath;
+}
 
 // Given stuff
 
@@ -86,6 +90,10 @@ Given('I have configured the {string} as {string}', (property: string, value: st
     testContext.additionalEnvironmentSetting[property] = value;
 })
 
+Given('the server is available', () => {
+    return server.waitAvailable();
+})
+
 // When stuff
 
 When('I start the workflow', () => {
@@ -122,4 +130,5 @@ Then('the sink contains {int} members', (count: number) => {
 Then('the LDES contains {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count);
 })
+
 

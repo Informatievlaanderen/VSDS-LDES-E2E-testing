@@ -6,7 +6,6 @@ import { server } from "./common_step_definitions";
 let rootFragment: Fragment;
 
 Then('the root fragment is not immutable', () => {
-    server.waitAvailable();
     server.getLdes('addresses')
         .then(ldes => new Fragment(ldes.viewUrl('by-name')).visit())
         .then(view => new Fragment(view.relation.link).visit())

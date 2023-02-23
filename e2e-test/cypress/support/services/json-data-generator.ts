@@ -8,14 +8,16 @@ export class JsonDataGenerator implements CanCheckAvailability {
         return 'json-data-generator'
     }
 
-    private isReady() {
-        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
-            .then(result => cy.exec(`docker logs ${result.stdout}`)
-            .then(result => result.stdout.includes('Runs at:')));
+    private isReady(containerId: string) {
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Runs at:"));
     }
 
     waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: 60000, interval: 5000 });
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => {
+                const containerId = result.stdout;
+                return cy.waitUntil(() => this.isReady(containerId), { timeout: 60000, interval: 5000 });
+            });
     }
 
 }

@@ -43,6 +43,7 @@ Feature: GIPOD use case
     And I have aliased the data set    
     And I have logged on to the Apache NiFi UI
     And I have uploaded the workflow
+    And the server is available
     When I start the workflow
     Then the LDES contains 617 members
     And the first fragment is immutable
@@ -60,6 +61,7 @@ Feature: GIPOD use case
     And I have aliased the data set
     And I have logged on to the Apache NiFi UI
     And I have uploaded the workflow
+    And the server is available
     When I start the workflow
     Then the LDES contains 617 members
     And the first fragment is immutable

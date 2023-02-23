@@ -36,12 +36,16 @@ export class DockerCompose {
 
         const latestTags = {
             // Use latest tags
-            LDES_SERVER_SIMULATOR_TAG: 'latest',
-            LDES_WORKBENCH_NIFI_TAG: 'latest',
+            GTFS2LDES_TAG: 'main',
+            JSON_DATA_GENERATOR_TAG: 'latest',
+            LDES_CLIENT_CLI_TAG: 'latest',
             LDES_CLIENT_SINK_TAG: 'latest',
-            MONGODB_TAG: 'latest',
+            LDES_SERVER_SIMULATOR_TAG: 'latest',
             LDES_SERVER_TAG: 'latest',
+            LDES_WORKBENCH_NIFI_TAG: 'latest',
             MONGODB_REST_API_TAG: 'latest',
+            MONGODB_TAG: 'latest',
+            NGINX_TAG: 'latest',
         }
 
         return this.useDefaultTags ? { ...ownCredentials } : { ...ownCredentials, ...latestTags };

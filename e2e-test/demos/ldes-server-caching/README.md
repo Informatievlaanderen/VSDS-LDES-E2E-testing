@@ -99,6 +99,7 @@ mobility-hindrances:by-time
     "@context": {
         "tree": "https://w3id.org/tree#",
         "ldes": "https://w3id.org/ldes#",
+        "rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
     }
 }

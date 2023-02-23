@@ -43,4 +43,8 @@ export class Fragment extends UrlResponse {
         return this.store.getObjects(null, tree.member, null).map(x => x.value);
     } 
 
+    get memberCount(): number {
+        return this.store.getObjects(null, tree.member, null).length;
+    }
+
 }

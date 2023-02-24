@@ -23,7 +23,7 @@ In addition, you need to retrieve the docker images that will be used in the aut
 ```
 
 ### Use Default Docker Compose Tags
-By default, the automatic tests are run against the latests docker images but you can specify to use the default tags provided in the docker compose files. These are typically the tags of the docker images of the previous sprint. To use the latest tags you need to add an environment variable (`--env useDefaultTags=true`):
+By default, the automatic tests are run against the latests docker images but you can specify to use the default tags provided in the docker compose files. These are typically the tags of the docker images of the previous sprint. To use the default tags you need to add an environment variable (`--env useDefaultTags=true`):
 ```bash
 npm run test -- --env useDefaultTags=true
 ```

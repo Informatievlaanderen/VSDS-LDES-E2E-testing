@@ -1,0 +1,35 @@
+@startuml "IoW Use Case TO-BE - Container Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title IoW Use Case TO-BE - Container Diagram
+
+Person(tester, "Tester")
+
+System_Ext(generator, "JSON Data Generator", "Simple generator creating\n**WaterQualityObserved** updates (NGSI-v2 format)")
+System_Boundary(ldi_d, "Devices Pipeline") {
+    Container(workflow_devices, "IoW Workflow - Devices", "LDI Orchestrator", "Workflow containing standard and custom LDIO components")
+}
+System_Boundary(ldi_m, "Models Pipeline") {
+    Container(workflow_models, "IoW Workflow - Models", "LDI Orchestrator", "Workflow containing standard and custom LDIO components")
+}
+System_Boundary(ldi_o, "Observations Pipeline") {
+    Container(workflow_observations, "IoW Workflow - Observations", "LDI Orchestrator", "Workflow containing standard and custom LDIO components")
+}
+System(server_observations, "LDES Server Observations", "LDES Servers ingesting/serving **WaterQualityObserved**")
+System(server_devices, "LDES Server Devices", "LDES Server ingesting/serving **Devices**")
+System(server_models, "LDES Server Models", "LDES Server ingesting/serving **DeviceModels**")
+System_Ext(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_D(generator, workflow_observations, "generates and pushes NGSI-v2 updates", "HTTP (method POST)")
+Rel_D(tester, workflow_devices, "pushes Devices", "HTTPS")
+Rel_D(tester, workflow_models, "pushes DeviceModels", "HTTPS")
+
+Rel_D(workflow_devices, server_devices, "pushes LDES members", "HTTP (method POST)")
+Rel_D(workflow_models, server_models, "pushes LDES members", "HTTP (method POST)")
+Rel_D(workflow_observations, server_observations, "pushes LDES members", "HTTP (method POST)")
+Rel_D(server_devices, database, "stores and retrieves LDES members", "mongo")
+Rel_D(server_models, database, "stores and retrieves LDES members", "mongo")
+Rel_D(server_observations, database, "stores and retrieves LDES members", "mongo")
+
+@enduml
+

@@ -1,0 +1,34 @@
+@startuml "IoW Use Case TEMP - Context Diagram"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title IoW Use Case TEMP - Context Diagram
+
+Person(tester, "Tester")
+
+System_Ext(generator, "JSON Data Generator", "Simple generator creating\n**WaterQualityObserved** updates (NGSI-v2 format)")
+System(nifi, "Apache NiFi system","Contains\n**IoW Workflow**")
+System(ldi_d, "Devices Pipeline","Translates NGSI-LD state to NGSI-LD version object")
+System(ldi_m, "Models Pipeline","Translates NGSI-LD state to NGSI-LD version object")
+System(ldi_o, "Observations Pipeline","Translates OSLO state to OSLO version object")
+System(server_observations, "LDES Server Observations", "LDES Server ingesting & serving **WaterQualityObserved**")
+System(server_devices, "LDES Server Devices", "LDES Server ingesting & serving **Devices**")
+System(server_models, "LDES Server Models", "LDES Server ingesting & serving **DeviceModels**")
+System_Ext(database, "Storage", "MongoDB - Contains LDES members and fragments")
+
+Rel_D(generator, nifi, "generates and pushes NGSI-v2 updates", "HTTP (method POST)")
+Rel_D(tester, nifi, "pushes Devices", "HTTPS")
+Rel_D(tester, nifi, "pushes DeviceModels", "HTTPS")
+
+Rel_D(nifi, ldi_d, "pushes NGSI-LD state object", "HTTP (method POST)")
+Rel_D(nifi, ldi_m, "pushes NGSI-LD state object", "HTTP (method POST)")
+Rel_D(nifi, ldi_o, "pushes OSLO state object", "HTTP (method POST)")
+
+Rel_D(ldi_d, server_devices, "pushes LDES members", "HTTP (method POST)")
+Rel_D(ldi_m, server_models, "pushes LDES members", "HTTP (method POST)")
+Rel_D(ldi_o, server_observations, "pushes LDES members", "HTTP (method POST)")
+
+Rel_D(server_devices, database, "stores and retrieves LDES members", "mongo")
+Rel_D(server_models, database, "stores and retrieves LDES members", "mongo")
+Rel_D(server_observations, database, "stores and retrieves LDES members", "mongo")
+
+@enduml

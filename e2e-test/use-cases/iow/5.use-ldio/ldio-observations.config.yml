@@ -1,0 +1,18 @@
+server:
+  port: 8080
+orchestrator:
+  input:
+    name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+  transformers:
+    - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+      config:
+        member-type: https://www.w3.org/TR/vocab-ssn-ext/#sosa:ObservationCollection
+        delimiter: "/"
+        date-observed-property: http://www.w3.org/ns/sosa/phenomenonTime
+        generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+        versionOf-property: http://purl.org/dc/terms/isVersionOf
+  outputs:
+    - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+      config:
+        endpoint: http://ldes-server-observations:8080/water-quality-observations
+        content-type: application/n-quads

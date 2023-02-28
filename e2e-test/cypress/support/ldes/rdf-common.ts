@@ -6,6 +6,7 @@ export const tree = {
     relation: treePrefix + 'relation',
     value: treePrefix + 'value',
     path: treePrefix + 'path',
+    member: treePrefix + 'member',
     prefix: (term: string) => treePrefix + term,
 }
 
@@ -19,6 +20,24 @@ const ldesPrefix = 'https://w3id.org/ldes#'
 export const ldes = {
     EventStream: ldesPrefix + 'EventStream',
     prefix: (term: string) => ldesPrefix + term,
+}
+
+const termsPrefix = 'http://purl.org/dc/terms/'
+export const terms = {
+    isVersionOf: termsPrefix + 'isVersionOf',
+    prefix: (term: string) => termsPrefix + term,
+}
+
+const provPrefix = 'http://www.w3.org/ns/prov#'
+export const prov = {
+    generatedAtTime: provPrefix + 'generatedAtTime',
+    prefix: (term: string) => provPrefix + term,
+}
+
+const sosaPrefix = 'http://www.w3.org/ns/sosa/'
+export const sosa = {
+    phenomenonTime: sosaPrefix + 'phenomenonTime',
+    prefix: (term: string) => sosaPrefix + term,
 }
 
 export const mimeTypes = {

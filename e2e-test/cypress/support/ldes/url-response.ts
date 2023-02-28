@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import N3 = require('n3');
-import { mimeTypes } from './rdf-common';
+import { Member } from './member';
+import { mimeTypes, tree } from './rdf-common';
 
 export abstract class UrlResponse {
     private _response: Cypress.Response<any>;
@@ -78,4 +79,14 @@ export abstract class UrlResponse {
             expect(this.roundTripRdf(this.body, mimeType)).to.equal(this.roundTripRdf(content as string, mimeType));
         }
     }
+
+    get members(): Member[] {
+        return this.store.getObjects(null, tree.member, null)
+            .map(x => new Member(x.value, this.store.getQuads(x.value, null, null, null)));
+    } 
+
+    get memberCount(): number {
+        return this.store.getObjects(null, tree.member, null).length;
+    }
+    
 }

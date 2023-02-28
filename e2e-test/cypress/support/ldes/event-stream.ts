@@ -15,6 +15,11 @@ export class EventStream extends UrlResponse {
         }
     }
 
+    getViews(index: number) {
+        const views = this.store.getObjects(null, tree.view, null);
+        return views[index].value;
+    }
+
     get isEventStream(): boolean {
         return this.store.getQuads(this.url, rdf.type, ldes.EventStream, null).length === 1;
     }

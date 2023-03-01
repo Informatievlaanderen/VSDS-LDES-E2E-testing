@@ -29,18 +29,36 @@ Then('the geo-spatial fragment {string} contains the member', (tile: string) => 
     new Fragment(relationUrl).visit().then(fragment => expect(fragment.members).to.eql(members));
 })
 
-Then('the root fragment contains multiple relations of type {string}', (relationType: string) => {
-    relations = rootFragment.expectMultipleRelationOf(relationType, 4);
-})
-
 Then('the multi-view root fragment contains multiple relations of type {string}', (relationType: string) => {
     relations = rootFragment.expectMultipleRelationOf(relationType, 4);
 })
 
 Then('the first view url is not undefined', () => {
-    server.expectViewUrlNotToBeUndefined(ldesName, 0);
+    server.expectViewUrlNotToBeUndefined(ldesName, 0).then(fragment => rootFragment = fragment);
 })
 
 Then('the second view url is not undefined', () => {
-    server.expectViewUrlNotToBeUndefined(ldesName, 1);
+    server.expectViewUrlNotToBeUndefined(ldesName, 1).then(fragment => rootFragment = fragment);
+})
+
+Then('the geo-spatial fragment {string} has a second level timebased fragmentation which contains the members', (tile: string) => {
+    const relationUrl = `${server.baseUrl}/${ldesName}/${byLocationAndTime}?tile=${tile}`;
+    const relation = relations.find(x => x.link === relationUrl);
+    expect(relation).not.to.be.undefined;
+    new Fragment(relationUrl).visit().then(fragment => {
+        const relation = fragment.relation;
+        expect(relation).not.to.be.undefined;
+        return new Fragment(relation.link).visit().then(fragment => {
+            expect(fragment.members.length).to.equal(5);
+            return new Fragment(fragment.relation.link).visit().then(fragment => expect(fragment.members.length).to.equal(1));
+        });
+    });
+})
+
+Then('the geo-spatial root fragment contains {int} relations of type {string}', (amount: number, relationType: string) => {
+    relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+})
+
+Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
+    relations = rootFragment.expectMultipleRelationOf(relationType, amount);
 })

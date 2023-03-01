@@ -43,7 +43,11 @@ export class LdesServer implements CanCheckAvailability {
     expectViewUrlNotToBeUndefined(ldes: string, index: number) {
         return this.getLdes(ldes)
             .then(ldes => new Fragment(ldes.getViews(index)).visit())
-            .then(view => expect(view.relation.link).not.to.be.undefined);
+            .then(view => view.relation.link)
+            .then(url => {
+                expect(url).not.to.be.undefined;
+                return new Fragment(url).visit();
+            });
     }
 
 }

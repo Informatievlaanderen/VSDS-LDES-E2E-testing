@@ -12,4 +12,10 @@ export class MongoRestApi {
             .then(response => response.body)
             .then((result: { count: number }) => cy.log('Actual count: ' + result.count).then(() => checkFn(result.count , count)));
     }
+
+    count(database: string, collection: string) {
+        return cy.request(`${this.baseUrl}/${database}/${collection}`)
+            .then(response => response.body)
+            .then((result: { count: number }) => result.count);
+    }
 }

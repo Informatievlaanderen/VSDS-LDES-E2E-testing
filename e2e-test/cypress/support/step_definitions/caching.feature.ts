@@ -25,7 +25,7 @@ Then('the view is available at {string}', (url: string) => {
 })
 
 When('I request the view formatted as {string}', (mimeType: string) => {
-    return new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit(mimeType).then(page => {
+    return new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit({mimeType: mimeType}).then(page => {
         expect(page.success).to.be.true;
         view = page;
     })

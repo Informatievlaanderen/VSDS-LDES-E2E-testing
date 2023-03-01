@@ -135,5 +135,7 @@ Then('the LDES contains {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count);
 })
 
-
-
+Then('the LDES should contain {int} members', (memberCount: number) => {
+    mongo.count(testContext.database, testContext.collection)
+        .then(count => expect(count).to.equal(memberCount));
+})

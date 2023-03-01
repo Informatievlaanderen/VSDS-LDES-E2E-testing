@@ -3,7 +3,6 @@ import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
 export class Fragment extends UrlResponse {
-
     get relations(): Relation[] {
         return this.store.getObjects(null, tree.relation, null)
             .map(relation => new Relation(this.store.getQuads(relation, null, null, null)));
@@ -38,13 +37,4 @@ export class Fragment extends UrlResponse {
         expect(relations.length).to.equal(count);
         return relations;
     }
-
-    get members(): string[] {
-        return this.store.getObjects(null, tree.member, null).map(x => x.value);
-    } 
-
-    get memberCount(): number {
-        return this.store.getObjects(null, tree.member, null).length;
-    }
-
 }

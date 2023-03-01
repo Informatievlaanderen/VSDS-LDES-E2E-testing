@@ -1,4 +1,4 @@
-import { rdf, tree } from './rdf-common';
+import { ldes, rdf, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 

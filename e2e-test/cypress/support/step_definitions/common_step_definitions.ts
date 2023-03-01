@@ -94,6 +94,10 @@ Given('the LDES server is available', () => {
     return server.waitAvailable();
 })
 
+Given('the LDES Server Simulator is available', () => {
+    simulator.waitAvailable();
+})
+
 // When stuff
 
 When('I start the workflow', () => {

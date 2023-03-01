@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { EventStream } from '../ldes';
+import { EventStream, Fragment } from '../ldes';
 import { CanCheckAvailability } from './interfaces';
 
 export class LdesServer implements CanCheckAvailability {
@@ -31,6 +31,23 @@ export class LdesServer implements CanCheckAvailability {
     sendMemberFile(collection: string, partialFilePath: string, mimeType: string) {
         const command = `curl -i -X POST "${this.baseUrl}/${collection}" -H "Content-Type: ${mimeType}" -d "@${partialFilePath}"`;
         return cy.log(command).then(() => cy.exec(command));
+    }
+
+    checkRootFragmentMutable(ldes: string, view: string) {
+        return this.getLdes(ldes)
+            .then(ldes => new Fragment(ldes.viewUrl(view)).visit())
+            .then(view => new Fragment(view.relation.link).visit())
+            .then(fragment => fragment.expectMutable());
+    }
+
+    expectViewUrlNotToBeUndefined(ldes: string, index: number) {
+        return this.getLdes(ldes)
+            .then(ldes => new Fragment(ldes.getViews(index)).visit())
+            .then(view => view.relation.link)
+            .then(url => {
+                expect(url).not.to.be.undefined;
+                return new Fragment(url).visit();
+            });
     }
 
 }

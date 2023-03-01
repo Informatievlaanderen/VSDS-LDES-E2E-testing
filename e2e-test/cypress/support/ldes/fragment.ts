@@ -1,4 +1,4 @@
-import { ldes, rdf, tree } from './rdf-common';
+import { rdf, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
@@ -37,14 +37,6 @@ export class Fragment extends UrlResponse {
         const relations = this.relations.filter(x => x.type === tree.prefix(type));
         expect(relations.length).to.equal(count);
         return relations;
-    }
-
-    get members(): string[] {
-        return this.store.getObjects(null, tree.member, null).map(x => x.value);
-    } 
-
-    get memberCount(): number {
-        return this.store.getObjects(null, tree.member, null).length;
     }
 
 }

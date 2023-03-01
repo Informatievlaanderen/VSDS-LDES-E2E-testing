@@ -26,7 +26,7 @@ Then('the geo-spatial fragment {string} contains the member', (tile: string) => 
     const relationUrl = `${server.baseUrl}/${ldesName}/${byLocation}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);
     expect(relation).not.to.be.undefined;
-    new Fragment(relationUrl).visit().then(fragment => expect(fragment.members).to.eql(members));
+    new Fragment(relationUrl).visit().then(fragment => expect(fragment.members.map(x => x.id)).to.eql(members));
 })
 
 Then('the multi-view root fragment contains multiple relations of type {string}', (relationType: string) => {

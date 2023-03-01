@@ -3,15 +3,26 @@ import N3 = require('n3');
 import { Member } from './member';
 import { mimeTypes, tree } from './rdf-common';
 
+export interface VisitOptions {
+    mimeType: string,
+}
+
 export abstract class UrlResponse {
     private _response: Cypress.Response<any>;
     private _store: N3.Store | undefined;
 
     constructor(public url: string) { }
 
-    visit(mimeType: string = mimeTypes.turtle) {
-        const request = mimeType ? { url: this.url, headers: { accept: mimeType } } : { url: this.url };
+    visit(options?: Partial<VisitOptions>) {
+        let request: { [key: string]: any } = { url: this.url };
+        if (options?.mimeType) request = { ...request, headers: { accept: options.mimeType } };
         return cy.request(request).then(response => this._response = response).then(() => this);
+    }
+
+    refresh() {
+        this._response = undefined;
+        this._store = undefined;
+        return cy.request(this.url).then(response => this._response = response).then(() => this);
     }
 
     protected get store(): N3.Store | undefined {
@@ -83,10 +94,16 @@ export abstract class UrlResponse {
     get members(): Member[] {
         return this.store.getObjects(null, tree.member, null)
             .map(x => new Member(x.value, this.store.getQuads(x.value, null, null, null)));
-    } 
+    }
 
     get memberCount(): number {
         return this.store.getObjects(null, tree.member, null).length;
     }
-    
+
+    expectRequestFailure(httpCode: number) {
+        return cy.request({ url: this.url, failOnStatusCode: false }).then(response => {
+            expect(response.isOkStatusCode).to.be.false;
+            expect(response.status).to.equal(httpCode);
+        });
+    }
 }

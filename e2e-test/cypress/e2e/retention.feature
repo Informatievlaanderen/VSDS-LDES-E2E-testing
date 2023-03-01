@@ -35,6 +35,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     When I wait 20 seconds until view 'V' expires
     And I refresh view 'V'
     And I refresh view 'W'
+    # Note that the members should not yet be deleted until both views expire hence the check below
     Then the LDES should contain 501 members
     And fragment 'A' is deleted and returns HTTP code 410
     And fragment 'B' is deleted and returns HTTP code 410
@@ -45,15 +46,14 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     When I wait 10 seconds until view 'W' expires
     And I refresh view 'V'
     And I refresh view 'W'
-    Then the LDES should contain 201 members
-    And fragment 'F' is deleted and returns HTTP code 410
+    # Note that we do not know when the retention algorithm runs, so we wait until members are purged 
+    And the LDES contains 201 members
+    Then fragment 'F' is deleted and returns HTTP code 410
     And view 'V' links to 'mutable' fragment 'D' containing 51 members
     And view 'W' links to 'mutable' fragment 'G' containing 201 members
 
     When I have uploaded the data files: 'delta,epsilon'
     And the LDES contains 317 members
-    And I refresh view 'V'
-    And I refresh view 'W'
     Then view 'V' links to 'immutable' fragment 'D' containing 150 members
     And fragment 'D' links to 'mutable' fragment 'E' containing 17 members
     And view 'W' links to 'immutable' fragment 'G' containing 300 members
@@ -63,8 +63,9 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And I refresh view 'V'
     And I wait 10 seconds until view 'W' expires
     And I refresh view 'W'
-    Then the LDES should contain 17 members
-    And fragment 'D' is deleted and returns HTTP code 410
+    # Note that we do not know when the retention algorithm runs, so we wait until members are purged 
+    And the LDES contains 17 members
+    Then fragment 'D' is deleted and returns HTTP code 410
     And fragment 'G' is deleted and returns HTTP code 410
     And view 'V' links to 'mutable' fragment 'H' containing 17 members
     And view 'W' links to 'mutable' fragment 'E' containing 17 members

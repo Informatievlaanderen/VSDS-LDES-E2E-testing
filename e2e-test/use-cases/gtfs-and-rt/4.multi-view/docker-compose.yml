@@ -23,6 +23,7 @@ services:
     container_name: ${USECASE_NAME:-gtfs-multiview-ldes}_ldes-server
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
     environment:
+      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod
       - LDES_COLLECTIONNAME=mobility-hindrances

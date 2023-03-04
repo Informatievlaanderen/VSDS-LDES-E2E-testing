@@ -2,7 +2,7 @@ Feature: Basic retention
 
 Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/gtfs-and-rt/6.basic-retention 
 
-  Scenario: 
+  Scenario: LDES Server Provides a Very Basic Retention Mechanism
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT20S'
     And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'

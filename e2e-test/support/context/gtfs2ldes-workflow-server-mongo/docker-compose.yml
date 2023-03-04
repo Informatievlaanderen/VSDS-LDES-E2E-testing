@@ -52,6 +52,8 @@ services:
       - VIEWS_0_NAME=${VIEWS_0_NAME:-by-time}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
+    volumes:
+      - ../../../data/epsg:/tmp/Databases:rw
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
     networks:

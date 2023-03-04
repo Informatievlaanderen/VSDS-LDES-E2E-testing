@@ -21,6 +21,8 @@ services:
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MEMBER_LIMIT:-2}
       - REST_MAXAGE=${MAX_AGE:-60}
       - REST_MAXAGEIMMUTABLE=${MAX_AGE_IMMUTABLE:-604800}
+    volumes:
+      - ../../data/epsg:/tmp/Databases:rw
     networks:
       - ldes
     depends_on:

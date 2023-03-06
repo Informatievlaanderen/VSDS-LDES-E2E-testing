@@ -9,7 +9,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the 'use-cases/gipod/1.replicate-ldes' test is setup
     And context 'support/context/simulator-workflow-sink-mongo' is started
     And I have aliased the pre-seeded simulator data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the sink contains 1016 members
@@ -18,7 +18,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the 'use-cases/gipod/2.ingest-ldes' test is setup
     And context 'support/context/simulator-workflow-server-mongo' is started
     And I have aliased the pre-seeded simulator data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 1016 members
@@ -29,7 +29,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     And the sink contains 501 members
@@ -43,7 +43,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And context 'support/context/simulator-workflow-server-mongo' is started
     And I have uploaded the data files: 'scenario4/alfa,scenario4/beta,scenario4/epsilon'
     And I have aliased the data set    
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And the LDES server is available
     When I start the workflow
@@ -61,7 +61,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And the LDES server is available
     When I start the workflow

@@ -1,4 +1,3 @@
-export * from './credentials';
 export * from './docker-compose';
 export * from './services/ldes-client-sink';
 export * from './services/ldes-server';

@@ -62,7 +62,7 @@ docker compose up -d
 To verify that all systems in the context (except for the generator) are available (please subsitute the correct ports if changed).
 
 ### LDES Client Workflow
-The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi) and use your credentials (provided in the `user.env` file) to login.
+The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi).
 
 ### Mongo Database
 Browse to http://localhost:27017 or use Bash command:
@@ -119,7 +119,7 @@ To run the test, you need to:
 3. Start the addresses generation
 
 ### 1. Upload NiFi Workflow
-Once logged in to the [workbench](https://localhost:8443/nifi), create a new process group based on the [GRAR workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [workbench](https://localhost:8443/nifi), create a new process group based on the [GRAR workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 The workflow contains one flow with a standard HTTP listener (ListenHTTP), a couple of standard components to (temporary) perform various minor fixes to the message (set correct mime type, fix CRS uri scheme to http & redirect the message `@context` to a fixed context definition), the NiFi processor creating address version objects and a standard InvokeHTTP processor to send the LDES members to the LDES server.
 

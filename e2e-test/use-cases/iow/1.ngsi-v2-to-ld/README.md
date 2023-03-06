@@ -26,9 +26,7 @@ To run the test, you need to:
 4. Generate expected NGSI-LD file
 
 ### 1. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
-
-Once logged in, create a new process group based on the [translate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [translate workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 The workflow contains a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI-LD translator and a standard processor to capture the NGSI-LD content (PutFile).
 

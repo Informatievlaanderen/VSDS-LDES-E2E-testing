@@ -12,10 +12,9 @@ services:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
     container_name: ${USECASE_NAME:-simulator-workflow-sink-mongo}_ldes-workbench-nifi
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
-      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_UI_PORT:-8000}:8000
     networks:
       - ldes
   ldes-client-sink:

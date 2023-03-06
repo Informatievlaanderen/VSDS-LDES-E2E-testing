@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, credentials, DockerComposeOptions } from "..";
+import { DockerCompose, DockerComposeOptions } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
@@ -8,7 +8,7 @@ import {
 let testContext: any;
 
 export const dockerCompose = new DockerCompose(Cypress.env('useDefaultTags'));
-export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
+export const workbench = new LdesWorkbenchNiFi('http://localhost:8000')
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
@@ -56,9 +56,9 @@ Given('context {string} is started', (composeFilePath: string) => {
     dockerCompose.up(options);
 })
 
-Given('I have logged on to the Apache NiFi UI', () => {
+Given('the LDES workbench is available', () => {
     workbench.waitAvailable();
-    workbench.logon(credentials);
+    workbench.load();
 });
 
 Given('I have uploaded the workflow', () => {

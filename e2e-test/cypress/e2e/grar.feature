@@ -8,7 +8,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
   Scenario: Provide addresses as substring fragmentation
     Given the 'use-cases/grar/1.addresses-substring-fragmentation' test is setup
     And context 'use-cases/grar/1.addresses-substring-fragmentation' is started
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And the LDES server is available
     When I start the workflow

@@ -23,12 +23,11 @@ services:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
     image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
     environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
       - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
       - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
-      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_UI_PORT:-8000}:8000
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes

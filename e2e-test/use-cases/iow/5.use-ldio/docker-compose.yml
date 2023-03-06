@@ -23,15 +23,14 @@ services:
   nifi-workflow:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-workbench-nifi
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
-      - ${NIFI_UI_PORT:-8443}:8443
+      - ${NIFI_UI_PORT:-8000}:8000
       # https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=9012
       - ${NIFI_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:9012
       - ${NIFI_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:9013
       - ${NIFI_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:9014
-    environment:
-      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
     networks:
       - ldes
   ldes-mongodb:

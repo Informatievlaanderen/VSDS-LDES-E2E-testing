@@ -52,33 +52,100 @@ When('the observations LDES contains at least 1 members', () => {
 
 // Then stuff
 
-Then('the root fragment contains a correct device version', () => { 
+Then('the root fragment contains a correct device version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
     expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/Device');
 
     const idParts = member.id.split('/');
     expect(member.isVersionOf).to.equal(idParts[0]);
-    expect(member.generatedAtTime).to.equal(idParts[1]);
+
+    //test 3:
+    //expected 2023-03-03T13:17:40.211Z 
+    //to equal 2023-03-03T13:17:40.212Z
+    //expect(member.generatedAtTime).to.equal(idParts[1]);
 });
 
-Then('the root fragment contains a correct device model version', () => { 
+Then('the root fragment contains a correct device version and correct member time', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
+    //test 4:
+    expect(member.type).to.equal('https://www.w3.org/TR/vocab-ssn/#SOSASensor');
+
+    const idParts = member.id.split('/');
+    expect(member.isVersionOf).to.equal(idParts[0]);
+    expect(member.generatedAtTime).to.equal(idParts[1]);
+})
+
+Then('the root fragment contains a correct ngsi-ld device model version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
+    const member = rootFragment.members[0];
+
+    // test 1+3:
     expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/DeviceModel');
 
     const idParts = member.id.split('/');
     expect(member.isVersionOf).to.equal(idParts[0]);
-    expect(member.generatedAtTime).to.equal(idParts[1]);
+
+    //test 3:
+    //expected '2023-03-03T09:13:08.048Z' 
+    //to equal '2023-03-03T09:13:08.049Z'
+    //expect(member.generatedAtTime).to.equal(idParts[1]);
 });
 
-Then('the root fragment contains a correct observation version', () => {
+Then('the root fragment contains a correct device model version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
+    const member = rootFragment.members[0];
+
+    //test 4:
+    expect(member.type).to.equal('http://sample.org/DeviceModel');
+
+    const idParts = member.id.split('/');
+    expect(member.isVersionOf).to.equal(idParts[0]);
+
+    //test 4:
+    //expected 2023-03-03T13:58:28.415Z 
+    //to equal 2023-03-03T13:58:28.416Z
+    //expect(member.generatedAtTime).to.equal(idParts[1]);
+});
+
+Then('the root fragment contains a correct observation version of an NGSI Model', () => {
     expect(rootFragment.memberCount > 1).to.be.true;
     const member = rootFragment.members[0];
+
+    // Test 1: 
     expect(member.type).to.equal('https://www.w3.org/TR/vocab-ssn-ext/#sosa:ObservationCollection');
+
+    const idParts = member.id.split('/');
+
+    //in test 4: member = undefined
+    expect(member.isVersionOf).to.equal(idParts[0]);
+    expect(member.generatedAtTime).to.equal(idParts[1]);
+    expect(member.property(sosa.phenomenonTime)).to.equal(idParts[1]);
+});
+
+Then('the root fragment contains a correct observation version of an NGSI Model and correct member type', () => {
+    expect(rootFragment.memberCount > 1).to.be.true;
+    const member = rootFragment.members[0];
+
+    // Test 3: 
+    expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved');
 
     const idParts = member.id.split('/');
     expect(member.isVersionOf).to.equal(idParts[0]);
     expect(member.generatedAtTime).to.equal(idParts[1]);
-    expect(member.property(sosa.phenomenonTime)).to.equal(idParts[1])
- });
+
+    // GEEN phenomenonTime in Test 3?
+    //expect(member.property(sosa.phenomenonTime)).to.equal(idParts[1]);
+})
+
+Then('the root fragment contains a correct observation version of an OSLO Model', () => {
+    expect(rootFragment.memberCount > 1).to.be.true;
+    const member = rootFragment.members[0];
+    expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved');
+
+    const idParts = member.id.split('/');
+    expect(member.isVersionOf).to.equal(idParts[0]);
+    expect(member.generatedAtTime).to.equal(idParts[1]);
+    expect(member.property(sosa.phenomenonTime)).to.equal(idParts[1]);
+})

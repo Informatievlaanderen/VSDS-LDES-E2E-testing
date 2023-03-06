@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import { credentials } from './credentials'
 import 'cypress-wait-until';
 
 export interface EnvironmentSettings {
@@ -28,12 +27,6 @@ export class DockerCompose {
     }
 
     private get initialEnvironment() {
-        const ownCredentials = {
-            // Use own credentials
-            SINGLE_USER_CREDENTIALS_USERNAME: credentials.username,
-            SINGLE_USER_CREDENTIALS_PASSWORD: credentials.password,
-        };
-
         const latestTags = {
             // Use latest tags
             GTFS2LDES_TAG: 'main',
@@ -48,7 +41,7 @@ export class DockerCompose {
             NGINX_TAG: 'latest',
         }
 
-        return this.useDefaultTags ? { ...ownCredentials } : { ...ownCredentials, ...latestTags };
+        return this.useDefaultTags ? { } : { latestTags };
     }
 
     public up(options: Partial<DockerComposeOptions>) {

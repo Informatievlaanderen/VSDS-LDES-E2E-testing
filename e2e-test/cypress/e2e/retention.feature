@@ -13,7 +13,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set    
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And the LDES server is available
 

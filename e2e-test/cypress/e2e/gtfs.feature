@@ -8,7 +8,7 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'one-member'
     And I have aliased the data set
     And the LDES server is available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 1 members
@@ -27,7 +27,7 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 6 members
@@ -46,7 +46,7 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 6 members

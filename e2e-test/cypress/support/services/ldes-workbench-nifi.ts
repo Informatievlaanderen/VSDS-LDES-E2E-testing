@@ -12,20 +12,17 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability{
      * @returns true if ready, false otherwise
      */
     private isReady(): Cypress.Chainable<boolean> {
-        return cy.exec(`curl --insecure ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+        return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
     waitAvailable() {
         return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
     }
 
-    logon(credentials: { username: string; password: string; }) {
+    load() {
         const loaded = 'flowClusterSummary';
         return cy.intercept(`${this.baseUrl}/nifi-api/flow/cluster/summary`).as(loaded)
-            .visit(`${this.baseUrl}/nifi/login`)
-            .get('#username').type(credentials.username)
-            .get('#password').type(credentials.password)
-            .get('#login-submission-button').click().wait(`@${loaded}`);
+            .visit(`${this.baseUrl}/nifi/`).wait(`@${loaded}`);
     }
 
     uploadWorkflow(file: string) {

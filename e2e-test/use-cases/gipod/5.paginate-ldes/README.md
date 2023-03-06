@@ -8,7 +8,7 @@ This scenario verifies that the LDES server returns fragments with simple relati
     Given the paginate-ldes test is setup
     And context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the paginate-ldes data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded '5.paginate-ldes' workflow
     When I start the workflow
     Then the LDES contains 617 members

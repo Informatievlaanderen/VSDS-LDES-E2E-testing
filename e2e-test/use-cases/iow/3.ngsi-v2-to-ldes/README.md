@@ -47,7 +47,7 @@ docker compose up -d
 To verify that all systems in the context (except for the generator) are available (please subsitute the correct ports if changed):
 
 ### LDES Client Workflow
-The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi) and use your credentials (provided in the `user.env` file) to login.
+The Apache NiFi server needs a couple of minutes to start. Use your favorite browser to connect to the Apache NiFi User Interface at [Apache NiFi user interface](https://localhost:8443/nifi).
 
 ### Mongo Database
 Browse to http://localhost:27017 or use Bash command:

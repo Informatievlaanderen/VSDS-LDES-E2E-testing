@@ -61,9 +61,7 @@ docker compose up -d
 ```
 > **Note**: it may take a minute for all the servers to start.
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
-
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES-server.
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
@@ -85,7 +83,7 @@ docker compose down
 ```bash
 docker compose up
 ```
-You also need to re-import the workflow: log on again to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+You also need to re-import the workflow: browse again to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 ### Test Execution
 > **Note**: the first scenario is already implicitly tested by the [LDES Server verification step](../../../support/context/simulator-workflow-server-mongo/README.md#ldes-server).

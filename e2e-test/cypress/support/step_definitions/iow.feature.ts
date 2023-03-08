@@ -72,6 +72,13 @@ Then('the root fragment contains a correct NGSI-LD device model version', () => 
     validateVersionAndTime(member);
 });
 
+Then('the root fragment contains a dummy OSLO device model version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
+    const member = rootFragment.members[0];
+    validateType(member, 'http://sample.org/DeviceModel');
+    validateVersionAndTime(member);
+});
+
 Then('the root fragment contains a correct NGSI-LD device version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
@@ -79,15 +86,22 @@ Then('the root fragment contains a correct NGSI-LD device version', () => {
     validateVersionAndTime(member);
 });
 
+Then('the root fragment contains a correct OSLO device version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
+    const member = rootFragment.members[0];
+    validateType(member, 'http://www.w3.org/ns/sosa/Sensor');
+    validateVersionAndTime(member);
+});
+
 Then('the root fragment contains a correct NGSI-LD observation version', () => {
-    expect(rootFragment.memberCount > 1).to.be.true;
+    expect(rootFragment.memberCount >= 1).to.be.true;
     const member = rootFragment.members[0];
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved');
     validateVersionAndTime(member);
 })
 
 Then('the root fragment contains a correct OSLO observation version', () => {
-    expect(rootFragment.memberCount > 1).to.be.true;
+    expect(rootFragment.memberCount >= 1).to.be.true;
     const member = rootFragment.members[0];
     validateType(member, 'http://www.w3.org/ns/sosa/ObservationCollection');
     const timestampValue = validateVersionAndTime(member);

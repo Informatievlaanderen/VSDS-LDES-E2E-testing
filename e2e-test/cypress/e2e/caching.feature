@@ -16,7 +16,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | by-page   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/by-page            |
 
-  Scenario: Verify Acceptable Fragment Formatsmin
+  Scenario: Verify Acceptable Fragment Formats
     Given the 'demos/ldes-server-caching' test is setup
     And context 'demos/ldes-server-caching' is started
     And the LDES server is available

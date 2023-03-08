@@ -15,9 +15,9 @@ export class EventStream extends UrlResponse {
         }
     }
 
-    getViews(index: number) {
+    getViews(viewName: string) {
         const views = this.store.getObjects(null, tree.view, null);
-        return views[index].value;
+        return views.find(x => x.id.endsWith(viewName)).value;
     }
 
     get isEventStream(): boolean {

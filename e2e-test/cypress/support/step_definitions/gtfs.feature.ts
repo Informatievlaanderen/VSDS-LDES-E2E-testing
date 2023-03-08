@@ -33,12 +33,12 @@ Then('the multi-view root fragment contains multiple relations of type {string}'
     relations = rootFragment.expectMultipleRelationOf(relationType, 4);
 })
 
-Then('the first view url is not undefined', () => {
-    server.expectViewUrlNotToBeUndefined(ldesName, 0).then(fragment => rootFragment = fragment);
+Then('the geo-spatial fragmentation exists', () => {
+    server.expectViewUrlNotToBeUndefined(ldesName, byLocationAndTime).then(fragment => rootFragment = fragment);
 })
 
-Then('the second view url is not undefined', () => {
-    server.expectViewUrlNotToBeUndefined(ldesName, 1).then(fragment => rootFragment = fragment);
+Then('the time-based fragmentation exists', () => {
+    server.expectViewUrlNotToBeUndefined(ldesName, byTime).then(fragment => rootFragment = fragment);
 })
 
 Then('the geo-spatial fragment {string} has a second level timebased fragmentation which contains the members', (tile: string) => {

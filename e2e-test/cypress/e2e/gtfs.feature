@@ -50,7 +50,7 @@ Feature: GTFS/RT use case
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 6 members
-    And the first view url is not undefined
+    And the geo-spatial fragmentation exists
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
-    And the second view url is not undefined
+    And the time-based fragmentation exists
     And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'

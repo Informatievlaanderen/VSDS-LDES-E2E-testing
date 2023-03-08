@@ -29,7 +29,7 @@ export class DockerCompose {
     private get initialEnvironment() {
         const latestTags = {
             // Use latest tags
-            GTFS2LDES_TAG: 'main',
+            GTFS2LDES_TAG: 'latest',
             JSON_DATA_GENERATOR_TAG: 'latest',
             LDES_CLIENT_CLI_TAG: 'latest',
             LDES_CLIENT_SINK_TAG: 'latest',
@@ -41,7 +41,7 @@ export class DockerCompose {
             NGINX_TAG: 'latest',
         }
 
-        return this.useDefaultTags ? { } : { latestTags };
+        return this.useDefaultTags ? { } : { ...latestTags };
     }
 
     public up(options: Partial<DockerComposeOptions>) {

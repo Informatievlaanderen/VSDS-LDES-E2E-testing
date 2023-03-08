@@ -16,19 +16,22 @@ export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 
 Before(() => {
-    dockerCompose.down();
-    dockerCompose.initialize();
+    dockerCompose.down(testContext?.delayedServices?.length ? 'delay-started' : '');
+    if (testContext?.delayedServices) testContext.delayedServices = [];
 
+    dockerCompose.initialize();
     testContext = {
         testPartialPath: '',
         additionalEnvironmentSetting: {},
         database: '',
         collection: '',
+        delayedServices: [],
     }
 });
 
 After(() => {
-    dockerCompose.down();
+    testContext.delayedServices.forEach((x: string) => dockerCompose.stop(x));
+    dockerCompose.down(testContext.delayedServices.length ? 'delay-started' : '');
 });
 
 export function testPartialPath() {
@@ -109,16 +112,15 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
-When('I start the service named {string}', (service: string) => {
-    dockerCompose.up({ delayedService: service });
-})
+function createAndStartService(service: string) {
+    return dockerCompose.create(service)
+    .then(() => dockerCompose.start(service))
+    .then(() => testContext.delayedServices.push(service));
+}
 
 When('I start the JSON Data Generator', () => {
-    dockerCompose.up({
-        delayedService: jsonDataGenerator.serviceName,
-        additionalEnvironmentSetting: { JSON_DATA_GENERATOR_SILENT: false }
-    });
-    jsonDataGenerator.waitAvailable();
+    createAndStartService(jsonDataGenerator.serviceName)
+        .then(() => jsonDataGenerator.waitAvailable());
 })
 
 When('the LDES contains at least {int} members', (count: number) => {

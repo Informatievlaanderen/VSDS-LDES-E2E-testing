@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
@@ -112,14 +112,14 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
-function createAndStartService(service: string) {
-    return dockerCompose.create(service)
+function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+    return dockerCompose.create(service, additionalEnvironmentSettings)
     .then(() => dockerCompose.start(service))
     .then(() => testContext.delayedServices.push(service));
 }
 
 When('I start the JSON Data Generator', () => {
-    createAndStartService(jsonDataGenerator.serviceName)
+    createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
         .then(() => jsonDataGenerator.waitAvailable());
 })
 

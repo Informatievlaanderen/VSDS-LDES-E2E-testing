@@ -70,14 +70,26 @@ export class DockerCompose {
             });
     }
 
-    public create(serviceName: string) {
+    public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+        if (additionalEnvironmentSettings) {
+            this._environment = {
+                ...this._environment,
+                ...additionalEnvironmentSettings
+            };
+        }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} create ${serviceName}`;
         return cy.exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }
 
-    public start(serviceName: string) {
+    public start(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+        if (additionalEnvironmentSettings) {
+            this._environment = {
+                ...this._environment,
+                ...additionalEnvironmentSettings
+            };
+        }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} start ${serviceName}`;
         return cy.exec(command, { log: true, env: this._environment })

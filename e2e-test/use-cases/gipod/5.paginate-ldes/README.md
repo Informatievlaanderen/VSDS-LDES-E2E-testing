@@ -8,7 +8,7 @@ This scenario verifies that the LDES server returns fragments with simple relati
     Given the paginate-ldes test is setup
     And context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the paginate-ldes data set
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded '5.paginate-ldes' workflow
     When I start the workflow
     Then the LDES contains 617 members
@@ -29,9 +29,7 @@ docker compose up -d
 ```
 > **Note**: it may take a minute for all the servers to start.
 
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
-
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 ### Test Execution
 For testing the pagination we need to send the [alfa.jsonld](./data/alfa.jsonld), [beta.jsonld](./data/beta.jsonld) and [gamma.jsonld](./data/gamma.jsonld) files, resulting in 2 complete fragments with 300 members each and an incomplete/mutable one with the remaining 17 items.

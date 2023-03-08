@@ -42,9 +42,7 @@ To run the test, you need to:
 4. Verify that the NiFi workflow queue (between the ListenHTTP and InvokeHTTP processors) does not start to fill up.
 
 #### 1. Upload NiFi Workflow
-Log on to the [Apache NiFi user interface](https://localhost:8443/nifi) using the user credentials provided in the `user.env` file.
-
-Once logged in, create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 

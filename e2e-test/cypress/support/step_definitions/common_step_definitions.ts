@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, credentials, DockerComposeOptions } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
@@ -8,7 +8,7 @@ import {
 let testContext: any;
 
 export const dockerCompose = new DockerCompose(Cypress.env('useDefaultTags'));
-export const workbench = new LdesWorkbenchNiFi('https://localhost:8443')
+export const workbench = new LdesWorkbenchNiFi('http://localhost:8000')
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
@@ -16,19 +16,22 @@ export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 
 Before(() => {
-    dockerCompose.down();
-    dockerCompose.initialize();
+    dockerCompose.down(testContext?.delayedServices?.length ? 'delay-started' : '');
+    if (testContext?.delayedServices) testContext.delayedServices = [];
 
+    dockerCompose.initialize();
     testContext = {
         testPartialPath: '',
         additionalEnvironmentSetting: {},
         database: '',
         collection: '',
+        delayedServices: [],
     }
 });
 
 After(() => {
-    dockerCompose.down();
+    testContext.delayedServices.forEach((x: string) => dockerCompose.stop(x));
+    dockerCompose.down(testContext.delayedServices.length ? 'delay-started' : '');
 });
 
 export function testPartialPath() {
@@ -56,9 +59,9 @@ Given('context {string} is started', (composeFilePath: string) => {
     dockerCompose.up(options);
 })
 
-Given('I have logged on to the Apache NiFi UI', () => {
+Given('the LDES workbench is available', () => {
     workbench.waitAvailable();
-    workbench.logon(credentials);
+    workbench.load();
 });
 
 Given('I have uploaded the workflow', () => {
@@ -109,16 +112,15 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
-When('I start the service named {string}', (service: string) => {
-    dockerCompose.up({ delayedService: service });
-})
+function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+    return dockerCompose.create(service, additionalEnvironmentSettings)
+    .then(() => dockerCompose.start(service))
+    .then(() => testContext.delayedServices.push(service));
+}
 
 When('I start the JSON Data Generator', () => {
-    dockerCompose.up({
-        delayedService: jsonDataGenerator.serviceName,
-        additionalEnvironmentSetting: { JSON_DATA_GENERATOR_SILENT: false }
-    });
-    jsonDataGenerator.waitAvailable();
+    createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
+        .then(() => jsonDataGenerator.waitAvailable());
 })
 
 When('the LDES contains at least {int} members', (count: number) => {

@@ -5,7 +5,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the 'use-cases/iow/3.ngsi-v2-to-ldes' test is setup
     And context 'use-cases/iow/3.ngsi-v2-to-ldes' is started
     And the IoW LDES servers are available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
     When I upload the data file 'device-model' to the workflow
@@ -22,7 +22,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the 'use-cases/iow/4.oslo-model-using-jolt' test is setup
     And context 'use-cases/iow/4.oslo-model-using-jolt' is started
     And the IoW LDES servers are available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
     When I upload the data file 'device-model' to the workflow
@@ -39,7 +39,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the 'use-cases/iow/5.use-ldio' test is setup
     And context 'use-cases/iow/5.use-ldio' is started
     And the IoW LDES servers are available
-    And I have logged on to the Apache NiFi UI
+    And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
     When I upload the data file 'device-model' to the workflow

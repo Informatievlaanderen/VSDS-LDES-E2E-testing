@@ -1,5 +1,7 @@
 #!/bin/sh
 docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230214t123440
+# docker pull ghcr.io/informatievlaanderen/ldi-workbench-nifi:TODO
+# docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:TODO
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230214t1234
 docker pull ghcr.io/informatievlaanderen/ldes-cli:20230206t0943
 docker pull ghcr.io/informatievlaanderen/json-data-generator:20230214t1503

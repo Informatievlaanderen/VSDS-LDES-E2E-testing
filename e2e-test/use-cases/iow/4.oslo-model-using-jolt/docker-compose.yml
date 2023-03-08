@@ -117,6 +117,16 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-gtfs-multilevel-fragment-ldes}_mongodb-rest-api
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes    
 networks:
   ldes:
     name: ${USECASE_NAME:-iow-oslo-compliancy}_network

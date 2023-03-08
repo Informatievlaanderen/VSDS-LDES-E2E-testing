@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { Fragment, sosa } from '../ldes';
+import { Fragment, Member, sosa } from '../ldes';
 import { LdesServer } from "../services";
 import { workbench, mongo, testPartialPath } from "./common_step_definitions";
 
@@ -52,33 +52,59 @@ When('the observations LDES contains at least 1 members', () => {
 
 // Then stuff
 
-Then('the root fragment contains a correct device version', () => { 
+function validateType(member: Member, type: string) {
+    expect(member.type).to.equal(type);
+}
+
+function validateVersionAndTime(member: Member) {
+    const idParts = member.id.split('/');
+    const stateObjectId = idParts[0];
+    const timestampValue = idParts[1];
+    expect(member.isVersionOf).to.equal(stateObjectId);
+    expect(member.generatedAtTime).to.equal(timestampValue);
+    return timestampValue;
+}
+
+Then('the root fragment contains a correct NGSI-LD device model version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
-    expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/Device');
-
-    const idParts = member.id.split('/');
-    expect(member.isVersionOf).to.equal(idParts[0]);
-    expect(member.generatedAtTime).to.equal(idParts[1]);
+    validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/DeviceModel');
+    validateVersionAndTime(member);
 });
 
-Then('the root fragment contains a correct device model version', () => { 
+Then('the root fragment contains a dummy OSLO device model version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
-    expect(member.type).to.equal('https://uri.etsi.org/ngsi-ld/default-context/DeviceModel');
-
-    const idParts = member.id.split('/');
-    expect(member.isVersionOf).to.equal(idParts[0]);
-    expect(member.generatedAtTime).to.equal(idParts[1]);
+    validateType(member, 'http://sample.org/DeviceModel');
+    validateVersionAndTime(member);
 });
 
-Then('the root fragment contains a correct observation version', () => {
-    expect(rootFragment.memberCount > 1).to.be.true;
+Then('the root fragment contains a correct NGSI-LD device version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
-    expect(member.type).to.equal('https://www.w3.org/TR/vocab-ssn-ext/#sosa:ObservationCollection');
+    validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/Device');
+    validateVersionAndTime(member);
+});
 
-    const idParts = member.id.split('/');
-    expect(member.isVersionOf).to.equal(idParts[0]);
-    expect(member.generatedAtTime).to.equal(idParts[1]);
-    expect(member.property(sosa.phenomenonTime)).to.equal(idParts[1])
- });
+Then('the root fragment contains a correct OSLO device version', () => {
+    expect(rootFragment.memberCount).to.equal(1);
+    const member = rootFragment.members[0];
+    validateType(member, 'http://www.w3.org/ns/sosa/Sensor');
+    validateVersionAndTime(member);
+});
+
+Then('the root fragment contains a correct NGSI-LD observation version', () => {
+    expect(rootFragment.memberCount >= 1).to.be.true;
+    const member = rootFragment.members[0];
+    validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved');
+    validateVersionAndTime(member);
+})
+
+Then('the root fragment contains a correct OSLO observation version', () => {
+    expect(rootFragment.memberCount >= 1).to.be.true;
+    const member = rootFragment.members[0];
+    validateType(member, 'http://www.w3.org/ns/sosa/ObservationCollection');
+    const timestampValue = validateVersionAndTime(member);
+    expect(member.property(sosa.phenomenonTime)).to.equal(timestampValue);
+});
+

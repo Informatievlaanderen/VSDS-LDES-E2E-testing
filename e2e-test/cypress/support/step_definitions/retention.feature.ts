@@ -7,10 +7,9 @@ const fragments: { [key: string]: Fragment } = {};
 
 // When
 
-When('I wait {int} seconds until view {string} expires', (seconds: number, alias: string) => {
-    cy.wait(seconds * 1000);
+When('fragment {string} is deleted and returns HTTP code {int}', (fragmentAlias: string, httpCode: number) => {
+    fragments[fragmentAlias].waitForResponseCode(httpCode);
 })
-
 
 When('I refresh view {string}', (viewAlias: string) => {
     fragments[viewAlias].refresh();
@@ -55,6 +54,3 @@ Then('fragment {string} links to {string} fragment {string} containing {int} mem
         verifyLinksToFragment(fromAlias, 'GreaterThanOrEqualToRelation', mutability, toAlias, memberCount)
     });
 
-Then('fragment {string} is deleted and returns HTTP code {int}', (fragmentAlias: string, httpCode: number) => {
-    fragments[fragmentAlias].expectRequestFailure(httpCode);
-})

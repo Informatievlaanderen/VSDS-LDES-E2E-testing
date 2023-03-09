@@ -55,7 +55,6 @@ Feature: GTFS/RT use case
     And the time-based fragmentation exists
     And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
 
-  @focus
   Scenario: LDES Server Performance is Adequate for GTFS/RT Processing
     Given I have configured the 'GTFS_SOURCE' as 'https://ontarionorthland.tmix.se/gtfs/gtfs.zip'
     And I have configured the 'GTFSRT_SOURCE' as 'https://ontarionorthland.tmix.se/gtfs-realtime/tripupdates.pb'

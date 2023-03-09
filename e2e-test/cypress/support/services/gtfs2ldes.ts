@@ -22,11 +22,16 @@ export class Gtfs2Ldes implements CanCheckAvailability {
             });
     }
 
-    getAmountOfConnections() {
+    isSendingLinkedConnections() {
+        return cy.exec(`docker logs -n 1 ${this._containerId}`).then(result => result.stdout.startsWith('Posted'));
+    }
+
+    sendLinkedConnectionCount() {
         return cy.exec(`docker logs -n 1 ${this._containerId}`)
-            .then(result => {
-                const lastLine = result.stdout;
-                return lastLine.startsWith('Posted')? Number.parseInt(lastLine.replace(/[^0-9]/g, '')) : undefined;
-            });
+            .then(result => result.stdout)
+            .then(lastLine => lastLine.startsWith('Posted')
+                ? Number.parseInt(lastLine.replace(/[^0-9]/g, ''))
+                : undefined
+            );
     }
 }

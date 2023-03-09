@@ -1,6 +1,6 @@
-import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { currentMemberCount, gtfs2ldes, server } from "./common_step_definitions";
+import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let ldesName = 'mobility-hindrances';
@@ -9,8 +9,14 @@ let byLocationAndTime = 'by-location-and-time';
 let byTime = 'by-time';
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
-let amountOfConnections: number;
-const throttleRate = 100;
+
+let throttleRate = 100;
+
+
+Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
+    throttleRate = value;
+    setAdditionalEnvironmentSetting('THROTTLE_RATE', `${value}`);
+})
 
 Then('the geo-spatial root fragment is not immutable', () => {
     server.checkRootFragmentMutable(ldesName, byLocation).then(fragment => rootFragment = fragment);
@@ -65,25 +71,25 @@ Then('the timebased root fragment contains {int} relation of type {string}', (am
     relations = rootFragment.expectMultipleRelationOf(relationType, amount);
 })
 
-function checkDifference() {
-    return gtfs2ldes.getAmountOfConnections()
-        .then(result => amountOfConnections = result)
-
-    return currentMemberCount()
-        .then(count => {
-            const difference = amountOfConnections - count;
-            return cy.log(`Linked connections sent: ${amountOfConnections}, received: ${count}, difference: ${difference}`)
-                .then(() => difference);
+function validateSentCount() {
+    return gtfs2ldes.sendLinkedConnectionCount().then(sentCount =>
+        currentMemberCount().then(receivedCount => {
+            const difference = sentCount - receivedCount;
+            return cy
+                .log(`Linked connections sent: ${sentCount}, received: ${receivedCount}, difference: ${difference}`)
+                .then(() => ({ difference: difference, sentCount: sentCount, receivedCount: receivedCount }));
+        }).then((counts) => {
+            expect(counts.difference).to.be.lessThan(throttleRate);
+            return counts.sentCount;
         })
-        .then(difference => expect(difference).to.be.lessThan(throttleRate));
+    );
+
 }
 
 Then('the LDES server can ingest these linked connections fast enough', () => {
-    cy.waitUntil(() =>
-        checkDifference().then(() => amountOfConnections > 10000), { timeout: 30000, interval: 1000 });
+    cy.waitUntil(() => validateSentCount().then(sentCount => sentCount > 10000), { timeout: 60000, interval: 500 });
 })
 
 When('the GTFS to LDES service starts sending linked connections', () => {
-    gtfs2ldes.getAmountOfConnections()
-        .then(result => amountOfConnections = result)
+    gtfs2ldes.isSendingLinkedConnections();
 })

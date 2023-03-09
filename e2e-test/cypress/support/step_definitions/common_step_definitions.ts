@@ -93,8 +93,12 @@ Given('I have aliased the data set', () => {
     simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
 })
 
+export function setAdditionalEnvironmentSetting(property: string, value: string) {
+        testContext.additionalEnvironmentSetting[property] = value;
+}
+
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
-    testContext.additionalEnvironmentSetting[property] = value;
+    setAdditionalEnvironmentSetting(property, value);
 })
 
 Given('the LDES server is available', () => {

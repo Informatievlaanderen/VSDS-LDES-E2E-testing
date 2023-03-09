@@ -6,11 +6,11 @@ For this scenario we can use the a [custom context](./docker-compose.yml) derive
 
 > **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 
-Then you can create the images and run all systems by executing the following command:
+Then you can create the images and run all systems (except for the gtfs2ldes-js) by executing the following command:
 ```bash
 docker compose --env-file user.env up -d
 ```
-> **Note**: it may take a minute for all the servers to start.
+> **Note**: it may take a minute for all the servers to start. Wait until the LDES Server is completely started. Check the container log file.
 
 ### Test Execution
 To run the test, you need to:
@@ -18,6 +18,12 @@ To run the test, you need to:
 2. Verify that the LDES server can keep up with the stream of linked connections being pushed for both the schedule (may take 24 hours or more) and the real-time updates.
 
 #### 1. Start the GTFS to LDES convertor
+Create and start the gtfs2ldes-js service:
+```bash
+docker compose --env-file user.env create gtfs2ldes-js
+docker compose --env-file user.env start gtfs2ldes-js
+```
+
 Watch the Docker logs for the GTFS to LDES convertor to know when it starts sending GTFS connections to the workflow.
 > **Note**: you can lookup the container ID using `docker ps`, so to get the logs you can use:
 ```bash

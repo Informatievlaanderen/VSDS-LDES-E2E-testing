@@ -61,6 +61,7 @@ Feature: GTFS/RT use case
     And I have configured the 'GTFSRT_SOURCE' as 'https://ontarionorthland.tmix.se/gtfs-realtime/tripupdates.pb'
     And I have configured the 'GTFS_BASE_IRI' as 'http://data.ontarionorthland.ca/'
     And I have configured the 'SPRING_DATA_MONGODB_DATABASE' as 'ontario_northland'
+    And I have configured the GTFS trottle rate as 200
     And the members are stored in collection 'ldesmember' in database 'ontario_northland'
     And the 'use-cases/gtfs-and-rt/7.direct-connect' test is setup
     And context 'use-cases/gtfs-and-rt/7.direct-connect' is started

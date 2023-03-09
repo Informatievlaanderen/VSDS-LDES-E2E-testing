@@ -9,15 +9,15 @@ const silent: boolean = (/true/i).test(args['silent']);
 
 const cron = args['cron'] || '* * * * * *';
 const targetUrl = args['targetUrl'];
+const mimeType = args['mimeType'] || 'application/json';
+if (!silent) console.debug("Arguments: ", args);
 
 let template: string = args['template'] || (args['templateFile'] && readFileSync(args['templateFile'], {encoding: 'utf8'}));
 if (!template) throw new Error('Missing template or templateFile');
-if (!silent) console.debug('data template: ', template);
 
 let mapping = args['mapping'] || (args['mappingFile'] && readFileSync(args['mappingFile'], {encoding: 'utf8'}));
 if (!mapping) throw new Error('Missing mapping or mappingFile');
 mapping = JSON.parse(mapping);
-if (!silent) console.debug('Mapping: ', mapping);
 
 const generator: JsonGenerator = new JsonGenerator(template, mapping);
 
@@ -29,7 +29,7 @@ const job = new CronJob(cron, async () => {
         await fetch(targetUrl, {
             method: 'post',
             body: body,
-            headers: {'Content-Type': 'application/json'}
+            headers: {'Content-Type': mimeType}
         });
     } else { // if no targetUrl specified, send to console
         console.info(body);

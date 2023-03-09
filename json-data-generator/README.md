@@ -17,7 +17,8 @@ docker run -v $(pwd)/data:/tmp/data -e TEMPLATEFILE=/tmp/data/other.template.jso
 ```
 You can also pass the following arguments when running the container:
 * `TARGETURL=<target-uri>` to POST the output to the target URI instead of to the console
-* `SILENT=false` to display more logging to the console
+* `SILENT=true` to display no logging to the console
+* `MIMETYPE=<mime-type>` to use a different mime-type
 
 Alternatively, you can also pass the template and mapping as string instead of as files, use `TEMPLATE` respectively `MAPPING`.
 
@@ -35,6 +36,7 @@ The generator works based on a JSON template, defining the structure to use for 
 The generator takes the following command line arguments:
 * `--silent=<true|false>` prevents any console debug output if true, defaults to false (not silent, logging all debug info)
 * `--targetUrl` defines the target URL to where the generated JSON is POST'ed as `application/json`, no default (if not provided, sends output to console independant of `--silent`)
+* `--mimeType=<mime-type>` mime-type of message send to target URL, defaults to `application/json`
 * `--cron` defines the time schedule, defaults to `* * * * * * ` (every second)
 * `--template='<json-content>'` allows to provide the JSON template on the command line, no default (if not provided, you MUST provide `--templateFile`)
 * `--templateFile=<partial-or-full-pathname>` allows to provide the JSON template in a file, no default (if not provided, you MUST provide `--template`)

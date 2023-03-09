@@ -18,6 +18,8 @@ services:
       - THROTTLE_RATE=${THROTTLE_RATE:-100}
       - AUTH_HEADER=${AUTH_HEADER:-X-API-KEY}
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
+    profiles:
+      - delay-started
     deploy:
       resources:
         limits:
@@ -103,6 +105,17 @@ services:
           cpus: '0.1'
           memory: '256MB'
     network_mode: "host"
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-gipod-geospatial-fragment-ldes}_mongodb-rest-api
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
 
 networks:
   ldes:

@@ -1,6 +1,6 @@
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { server } from "./common_step_definitions";
+import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let ldesName = 'mobility-hindrances';
@@ -9,6 +9,14 @@ let byLocationAndTime = 'by-location-and-time';
 let byTime = 'by-time';
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
+
+let throttleRate = 100;
+
+
+Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
+    throttleRate = value;
+    setAdditionalEnvironmentSetting('THROTTLE_RATE', `${value}`);
+})
 
 Then('the geo-spatial root fragment is not immutable', () => {
     server.checkRootFragmentMutable(ldesName, byLocation).then(fragment => rootFragment = fragment);
@@ -61,4 +69,27 @@ Then('the geo-spatial root fragment contains {int} relations of type {string}', 
 
 Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
     relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+})
+
+function validateSentCount() {
+    return gtfs2ldes.sendLinkedConnectionCount().then(sentCount =>
+        currentMemberCount().then(receivedCount => {
+            const difference = sentCount - receivedCount;
+            return cy
+                .log(`Linked connections sent: ${sentCount}, received: ${receivedCount}, difference: ${difference}`)
+                .then(() => ({ difference: difference, sentCount: sentCount, receivedCount: receivedCount }));
+        }).then((counts) => {
+            expect(counts.difference).to.be.lessThan(throttleRate);
+            return counts.sentCount;
+        })
+    );
+
+}
+
+Then('the LDES server can ingest these linked connections fast enough', () => {
+    cy.waitUntil(() => validateSentCount().then(sentCount => sentCount > 10000), { timeout: 60000, interval: 500 });
+})
+
+When('the GTFS to LDES service starts sending linked connections', () => {
+    gtfs2ldes.isSendingLinkedConnections();
 })

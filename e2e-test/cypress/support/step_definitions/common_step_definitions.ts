@@ -1,9 +1,11 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
+import { difference } from "cypress/types/lodash";
 import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
+import { Gtfs2Ldes } from "../services/gtfs2ldes";
 
 let testContext: any;
 
@@ -14,6 +16,7 @@ export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
+export const gtfs2ldes = new Gtfs2Ldes();
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -90,8 +93,12 @@ Given('I have aliased the data set', () => {
     simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
 })
 
+export function setAdditionalEnvironmentSetting(property: string, value: string) {
+        testContext.additionalEnvironmentSetting[property] = value;
+}
+
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
-    testContext.additionalEnvironmentSetting[property] = value;
+    setAdditionalEnvironmentSetting(property, value);
 })
 
 Given('the LDES server is available', () => {
@@ -115,8 +122,8 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
 
 function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
-    .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
-    .then(() => testContext.delayedServices.push(service));
+        .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
+        .then(() => testContext.delayedServices.push(service));
 }
 
 When('I start the JSON Data Generator', () => {
@@ -126,6 +133,11 @@ When('I start the JSON Data Generator', () => {
 
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
+})
+
+When('I start the GTFS2LDES service', () => {
+    createAndStartService(gtfs2ldes.serviceName)
+        .then(() => gtfs2ldes.waitAvailable());
 })
 
 // Then stuff
@@ -138,7 +150,10 @@ Then('the LDES contains {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count);
 })
 
+export function currentMemberCount() {
+    return mongo.count(testContext.database, testContext.collection);
+}
+
 Then('the LDES should contain {int} members', (memberCount: number) => {
-    mongo.count(testContext.database, testContext.collection)
-        .then(count => expect(count).to.equal(memberCount));
+    currentMemberCount().then(count => expect(count).to.equal(memberCount));
 })

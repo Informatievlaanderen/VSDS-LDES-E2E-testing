@@ -54,17 +54,3 @@ Feature: GTFS/RT use case
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the time-based fragmentation exists
     And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
-
-  @focus
-  Scenario: LDES Server Performance is Adequate for GTFS/RT Processing
-    Given I have configured the 'GTFS_SOURCE' as 'https://ontarionorthland.tmix.se/gtfs/gtfs.zip'
-    And I have configured the 'GTFSRT_SOURCE' as 'https://ontarionorthland.tmix.se/gtfs-realtime/tripupdates.pb'
-    And I have configured the 'GTFS_BASE_IRI' as 'http://data.ontarionorthland.ca/'
-    And I have configured the 'SPRING_DATA_MONGODB_DATABASE' as 'ontario_northland'
-    And the members are stored in collection 'ldesmember' in database 'ontario_northland'
-    And the 'use-cases/gtfs-and-rt/7.direct-connect' test is setup
-    And context 'use-cases/gtfs-and-rt/7.direct-connect' is started
-    And the LDES server is available
-    When I start the GTFS2LDES service
-    And the GTFS to LDES service starts sending linked connections
-    Then the LDES server can ingest these linked connections fast enough

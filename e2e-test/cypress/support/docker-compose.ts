@@ -42,7 +42,7 @@ export class DockerCompose {
             NGINX_TAG: 'latest',
         }
 
-        return this.useDefaultTags ? { } : { ...latestTags };
+        return this.useDefaultTags ? {} : { ...latestTags };
     }
 
     public up(options: Partial<DockerComposeOptions>) {
@@ -64,6 +64,7 @@ export class DockerCompose {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} up -d`;
         return cy.log(`Using latest tags: ${!this.useDefaultTags}`)
+            .log(command)
             .exec(command, { log: true, env: this._environment }).then(result => {
                 this._isUp = result.code === 0;
                 return result;
@@ -79,7 +80,7 @@ export class DockerCompose {
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} create ${serviceName}`;
-        return cy.exec(command, { log: true, env: this._environment })
+        return cy.log(command).exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }
 
@@ -91,15 +92,16 @@ export class DockerCompose {
             };
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} start ${serviceName}`;
-        return cy.exec(command, { log: true, env: this._environment })
+        //NOTE: we cannot use docker compose start because this doesn't work on Mac
+        const command = `docker compose ${environmentFile} up ${serviceName} -d`;
+        return cy.log(command).exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }
 
     public stop(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} stop ${serviceName}`;
-        return cy.exec(command, { log: true, env: this._environment })
+        return cy.log(command).exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }
 
@@ -110,10 +112,10 @@ export class DockerCompose {
     public down(profile?: string) {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-            const command = profile 
-                ? `docker compose ${environmentFile} --profile ${profile} down` 
+            const command = profile
+                ? `docker compose ${environmentFile} --profile ${profile} down`
                 : `docker compose ${environmentFile} down`;
-            return cy.exec(command, { log: true, env: this._environment, timeout: 60000 })
+            return cy.log(command).exec(command, { log: true, env: this._environment, timeout: 60000 })
                 .then(exec => expect(exec.code).to.equals(0))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
         }

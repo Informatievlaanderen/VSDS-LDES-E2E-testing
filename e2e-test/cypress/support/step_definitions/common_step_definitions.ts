@@ -16,6 +16,7 @@ export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 
 Before(() => {
+    testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
     dockerCompose.down(testContext?.delayedServices?.length ? 'delay-started' : '');
     if (testContext?.delayedServices) testContext.delayedServices = [];
 

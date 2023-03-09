@@ -1,6 +1,6 @@
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { server } from "./common_step_definitions";
+import { currentMemberCount, gtfs2ldes, server } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let ldesName = 'mobility-hindrances';
@@ -9,6 +9,8 @@ let byLocationAndTime = 'by-location-and-time';
 let byTime = 'by-time';
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
+let amountOfConnections: number;
+const throttleRate = 100;
 
 Then('the geo-spatial root fragment is not immutable', () => {
     server.checkRootFragmentMutable(ldesName, byLocation).then(fragment => rootFragment = fragment);
@@ -61,4 +63,27 @@ Then('the geo-spatial root fragment contains {int} relations of type {string}', 
 
 Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
     relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+})
+
+function checkDifference() {
+    return gtfs2ldes.getAmountOfConnections()
+        .then(result => amountOfConnections = result)
+
+    return currentMemberCount()
+        .then(count => {
+            const difference = amountOfConnections - count;
+            return cy.log(`Linked connections sent: ${amountOfConnections}, received: ${count}, difference: ${difference}`)
+                .then(() => difference);
+        })
+        .then(difference => expect(difference).to.be.lessThan(throttleRate));
+}
+
+Then('the LDES server can ingest these linked connections fast enough', () => {
+    cy.waitUntil(() =>
+        checkDifference().then(() => amountOfConnections > 10000), { timeout: 30000, interval: 1000 });
+})
+
+When('the GTFS to LDES service starts sending linked connections', () => {
+    gtfs2ldes.getAmountOfConnections()
+        .then(result => amountOfConnections = result)
 })

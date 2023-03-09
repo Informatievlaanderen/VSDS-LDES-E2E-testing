@@ -115,7 +115,7 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
 
 function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
-    .then(() => dockerCompose.start(service))
+    .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
     .then(() => testContext.delayedServices.push(service));
 }
 

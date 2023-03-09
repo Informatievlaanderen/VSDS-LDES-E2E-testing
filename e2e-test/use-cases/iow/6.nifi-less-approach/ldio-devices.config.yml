@@ -1,0 +1,22 @@
+server:
+  port: 8080
+orchestrator:
+  input:
+    name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+    config:
+      # TODO: replace by NGSI-v2 to LD adapter with split JSON config
+      adapter: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+  transformers:
+    - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+      config:
+        member-type: https://uri.etsi.org/ngsi-ld/default-context/Device
+        delimiter: "/"
+        # date-observed-property: "" # should be a property path:
+        # "[<https://uri.etsi.org/ngsi-ld/default-context/dateLastValueReported> <https://uri.etsi.org/ngsi-ld/hasValue>]"
+        generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+        versionOf-property: http://purl.org/dc/terms/isVersionOf
+  outputs:
+    - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+      config:
+        endpoint: http://ldes-server-devices:8080/devices
+        content-type: application/n-quads

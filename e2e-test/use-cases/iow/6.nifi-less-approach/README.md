@@ -1,40 +1,35 @@
-# Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model
-This test demonstrates **As a datapublisher, I want to have generic building blocks, so that they fit better in my technical architecture** (VSDSPUB-471).
+# Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model - Part 2
+This test demonstrates **As data publisher VMM, I want to publish water quality observations without NiFi, so I lower the hosting cost** (VSDSPUB-499).
 
-This is the first step towards a setup which does not require the use of Apache NiFi to host the workflow which converts the incoming NGSI-v2 messages towards an OSLO model (or a NGSI-LD model if no corresponding OSLO model exists). The test is based on the [previous IoW test](../4.oslo-model-using-jolt/README.md).
+This is the second step towards a setup which does not require the use of Apache NiFi to host the workflow which converts the incoming NGSI-v2 messages towards an OSLO model (or a NGSI-LD model if no corresponding OSLO model exists). The test is based on the [previous IoW test](../5.use-ldio/README.md).
 
-This first step towards a NiFi-less approach splits the conversion to an OSLO (or NGS-LD) model from the creation of the version object which is then ingested by an LDES server. The conversion part is still performed using a workflow hosted by an Apache NiFi. The version object creation part is executed by a [new runner](https://github.com/Informatievlaanderen/VSDS-Linked-Data-Interactions). The result is then ingested in an LDES server.
-
-At a later time the conversion part will also be executed within the new runner, eliminating the need for an Apache NiFi workflow. This new runner does not aim to be a full-fledged replacement for workflow engines, but rather a light-weight alternative for a simple sequence of transformation steps. In addition, it only supports RDF models as intermediate representation between processing steps.
-
-Currently, the IoW use case is solely based on a set of similar Apache NiFi workflows which translate the NGSI-v2 messages to LDES members that can be ingested into the corresponding LDES server. Ultimately, we want to offer a solution not requiring Apache NiFi to ease deployment, prevent the NiFi learning curve and ensure a simple and cheap solution.
+This second step towards a NiFi-less approach executes the complete transformation pipline using the [new runner](https://github.com/Informatievlaanderen/VSDS-Linked-Data-Interactions). The result is then ingested in an LDES server.
 
 ### Context
 For this test we have this context:
 
-AS-IS|TEMP|TO-BE|
-|:-:|:-:|:-:|
-|![context](./artwork/iow-as-is.context.png)|![context](./artwork/iow-temp.context.png)|![context](./artwork/iow-to-be.context.png)|
+![context](./artwork/iow-to-be.context.png)
 
 ### Container
 If we break down the context into their containers, we get:
 
-|AS-IS|TEMP|TO-BE|
-|:-:|:-:|:-:|
-|![container](./artwork/iow-as-is.container.png)|![context](./artwork/iow-temp.container.png)|![context](./artwork/iow-to-be.container.png)|
+![context](./artwork/iow-to-be.container.png)
 
 ### Component
 Breaking the containers further down into components, we get:
 
-|AS-IS|TEMP|TO-BE|
-|:-:|:-:|:-:|
-|![component](./artwork/iow-as-is.component.png)|![component](./artwork/iow-temp.component.png)|![component](./artwork/iow-to-be.component.png)|
+![component](./artwork/iow-to-be.component.png)
 
 ## Test Setup
 To setup this test, you can optionally configure a custom environment file and then launch all systems and verify the initial state.
 
 ### Configure Environment File
-If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. E.g. you can change the component tags:
+
+* JSON_DATA_GENERATOR_TAG (default: `20230214t1503`)
+* LDES_SERVER_TAG (default: `20230214t1234`)
+* MONGODB_TAG (default: `6.0.4`)
+* LDI_ORCHESTRATOR_TAG (default: `20230224t1457`)
 
 ### Launch Systems
 You can start all the required systems except for the observations generator using (a bash) command:
@@ -110,21 +105,24 @@ water-quality-observations:by-time
 ```
 
 ## Test Execution
-In order to execute the test, you need to load & configure a workflow and send some test data.
-
-### Load & Configure Workflow
-Please logon to the Apache Nifi system at https://localhost:8443/nifi and add the [workflow](./nifi-workflow.json) (see [here](../../../support/context/workflow/README.md#creating-a-workflow) for details).
-
-Start the workflow and verify that the workflow's HTTP listeners are ready to accept entities.
-* http://localhost:9012/ngsi/device/healthcheck
-* http://localhost:9013/ngsi/device-model/healthcheck
-* http://localhost:9014/ngsi/water-quality-observed/healthcheck
+In order to execute the test, you simply need to send some test data.
 
 ### Send Test Data
+> **TODO**: remove this note:
+
+> **NOTE**: we currently do not have a NGSI-v2 to NGSI-LD convertor (as a LdiAdapter), but when we do you need to use the following:
 To send a test model and a test device execute the following commands:
 ```bash
-curl -X POST http://localhost:9013/ngsi/device-model -H 'Content-Type: application/json' -d '@data/device-model.json' 
-curl -X POST http://localhost:9012/ngsi/device -H 'Content-Type: application/json' -d '@data/device.json' 
+curl -X POST http://localhost:9013/data -H 'Content-Type: application/json' -d '@data/model.json'
+curl -X POST http://localhost:9012/data -H 'Content-Type: application/json' -d '@data/device.json'
+```
+
+> **TODO**: remove this note and bash commands:
+
+> **Note**: for now, post the NGSI-LD instead of the NGSI-v2 messages:
+```bash
+curl -X POST http://localhost:9013/data -H 'Content-Type: application/ld+json' -d '@data/temp/model.jsonld'
+curl -X POST http://localhost:9012/data -H 'Content-Type: application/ld+json' -d '@data/temp/device.jsonld'
 ```
 
 To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
@@ -306,7 +304,7 @@ this results in something similar to:
 @prefix waterkwaliteitparameter: <https://data.vmm.be/concept/waterkwaliteitparameter/> .
 
 <urn:ngsi-ld:WaterQualityObserved:woq:6/2023-02-27T14:53:19.001Z>
-        a                          <https://www.w3.org/TR/vocab-ssn-ext/#sosa:ObservationCollection> ;
+        a                          <http://www.w3.org/ns/sosa/ObservationCollection> ;
         <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member>
                 id:loc-00019-33 ;
         <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member>

@@ -100,10 +100,10 @@ export abstract class UrlResponse {
         return this.store.getObjects(null, tree.member, null).length;
     }
 
-    expectRequestFailure(httpCode: number) {
-        return cy.request({ url: this.url, failOnStatusCode: false }).then(response => {
-            expect(response.isOkStatusCode).to.be.false;
-            expect(response.status).to.equal(httpCode);
-        });
+    waitForResponseCode(httpCode: number) {
+        return cy.waitUntil(
+            () => cy.request({ url: this.url, failOnStatusCode: false }).then(response => response.status === httpCode),
+            { timeout: 60000, interval: 5000 }
+        );
     }
 }

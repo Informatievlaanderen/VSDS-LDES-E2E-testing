@@ -86,7 +86,6 @@ services:
           memory: '768MB'
     networks:
       - ldes
-
   ldes-list-fragments:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-list-fragments
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230214t1503}
@@ -103,7 +102,16 @@ services:
           cpus: '0.1'
           memory: '256MB'
     network_mode: "host"
-
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-gipod-geospatial-fragment-ldes}_mongodb-rest-api
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
 networks:
   ldes:
     name: ${USECASE_NAME:-gtfs-direct-connect}_network

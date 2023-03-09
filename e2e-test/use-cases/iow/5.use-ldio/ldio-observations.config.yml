@@ -3,6 +3,8 @@ server:
 orchestrator:
   input:
     name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+    config:
+      adapter: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
   transformers:
     - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
       config:

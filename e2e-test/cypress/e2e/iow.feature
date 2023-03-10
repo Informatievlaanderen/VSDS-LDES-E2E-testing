@@ -8,6 +8,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
+    And the 'device-model' ingest endpoint is ready
+    And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version
@@ -25,6 +27,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
+    And the 'device-model' ingest endpoint is ready
+    And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a dummy OSLO device model version
@@ -42,6 +46,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the LDES workbench is available
     And I have uploaded the workflow
     And I started the workflow
+    And the 'device-model' ingest endpoint is ready
+    And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version

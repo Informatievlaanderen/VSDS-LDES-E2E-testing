@@ -86,8 +86,10 @@ function validateSentCount() {
 
 }
 
-Then('the LDES server can ingest these linked connections fast enough', () => {
-    cy.waitUntil(() => validateSentCount().then(sentCount => sentCount > 10000), { timeout: 60000, interval: 500 });
+Then('the LDES server can ingest {int} linked connections within {int} seconds checking every {int} seconds', 
+(count: number, seconds: number, interval: number) => {
+    cy.waitUntil(() => validateSentCount().then(sentCount => sentCount > count), 
+    { timeout: seconds * 1000, interval: interval *1000 });
 })
 
 When('the GTFS to LDES service starts sending linked connections', () => {

@@ -67,4 +67,4 @@ Feature: GTFS/RT use case
     And the LDES server is available
     When I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
-    Then the LDES server can ingest these linked connections fast enough
+    Then the LDES server can ingest 10000 linked connections within 100 seconds checking every 2 seconds

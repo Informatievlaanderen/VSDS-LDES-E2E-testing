@@ -21,6 +21,11 @@ Given('I started the workflow', () => {
     workbench.pushStart();
 })
 
+Given('the {string} ingest endpoint is ready', (baseName: string) => {
+    const port = baseName === 'device' ? 9012 : 9013;
+    workbench.waitIngestEndpointAvailable(`http://localhost:${port}/ngsi/${baseName}`);
+})
+
 // When stuff
 
 When('I upload the data file {string} to the workflow', (baseName: string) => {

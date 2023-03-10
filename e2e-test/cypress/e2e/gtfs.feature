@@ -96,6 +96,7 @@ Feature: GTFS/RT use case
     And the geo-spatial fragmentation exists
     And the geo-spatial root fragment contains only relations of type 'GeospatiallyContainsRelation'
     And the first timebased second level fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
+    And the first timebased second level fragment contains arrival and departure stops
 
   Scenario: 7. LDES Server Performance is Adequate for GTFS/RT Processing
     Given I have configured the 'GTFS_SOURCE' as 'https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip'

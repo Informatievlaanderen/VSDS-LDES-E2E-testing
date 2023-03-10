@@ -21,7 +21,7 @@ To run the test, you need to:
 3. Verify that LDES members are being received by the LDES-server and the correct fragments are being created.
 
 #### 1. Upload NiFi Workflow
-Browse to the Apache NiFi user interface (https://localhost:8443/nifi) and create a new process group based on the [workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the Apache NiFi user interface (http://localhost:8000/nifi) and create a new process group based on the [workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 

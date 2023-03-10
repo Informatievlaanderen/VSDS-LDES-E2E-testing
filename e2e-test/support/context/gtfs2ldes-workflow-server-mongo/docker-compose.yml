@@ -4,7 +4,7 @@ services:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
     profiles:
-      - delayed-started
+      - delay-started
     environment:
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
@@ -49,7 +49,7 @@ services:
 
       # default view by time
       - VIEWS_0_NAME=${VIEWS_0_NAME:-by-time}
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=${VIEWS_0_FRAGMENTATIONS_0_NAME:-timebased}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}
     volumes:
       - ../../../data/epsg:/tmp/Databases:rw

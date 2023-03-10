@@ -38,6 +38,7 @@ export class DockerCompose {
             LDI_WORKBENCH_NIFI_TAG: 'latest',
             LDI_ORCHESTRATOR_TAG: 'main', // TODO: change to latest
             MONGODB_REST_API_TAG: 'latest',
+            NIFI_TAG: 'latest',
             MONGODB_TAG: 'latest',
             NGINX_TAG: 'latest',
         }

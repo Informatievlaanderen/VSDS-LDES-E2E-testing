@@ -4,7 +4,7 @@ services:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
     profiles:
-      - delayed-started
+      - delay-started
     environment:
       - GTFS_SOURCE=${GTFS_SOURCE}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE}
@@ -19,6 +19,7 @@ services:
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
     networks:
       - ldes
+
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_nifi-workflow
     image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
@@ -31,6 +32,7 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
+
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-server
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
@@ -64,6 +66,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -71,6 +74,7 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+
 networks:
   ldes:
     name: ${USECASE_NAME:-gtfs-geo-fragment}_network

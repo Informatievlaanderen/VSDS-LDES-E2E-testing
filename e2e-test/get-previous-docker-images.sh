@@ -11,3 +11,4 @@ docker pull ghcr.io/informatievlaanderen/mongodb-rest-api:20230214t1640
 docker pull ghcr.io/julianrojas87/gtfs2ldes-js:20230129t1743
 docker pull mongo:6.0.4
 docker pull nginx:1.23.3
+docker pull apache/nifi:1.19.1

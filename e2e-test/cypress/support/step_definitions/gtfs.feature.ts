@@ -1,6 +1,6 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting } from "./common_step_definitions";
+import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting, workbench } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let ldesName = 'mobility-hindrances';
@@ -16,6 +16,10 @@ let throttleRate = 100;
 Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
     throttleRate = value;
     setAdditionalEnvironmentSetting('THROTTLE_RATE', `${value}`);
+})
+
+Given('the gtfs ingest endpoint is ready', () => {
+    workbench.waitIngestEndpointAvailable('http://localhost:9005/ngsi/gtfs');
 })
 
 Then('the geo-spatial root fragment is not immutable', () => {

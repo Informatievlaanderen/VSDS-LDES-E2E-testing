@@ -13,12 +13,13 @@ services:
       - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/wqo.mapping.json}
       - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
       - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
+      - MIMETYPE=application/json
     volumes:
-      - ./data/temp/wqo.template.json:/tmp/data/wqo.template.json:ro
-      - ./data/temp/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
+#      - ./data/temp/wqo.template.json:/tmp/data/wqo.template.json:ro
+#      - ./data/temp/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
     # TODO: use ngsi-v2 templates below instead of the JSON-LD ones above
-      # - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
-      # - ./data/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
+      - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
+      - ./data/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
     networks:
       - ldes
     depends_on:
@@ -110,7 +111,7 @@ services:
       - ldes-mongodb
   ldio-devices:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-devices
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
     volumes:
@@ -119,7 +120,7 @@ services:
       - ldes
   ldio-models:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-models
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:8080
     volumes:
@@ -128,7 +129,7 @@ services:
       - ldes
   ldio-observations:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-observations
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:8080
     volumes:

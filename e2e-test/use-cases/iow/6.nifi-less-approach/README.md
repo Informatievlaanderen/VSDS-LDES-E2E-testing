@@ -108,21 +108,11 @@ water-quality-observations:by-time
 In order to execute the test, you simply need to send some test data.
 
 ### Send Test Data
-> **TODO**: remove this note:
 
-> **NOTE**: we currently do not have a NGSI-v2 to NGSI-LD convertor (as a LdiAdapter), but when we do you need to use the following:
 To send a test model and a test device execute the following commands:
 ```bash
 curl -X POST http://localhost:9013/data -H 'Content-Type: application/json' -d '@data/model.json'
 curl -X POST http://localhost:9012/data -H 'Content-Type: application/json' -d '@data/device.json'
-```
-
-> **TODO**: remove this note and bash commands:
-
-> **Note**: for now, post the NGSI-LD instead of the NGSI-v2 messages:
-```bash
-curl -X POST http://localhost:9013/data -H 'Content-Type: application/ld+json' -d '@data/temp/model.jsonld'
-curl -X POST http://localhost:9012/data -H 'Content-Type: application/ld+json' -d '@data/temp/device.jsonld'
 ```
 
 To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):

@@ -3,9 +3,10 @@ server:
 orchestrator:
   input:
     name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
-    config:
-      # TODO: replace by NGSI-v2 to LD adapter with split JSON config
-      adapter: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+    adapter:
+      name: "be.vlaanderen.informatievlaanderen.ldes.ldi.NgsiV2ToLdAdapter"
+      config:
+        coreContext: "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
   transformers:
     - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
       config:

@@ -3,6 +3,7 @@ import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
 export class Fragment extends UrlResponse {
+    
     get relations(): Relation[] {
         return this.store.getObjects(null, tree.relation, null)
             .map(relation => new Relation(this.store.getQuads(relation, null, null, null)));
@@ -35,6 +36,14 @@ export class Fragment extends UrlResponse {
     expectMultipleRelationOf(type: string, count: number): Relation[] {
         const relations = this.relations.filter(x => x.type === tree.prefix(type));
         expect(relations.length).to.equal(count);
+        return relations;
+    }
+
+    expectMultipleRelationsOfType(type: string): Relation[] {
+        const relations = this.relations;
+        relations.forEach(relation => {
+            expect(relation.type === tree.prefix(type));
+        });
         return relations;
     }
 }

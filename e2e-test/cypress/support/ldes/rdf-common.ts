@@ -44,3 +44,10 @@ export const mimeTypes = {
     turtle: 'text/turtle',
     jsonld: 'application/ld+json',
 }
+
+const lcPrefix = 'http://semweb.mmlab.be/ns/linkedconnections#'
+export const lc = {
+    arrivalStop: lcPrefix + 'arrivalStop',
+    departureStop: lcPrefix + 'departureStop',
+    prefix: (term: string) => lcPrefix + term,
+}

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import N3 = require('n3');
-import { prov, rdf, terms } from './rdf-common';
+import { lc, prov, rdf, terms } from './rdf-common';
 
 
 export class Member {
@@ -25,6 +25,14 @@ export class Member {
     
     get generatedAtTime(): string {
         return this.store.getObjects(null, prov.generatedAtTime, null)[0]?.value;
+    }
+
+    get arrivalStop(): string {
+        return this.store.getObjects(null, lc.arrivalStop, null)[0]?.value;
+    }
+
+    get departureStop(): string {
+        return this.store.getObjects(null, lc.departureStop, null)[0]?.value;
     }
     
     property(predicate: string): string {

@@ -23,7 +23,8 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     private isIngestEndpointReady(ingestUrl: string): any {
-        return cy.request({ url: `${ingestUrl}/healthcheck`, failOnStatusCode: false }).then(response => response.isOkStatusCode && response.body === 'OK');
+        return cy.request({ url: `${ingestUrl}/healthcheck`, failOnStatusCode: false })
+            .then(response => response.isOkStatusCode && response.body === 'OK');
     }
 
     load() {

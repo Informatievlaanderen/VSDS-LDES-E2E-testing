@@ -11,3 +11,4 @@ docker pull ghcr.io/informatievlaanderen/mongodb-rest-api:latest
 docker pull ghcr.io/julianrojas87/gtfs2ldes-js:latest
 docker pull mongo:latest
 docker pull nginx:latest
+docker pull apache/nifi:latest

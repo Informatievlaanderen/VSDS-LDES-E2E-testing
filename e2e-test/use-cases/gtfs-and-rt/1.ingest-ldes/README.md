@@ -32,7 +32,7 @@ docker compose --env-file user.env up -d
 ```
 > **Note**: it may take a minute for all the servers to start.
 
-> **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
+> **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delay-started` to prevent it from starting immediately.
 
 ### Test Execution
 To run the test, you need to:
@@ -42,7 +42,7 @@ To run the test, you need to:
 4. Verify that the NiFi workflow queue (between the ListenHTTP and InvokeHTTP processors) does not start to fill up.
 
 #### 1. Upload NiFi Workflow
-Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](http://localhost:8000/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
 
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
 
@@ -68,7 +68,7 @@ To ensure GTFS connections are being received by the LDES-server you can use the
 
 In addition, you can request the members from here by following the view to the first and subsequent fragments:
 ```bash
-curl http://localhost:8080/connections/by-time
+curl http://localhost:8080/connections/by-page
 ```
 
 ### Test Teardown

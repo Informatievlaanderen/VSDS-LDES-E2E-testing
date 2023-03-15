@@ -19,7 +19,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
-        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: 500000, interval: 5000 });
+        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: 60000, interval: 5000 });
     }
 
     private isIngestEndpointReady(ingestUrl: string): any {

@@ -1,8 +1,8 @@
 # LDES Client Command Line Interface (CLI) can Replicate and Synchronize an LDES
-To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it.
+To ease the verification of the LDES Client's behavior we have created a CLI wrapper for it. Previously, we used a specific dedicated wrapper and packed it as a docker container. Now, instead, we use a [LDI orchestrator](https://github.com/Informatievlaanderen/VSDS-Linked-Data-Interactions/tree/main/ldi-orchestrator) with a LDES client as input, no transformer and a console output to achieve the same result.
 
 ## Test Setup
-To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+To demonstrate the LDES Client CLI, we use the [Simulator](../../ldes-server-simulator/README.md) and the LDES Client CLI using the LDI orchestartor. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
 
@@ -10,15 +10,14 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 
 Create both containers and run the simulator:
 ```bash
-docker compose create
-docker compose start ldes-server-simulator
+docker compose up -d
 ```
 
 ## Test Execution and Verification
-Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json) - in a new terminal window (bash shell):
+Ingest the [data set](./data/gamma.jsonld) and [alias it](./create-alias.json) (bash shell):
 ```bash
 curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
 ```
 > **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
 
@@ -38,12 +37,12 @@ returns:
 ### Verify Replication
 When ready, you can launch the LDES Client CLI to start replicating and synchronizing with the LDES Server Simulator.
 ```bash
-docker compose start ldes-cli
+docker compose up ldio-client-cli -d
 ```
 
-Watch the LDES Client CLI retrieve and output exactly one member to the container log file by following the container logs (in another shell):
+Watch the LDES Client CLI retrieve and output exactly one member to the container log file:
 ```bash
-docker logs -f simulator-cli_ldes-client-cli
+docker logs $(docker ps -f "name=ldio-client-cli$" -q)
 ```
 
 As we have specified a freshness of 10 seconds the LDES Client CLI will re-request the fragment every 10 seconds. You can verify this by waiting a while and then querying the LDES Server Simulator (see the data under `responses`):
@@ -57,15 +56,9 @@ Ingest the [data set update](./data/delta.jsonld) containing the additional memb
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
 ```
 
-Stop following the log file and output the log to a file:
-```bash
-docker logs simulator-cli_ldes-client-cli > ./fragment.nq
-```
-
 Verify the file contains exactly 50 members (e.g. count the number of `http://purl.org/dc/terms/isVersionOf` occurences).
 ```
-cat ./fragment.nq | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
-rm ./fragment.nq
+docker logs $(docker ps -f "name=ldio-client-cli$" -q) | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
 ```
 
 Again, wait a while and request the LDES Server Simulator home page (http://localhost:9011/) and ensure that the repeated re-requesting has ended.
@@ -73,5 +66,6 @@ Again, wait a while and request the LDES Server Simulator home page (http://loca
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose down
+docker compose stop ldio-client-cli
+docker compose --profile delay-started down
 ```

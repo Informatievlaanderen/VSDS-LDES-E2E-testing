@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  
+orchestrator:
+
+  input:
+    name: "be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient"
+    config:
+      url: "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
+      state: "sqlite"
+      keepState: "false"
+      # sourceFormat: application/ld+json
+      # expiration-interval: 604800
+      # polling-interval: 60
+      # endpoint-behaviour: "STOPPING"
+
+  transformers:
+    []
+
+  outputs:
+    - name: "be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut"
+      config:
+        content-type: application/n-quads

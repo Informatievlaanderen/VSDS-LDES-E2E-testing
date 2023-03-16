@@ -30,8 +30,7 @@ export class ClientCli {
         return cy.exec(`docker logs ${containerId}`).then(result => {
             const logs = result.stdout;
             const actualCount = (logs.match(new RegExp('http://purl.org/dc/terms/isVersionOf', 'g')) || []).length;
-            cy.log('Actual count: ' + actualCount).then(() =>
-                actualCount === count)
+            cy.log('Actual count: ' + actualCount).then(() => actualCount === count)
         });
     }
 }

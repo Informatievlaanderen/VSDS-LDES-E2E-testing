@@ -5,6 +5,7 @@ import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
+import { ClientCli } from "../services/client-cli";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
 
 let testContext: any;
@@ -17,6 +18,7 @@ export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
+export const clientCli = new ClientCli();
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -94,7 +96,7 @@ Given('I have aliased the data set', () => {
 })
 
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
-        testContext.additionalEnvironmentSetting[property] = value;
+    testContext.additionalEnvironmentSetting[property] = value;
 }
 
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
@@ -126,6 +128,11 @@ function createAndStartService(service: string, additionalEnvironmentSettings?: 
         .then(() => testContext.delayedServices.push(service));
 }
 
+When('I launch the Client CLI', () => {
+    createAndStartService(clientCli.serviceName)
+        .then(() => clientCli.waitAvailable());
+})
+
 When('I start the JSON Data Generator', () => {
     createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
         .then(() => jsonDataGenerator.waitAvailable());
@@ -156,4 +163,8 @@ export function currentMemberCount() {
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
+})
+
+Then('the Client CLI contains {int} members', (count: number) => {
+    clientCli.checkCount(count);
 })

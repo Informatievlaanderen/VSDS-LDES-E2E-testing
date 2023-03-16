@@ -8,7 +8,6 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
     And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'
     And I have configured the 'VIEWS_1_MEMBERLIMIT' as '300'
-    And the 'use-cases/gtfs-and-rt/6.basic-retention' test is setup
     And context 'use-cases/gtfs-and-rt/6.basic-retention' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds

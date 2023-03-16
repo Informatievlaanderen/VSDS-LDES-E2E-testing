@@ -57,8 +57,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the last fragment only has a 'LessThanOrEqualToRelation' to the middle fragment
 
   Scenario: Fragment LDES Using Simple Pagination
-    Given the 'use-cases/gipod/5.paginate-ldes' test is setup
-    And context 'use-cases/gipod/5.paginate-ldes' is started
+    Given context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
     And the LDES workbench is available

@@ -3,7 +3,6 @@ Feature: GTFS/RT use case
   Scenario: 1. Simple Ingest GTFS/RT Processing
     Given the members are stored in collection 'ldesmember' in database 'bustang'
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
-    And the 'use-cases/gtfs-and-rt/1.ingest-ldes' test is setup
     And context 'use-cases/gtfs-and-rt/1.ingest-ldes' is started
     And the LDES server is available
     And the LDES workbench is available
@@ -18,7 +17,6 @@ Feature: GTFS/RT use case
 
   Scenario: 2. Geo fragmentation
     Given the members are stored in collection 'ldesmember' in database 'gipod'
-    And the 'use-cases/gtfs-and-rt/2.geo-fragmentation' test is setup
     And context 'use-cases/gtfs-and-rt/2.geo-fragmentation' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'one-member'
@@ -37,7 +35,6 @@ Feature: GTFS/RT use case
 
   Scenario: 3. Multi level fragmentation
     Given the members are stored in collection 'ldesmember' in database 'gipod'
-    And the 'use-cases/gtfs-and-rt/3.multi-level-fragmentation' test is setup
     And context 'use-cases/gtfs-and-rt/3.multi-level-fragmentation' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
@@ -56,7 +53,6 @@ Feature: GTFS/RT use case
 
   Scenario: 4. LDES Server Can Have Multiple Views
     Given the members are stored in collection 'ldesmember' in database 'gipod'
-    And the 'use-cases/gtfs-and-rt/4.multi-view' test is setup
     And context 'use-cases/gtfs-and-rt/4.multi-view' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
@@ -77,7 +73,6 @@ Feature: GTFS/RT use case
     And I have configured the 'GTFS_BASE_IRI' as 'http://www.rtd-denver.com/'
     And I have configured the 'SPRING_DATA_MONGODB_DATABASE' as 'bustang'
     And the members are stored in collection 'ldesmember' in database 'bustang'
-    And the 'use-cases/gtfs-and-rt/5.including-stops' test is setup
     And context 'use-cases/gtfs-and-rt/5.including-stops' is started
     And the LDES server is available
     And the LDES workbench is available
@@ -99,7 +94,6 @@ Feature: GTFS/RT use case
     And I have configured the 'SPRING_DATA_MONGODB_DATABASE' as 'bustang'
     And the members are stored in collection 'ldesmember' in database 'bustang'
     And I have configured the GTFS trottle rate as 200
-    And the 'use-cases/gtfs-and-rt/7.direct-connect' test is setup
     And context 'use-cases/gtfs-and-rt/7.direct-connect' is started
     And the LDES server is available
     When I start the GTFS2LDES service

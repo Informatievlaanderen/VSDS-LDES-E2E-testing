@@ -5,8 +5,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
   Scenario Outline: Verify URL Naming Strategy
     Given I have configured the 'COLLECTION_NAME' as '<collection-name>'
     And I have configured the 'VIEW_NAME' as '<view-name>'
-    When the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    When context 'demos/ldes-server-caching' is started
     And the LDES server is available
     Then the collection is available at '<collection-url>'
     And the view is available at '<view-url>'
@@ -17,8 +16,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
       | cartoons            | by-page   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/by-page            |
 
   Scenario: Verify Acceptable Fragment Formats
-    Given the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    Given context 'demos/ldes-server-caching' is started
     And the LDES server is available
     When I request the view formatted as 'text/turtle '
     Then I receive a response similar to 'view.ttl'
@@ -30,8 +28,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then I receive a response similar to 'view.nt'
 
   Scenario: Verify Acceptable Member Formats
-    Given the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    Given context 'demos/ldes-server-caching' is started
     And the LDES server is available
     When I send the member file 'data/member.ttl' of type 'text/turtle'
     Then the server accepts this member file
@@ -43,8 +40,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then the server accepts this member file
 
   Scenario: Verify CORS and Supported HTTP Verbs
-    Given the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    Given context 'demos/ldes-server-caching' is started
     And the LDES server is available
     When I request the view from a different url 'http://example.com'
     Then the server returns the supported HTTP Verbs
@@ -52,8 +48,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then the headers include an Etag which is used for caching purposes
 
   Scenario: Verify Actual Caching
-    Given the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    Given context 'demos/ldes-server-caching' is started
     And the LDES server is available
     When I request the LDES
     Then the LDES is not yet cached
@@ -61,8 +56,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then the LDES comes from the cache
 
   Scenario: Verify Actual Caching
-    Given the 'demos/ldes-server-caching' test is setup
-    And context 'demos/ldes-server-caching' is started
+    Given context 'demos/ldes-server-caching' is started
     And the LDES server is available
     When I request the view compressed
     Then I receive a zip file containing my view

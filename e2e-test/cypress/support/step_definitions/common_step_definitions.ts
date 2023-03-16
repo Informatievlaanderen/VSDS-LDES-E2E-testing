@@ -55,6 +55,8 @@ Given('the {string} test is setup', (testPartialPath: string) => {
 });
 
 Given('context {string} is started', (composeFilePath: string) => {
+    if(!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
+    
     const options: DockerComposeOptions = {
         dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,

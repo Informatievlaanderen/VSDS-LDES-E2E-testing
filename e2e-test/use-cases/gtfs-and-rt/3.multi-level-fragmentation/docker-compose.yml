@@ -15,7 +15,7 @@ services:
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
-      - ${NIFI_UI_PORT:-8000}:8000
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
       - ldes
   ldes-server:

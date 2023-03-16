@@ -28,7 +28,7 @@ services:
       - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
-      - ${NIFI_UI_PORT:-8000}:8000
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes

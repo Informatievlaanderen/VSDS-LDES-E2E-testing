@@ -32,17 +32,10 @@ docker compose --env-file user.env up -d
 To run the test, you need to:
 1. Seed the LDES Server Simulator with a part of the GIPOD data set
 2. Upload a pre-defined [NiFi workflow](nifi-workflow.json) containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
-
-5. Restart the NiFi workflow, follow the logging and stop the workflow when a following fragment has been processed.
-6. Verify that the processed fragments were requested from the server-simulator by visiting the server simulator [http://localhost:9011](http://localhost:9011).
-
-
-
-1. Run the containers
-2. Upload a pre-defined [NiFi workflow](flows/nifi-workflow.json) containing a GetHTTP processor to fetch data from the server simulator
 3. Start the NiFi workflow, follow the members in the NiFi queue and stop the workflow when a fragment has been fully processed (250 members).
 4. Verify that only the processed fragments were requested from the server-simulator by visiting [http://localhost:9011](http://localhost:9011).
-5. Verify that the data was sent to the RDF4J server by visiting [the rdf4j workbench](http://localhost:8080/rdf4j-workbench/repositories/test/explore?resource=%3Cfile%3A%2Fvar%2Frdf4j%2Fserver%2Frepositories%2Ftest%23test%3E)
+5. Restart the NiFi workflow, follow the logging and stop the workflow when a following fragment has been processed.
+6. Verify that the processed fragments were requested from the server-simulator by visiting the server simulator [http://localhost:9011](http://localhost:9011).
 
 #### 1. Upload the Data Set
 Run the following (bash) command to seed the LDES Server Simulator with a part of the GIPOD data set:

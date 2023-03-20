@@ -71,5 +71,6 @@ to continue LDIO: “/admin/api/v1/pipeline/resume”
 ### Test Teardown
 First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink-mongo/README.md#stop-the-systems), i.e.:
 ```bash
-docker compose down
+docker compose stop json-data-generator
+docker compose --profile delay-started down
 ```

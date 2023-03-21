@@ -10,8 +10,8 @@ services:
     networks:
       - ldes
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
-    container_name: ${USECASE_NAME:-gtfs-multiview-ldes}_ldes-workbench-nifi
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-20230214t123440}
+    container_name: ${USECASE_NAME:-gtfs-multiview-ldes}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
@@ -45,6 +45,16 @@ services:
       - VIEWS_1_NAME=by-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-5}
+      # Third view by location only
+      #- VIEWS_2_NAME=by-location
+      #- VIEWS_2_FRAGMENTATIONS_0_NAME=geospatial
+      #- VIEWS_2_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL:-15}
+      #- VIEWS_2_FRAGMENTATIONS_0_CONFIG_PROJECTION=lambert72
+      #- VIEWS_2_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
+      # Forth view pagination
+      #- VIEWS_3_NAME=${VIEWS_0_NAME:-by-page}
+      #- VIEWS_3_FRAGMENTATIONS_0_NAME=pagination
+      #- VIEWS_3_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-300}
     volumes:
       - ../../../data/epsg:/tmp/Databases:rw
     ports:

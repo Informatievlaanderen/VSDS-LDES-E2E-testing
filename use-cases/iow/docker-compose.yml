@@ -1,8 +1,8 @@
 version: '3.3'
 services:
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20221107t094816}
-    container_name: ${USECASE_NAME:-iow-context}_ldes-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-20221107t094816}
+    container_name: ${USECASE_NAME:-iow-context}_ldi-workbench-nifi
     ports:
       - 8443:8443
       # https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=9012

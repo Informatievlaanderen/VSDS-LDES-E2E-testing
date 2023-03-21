@@ -21,8 +21,8 @@ services:
     depends_on:
       - nifi-workflow
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
-    container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-workbench-nifi
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-20230214t123440}
+    container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:

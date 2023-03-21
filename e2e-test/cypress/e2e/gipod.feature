@@ -6,8 +6,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given the members are stored in collection 'ldesmember' in database 'gipod'
 
   Scenario: Replicate LDES
-    Given the 'use-cases/gipod/1.replicate-ldes' test is setup
-    And context 'support/context/simulator-workflow-sink-mongo' is started
+    Given the test context 'use-cases/gipod/1.replicate-ldes' is started
     And I have aliased the pre-seeded simulator data set
     And the LDES workbench is available
     And I have uploaded the workflow

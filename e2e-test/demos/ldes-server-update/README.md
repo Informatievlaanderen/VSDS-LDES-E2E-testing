@@ -4,9 +4,10 @@ This test validates user story **As a Data Publisher, I want to handle an upgrad
 ## Scenario: Upgrade the LDES server
 This scenario verifies the LDES server can be upgraded using an ldi-orchestrator.
 ```gherkin
-Given 
-When
-Then
+Given an LDES server
+When I pause the LDI-output
+And I start a new server that resumes the LDI-output
+Then the data store member count increases
 ```
 
 ### Test Setup

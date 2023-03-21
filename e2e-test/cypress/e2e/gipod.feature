@@ -1,8 +1,7 @@
 Feature: GIPOD use case
-
 Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/gipod
 
-  Background:
+  Background: 
     Given the members are stored in collection 'ldesmember' in database 'gipod'
 
   Scenario: Replicate LDES
@@ -14,17 +13,15 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Then the sink contains 1016 members
 
   Scenario: Ingest LDES
-    Given the 'use-cases/gipod/2.ingest-ldes' test is setup
-    And context 'support/context/simulator-workflow-server-mongo' is started
+    Given the test context 'use-cases/gipod/2.ingest-ldes' is started
     And I have aliased the pre-seeded simulator data set
     And the LDES workbench is available
     And I have uploaded the workflow
     When I start the workflow
     Then the LDES contains 1016 members
-    
+
   Scenario: Synchronize LDES
-    Given the 'use-cases/gipod/3.synchronize-ldes' test is setup
-    And context 'support/context/simulator-workflow-sink-mongo' is started
+    Given the test context 'use-cases/gipod/3.synchronize-ldes' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
@@ -38,10 +35,9 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Then the sink contains 617 members
 
   Scenario: Time-Fragment LDES
-    Given the 'use-cases/gipod/4.time-fragment-ldes' test is setup
-    And context 'support/context/simulator-workflow-server-mongo' is started
+    Given the test context 'use-cases/gipod/4.time-fragment-ldes' is started
     And I have uploaded the data files: 'scenario4/alfa,scenario4/beta,scenario4/epsilon'
-    And I have aliased the data set    
+    And I have aliased the data set
     And the LDES workbench is available
     And I have uploaded the workflow
     And the LDES server is available
@@ -56,7 +52,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the last fragment only has a 'LessThanOrEqualToRelation' to the middle fragment
 
   Scenario: Fragment LDES Using Simple Pagination
-    Given context 'use-cases/gipod/5.paginate-ldes' is started
+    Given the test context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
     And the LDES workbench is available

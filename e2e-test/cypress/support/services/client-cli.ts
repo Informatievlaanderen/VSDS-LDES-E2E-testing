@@ -7,7 +7,7 @@ export class ClientCli {
     }
 
     private isReady(containerId: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("ldes.client.cli.Application - Started Application"));
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Started Application"));
     }
 
     waitAvailable() {

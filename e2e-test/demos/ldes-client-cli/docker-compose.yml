@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   ldes-server-simulator:
-    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230316t1619}
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230322T1229}
     container_name: ${USECASE_NAME:-simulator-cli}_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator

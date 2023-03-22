@@ -45,7 +45,7 @@ export class LdesFragmentController {
             return {
                 status: 302,
                 body: undefined,
-                headers: { 'location': new URL(redirection, baseUrl).toJSON() },
+                headers: { 'Location': new URL(redirection, baseUrl).toJSON() },
             }
         }
         const fragment = fragmentId ? this.service.get(fragmentId) : undefined;

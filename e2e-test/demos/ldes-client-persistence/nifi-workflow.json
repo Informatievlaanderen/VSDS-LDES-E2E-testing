@@ -340,7 +340,7 @@
                     "FRAGMENT_EXPIRATION_INTERVAL": "604800",
                     "DATA_SOURCE_FORMAT": "JSONLD",
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
-                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z"
+                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
                 },
                 "propertyDescriptors": {
                     "FRAGMENT_EXPIRATION_INTERVAL": {

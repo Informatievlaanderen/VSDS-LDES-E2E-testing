@@ -11,36 +11,28 @@ Then the fragments and members that have already been processed are not requeste
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
 ### Test Setup
-For this scenario we use a [workflow](docker-compose.yml) based on the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context (but without the mongo container as we use an in-memory database). Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change it as needed.
-
-This demo makes use of a [Makefile](./Makefile) to simplify the commands that need to be executed.
+For this scenario we use a [workflow](./docker-compose.yml) based on the [Simulator / Workflow / Sink / Mongo](../../support/context/simulator-workflow-sink-mongo/README.md) context (but without the mongo container as we use an in-memory database). If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 You can run the systems by executing the following command:
-
 ```bash
-export ENV_FILE=user.env
-make run
-```
-
-This will run `docker compose` daemonised.
-
-```bash
-docker compose --env-file user.env up -d
+docker compose up -d
 ```
 
 ### Test Execution
 To run the test, you need to:
 1. Seed the LDES Server Simulator with a part of the GIPOD data set
-2. Upload a pre-defined [NiFi workflow](nifi-workflow.json) containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
+2. Upload a pre-defined [NiFi workflow](./nifi-workflow.json) containing the LDES client processor and a InvokeHTTP processor (to send the LDES members to the sink).
 3. Start the NiFi workflow, follow the members in the NiFi queue and stop the workflow when a fragment has been fully processed (250 members).
 4. Verify that only the processed fragments were requested from the server-simulator by visiting [http://localhost:9011](http://localhost:9011).
 5. Restart the NiFi workflow, follow the logging and stop the workflow when a following fragment has been processed.
 6. Verify that the processed fragments were requested from the server-simulator by visiting the server simulator [http://localhost:9011](http://localhost:9011).
 
 #### 1. Upload the Data Set
-Run the following (bash) command to seed the LDES Server Simulator with a part of the GIPOD data set:
+Run the following (bash) command to seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
 ```bash
 for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+
+curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@create-alias.json'
 ```
 
 To verify that the data is correctly seeded, run this command (see [simulator](http://localhost:9011/)):
@@ -62,19 +54,14 @@ returns:
 ```
 
 #### 2. Upload NiFi Workflow
-Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) (it may take a minute or two before it is available) and create a new process group based on the [replicate workflow](./flows/nifi-workflow.json) as specified in [here](../../e2e-test/support/context/workflow/README.md#creating-a-workflow).
+Browse to the [Apache NiFi user interface](http://localhost:8000/nifi) (it may take a minute or two before it is available) and create a new process group based on the [replicate workflow](./nifi-workflow.json) as specified in [here](../../support/context/workflow/README.md#creating-a-workflow).
 
 You can verify the LDES client processor properties to ensure the input source is the LDES server simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink HTTP server.
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
 * the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
 #### 3. Start the Workflow and stop when a fragment was processed
-Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
-Stop the workflow when the queue shows 250 members or the shell logging shows a message like this:
-
-```shell
-PROCESSED (IMMUTABLE) fragment http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z has 250 member(s) and 1 tree:relation(s)
-```
+Start the workflow as described [here](../../support/context/workflow/README.md#starting-a-workflow) and stop the workflow when the queue shows 250 members.
 
 #### 4. Verify the requested fragments
 
@@ -94,7 +81,7 @@ The response should show something similar to this:
 ```
 
 #### 5. Restart the Workflow and stop when another fragment was processed
-Restart the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
+Restart the workflow as described [here](../../support/context/workflow/README.md#starting-a-workflow).
 
 When the queue hits 500 members, stop the workflow again.
 
@@ -115,13 +102,8 @@ No matter where in the LDES you halted the NiFi processor, none of the requested
 ...
 ```
 
-
 ### Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems by executing:
+First stop the workflow as described [here](../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems by executing:
 ```bash
-make stop
-```
-this will execute the following command:
-```bash
-docker compose --env-file user.env down
+docker compose down
 ```

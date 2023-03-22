@@ -1,13 +1,4 @@
 services:
-  ldes-server-simulator:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230214t1503}
-    container_name: ${USECASE_NAME:-rdf4j-repository-put}_ldes-server-simulator
-    environment:
-      - BASEURL=http://ldes-server-simulator
-    ports:
-      - ${LDES_SERVER_SIMULATOR_PORT:-8082}:80
-    networks:
-      - ldes
   nifi-workflow:
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
     container_name: ${USECASE_NAME:-rdf4j-repository-put}_ldes-workbench-nifi
@@ -17,6 +8,8 @@ services:
       - ${NIFI_UI_PORT:-8081}:${NIFI_UI_PORT:-8000}
     networks:
       - ldes
+    volumes:
+      - "./nifi:/home/nifi/data"
   rdf4j-server:
     image: eclipse/rdf4j-workbench:${RDF4J_SERVER_TAG:-4.2.2}
     container_name: ${USECASE_NAME:-rdf4j-repository-put}_rdf4j-server

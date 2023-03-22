@@ -16,9 +16,6 @@ help: ## This help message
 
 .DEFAULT_GOAL := help
 
-build: ## Build the containers 
-	@docker compose --env-file ${ENV_FILE} build
-
 run: ## Run the containers
 	@echo Env file: ${ENV_FILE}
 	@docker compose --env-file ${ENV_FILE} up -d
@@ -28,3 +25,9 @@ stop: ## Stop the running containers
 
 login: ## Login to the LDES Workbench Nifi container
 	@docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /bin/bash
+
+seed: ## Seed the server simulator with initial data
+	@curl -X POST http://localhost:8082/ldes -H "Content-Type: application/ld+json" -d "@data/people_data.jsonld"
+
+update: ## Send the update to the rdf4j repository
+	

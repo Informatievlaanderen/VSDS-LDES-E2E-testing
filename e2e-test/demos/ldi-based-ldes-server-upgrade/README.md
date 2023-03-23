@@ -18,7 +18,7 @@ For this scenario we can use the TODO context (../../../support/context/simulato
 export COMPOSE_FILE="../../../support/context/simulator-workflow-sink-mongo/docker-compose.yml"
 ```
 
-Then you can run the systems by executing the following command:
+Launch all systems except for the new LDES server:
 ```bash
 docker compose up -d
 ```

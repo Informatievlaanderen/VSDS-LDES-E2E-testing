@@ -1,129 +1,48 @@
 version: '3.3'
 services:
+
   json-data-generator:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-grar-context}_json-data-generator
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230214t1503}
+    profiles:
+      - delay-started
     environment:
-      - TARGETURL=http://ldio:8080/http-in-http-out-pipeline
-      - SILENT=false
-      - CRON=* * * * * *
-      - TEMPLATEFILE=/tmp/data/device.template.json
-      - MAPPINGFILE=/tmp/data/device.mapping.json
-      - TEMPLATE=
-      - MAPPING=
-      - MIMETYPE=application/ld+json
+      - TARGETURL=http://nifi-workflow:9012/grar/addresses
+      - SILENT=${JSON_DATA_GENERATOR_SILENT:-true}
+      - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
+      - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
+      - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/address.mapping.json}
+      - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
+      - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
     volumes:
-      - ./data/device.template.json:/tmp/data/device.template.json:ro
-      - ./data/device.mapping.json:/tmp/data/device.mapping.json:ro
-    networks:
-      - ldes
-    profiles:
-      - delay-started
-      
-  ldio:
-   image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230324T175226}
-   container_name: ldio
-   environment:
-     - SPRING_CONFIG_NAME=application
-     - SPRING_CONFIG_LOCATION=/config/
-   volumes:
-     - ./ldio-config.yml:/config/application.yml:ro
-   networks:
-     - ldes
-   ports:
-     - 8081:8080
-   # image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-main}
-   # container_name: ${USECASE_NAME:-simulator-cli}_ldio-client-cli
-   # command: "--url ${LDES_DATA_SET_URL:-http://ldes-server-simulator/api/v1/ldes/mobility-hindrances}"
-
-  ldes-mongodb:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
-    ports:
-      - ${MONGODB_PORT:-27017}:27017
+      - ./data/address.template.json:/tmp/data/address.template.json:ro
+      - ./data/address.mapping.json:/tmp/data/address.mapping.json:ro
     networks:
       - ldes
 
-  old-ldes-server:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:20221107T0923
+  ldes-server-simulator:
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230322T1229}
+    container_name: ${USECASE_NAME:-simulator-cli}_ldes-server-simulator
     environment:
-      - MANAGEMENT_TRACING_ENABLED=False
-      - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - LDES_HOSTNAME=http://localhost:8080
-      - LDES_COLLECTIONNAME=devices
-      - LDES_SHAPE=
-      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - VIEWS_0_NAME=devices-by-time
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - BASEURL=http://ldes-server-simulator
     ports:
-      - 8080:8080
+      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
     networks:
-      ldes:
-        aliases:
-          - ldes-server
-    depends_on:
-      - ldes-mongodb
+      - ldes
 
-  new-ldes-server:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_new-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
-    environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
-      - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - LDES_HOSTNAME=http://localhost:8080
-      - LDES_COLLECTIONNAME=devices
-      - LDES_SHAPE=
-      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-    # TODO: can be change this to view name 'by-time' and simple 'pagination'?
-      - VIEWS_0_NAME=devices-by-time
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+  ldio-client-cli:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230316t150044}
+    container_name: ${USECASE_NAME:-simulator-cli}_ldio-client-cli
     volumes:
-      - ../../data/epsg:/tmp/Databases:rw
-    ports:
-      - 8080:8080
-    networks:
-      ldes:
-        aliases:
-          - ldes-server
-    depends_on:
-      - ldes-mongodb
-    profiles:
-      - delay-started
-
-  mongodb-rest-api:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_mongodb-rest-api
-    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
-    environment:
-      - SILENT=false
-      - CONNECTION_URI=mongodb://ldes-mongodb:27017
-    ports:
-      - ${MONGODB_REST_API_PORT:-9019}:80
+      - ./ldio-cli.config.yml:/application.yml:ro
     networks:
       - ldes
-
-  ldes-list-fragments:
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_ldes-list-fragments
-    image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
-    environment:
-      - FOLLOW=http://localhost:8080/devices/devices-by-time
-    # use the network stack of the new-ldes-server service so that 
-    # localhost refers to new-ldes-server and we can follow the LDES stream
-    network_mode: service:new-ldes-server
     profiles:
       - delay-started
+    # image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-main}
+    # container_name: ${USECASE_NAME:-simulator-cli}_ldio-client-cli
+    # command: "--url ${LDES_DATA_SET_URL:-http://ldes-server-simulator/api/v1/ldes/mobility-hindrances}"
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-upgrade-server-using-nifi}_network
+    name: ${USECASE_NAME:-simulator-cli}_network

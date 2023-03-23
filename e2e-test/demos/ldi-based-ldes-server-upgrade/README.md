@@ -25,15 +25,13 @@ docker compose up -d
 
 ### Test Execution
 To run the test, you need to:
-1. Upload a pre-defined NiFi workflow
-2. Start the NiFi workflow
-3. Pause LDI-output
-4. Ensure old server is done processing and bring old server down
-5. Launch new server, wait until database migrated and server started
-6. Verify that members are available in LDES and find last fragment
-7. Resume LDI-output
-8. Verify last fragment member count increases
-9. Verify data store member count increases
+1. Pause LDI-output
+2. Ensure old server is done processing and bring old server down
+3. Launch new server, wait until database migrated and server started
+4. Verify that members are available in LDES and find last fragment
+5. Resume LDI-output
+6. Verify last fragment member count increases
+7. Verify data store member count increases
 
 #### 1. Upload NiFi Workflow
 Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the TODO ./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).

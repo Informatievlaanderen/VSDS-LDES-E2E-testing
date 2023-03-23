@@ -1,6 +1,5 @@
 version: '3.3'
 services:
-
   json-data-generator:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_json-data-generator
     image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}

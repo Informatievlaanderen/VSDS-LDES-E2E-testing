@@ -1,0 +1,155 @@
+[
+    {
+        "@context": "https://docs.basisregisters.staging-vlaanderen.be/context/adres/2022-10-17/adres_detail.jsonld",
+        "@type": "Adres",
+        "identificator": {
+            "id": "https://data.vlaanderen.be/id/adres/1781020",
+            "naamruimte": "https://data.vlaanderen.be/id/adres",
+            "objectId": "1781020",
+            "versieId": "2022-04-28T08:06:25+02:00"
+        },
+        "gemeente": {
+            "objectId": "46014",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/gemeenten/46014",
+            "gemeentenaam": {
+                "geografischeNaam": {
+                    "spelling": "Lokeren",
+                    "taal": "nl"
+                }
+            }
+        },
+        "postinfo": {
+            "objectId": "9160",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/postinfo/9160"
+        },
+        "straatnaam": {
+            "objectId": "77088",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/straatnamen/77088",
+            "straatnaam": {
+                "geografischeNaam": {
+                    "spelling": "Kazernestraat",
+                    "taal": "nl"
+                }
+            }
+        },
+        "huisnummer": "15",
+        "volledigAdres": {
+            "geografischeNaam": {
+                "spelling": "Kazernestraat 15, 9160 Lokeren",
+                "taal": "nl"
+            }
+        },
+        "adresPositie": {
+            "geometrie": {
+                "type": "Point",
+                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>123427.34 199041.78</gml:pos></gml:Point>"
+            },
+            "positieGeometrieMethode": "afgeleidVanObject",
+            "positieSpecificatie": "gebouweenheid"
+        },
+        "adresStatus": "inGebruik",
+        "officieelToegekend": true
+    },
+    {
+        "@context": "https://docs.basisregisters.staging-vlaanderen.be/context/adres/2022-10-17/adres_detail.jsonld",
+        "@type": "Adres",
+        "identificator": {
+            "id": "https://data.vlaanderen.be/id/adres/1781021",
+            "naamruimte": "https://data.vlaanderen.be/id/adres",
+            "objectId": "1781021",
+            "versieId": "2011-04-29T15:05:57+02:00"
+        },
+        "gemeente": {
+            "objectId": "23025",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/gemeenten/23025",
+            "gemeentenaam": {
+                "geografischeNaam": {
+                    "spelling": "Grimbergen",
+                    "taal": "nl"
+                }
+            }
+        },
+        "postinfo": {
+            "objectId": "1853",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/postinfo/1853"
+        },
+        "straatnaam": {
+            "objectId": "25730",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/straatnamen/25730",
+            "straatnaam": {
+                "geografischeNaam": {
+                    "spelling": "Grotewinkellaan",
+                    "taal": "nl"
+                }
+            }
+        },
+        "huisnummer": "146",
+        "volledigAdres": {
+            "geografischeNaam": {
+                "spelling": "Grotewinkellaan 146, 1853 Grimbergen",
+                "taal": "nl"
+            }
+        },
+        "adresPositie": {
+            "geometrie": {
+                "type": "Point",
+                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>149531.69 177745.18</gml:pos></gml:Point>"
+            },
+            "positieGeometrieMethode": "afgeleidVanObject",
+            "positieSpecificatie": "gebouweenheid"
+        },
+        "adresStatus": "inGebruik",
+        "officieelToegekend": true
+    },
+    {
+        "@context": "https://docs.basisregisters.staging-vlaanderen.be/context/adres/2022-10-17/adres_detail.jsonld",
+        "@type": "Adres",
+        "identificator": {
+            "id": "https://data.vlaanderen.be/id/adres/1781022",
+            "naamruimte": "https://data.vlaanderen.be/id/adres",
+            "objectId": "1781022",
+            "versieId": "2022-04-28T08:06:25+02:00"
+        },
+        "gemeente": {
+            "objectId": "11023",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/gemeenten/11023",
+            "gemeentenaam": {
+                "geografischeNaam": {
+                    "spelling": "Kapellen",
+                    "taal": "nl"
+                }
+            }
+        },
+        "postinfo": {
+            "objectId": "2950",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/postinfo/2950"
+        },
+        "straatnaam": {
+            "objectId": "5424",
+            "detail": "https://api.basisregisters.staging-vlaanderen.be/v2/straatnamen/5424",
+            "straatnaam": {
+                "geografischeNaam": {
+                    "spelling": "Hoogboomsteenweg",
+                    "taal": "nl"
+                }
+            }
+        },
+        "huisnummer": "267",
+        "volledigAdres": {
+            "geografischeNaam": {
+                "spelling": "Hoogboomsteenweg 267, 2950 Kapellen",
+                "taal": "nl"
+            }
+        },
+        "adresPositie": {
+            "geometrie": {
+                "type": "Point",
+                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>156568.94 222882.90</gml:pos></gml:Point>"
+            },
+            "positieGeometrieMethode": "afgeleidVanObject",
+            "positieSpecificatie": "gebouweenheid"
+        },
+        "adresStatus": "inGebruik",
+        "officieelToegekend": true
+    }
+]

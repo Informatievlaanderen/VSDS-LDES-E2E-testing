@@ -1,13 +1,12 @@
 version: '3.3'
 services:
-
   json-data-generator:
     container_name: ${USECASE_NAME:-grar-context}_json-data-generator
     image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230214t1503}
     profiles:
       - delay-started
     environment:
-      - TARGETURL=http://nifi-workflow:9012/grar/addresses
+      - TARGETURL=http://ldio:8080/pipeline
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-true}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
@@ -19,7 +18,6 @@ services:
       - ./data/address.mapping.json:/tmp/data/address.mapping.json:ro
     networks:
       - ldes
-
   ldes-server-simulator:
     image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230322T1229}
     container_name: ${USECASE_NAME:-simulator-cli}_ldes-server-simulator
@@ -29,10 +27,9 @@ services:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
     networks:
       - ldes
-
-  ldio-client-cli:
+  ldio:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230316t150044}
-    container_name: ${USECASE_NAME:-simulator-cli}_ldio-client-cli
+    container_name: ldio
     volumes:
       - ./ldio-cli.config.yml:/application.yml:ro
     networks:
@@ -42,7 +39,6 @@ services:
     # image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-main}
     # container_name: ${USECASE_NAME:-simulator-cli}_ldio-client-cli
     # command: "--url ${LDES_DATA_SET_URL:-http://ldes-server-simulator/api/v1/ldes/mobility-hindrances}"
-
 networks:
   ldes:
     name: ${USECASE_NAME:-simulator-cli}_network

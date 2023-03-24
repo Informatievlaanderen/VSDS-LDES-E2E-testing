@@ -65,16 +65,6 @@ Given('context {string} is started', (composeFilePath: string) => {
     dockerCompose.up(options);
 })
 
-Given('the test context {string} is started', (testPartialPath: string) => {
-    testContext.testPartialPath = testPartialPath;
-    const options: DockerComposeOptions = {
-        dockerComposeFile: `${testPartialPath}/docker-compose.yml`,
-        environmentFile: `${testContext.testPartialPath}/.env`,
-        additionalEnvironmentSetting: testContext.additionalEnvironmentSetting
-    };
-    dockerCompose.up(options);
-})
-
 Given('the LDES workbench is available', () => {
     workbench.waitAvailable();
     workbench.load();

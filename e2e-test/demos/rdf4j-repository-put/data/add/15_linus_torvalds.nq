@@ -1,0 +1,4 @@
+<http://somewhere/LinusTorvalds/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Linus Torvalds" .
+<http://somewhere/LinusTorvalds/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid15 .
+_:genid15 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Torvalds" .
+_:genid15 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Linus" .

@@ -1,0 +1,4 @@
+<http://somewhere/SophieWiles/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Sophie Wiles" .
+<http://somewhere/SophieWiles/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid10 .
+_:genid10 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Wiles" .
+_:genid10 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Sophie" .

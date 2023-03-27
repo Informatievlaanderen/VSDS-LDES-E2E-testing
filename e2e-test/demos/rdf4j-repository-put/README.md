@@ -13,7 +13,7 @@ Then the members will be sent to the configured RDF4J repository
 > **Note**: we use imaginary people data in n-quad format, based on the [vCard to RDF mapping](https://www.w3.org/TR/vcard-rdf/)
 
 ### Test Setup
-For this scenario we use a [docker workflow](docker-compose.yml) with a NiFi workbench and and RDF4J workbench. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change it as needed.
+For this scenario we use a [docker workflow](docker-compose.yml) with a NiFi workbench and RDF4J workbench. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change it as needed.
 
 This demo makes use of a [Makefile](./Makefile) to simplify the commands that need to be executed.
 

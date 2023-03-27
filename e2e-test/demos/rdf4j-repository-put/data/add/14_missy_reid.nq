@@ -1,0 +1,4 @@
+<http://somewhere/MissyReid/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Missy Reid" .
+<http://somewhere/MissyReid/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid14 .
+_:genid14 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Reid" .
+_:genid14 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Missy" .

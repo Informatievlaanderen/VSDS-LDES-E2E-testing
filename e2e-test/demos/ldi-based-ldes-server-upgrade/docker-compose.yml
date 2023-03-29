@@ -19,8 +19,8 @@ services:
       - ldes
     profiles:
       - delay-started
-
- ldio:
+      
+  ldio:
    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230316t150044}
    container_name: ldio
    environment:
@@ -109,7 +109,7 @@ services:
     networks:
       - ldes
 
-  ldes-list-fragments:
+ldes-list-fragments:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_ldes-list-fragments
     image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230328t0416}
     environment:

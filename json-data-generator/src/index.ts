@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import minimist from 'minimist';
 import { JsonGenerator } from './generator.js';
 import fetch from 'node-fetch';
@@ -8,7 +8,6 @@ const args = minimist(process.argv.slice(2));
 const silent: boolean = (/true/i).test(args['silent']);
 
 const cron = args['cron'] || '* * * * * *';
-const targetUrl = args['targetUrl'];
 const mimeType = args['mimeType'] || 'application/json';
 if (!silent) console.debug("Arguments: ", args);
 
@@ -24,6 +23,7 @@ const generator: JsonGenerator = new JsonGenerator(template, mapping);
 const job = new CronJob(cron, async () => {
     const next = generator.createNext();
     const body = JSON.stringify(next);
+    const targetUrl = args['targetUrl'] || (existsSync('./TARGETURL') && readFileSync('./TARGETURL', 'utf-8'));
     if (targetUrl) {
         if (!silent) console.debug('Sending: ', body);
         await fetch(targetUrl, {

@@ -1,8 +1,9 @@
 version: '3.3'
 services:
+
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306t2329}
     profiles:
       - delay-started
     environment:
@@ -19,6 +20,7 @@ services:
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
     networks:
       - ldes
+
   nifi-workflow:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_nifi-workflow
     image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
@@ -31,10 +33,12 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
+
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -59,6 +63,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -66,6 +71,7 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+      
 networks:
   ldes:
     name: ${USECASE_NAME:-gtfs2ldes-workflow-server-mongo}_network

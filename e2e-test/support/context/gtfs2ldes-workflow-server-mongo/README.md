@@ -19,12 +19,10 @@ In addition, for the GTFS to LDES conversion, various other arguments are requir
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: e2etest)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: e2etest2022DEMO)
-* NIFI_TAG (default: `1.19.1`)
 * NIFI_JVM_HEAP_INIT (initial JVM heap size, default: `2g`)
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
 * NIFI_UI_PORT (default: `8443`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
-* LDES_SERVER_TAG (default: `20230214t1234`)
 * LDES_COLLECTIONNAME (default `connections`)
 * LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)
 * LDES_SERVER_PORT (default: 8080)
@@ -33,11 +31,9 @@ Optionally, you can also specify different (external) port numbers for the compo
 * VIEW_VERSIONOFPATH (default: `http://purl.org/dc/terms/isVersionOf`)
 * VIEWS_0_NAME (default: `by-time`)
 * VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT (number of members per fragment, default: `100`)
-* MONGODB_TAG (default: `6.0.4`)
 * MONGODB_PORT (default: `27017`)
 
 And, you can currently tune the following parameters: 
-* GTFS2LDES_TAG (default: `20230129t1743`)
 * RUN_ON_LAUNCH (`true` or `false`, default: `true`)
 * THROTTLE_RATE (default: 10)
 * GTFS_CRON (cron for reading GTFS source, default: `0 0 3 1 * *`)

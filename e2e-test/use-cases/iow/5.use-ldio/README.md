@@ -34,13 +34,7 @@ Breaking the containers further down into components, we get:
 To setup this test, you can optionally configure a custom environment file and then launch all systems and verify the initial state.
 
 ### Configure Environment File
-If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. E.g. you can change the component tags:
-
-* JSON_DATA_GENERATOR_TAG (default: `20230214t1503`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230214t123440`)
-* LDES_SERVER_TAG (default: `20230214t1234`)
-* MONGODB_TAG (default: `6.0.4`)
-* LDI_ORCHESTRATOR_TAG (default: `20230224t1457`)
+If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 ### Launch Systems
 You can start all the required systems except for the observations generator using (a bash) command:

@@ -1,15 +1,15 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { difference } from "cypress/types/lodash";
 import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
     MongoRestApi, JsonDataGenerator, LdesServer
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
+import { existsSync, readFileSync } from 'fs';
 
 let testContext: any;
 
-export const dockerCompose = new DockerCompose(Cypress.env('useDefaultTags'));
+export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbench = new LdesWorkbenchNiFi('http://localhost:8000')
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
@@ -159,3 +159,5 @@ export function currentMemberCount() {
 Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
 })
+
+

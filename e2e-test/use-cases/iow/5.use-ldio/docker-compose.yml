@@ -1,8 +1,9 @@
 version: '3.3'
 services:
+
   json-data-generator:
     container_name: ${USECASE_NAME:-iow-use-ldio}_json-data-generator
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
     profiles:
       - delay-started
     environment:
@@ -20,8 +21,9 @@ services:
       - ldes
     depends_on:
       - nifi-workflow
+
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -33,6 +35,7 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:9014
     networks:
       - ldes
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -40,11 +43,13 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+
   # Using 3 consecutive ports for the 3 LDES servers -- see https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=8073
   ldes-server-devices:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-server-devices
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -66,10 +71,12 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-server-models:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-server-models
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -91,10 +98,12 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-server-observations:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-server-observations
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -118,30 +127,34 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldio-devices:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-devices
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-devices.config.yml:/application.yml:ro
     networks:
       - ldes
+
   ldio-models:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-models
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-models.config.yml:/application.yml:ro
     networks:
       - ldes
+
   ldio-observations:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-observations
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230224t1457}
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-observations.config.yml:/application.yml:ro
     networks:
       - ldes
+
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-iow-use-ldio}_mongodb-rest-api
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
@@ -149,6 +162,7 @@ services:
       - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
+
 networks:
   ldes:
     name: ${USECASE_NAME:-iow-use-ldio}_network

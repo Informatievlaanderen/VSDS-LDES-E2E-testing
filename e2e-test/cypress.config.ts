@@ -52,6 +52,21 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
   const gipodDataFolder = '../ldes-server-simulator/data/gipod';
   config.env.gipodDataSet = getFiles(gipodDataFolder).map(x => `${gipodDataFolder}/${x}`);
 
+  // read user environment file
+  function parseEnvironmentFile(filePath: string) {
+    const content = filePath && fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf-8');
+    const lines = content?.split('\n').filter(x => !x);
+    const parsed = lines?.reduce((aggregated, line, _) => {
+      const keyValue = line.split('=').map(x => x.trim());
+      const key = keyValue[0];
+      const value = keyValue[1];
+      aggregated[key] = value;
+      return aggregated;
+    }, {});
+    return parsed;
+  }
+  config.env.userEnvironment = parseEnvironmentFile(config.env.userEnv);
+
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
 }

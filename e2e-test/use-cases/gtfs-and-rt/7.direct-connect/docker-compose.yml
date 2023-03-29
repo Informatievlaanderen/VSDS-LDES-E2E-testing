@@ -5,7 +5,7 @@ services:
 
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230129t1743}
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306t2329}
     environment:
       - NODE_OPTIONS=--max-old-space-size=768 # NOTE: in MB, set this a bit lower than the memory limit
       - GTFS_SOURCE=${GTFS_SOURCE}
@@ -33,8 +33,9 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
@@ -91,7 +92,7 @@ services:
 
   ldes-list-fragments:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-list-fragments
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
     profiles:
       - delayed-started
     environment:
@@ -108,7 +109,7 @@ services:
 
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-gipod-geospatial-fragment-ldes}_mongodb-rest-api
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017

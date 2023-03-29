@@ -1,16 +1,18 @@
 version: '3.3'
 services:
+
   ldes-server-simulator:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server-simulator
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
     environment:
       - BASEURL=http://ldes-server-simulator
     ports:
       - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
     networks:
       - ldes
+
   nifi-workflow:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-20230214t123440}
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:${LDES_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-basic-retention}_ldes-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -18,10 +20,12 @@ services:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
       - ldes
+
   ldes-server:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod
@@ -53,6 +57,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -60,9 +65,10 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-basic-retention}_mongodb-rest-api
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
@@ -70,6 +76,7 @@ services:
       - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
+
 networks:
   ldes:
     name: ${USECASE_NAME:-basic-retention}_network

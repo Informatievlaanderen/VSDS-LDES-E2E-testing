@@ -11,18 +11,14 @@ To setup the context, copy the [environment file (.env)](./.env) to a personal f
 
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * USECASE_NAME (default: `simulator-workflow-server-mongo`)
-* LDES_SERVER_SIMULATOR_TAG (default: `20230214t1503`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230214t123440`)
 * NIFI_UI_PORT (default: `8443`)
-* LDES_SERVER_TAG (default: `20230214t1234`)
 * LDES_SERVER_PORT (default: `8080`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)
 * VIEW_VERSIONOFPATH (e;g. `"http://purl.org/dc/terms/isVersionOf"`)
-* MONGODB_TAG (default: `6.0.4`)
 * MONGODB_PORT (default: `27017`)
 
 ## Fragmentation

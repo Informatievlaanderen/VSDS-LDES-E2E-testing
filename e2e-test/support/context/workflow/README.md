@@ -11,7 +11,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
 * USECASE_NAME (default: `workflow`)
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * NIFI_WORKFLOW_LISTEN_PORT (default: `9005`)
 
 ## Run the System

@@ -21,7 +21,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: e2etest2022DEMO)
 * NIFI_JVM_HEAP_INIT (initial JVM heap size, default: `2g`)
 * NIFI_JVM_HEAP_MAX (max JVM heap size, default: `4g`)
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * NIFI_WORKFLOW_LISTEN_PORT (port the ListenHTTP processor listens for GTFS members, default: `9005`)
 * LDES_COLLECTIONNAME (default `connections`)
 * LDES_MEMBERTYPE (default: `http://semweb.mmlab.be/ns/linkedconnections#Connection`)

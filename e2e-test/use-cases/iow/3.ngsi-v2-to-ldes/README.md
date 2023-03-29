@@ -7,7 +7,7 @@ We use a [JSON Data Generator](/json-data-generator/README.md) which produces a 
 If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 Optionally, you can change the port numbers:
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * NIFI_WORKFLOW_LISTEN_PORT_DEVICE (default: `9012`)
 * NIFI_WORKFLOW_LISTEN_PORT_DEVICEMODEL (default: `9013`)
 * NIFI_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED (default: `9014`)

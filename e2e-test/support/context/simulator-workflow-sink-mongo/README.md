@@ -9,7 +9,7 @@ If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * LDES_CLIENT_SINK_SILENT (default: `true`)
 * LDES_CLIENT_SINK_MEMBER_TYPE (default: `https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder`)
 * LDES_CLIENT_SINK_DATABASE_NAME (default: `GIPOD`)

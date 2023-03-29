@@ -14,7 +14,7 @@ Optionally, you can also specify different (external) port numbers for the compo
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * LDES_SERVER_PORT (default: `8080`)
 * LDES_SHAPE (shape of ingested members, no default)
 * VIEW_TIMESTAMPPATH (e.g. `"http://www.w3.org/ns/prov#generatedAtTime"`)

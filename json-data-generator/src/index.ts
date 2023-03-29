@@ -23,14 +23,15 @@ const generator: JsonGenerator = new JsonGenerator(template, mapping);
 const job = new CronJob(cron, async () => {
     const next = generator.createNext();
     const body = JSON.stringify(next);
-    const targetUrl = args['targetUrl'] || (existsSync('./TARGETURL') && readFileSync('./TARGETURL', 'utf-8'));
+    const targetUrl = args['targetUrl'] || (existsSync('./TARGETURL') && readFileSync('./TARGETURL', 'utf-8').trimEnd());
     if (targetUrl) {
-        if (!silent) console.debug('Sending: ', body);
-        await fetch(targetUrl, {
+        if (!silent) console.debug(`Sending to '${targetUrl}':`, body);
+        const response = await fetch(targetUrl, {
             method: 'post',
             body: body,
             headers: {'Content-Type': mimeType}
         });
+        if (!silent) console.debug(`Response: ${response.statusText}`);
     } else { // if no targetUrl specified, send to console
         console.info(body);
     }

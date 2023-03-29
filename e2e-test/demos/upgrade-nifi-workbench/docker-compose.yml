@@ -1,0 +1,107 @@
+version: '3.3'
+services:
+
+  json-data-generator:
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_json-data-generator
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+    environment:
+      - TARGETURL=
+      - SILENT=false
+      - CRON=* * * * * *
+      - TEMPLATEFILE=/tmp/data/device.template.json
+      - MAPPINGFILE=/tmp/data/device.mapping.json
+      - TEMPLATE=
+      - MAPPING=
+    volumes:
+      - ./data/device.template.json:/tmp/data/device.template.json:ro
+      - ./data/device.mapping.json:/tmp/data/device.mapping.json:ro
+      - ./data/TARGETURL:/usr/vsds/generator/TARGETURL:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  old-nifi-workflow:
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:20221107t094816
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-workbench-nifi
+    environment:
+      - NIFI_WEB_HTTPS_PORT=${NIFI_UI_PORT:-8443}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD:-e2etest2022DEMO}
+    ports:
+      - ${NIFI_UI_PORT:-8443}:${NIFI_UI_PORT:-8443}
+    networks:
+      - ldes
+
+  new-nifi-workflow:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldi-workbench-nifi
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+  
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.4}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_new-ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+      - MANAGEMENT_TRACING_ENABLED=False
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=iow_devices
+      - LDES_HOSTNAME=http://localhost:8080
+      - LDES_COLLECTIONNAME=devices
+      - LDES_SHAPE=
+      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - VIEWS_0_NAME=devices-by-time
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+    volumes:
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - 8080:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+  ldes-list-fragments:
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-list-fragments
+    image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
+    environment:
+      - FOLLOW=http://localhost:8080/devices-by-time
+    # use the network stack of the new-ldes-server service so that 
+    # localhost refers to new-ldes-server and we can follow the LDES stream
+    network_mode: service:ldes-server
+    profiles:
+      - delay-started
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-upgrade-nifi-workbench}_network

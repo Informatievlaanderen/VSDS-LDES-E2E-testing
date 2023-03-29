@@ -36,6 +36,15 @@ The generator works based on a JSON template, defining the structure to use for 
 The generator takes the following command line arguments:
 * `--silent=<true|false>` prevents any console debug output if true, defaults to false (not silent, logging all debug info)
 * `--targetUrl` defines the target URL to where the generated JSON is POST'ed as `application/json`, no default (if not provided, sends output to console independant of `--silent`)
+> **Note**: alternatively, you can provide the target URL as a plain text in a file named `TARGETURL` (located in the current working directory) allowing to change the target URL at runtime as the file is read at cron schedule time (see below), e.g.:
+> ```bash
+> echo http://example.org/my-ingest-endpoint > ./TARGETURL
+> ```
+
+> **Note**: for testing the target URL you can use a [webhook service](https://webhook.site/), e.g. using command line arguments `--targetUrl=https://webhook.site/f140204a-9514-4bfa-8d3e-fd18ba325ee3` or using the `TARGETURL` file:
+> ```bash
+> echo https://webhook.site/f140204a-9514-4bfa-8d3e-fd18ba325ee3 > ./TARGETURL
+> ```
 * `--mimeType=<mime-type>` mime-type of message send to target URL, defaults to `application/json`
 * `--cron` defines the time schedule, defaults to `* * * * * * ` (every second)
 * `--template='<json-content>'` allows to provide the JSON template on the command line, no default (if not provided, you MUST provide `--templateFile`)

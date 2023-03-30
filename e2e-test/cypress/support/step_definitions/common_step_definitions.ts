@@ -2,15 +2,15 @@ import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-pre
 import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
-    MongoRestApi, JsonDataGenerator, LdesServer
+    MongoRestApi, JsonDataGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
-import { existsSync, readFileSync } from 'fs';
 
 let testContext: any;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
-export const workbench = new LdesWorkbenchNiFi('http://localhost:8000')
+export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
+export const workbenchLdio = new LdesWorkbenchLdio();
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
@@ -65,13 +65,13 @@ Given('context {string} is started', (composeFilePath: string) => {
     dockerCompose.up(options);
 })
 
-Given('the LDES workbench is available', () => {
-    workbench.waitAvailable();
-    workbench.load();
+Given('the NiFi workbench is available', () => {
+    workbenchNifi.waitAvailable();
+    workbenchNifi.load();
 });
 
 Given('I have uploaded the workflow', () => {
-    workbench.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
@@ -113,8 +113,12 @@ Given('the LDES Server Simulator is available', () => {
 
 // When stuff
 
-When('I start the workflow', () => {
-    workbench.pushStart();
+When('I start the NiFi workflow', () => {
+    workbenchNifi.pushStart();
+})
+
+When('I start the LDIO workflow', () => {
+    createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {

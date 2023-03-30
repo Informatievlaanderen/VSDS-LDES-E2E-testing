@@ -5,9 +5,9 @@ Feature: GTFS/RT use case
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'use-cases/gtfs-and-rt/1.ingest-ldes' is started
     And the LDES server is available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
-    When I start the workflow
+    When I start the NiFi workflow
     And the gtfs ingest endpoint is ready
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
@@ -22,9 +22,9 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'one-member'
     And I have aliased the data set
     And the LDES server is available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
-    When I start the workflow
+    When I start the NiFi workflow
     Then the LDES contains 1 members
     And the geo-spatial root fragment is not immutable
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
@@ -40,9 +40,9 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
-    When I start the workflow
+    When I start the NiFi workflow
     Then the LDES contains 6 members
     And the multi-level root fragment is not immutable
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
@@ -58,9 +58,9 @@ Feature: GTFS/RT use case
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
-    When I start the workflow
+    When I start the NiFi workflow
     Then the LDES contains 6 members
     And the geo-spatial fragmentation exists in the mobility-hindrances LDES
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
@@ -75,9 +75,9 @@ Feature: GTFS/RT use case
     And the members are stored in collection 'ldesmember' in database 'bustang'
     And context 'use-cases/gtfs-and-rt/5.including-stops' is started
     And the LDES server is available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
-    When I start the workflow
+    When I start the NiFi workflow
     And the gtfs ingest endpoint is ready
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections

@@ -7,17 +7,14 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
   Scenario: Replicate LDES
     Given context 'use-cases/gipod/1.replicate-ldes' is started
     And I have aliased the pre-seeded simulator data set
-    And the LDES workbench is available
-    And I have uploaded the workflow
-    When I start the workflow
+    When I start the LDIO workflow
     Then the sink contains 1016 members
 
   Scenario: Ingest LDES
     Given context 'use-cases/gipod/2.ingest-ldes' is started
     And I have aliased the pre-seeded simulator data set
-    And the LDES workbench is available
-    And I have uploaded the workflow
-    When I start the workflow
+    And the LDES server is available
+    When I start the LDIO workflow
     Then the LDES contains 1016 members
 
   Scenario: Synchronize LDES
@@ -25,9 +22,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
-    And the LDES workbench is available
-    And I have uploaded the workflow
-    When I start the workflow
+    When I start the LDIO workflow
     And the sink contains 501 members
     When I upload the data files: 'delta' with a duration of 10 seconds
     Then the sink contains 550 members
@@ -38,10 +33,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given context 'use-cases/gipod/4.time-fragment-ldes' is started
     And I have uploaded the data files: 'scenario4/alfa,scenario4/beta,scenario4/epsilon'
     And I have aliased the data set
-    And the LDES workbench is available
-    And I have uploaded the workflow
     And the LDES server is available
-    When I start the workflow
+    When I start the LDIO workflow
     Then the LDES contains 617 members
     And the first fragment is immutable
     And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
@@ -55,10 +48,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     Given context 'use-cases/gipod/5.paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
-    And the LDES workbench is available
-    And I have uploaded the workflow
     And the LDES server is available
-    When I start the workflow
+    When I start the LDIO workflow
     Then the LDES contains 617 members
     And the first fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment

@@ -4,7 +4,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
   Scenario: Ingest NGSI-v2 objects into LDES server
     Given context 'use-cases/iow/3.ngsi-v2-to-ldes' is started
     And the IoW LDES servers are available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
     And I started the workflow
     And the 'device-model' ingest endpoint is ready
@@ -22,7 +22,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
   Scenario: Convert Water Quality NGSI to OSLO Model 
     Given context 'use-cases/iow/4.oslo-model-using-jolt' is started
     And the IoW LDES servers are available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
     And I started the workflow
     And the 'device-model' ingest endpoint is ready
@@ -40,7 +40,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
   Scenario: Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model
     Given context 'use-cases/iow/5.use-ldio' is started
     And the IoW LDES servers are available
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
     And I started the workflow
     And the 'device-model' ingest endpoint is ready

@@ -23,13 +23,13 @@ run: ## Run the containers
 stop: ## Stop the running containers
 	@docker compose --env-file ${ENV_FILE} down
 
-login-nifi: ## Login to the LDES Workbench Nifi container
+login-nifi: ## Login to the NiFi Workbench container
 	@docker exec -ti ${USECASE_NAME}-ldi-workbench-nifi /bin/bash
 
 log-nifi: ## Tail the NiFi docker logs
 	@docker logs --follow ${USECASE_NAME}-ldi-workbench-nifi
 
-login-rdf4j: ## Login to the LDES Workbench Nifi container
+login-rdf4j: ## Login to the NiFi Workbench container
 	@docker exec -ti ${USECASE_NAME}-rdf4j-server /bin/bash
 
 log-rdf4j: ## Tail the RDF4J docker logs

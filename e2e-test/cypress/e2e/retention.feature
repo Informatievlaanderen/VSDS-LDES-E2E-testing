@@ -12,7 +12,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set    
-    And the LDES workbench is available
+    And the NiFi workbench is available
     And I have uploaded the workflow
     And the LDES server is available
 
@@ -20,7 +20,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And the LDES has a view 'V' named 'by-short-time'
     And the LDES has a view 'W' named 'by-longer-time'
     
-    When I start the workflow
+    When I start the NiFi workflow
     And the LDES contains 501 members
     And I refresh view 'V'
     And I refresh view 'W'

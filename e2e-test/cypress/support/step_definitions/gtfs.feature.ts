@@ -1,6 +1,6 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting, workbench } from "./common_step_definitions";
+import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting, workbenchNifi } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let timebasedFragment: Fragment;
@@ -22,7 +22,7 @@ Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
 })
 
 Given('the gtfs ingest endpoint is ready', () => {
-    workbench.waitIngestEndpointAvailable('http://localhost:9005/gtfs');
+    workbenchNifi.waitIngestEndpointAvailable('http://localhost:9005/gtfs');
 })
 
 Then('the geo-spatial root fragment is not immutable', () => {

@@ -144,7 +144,7 @@
                 "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.RDF4JRepositoryMaterialisationProcessor",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
-                    "artifact": "nifi-rdf4j-repository-materialisation-processor",
+                    "artifact": "rdf4j-repository-materialisation-processor",
                     "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {

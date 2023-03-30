@@ -785,11 +785,11 @@
                     "x": 1720.0,
                     "y": 376.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.CreateVersionObjectProcessor",
                 "bundle": {
-                    "group": "be.vlaanderen.informatievlaanderen",
+                    "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
                     "artifact": "create-version-object-processor",
-                    "version": "1.0.2-SNAPSHOT"
+                    "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {
                     "ID_JSON_PATH": "$['identificator']['id']",

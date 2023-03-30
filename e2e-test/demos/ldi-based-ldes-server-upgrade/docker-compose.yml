@@ -120,6 +120,6 @@ services:
     profiles:
       - delay-started
 
-  networks:
-    ldes:
-      name: ${USECASE_NAME:-upgrade-server-using-nifi}_network
+networks:
+  ldes:
+    name: ${USECASE_NAME:-upgrade-server-using-nifi}_network

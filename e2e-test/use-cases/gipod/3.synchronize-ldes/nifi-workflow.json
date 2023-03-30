@@ -1,30 +1,30 @@
 {
     "flowContents": {
-        "identifier": "2f2384c8-01b3-3677-ae50-91aa545917b5",
-        "instanceIdentifier": "0c99aa8b-0183-1000-1f8c-f16b5451861a",
+        "identifier": "c724dd96-a10e-3756-bd4f-190367452f8f",
+        "instanceIdentifier": "318e139b-0187-1000-f691-ab225ffbae76",
         "name": "nifi-workflow",
         "comments": "",
         "position": {
-            "x": 635.0,
-            "y": 228.0
+            "x": 864.0,
+            "y": 168.0
         },
         "processGroups": [],
         "remoteProcessGroups": [],
         "processors": [
             {
                 "identifier": "672455ba-2584-3edd-9a9c-6cbdc8505996",
-                "instanceIdentifier": "b602d1a0-0c9c-33c4-5829-62cea59d041d",
+                "instanceIdentifier": "d57160d1-364c-3092-4344-cc52e5682224",
                 "name": "InvokeHTTP",
                 "comments": "",
                 "position": {
-                    "x": 928.0,
-                    "y": 56.0
+                    "x": 1112.0,
+                    "y": 240.0
                 },
                 "type": "org.apache.nifi.processors.standard.InvokeHTTP",
                 "bundle": {
                     "group": "org.apache.nifi",
                     "artifact": "nifi-standard-nar",
-                    "version": "1.17.0"
+                    "version": "1.20.0"
                 },
                 "properties": {
                     "Proxy Host": null,
@@ -319,15 +319,15 @@
                 "backoffMechanism": "YIELD_PROCESSOR",
                 "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
+                "groupIdentifier": "c724dd96-a10e-3756-bd4f-190367452f8f"
             },
             {
                 "identifier": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
-                "instanceIdentifier": "85df4a4a-38c5-3633-e4e1-00fc0f98efbd",
+                "instanceIdentifier": "d5723775-47e5-3978-9cf7-569e17a7c54f",
                 "name": "LdesClient",
                 "comments": "",
                 "position": {
-                    "x": 240.0,
+                    "x": 392.0,
                     "y": 24.0
                 },
                 "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.LdesClient",
@@ -337,15 +337,32 @@
                     "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": "604800",
+                    "STREAM_TIMESTAMP_PATH_PROPERTY": "true",
+                    "MAX_RETRIES": "2147483647",
                     "DATA_SOURCE_FORMAT": "application/ld+json",
+                    "STREAM_VERSION_OF_PROPERTY": "true",
+                    "STATE_PERSISTENCE_STRATEGY": "MEMORY",
+                    "OAUTH_TOKEN_ENDPOINT": null,
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
-                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
+                    "AUTHORIZATION_STRATEGY": "NO_AUTH",
+                    "STREAM_SHAPE_PROPERTY": "false",
+                    "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances",
+                    "API_KEY_HEADER_PROPERTY": "X-API-KEY",
+                    "API_KEY_PROPERTY": null,
+                    "OAUTH_CLIENT_ID": null,
+                    "KEEP_STATE": "false",
+                    "RETRIES_ENABLED": "false"
                 },
                 "propertyDescriptors": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": {
-                        "name": "FRAGMENT_EXPIRATION_INTERVAL",
-                        "displayName": "Fragment expiration interval",
+                    "STREAM_TIMESTAMP_PATH_PROPERTY": {
+                        "name": "STREAM_TIMESTAMP_PATH_PROPERTY",
+                        "displayName": "Stream TimestampPath property to FlowFile",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "MAX_RETRIES": {
+                        "name": "MAX_RETRIES",
+                        "displayName": "Indicates max number of retries when retries are enabled.",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
@@ -355,15 +372,81 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
+                    "STREAM_VERSION_OF_PROPERTY": {
+                        "name": "STREAM_VERSION_OF_PROPERTY",
+                        "displayName": "Stream VersionOf property to FlowFile",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "STATE_PERSISTENCE_STRATEGY": {
+                        "name": "STATE_PERSISTENCE_STRATEGY",
+                        "displayName": "How state is persisted (note that memory is volatile).",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "OAUTH_TOKEN_ENDPOINT": {
+                        "name": "OAUTH_TOKEN_ENDPOINT",
+                        "displayName": "Token endpoint used for Oauth2 client credentials flow.",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
                     "DATA_DESTINATION_FORMAT": {
                         "name": "DATA_DESTINATION_FORMAT",
                         "displayName": "Data destination format",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
+                    "AUTHORIZATION_STRATEGY": {
+                        "name": "AUTHORIZATION_STRATEGY",
+                        "displayName": "Authorization strategy for the internal http client.",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "STREAM_SHAPE_PROPERTY": {
+                        "name": "STREAM_SHAPE_PROPERTY",
+                        "displayName": "Stream shape property to FlowFile",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
                     "DATA_SOURCE_URL": {
                         "name": "DATA_SOURCE_URL",
                         "displayName": "Data source url",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "API_KEY_HEADER_PROPERTY": {
+                        "name": "API_KEY_HEADER_PROPERTY",
+                        "displayName": "API header that should be used for the API key",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "API_KEY_PROPERTY": {
+                        "name": "API_KEY_PROPERTY",
+                        "displayName": "API key that should be used to access the API.",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "OAUTH_CLIENT_SECRET": {
+                        "name": "OAUTH_CLIENT_SECRET",
+                        "displayName": "Client secret used for Oauth2 client credentials flow",
+                        "identifiesControllerService": false,
+                        "sensitive": true
+                    },
+                    "OAUTH_CLIENT_ID": {
+                        "name": "OAUTH_CLIENT_ID",
+                        "displayName": "Client id used for Oauth2 client credentials flow",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "KEEP_STATE": {
+                        "name": "KEEP_STATE",
+                        "displayName": "Keep state when the processor is removed from the flow",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
+                    "RETRIES_ENABLED": {
+                        "name": "RETRIES_ENABLED",
+                        "displayName": "Indicates of retries are enabled when the http request fails.",
                         "identifiesControllerService": false,
                         "sensitive": false
                     }
@@ -386,7 +469,7 @@
                 "backoffMechanism": "YIELD_PROCESSOR",
                 "maxBackoffPeriod": "30 sec",
                 "componentType": "PROCESSOR",
-                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
+                "groupIdentifier": "c724dd96-a10e-3756-bd4f-190367452f8f"
             }
         ],
         "inputPorts": [],
@@ -394,23 +477,23 @@
         "connections": [
             {
                 "identifier": "5c200e71-b5e9-3c81-b21f-d6c66074a2ef",
-                "instanceIdentifier": "8e2c2e0a-b575-37f3-b2ef-ad96f46e0600",
+                "instanceIdentifier": "7a8bd1ee-7936-388b-5661-6282d8b272a8",
                 "name": "",
                 "source": {
                     "id": "2b9e0740-c990-3e34-9b0c-1cde52d48c7a",
                     "type": "PROCESSOR",
-                    "groupId": "2f2384c8-01b3-3677-ae50-91aa545917b5",
+                    "groupId": "c724dd96-a10e-3756-bd4f-190367452f8f",
                     "name": "LdesClient",
                     "comments": "",
-                    "instanceIdentifier": "85df4a4a-38c5-3633-e4e1-00fc0f98efbd"
+                    "instanceIdentifier": "d5723775-47e5-3978-9cf7-569e17a7c54f"
                 },
                 "destination": {
                     "id": "672455ba-2584-3edd-9a9c-6cbdc8505996",
                     "type": "PROCESSOR",
-                    "groupId": "2f2384c8-01b3-3677-ae50-91aa545917b5",
+                    "groupId": "c724dd96-a10e-3756-bd4f-190367452f8f",
                     "name": "InvokeHTTP",
                     "comments": "",
-                    "instanceIdentifier": "b602d1a0-0c9c-33c4-5829-62cea59d041d"
+                    "instanceIdentifier": "d57160d1-364c-3092-4344-cc52e5682224"
                 },
                 "labelIndex": 1,
                 "zIndex": 0,
@@ -426,7 +509,7 @@
                 "partitioningAttribute": "",
                 "loadBalanceCompression": "DO_NOT_COMPRESS",
                 "componentType": "CONNECTION",
-                "groupIdentifier": "2f2384c8-01b3-3677-ae50-91aa545917b5"
+                "groupIdentifier": "c724dd96-a10e-3756-bd4f-190367452f8f"
             }
         ],
         "labels": [],
@@ -442,5 +525,7 @@
     },
     "externalControllerServices": {},
     "parameterContexts": {},
-    "flowEncodingVersion": "1.0"
+    "flowEncodingVersion": "1.0",
+    "parameterProviders": {},
+    "latest": false
 }

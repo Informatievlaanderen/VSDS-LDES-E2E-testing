@@ -10,7 +10,7 @@ If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `
 * USECASE_NAME (default: `simulator-workflow-sink-mongo`)
 * LDES_SERVER_SIMULATOR_TAG (default: `20230214t1503`)
 * LDES_SERVER_SIMULATOR_PORT (default: `9011`)
-* LDES_WORKBENCH_NIFI_TAG (default: `20230214t123440`)
+* LDI_WORKBENCH_NIFI_TAG (default: `20230328t074157`)
 * NIFI_UI_PORT (default: `8443`)
 * LDES_CLIENT_SINK_TAG (default: `20230214t1503`)
 * LDES_CLIENT_SINK_SILENT (default: `true`)

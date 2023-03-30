@@ -63,7 +63,7 @@ Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and crea
 
 You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the sink HTTP server.
 * the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances`
-* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
+* the `InvokeHTTP` component property `HTTP URL` should be `http://ldes-client-sink/member` and the property `HTTP method` should be `POST`
 
 #### 3. Start the Workflow
 Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).

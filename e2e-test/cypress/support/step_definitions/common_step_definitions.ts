@@ -55,8 +55,8 @@ Given('the {string} test is setup', (testPartialPath: string) => {
 });
 
 Given('context {string} is started', (composeFilePath: string) => {
-    if(!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
-    
+    if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
+
     const options: DockerComposeOptions = {
         dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,
@@ -96,7 +96,7 @@ Given('I have aliased the data set', () => {
 })
 
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
-        testContext.additionalEnvironmentSetting[property] = value;
+    testContext.additionalEnvironmentSetting[property] = value;
 }
 
 Given('I have configured the {string} as {string}', (property: string, value: string) => {

@@ -330,11 +330,11 @@
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.LdesClient",
                 "bundle": {
-                    "group": "be.vlaanderen.informatievlaanderen",
+                    "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
                     "artifact": "ldes-client-processor",
-                    "version": "1.0-SNAPSHOT"
+                    "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {
                     "FRAGMENT_EXPIRATION_INTERVAL": "604800",

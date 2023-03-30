@@ -30,11 +30,11 @@
                             "x": 144.0,
                             "y": 216.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
@@ -391,11 +391,11 @@
                             "x": 144.0,
                             "y": 736.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.CreateVersionObjectProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.CreateVersionObjectProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
                             "artifact": "create-version-object-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
                             "ID_JSON_PATH": "$.id",

@@ -330,25 +330,18 @@
                     "x": 240.0,
                     "y": 24.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.processors.LdesClient",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.LdesClient",
                 "bundle": {
-                    "group": "be.vlaanderen.informatievlaanderen",
+                    "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
                     "artifact": "ldes-client-processor",
-                    "version": "1.0-SNAPSHOT"
+                    "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": "604800",
                     "DATA_SOURCE_FORMAT": "application/ld+json",
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "DATA_SOURCE_URL": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
                 },
                 "propertyDescriptors": {
-                    "FRAGMENT_EXPIRATION_INTERVAL": {
-                        "name": "FRAGMENT_EXPIRATION_INTERVAL",
-                        "displayName": "Fragment expiration interval",
-                        "identifiesControllerService": false,
-                        "sensitive": false
-                    },
                     "DATA_SOURCE_FORMAT": {
                         "name": "DATA_SOURCE_FORMAT",
                         "displayName": "Data source format",

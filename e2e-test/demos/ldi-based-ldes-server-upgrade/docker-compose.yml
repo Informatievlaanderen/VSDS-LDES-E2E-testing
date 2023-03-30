@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_json-data-generator
     image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230327t1557}
     environment:
-      - TARGETURL=http://ldio:8080/pipeline
+      - TARGETURL=http://ldio:8080/data
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
@@ -44,7 +44,7 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:20221107t0923
+    image: ghcr.io/informatievlaanderen/ldes-server:20230216T1056
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices

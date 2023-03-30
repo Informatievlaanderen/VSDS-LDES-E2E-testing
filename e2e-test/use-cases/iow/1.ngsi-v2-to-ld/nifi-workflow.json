@@ -268,7 +268,7 @@
             {
                 "identifier": "b9347474-0757-36a6-8e51-59b1772c4dff",
                 "instanceIdentifier": "bf09e49c-0185-1000-9e65-40cf70eaac9c",
-                "name": "NgsiV2ToLdTranslatorProcessor",
+                "name": "Ngsi-v2 to LD",
                 "comments": "",
                 "position": {
                     "x": 848.0,
@@ -281,10 +281,17 @@
                     "version": "0.0.1-SNAPSHOT"
                 },
                 "properties": {
+                    "DATA_IDENTIFIER": "data",
                     "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
                     "LD_CONTEXT": null
                 },
                 "propertyDescriptors": {
+                    "DATA_IDENTIFIER": {
+                        "name": "DATA_IDENTIFIER",
+                        "displayName": "Data array key",
+                        "identifiesControllerService": false,
+                        "sensitive": false
+                    },
                     "CORE_CONTEXT": {
                         "name": "CORE_CONTEXT",
                         "displayName": "NGSI LD core context",
@@ -336,7 +343,7 @@
                     "id": "b9347474-0757-36a6-8e51-59b1772c4dff",
                     "type": "PROCESSOR",
                     "groupId": "8896bdf1-30da-3d6f-8ac5-0dd9584300ff",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "Ngsi-v2 to LD",
                     "comments": "",
                     "instanceIdentifier": "bf09e49c-0185-1000-9e65-40cf70eaac9c"
                 },
@@ -364,7 +371,7 @@
                     "id": "b9347474-0757-36a6-8e51-59b1772c4dff",
                     "type": "PROCESSOR",
                     "groupId": "8896bdf1-30da-3d6f-8ac5-0dd9584300ff",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "Ngsi-v2 to LD",
                     "comments": "",
                     "instanceIdentifier": "bf09e49c-0185-1000-9e65-40cf70eaac9c"
                 },
@@ -400,7 +407,7 @@
                     "id": "b9347474-0757-36a6-8e51-59b1772c4dff",
                     "type": "PROCESSOR",
                     "groupId": "8896bdf1-30da-3d6f-8ac5-0dd9584300ff",
-                    "name": "NgsiV2ToLdTranslatorProcessor",
+                    "name": "Ngsi-v2 to LD",
                     "comments": "",
                     "instanceIdentifier": "bf09e49c-0185-1000-9e65-40cf70eaac9c"
                 },

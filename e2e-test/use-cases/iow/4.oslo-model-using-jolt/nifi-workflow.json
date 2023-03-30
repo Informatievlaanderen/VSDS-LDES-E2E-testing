@@ -420,23 +420,30 @@
                     {
                         "identifier": "21aa5016-73be-3d87-b7a1-1ed6b676a4da",
                         "instanceIdentifier": "bf2d232a-0185-1000-be40-e6c5d59b5097",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "Ngsi-v2 to LD",
                         "comments": "",
                         "position": {
                             "x": 144.0,
                             "y": 216.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",
@@ -723,7 +730,7 @@
                             "id": "21aa5016-73be-3d87-b7a1-1ed6b676a4da",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2d232a-0185-1000-be40-e6c5d59b5097"
                         },
@@ -787,7 +794,7 @@
                             "id": "21aa5016-73be-3d87-b7a1-1ed6b676a4da",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2d232a-0185-1000-be40-e6c5d59b5097"
                         },
@@ -931,7 +938,7 @@
                             "id": "21aa5016-73be-3d87-b7a1-1ed6b676a4da",
                             "type": "PROCESSOR",
                             "groupId": "9ae0eca0-3cea-393d-b693-c4a018a76f60",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2d232a-0185-1000-be40-e6c5d59b5097"
                         },
@@ -1400,23 +1407,30 @@
                     {
                         "identifier": "ff6bbe29-6d33-3558-9201-9ad0388b456c",
                         "instanceIdentifier": "bf2ea1b6-0185-1000-ea40-ed2239305b99",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "Ngsi-v2 to LD",
                         "comments": "",
                         "position": {
                             "x": 784.0,
                             "y": 96.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",
@@ -1861,7 +1875,7 @@
                             "id": "ff6bbe29-6d33-3558-9201-9ad0388b456c",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2ea1b6-0185-1000-ea40-ed2239305b99"
                         },
@@ -1997,7 +2011,7 @@
                             "id": "ff6bbe29-6d33-3558-9201-9ad0388b456c",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2ea1b6-0185-1000-ea40-ed2239305b99"
                         },
@@ -2033,7 +2047,7 @@
                             "id": "ff6bbe29-6d33-3558-9201-9ad0388b456c",
                             "type": "PROCESSOR",
                             "groupId": "59797a2c-e64b-3d4f-91f2-7220c5f13cf0",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf2ea1b6-0185-1000-ea40-ed2239305b99"
                         },
@@ -2837,23 +2851,30 @@
                     {
                         "identifier": "5979b385-ca0c-3544-bdef-d22bec323d1b",
                         "instanceIdentifier": "bf3026b4-0185-1000-30db-a8df9c9b4922",
-                        "name": "NgsiV2ToLdTranslatorProcessor",
+                        "name": "Ngsi-v2 to LD",
                         "comments": "",
                         "position": {
                             "x": 952.0,
                             "y": -8.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",
@@ -2897,7 +2918,7 @@
                             "id": "5979b385-ca0c-3544-bdef-d22bec323d1b",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf3026b4-0185-1000-30db-a8df9c9b4922"
                         },
@@ -2941,7 +2962,7 @@
                             "id": "5979b385-ca0c-3544-bdef-d22bec323d1b",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf3026b4-0185-1000-30db-a8df9c9b4922"
                         },
@@ -3005,7 +3026,7 @@
                             "id": "5979b385-ca0c-3544-bdef-d22bec323d1b",
                             "type": "PROCESSOR",
                             "groupId": "43670607-2273-3686-98e1-a9086ad1739c",
-                            "name": "NgsiV2ToLdTranslatorProcessor",
+                            "name": "Ngsi-v2 to LD",
                             "comments": "",
                             "instanceIdentifier": "bf3026b4-0185-1000-30db-a8df9c9b4922"
                         },

@@ -31,7 +31,7 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
 
   Scenario: Time-Fragment LDES
     Given context 'use-cases/gipod/4.time-fragment-ldes' is started
-    And I have uploaded the data files: 'scenario4/alfa,scenario4/beta,scenario4/epsilon'
+    And I have uploaded the data files: 'alfa,beta,epsilon'
     And I have aliased the data set
     And the LDES server is available
     When I start the LDIO workflow

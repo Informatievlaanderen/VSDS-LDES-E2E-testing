@@ -2,7 +2,7 @@
 
 # deliverables
 docker pull ghcr.io/informatievlaanderen/ldi-workbench-nifi:latest
-docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:main
+docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:latest
 docker pull ghcr.io/informatievlaanderen/ldes-server:latest
 
 # obsolete deliverables

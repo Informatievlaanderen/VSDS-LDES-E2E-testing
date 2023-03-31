@@ -1,13 +1,15 @@
 server:
   port: 8080
 orchestrator:
-    description: "This is an example pipeline that writes RDF to the console in N-Quads"
-    input:
-      name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
-      adapter:
-        name: "be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter"
-    outputs:
-      - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
-        config:
-          content-type: application/n-quads
-          endpoint: http://host.docker.internal:9011
+  pipelines:
+    - name: http-in-http-out-pipeline
+      description: "Simple http in http out pipeline allowing to pause output."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            content-type: application/n-quads
+            endpoint: http://ldes-server:8080/devices

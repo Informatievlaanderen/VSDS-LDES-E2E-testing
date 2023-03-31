@@ -44,7 +44,7 @@ To run the test, you need to:
 
 #### 1. Pause the LDI-output 
 ```
-to pause LDIO: “/admin/api/v1/pipeline/halt”
+curl -X POST "http://localhost:8081/admin/api/v1/pipeline/halt" -H "Content-Type: application/ld+json"
 ```
 
 #### 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
@@ -70,7 +70,7 @@ curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.or
 
 #### 5. Resume LDI-output
 ```
-to continue LDIO: “/admin/api/v1/pipeline/resume”
+curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume" -H "Content-Type: application/ld+json"
 ```
 
 #### 6. Verify last fragment member count increases

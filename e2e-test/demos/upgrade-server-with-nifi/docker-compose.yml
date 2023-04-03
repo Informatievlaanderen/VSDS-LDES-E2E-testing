@@ -67,6 +67,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+      - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -77,7 +78,7 @@ services:
       - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-    # TODO: can be change this to view name 'by-time' and simple 'pagination'?
+      # TODO: can be change this to view name 'by-time' and simple 'pagination'?
       - VIEWS_0_NAME=devices-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000

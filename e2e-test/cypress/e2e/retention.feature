@@ -61,7 +61,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     When fragment 'D' is deleted and returns HTTP code 410
     And fragment 'G' is deleted and returns HTTP code 410
     # Note that we do not know when the retention algorithm runs, so we wait until members are purged 
-    And the LDES contains 17 members
+    Then the LDES contains 17 members
     And I refresh view 'V'
     And I refresh view 'W'
     And view 'V' links to 'mutable' fragment 'H' containing 17 members

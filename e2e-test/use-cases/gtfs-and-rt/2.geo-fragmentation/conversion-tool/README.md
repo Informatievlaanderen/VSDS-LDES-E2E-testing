@@ -9,10 +9,5 @@ Its main purpose is to allow plotting the polygon in the [OpenStreetMap WKT Play
 To convert a [wkt](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) file in [BD72](https://epsg.io/31370) to its [WGS 84](https://epsg.io/4326) form, execute the following bash instruction:
 
 ```bash
-node main.js --file ./in.wkt > ./out.wkt
-```
-or alias it:
-```bash
-alias bd72-wgs84="node main.js --file"
-bd72-wgs84 ./in.wkt > ./out.wkt
+node bd72-wgs84.js --file ./in.wkt > ./out.wkt
 ```

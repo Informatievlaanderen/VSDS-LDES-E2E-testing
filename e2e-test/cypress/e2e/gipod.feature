@@ -35,8 +35,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And I have aliased the data set
     And the LDES server is available
     When I start the LDIO workflow
-    Then the LDES contains 617 members
-    And the first fragment is immutable
+    And the LDES contains 617 members
+    Then the first fragment is immutable
     And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'LessThanOrEqualToRelation' to the first fragment
@@ -50,8 +50,8 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And I have aliased the data set
     And the LDES server is available
     When I start the LDIO workflow
-    Then the LDES contains 617 members
-    And the first fragment is immutable
+    And the LDES contains 617 members
+    Then the first fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'Relation' to the first and last fragments

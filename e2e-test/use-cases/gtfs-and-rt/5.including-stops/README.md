@@ -1,62 +1,55 @@
 # LDES Server Offers a Geospatial View on GTFS/RT (e.g. De Lijn)
 This test validates user story **Ingest GTFS-RT De Lijn for acceptance** (VSDSPUB-299).
 
-### Test Setup
-For this scenario we can use the a [custom context](./docker-compose.yml) derived from [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments and append the specific `<gtfs-use-case>.env` file to your personal file.
-
-> **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
-
-Then you can create the images and run all systems (except the gtfs2ldes-js system which should be started at a later time) by executing the following command:
-```bash
-docker compose --env-file user.env up -d
-```
-> **Note**: it may take a minute for all the servers to start.
-
-> **Note**: that the GTFS2LDES service is assigned to an arbitrary profile named `delayed-start` to prevent it from starting immediately.
-
-### Test Execution
-To run the test, you need to:
-1. Upload a pre-defined NiFi workflow containing a ListenHTTP (to listen for POSTed GTFS data) and a InvokeHTTP processor (to send the LDES members to the LDES server) and start it.
-2. Start the GTFS to LDES convertor and wait for it to start sending GTFS data (connections).
-3. Verify that LDES members are being received by the LDES-server and the correct fragments are being created.
-
-#### 1. Upload NiFi Workflow
-Browse to the Apache NiFi user interface (http://localhost:8000/nifi) and create a new process group based on the [workflow](./nifi-workflow.json) as specified in [here](../../../support/context/workflow/README.md#creating-a-workflow).
-
-Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
-
-Verify that the ListenHTTP processor (http://localhost:9005/gtfs/healthcheck) is listening for incoming GTFS/RT members:
-```bash
-curl http://localhost:9005/gtfs/healthcheck
-```
-
-#### 2. Start the GTFS to LDES convertor
-Start the GTFS to LDES convertor as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#start-the-gtfs-to-ldes-convertor) and watch its Docker logs to know when it starts sending GTFS connections to the workflow.
-
-To start the GTFS to LDES convertor:
-```bash
-docker compose --env-file user.env up gtfs2ldes-js -d
-```
-Verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source.
-
-#### 3. Verify LDES Members Received And Fragments Created
-To ensure GTFS connections are being received by the LDES-server you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains the LDES members (check the document count).
-> **Note**: that we store the document collection in a database as configured in the Docker environment argument `SPRING_DATA_MONGODB_DATABASE`.
-
-In addition, you can request the members from the LDES you specified (Docker environment variable `LDES_COLLECTIONNAME`- http://localhost:8080/connections) and follow the `tree:view` URI to the geospatial root tile, OR directly query the view (Docker environment variable `VIEWS_0_NAME` - http://localhost:8080/connections/by-location-and-time) and follow the `tree:node` to the geospatial tile root, OR even get the geospatial root tile directly (http://localhost:8080/connections/by-location-and-time?tile=0/0/0), e.g.:
-```bash
-curl http://localhost:8080/connections
-curl http://localhost:8080/connections/by-location-and-time
-curl http://localhost:8080/connections/by-location-and-time?tile=0/0/0
-```
-
-> **Note** that the root tile fragment only exists after the first member is ingested.
+This scenario verifies that the LDES server can geo-spatially fragment GTFS. It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
 
 Because the LDES server is configured to fragment the members geospatially and then by time, the structure created is a geospatial (search) tree with three levels: the root tile node, the tile nodes at the specified level (e.g. level 15) and the linked list of timebased fragments below these non-root tile nodes. The tile nodes only contain relations, while the timebased fragments each contain a maximum number (e.g. 100) of members and a link to the next (newer) fragment.
 
-### Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+## Test Setup
+1. Run all systems except the GTFS to LDES convertor by executing the following (bash) command:
 ```bash
-docker compose --env-file user.env stop gtfs2ldes-js
-docker compose --env-file user.env --profile delay-started down
+docker compose up -d
+```
+> **Notes**:
+> * if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+> * in the [data folder](./data/) you can find additional GTFS/RT source to test with (e.g. [De Lijn](./data/delijn.env) & [NMBS/SNCB](./data/nmbs.env))
+> * for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
+> * the GTFS2LDES service is assigned to an arbitrary profile named `delay-started` to prevent it from starting immediately.
+
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+```bash
+docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+```
+Press `CTRL-C` to stop following the log.
+
+## Test Execution
+1. Start the GTFS to LDES convertor:
+    ```bash
+    docker compose up gtfs2ldes-js -d
+    ```
+    and verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source  by following the container log until you see the following message `Posted 100 Connection updates so far...`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=gtfs2ldes-js$")
+    ```
+    Press `CTRL-C` to stop following the log.
+
+2. Verify LDES Members are being ingested (execute repeatedly until at least one member):
+    ```bash
+    curl http://localhost:9019/bustang/ldesmember
+    ```
+    and fragments are being created (execute repeatedly until more than three fragments exists):
+    ```bash
+    curl http://localhost:9019/bustang/ldesfragment
+    ```
+
+3.Verify the geo-spatial fragmentation by requesting the view's root fragment:
+    ```bash
+    curl 'http://localhost:8080/connections/by-location-and-time?tile=0/0/0'
+    ```
+
+## Test Teardown
+To stop all systems use:
+```bash
+docker compose stop gtfs2ldes-js
+docker compose --profile delay-started down
 ```

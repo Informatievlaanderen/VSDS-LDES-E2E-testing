@@ -13,7 +13,7 @@ export class LdesServer implements CanCheckAvailability {
 
     private isReady(containerId: string) {
         return cy.exec(`docker logs ${containerId}`)
-            .then(result => result.stdout.includes("Tomcat started on port(s): 8080 (http) with context path ''"));
+            .then(result => result.stdout.includes("Mongock has finished"));
     }
 
     waitAvailable() {

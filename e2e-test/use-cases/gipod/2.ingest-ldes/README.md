@@ -19,24 +19,28 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 ## Test Execution
-1. Upload the GIPOD data subset and [alias it](./create-alias.json)
-```bash
-for f in ../../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
-curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@create-alias.json'
-```
-To verify that the simulator (http://localhost:9011/) is correctly seeded you can run this command: `curl http://localhost:9011/`
+1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
+    ```bash
+    for f in ../../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+    curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
+    ```
+    To verify that [simulator](http://localhost:9011/) is correctly seeded you can run this command: 
+    ```bash
+    curl http://localhost:9011/
+    ```
 
 2. Start the workflow containing to ingest the members:
-```bash
-docker compose up ldio-workflow -d
-```
+   ```bash
+   docker compose up ldio-workflow -d
+   ```
 
 3. Verify LDES members are correctly received
-```bash
-curl http://localhost:9019/gipod/ldesmember
-```
-Please run the previous command repeatedly until it returns the correct member count (1016).
-> **Note**: there are more alternatives to verify the member count in the database. See [notes]() below.
+   ```bash
+   curl http://localhost:9019/gipod/ldesmember
+   ```
+   Please run the previous command repeatedly until it returns the correct member count (1016).
+
+   > **Note**: there are more alternatives to verify the member count in the database. See [notes](#notes) below.
 
 ## Test Teardown
 To stop all systems use:

@@ -4,33 +4,28 @@ services:
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306t2329}
-    profiles:
-      - delay-started
     environment:
       - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
       - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}
       - NODE_OPTIONS=${NODE_OPTIONS:-}
-      - TARGET_URL=http://nifi-workflow:9005/gtfs
+      - TARGET_URL=http://ldio-workflow:8080/gtfs-pipeline
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
       - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
-      - THROTTLE_RATE=${THROTTLE_RATE:-10}
+      - THROTTLE_RATE=${THROTTLE_RATE:-100}
       - AUTH_HEADER=${AUTH_HEADER:-}
       - AUTH_HEADER_VALUE=${AUTH_HEADER_VALUE:-}
     networks:
       - ldes
+    profiles:
+      - delay-started
 
-  nifi-workflow:
-    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_nifi-workflow
-    image: ${DOCKER_REPO:-docker.io}/apache/nifi:${NIFI_TAG:-1.19.1}
-    environment:
-      - NIFI_JVM_HEAP_INIT=${NIFI_JVM_HEAP_INIT:-2g}
-      - NIFI_JVM_HEAP_MAX=${NIFI_JVM_HEAP_MAX:-4g}
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-    ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
-      - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
+  ldio-workflow:
+    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldio-workflow
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
     networks:
       - ldes
 
@@ -50,8 +45,6 @@ services:
       - LDES_SHAPE=${LDES_SHAPE:-}
       - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
       - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
-
-      # default view by time
       - VIEWS_0_NAME=${VIEWS_0_NAME:-by-page}
       - VIEWS_0_FRAGMENTATIONS_0_NAME=${VIEWS_0_FRAGMENTATIONS_0_NAME:-pagination}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-100}

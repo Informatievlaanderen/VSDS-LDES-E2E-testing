@@ -77,7 +77,7 @@ Given('I have uploaded the workflow', () => {
 Given('I have aliased the pre-seeded simulator data set', () => {
     simulator.waitAvailable();
     simulator.seed(Cypress.env('gipodDataSet'));
-    simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
+    simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
 })
 
 Given('I have uploaded the data files: {string}', (dataSet: string) => {
@@ -92,7 +92,7 @@ Given('I have uploaded the data files: {string} with a duration of {int} seconds
 
 Given('I have aliased the data set', () => {
     simulator.waitAvailable();
-    simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
+    simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
 })
 
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
@@ -109,6 +109,10 @@ Given('the LDES server is available', () => {
 
 Given('the LDES Server Simulator is available', () => {
     simulator.waitAvailable();
+})
+
+Given('the LDIO workflow is available', () => {
+    workbenchLdio.waitAvailable()
 })
 
 // When stuff
@@ -137,6 +141,14 @@ When('I start the JSON Data Generator', () => {
         .then(() => jsonDataGenerator.waitAvailable());
 })
 
+When('the LDES contains {int} members', (count: number) => {
+    mongo.checkCount(testContext.database, testContext.collection, count);
+})
+
+When('the LDES contains {int} fragments', (count: number) => {
+    mongo.checkCount(testContext.database, 'ldesfragment', count);
+})
+
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
 })
@@ -146,14 +158,11 @@ When('I start the GTFS2LDES service', () => {
         .then(() => gtfs2ldes.waitAvailable());
 })
 
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {
     sink.checkCount('mobility-hindrances', count);
-})
-
-Then('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, testContext.collection, count);
 })
 
 export function currentMemberCount() {

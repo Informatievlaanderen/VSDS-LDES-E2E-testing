@@ -18,77 +18,77 @@ We need to upload all but the last fragment as an immutable fragment and the las
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
 1. Run all systems except the workflow by executing the following (bash) command:
-```bash
-docker compose up -d
-```
+    ```bash
+    docker compose up -d
+    ```
 
 2. Seed the initial data set and [alias it](./create-alias.json)
-```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
-```
-**Note** the `?max-age=10` part in the last command limiting the freshness to 10 seconds.
+    ```bash
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
+    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
+    ```
+    **Note** the `?max-age=10` part in the last command limiting the freshness to 10 seconds.
 
-The simulator (http://localhost:9011) will respond with:
-```json
-{"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"}
-{"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-25T10:22:45.82Z"}
-{"content-type":"application/ld+json","cache-control":"public, max-age=10","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"}
-```
-**Note** the `"cache-control":"public, max-age=604800, immutable"` for the first two fragments and the `"cache-control":"public, max-age=10"` for the last one.
+    The simulator (http://localhost:9011) will respond with:
+    ```json
+    {"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-20T09:58:15.867Z"}
+    {"content-type":"application/ld+json","cache-control":"public, max-age=604800, immutable","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-25T10:22:45.82Z"}
+    {"content-type":"application/ld+json","cache-control":"public, max-age=10","id":"/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"}
+    ```
+    **Note** the `"cache-control":"public, max-age=604800, immutable"` for the first two fragments and the `"cache-control":"public, max-age=10"` for the last one.
 
 3. Start the workflow containing the LDES Client
-```bash
-docker compose up ldio-workflow -d
-```
+    ```bash
+    docker compose up ldio-workflow -d
+    ```
 
 4. Verify that all members are received by the [sink](http://localhost:9003/) (execute repeatedly):
-```bash
-curl http://localhost:9003/
-```
-**Note** that after a short while the result should be (alfa + beta + gamma):
-```json
-{"count":501}
-```
+    ```bash
+    curl http://localhost:9003/
+    ```
+    **Note** that after a short while the result should be (alfa + beta + gamma):
+    ```json
+    {"count":501}
+    ```
 
 5. Verify that last fragment is re-requested on a regular interval (definied by the amount of seconds in the `?max-age=10` part when uploading it, i.e. every 10 seconds) but no members are sent to the sink HTTP server (execute repeatedly):
-```bash
-curl http://localhost:9011/
-curl http://localhost:9003/
-```
+    ```bash
+    curl http://localhost:9011/
+    curl http://localhost:9003/
+    ```
 
 ## Test Execution
 This part verifies that the *synchronization* works after the initial data set is *replicated*.
 
 1. Seed a data set update.
-```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
-```
+    ```bash
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
+    ```
 
 2. Verify update received (execute repeatedly):
-```bash
-curl http://localhost:9003/
-```
-**Note** that after a short while the result should be (alfa + beta + delta):
-```json
-{"count":550}
-```
+    ```bash
+    curl http://localhost:9003/
+    ```
+    **Note** that after a short while the result should be (alfa + beta + delta):
+    ```json
+    {"count":550}
+    ```
 
 3. Seed another data set update:
-```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
-```
+    ```bash
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
+    ```
 
 4. Verify that synchronization happens correctly (execute repeatedly):
-```bash
-curl http://localhost:9003/
-```
-**Note** that after a short while the result should be (alfa + beta + epsilon):
-```json
-{"count":617}
-```
+    ```bash
+    curl http://localhost:9003/
+    ```
+    **Note** that after a short while the result should be (alfa + beta + epsilon):
+    ```json
+    {"count":617}
+    ```
 
 ## Test Teardown
 To stop all systems use:

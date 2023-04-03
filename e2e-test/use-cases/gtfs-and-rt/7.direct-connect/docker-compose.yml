@@ -8,9 +8,9 @@ services:
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306t2329}
     environment:
       - NODE_OPTIONS=--max-old-space-size=768 # NOTE: in MB, set this a bit lower than the memory limit
-      - GTFS_SOURCE=${GTFS_SOURCE}
-      - GTFSRT_SOURCE=${GTFSRT_SOURCE}
-      - BASE_IRI=${GTFS_BASE_IRI}
+      - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
+      - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}
       - TARGET_URL=http://ldes-server:8080/connections
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
@@ -38,7 +38,7 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE}
+      - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE:-bustang}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_AUTO-INDEX-CREATION=true
@@ -93,8 +93,6 @@ services:
   ldes-list-fragments:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-list-fragments
     image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
-    profiles:
-      - delayed-started
     environment:
       - FOLLOW=http://localhost:${LDES_SERVER_PORT:-8080}/connections/by-location-and-time
     deploy:
@@ -106,6 +104,8 @@ services:
           cpus: '0.1'
           memory: '256MB'
     network_mode: "host"
+    profiles:
+      - delayed-started
 
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-gipod-geospatial-fragment-ldes}_mongodb-rest-api

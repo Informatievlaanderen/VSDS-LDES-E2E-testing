@@ -1,50 +1,60 @@
 # LDES Server Performance is Adequate for GTFS/RT Processing
 This test validates user story **Ingest GTFS-RT De Lijn for acceptance** (VSDSPUB-299) performance-wise.
 
-### Test Setup
-For this scenario we can use the a [custom context](./docker-compose.yml) derived from [GTFS2LDES / Workflow / Server / Mongo](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md) context, but excluding the Workflow system. Please copy the [environment file (direct.env)](./direct.env) to a personal file (e.g. `user.env`) and fill in the mandatory arguments and append the specific `<gtfs-use-case>.env` file to your personal file.
+This scenario verifies that the LDES server can keep up with the stream of linked connections from the GTFS to the LDES converter. It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects) directly connected to the LDES Server backed by a data store (mongodb).
 
-> **Note**: for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
+The throttle rate `(THROTTLE_RATE)` and the fragment member limit `(VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT)` are set to the same value (100), so for every batch of linked connections being ingested, the LDES server creates one fragment.
 
-Then you can create the images and run all systems (except for the gtfs2ldes-js) by executing the following command:
+We use the RTD (Regional Transportation District) Denver [bus schedule](https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip) as a data set which contains about 79000 linked connections in the base schedule. Once this schedule is processed, the GTFS/RT (real-time) updates are received and processed.
+
+## Test Setup
+1. Run all systems except the GTFS to LDES convertor and the LDES list fragments tool by executing the following (bash) command:
 ```bash
-docker compose --env-file user.env up -d
+docker compose up -d
 ```
-> **Note**: it may take a minute for all the servers to start. Wait until the LDES Server is completely started. Check the container log file.
+> **Notes**:
+> * if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+> * in the [data folder](./data/) you can find additional GTFS/RT source to test with (e.g. [De Lijn](./data/delijn.env) & [NMBS/SNCB](./data/nmbs.env))
+> * for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
+> * the GTFS2LDES service is assigned to an arbitrary profile named `delay-started` to prevent it from starting immediately.
 
-### Test Execution
-To run the test, you need to:
-1. Wait for the GTFS to LDES convertor to start sending GTFS data (connections).
-2. Verify that the LDES server can keep up with the stream of linked connections being pushed for both the schedule (may take 24 hours or more) and the real-time updates.
-
-#### 1. Start the GTFS to LDES convertor
-Create and start the gtfs2ldes-js service:
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
 ```bash
-docker compose --env-file user.env create gtfs2ldes-js
-docker compose --env-file user.env start gtfs2ldes-js
+docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```
+Press `CTRL-C` to stop following the log.
 
-Watch the Docker logs for the GTFS to LDES convertor to know when it starts sending GTFS connections to the workflow.
-> **Note**: you can lookup the container ID using `docker ps`, so to get the logs you can use:
+## Test Execution
+1. Start the GTFS to LDES convertor:
+    ```bash
+    docker compose up gtfs2ldes-js -d
+    ```
+    and verify that the GTFS to LDES convertor is processing the GTFS or GTFS/RT source  by following the container log until you see the following message `Posted 100 Connection updates so far...`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=gtfs2ldes-js$")
+    ```
+    Press `CTRL-C` to stop following the log.
+
+2. Verify LDES members are being ingested (execute in new terminal - infinite loop):
+    ```bash
+    while :; do curl http://localhost:9019/bustang/ldesmember; echo ''; sleep 0.5; done
+    ```
+    and fragments are being created (execute in new terminal - infinite loop):
+    ```bash
+    while :; do curl http://localhost:9019/bustang/ldesfragment; echo ''; sleep 0.5; done
+    ```
+
+3. Optionally, verify which fragments are being created using the [LDES list fragments](/ldes-list-fragments/README.md) tool:
+    ```bash
+    docker compose up ldes-list-fragments
+    ```
+
+4. Stop following LDES member count, LDES fragment count and LDES fragment URIs
+
+## Test Teardown
+To stop all systems use:
 ```bash
-docker logs --follow $(docker ps -f "name=gtfs2ldes-js$" -q)
-```
-
-#### 2. Verify LDES Members Received And Fragments Created
-To verify that the LDES server can keep up with the stream of linked connections from the GTFS to the LDES converter, you can use the [LDES list fragments tool](/ldes-list-fragments/README.md).\
-By default, the throttle rate ```(THROTTLE_RATE)``` and the fragment member limit ```(VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT)``` are set to the same value (100), so for every batch of linked connections being ingested, the LDES server creates one fragment. \
-The LDES list fragments tool follows the newly created fragments. That way you can verify that the LDES server keeps up with the rate
-
-To start following the fragments being created:
-```bash
-docker compose --env-file user.env up ldes-list-fragments
-```
-
-Additionally, you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool to verify the amount of LDES members ingested(check the document count).
-> **Note**: that we store the document collection in a database as configured in the Docker environment argument `SPRING_DATA_MONGODB_DATABASE`.
-
-### Test Teardown
-Stop all systems using:
-```bash
-docker compose --env-file user.env --profile delay-started down
+docker compose stop ldes-list-fragments
+docker compose stop gtfs2ldes-js
+docker compose --profile delay-started down
 ```

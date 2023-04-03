@@ -13,7 +13,7 @@ services:
 
   ldio-workflow:
     container_name: ${USECASE_NAME:-gipod-page-fragment-ldes}_ldio-workflow
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230331T101933}
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/application.yml:ro
     networks:

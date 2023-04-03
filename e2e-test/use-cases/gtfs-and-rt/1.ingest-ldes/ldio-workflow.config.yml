@@ -1,0 +1,15 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: gtfs-pipeline
+      description: "This pipeline uses a HTTP listener to read incoming and simply forward them as N-quads to a LDES Server"
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://ldes-server:8080/connections
+            content-type: application/n-quads

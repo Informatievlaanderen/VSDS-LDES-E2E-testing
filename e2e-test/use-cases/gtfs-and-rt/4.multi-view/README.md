@@ -1,109 +1,91 @@
 # LDES Server Offers Multiple Views
 This test validates user story **As a consumer I want multiple views so that I can different views on my data** and was shown during demo 1 on September, 13th 2022.
 
-## LDES Server
-The LDES Server provides some configuration to cover the following acceptance criteria:
-* can configure LDES server to with multiple views
-* each view of the LDES server consists of a name and a list of fragmentations. Each fragmentation consists of the name of that fragmentation (timebased/geospatial) and a set of configuration parameters
-* members are ingested via endpoint '/{collectionname}' and saved once in the storage provider
-* views are consulted via the endpoint '/{viewname}'
+The test verifies that the LDES Server can fragment an LDES using multiple views (e.g. geospatially & time-based + time-based only, etc.). It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
 
-### Test Setup
-To demonstrate the multi-view fragmentation, we use an adapted version of the [Simulator / Workflow / Server / Mongo](../../../support/context/simulator-workflow-server-mongo/README.md) context. If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command. 
-
-The environment file is already configured for two view (one geospatial & timebased and one timebased) but you can adapt the configuration settings as described [here](../../../support/context/simulator-workflow-server-mongo/README.md#multiview). 
-Please note the specific configuration properties which allow to configure the amount of views and types of fragmentations (`X` represents the view number starting at 0, `Y` represents the fragmentation number starting at 0):
-* VIEWS_X_NAME=name of the view
-* VIEWS_X_FRAGMENTATIONS_Y_NAME=name of fragmentation (currently, only "timebased" and "geospatial" are supported)
-* VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`FRAGMENTATION_PROPERTY_KEY`=`FRAGMENTATION_PROPERTY_VALUE` (specific to the kind of fragmentation, e.g. `FRAGMENTATION_PROPERTY_KEY` = "maxzoomlevel" and `FRAGMENTATION_PROPERTY_VALUE` = "15" for geospatial fragmentation)
-
-You can then run the systems by executing the following command:
-```bash
-docker compose up -d
-```
-> **Note**: it may take a minute for all the servers to start.
-
-Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) and create a new process group based on the [ingest workflow](./nifi-workflow.json) as specified in [here](../../../support/workflow/README.md#creating-a-workflow).
-
-You can verify the LDES client processor properties to ensure the input source is the GIPOD simulator and the sink properties to ensure that the InvokeHTTP processor POSTs the LDES members to the LDES-server.
-* the `LdesClient` component property `Datasource url` should be `http://ldes-server-simulator/api/v1/ldes/mobility-hindrances` -- **note** that we use an alias here to ease the use of different data sets
-* the `InvokeHTTP` component property `Remote URL` should be `http://ldes-server:8080/mobility-hindrances` and the property `HTTP method` should be `POST`
-
-The test data set contains only one version object spanning multiple tiles and therefore consists of a [single file containing six members](./data/six-members.jsonld). This data set is used:
+The test data set consists of a single file containing [six member](./data/six-members.jsonld). This data set is used:
 * to demonstrate the geospatial bucketizer's ability to correctly create (multiple) buckets for a given member based on the configured property,
 * to verify that the generated buckets values (`ldes:bucket`) are not present in the generated fragments and
 * to illustrate the current strategy used by the geospatial fragmentation to create fragments and the relations included.
 
-### Test Execution
-To verify the above acceptance criteria:
-* visualize the GIPOD hindrance
-* ingest the data set
-* verify the fragments
-    * contains the member without buckets
-    * follow all geospatial links
-    * visualize the combined tiles
+> **Notes**:
+>
+> The **LDES Server** provides some configuration to cover the following acceptance criteria:
+> * can configure LDES server to with multiple views
+> * each view of the LDES server consists of a name and a list of fragmentations. Each fragmentation consists of the name of that fragmentation (timebased/geospatial) and a set of configuration parameters
+> * members are ingested via endpoint '/{collectionname}' and saved once in the storage provider
+> * views are consulted via the endpoint '/{collectionname}/{viewname}'
 
-#### 1. Ingest the Data Set
-You need to ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):
+## Test Setup
+> **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+
+Run all systems except the workflow by executing the following (bash) command:
 ```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/six-members.jsonld'
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+docker compose up -d
 ```
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+    ```
+Press `CTRL-C` to stop following the log.
 
-After that you can start the workflow as described [here](../../../support/workflow/README.md#starting-a-workflow) and wait for the fragments to be created (call repeatedly):
-```bash
-curl http://localhost:8080/mobility-hindrances/by-time
-```
-Initially returns:
-```
-@prefix tree: <https://w3id.org/tree#> .
+## Test Execution
+1. Ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):
+    ```bash
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/six-members.jsonld'
+    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
+    ```
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a       tree:Node .
-```
+2. Start the workflow containing the LDES Client
+    ```bash
+    docker compose up ldio-workflow -d
+    ```
 
-When the response of this second view contains a relation then all fragments have been created:
-```
-@prefix tree: <https://w3id.org/tree#> .
+3. Verify the LDES members are ingested (execute repeatedly until the `ldesmember` document collection contains 6 members):
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
+    and the `ldesfragment` document collection contains 13 fragments (execute repeatedly):
+    * the real root/redirection fragment, 
+    * view 1:
+      * the geo-spatial root fragment 0/0/0, 
+      * four tile fragments
+      * four timebased fragments because the fragment member count is configured to hold at most one hunderd members
+    * view 2:
+      * the time-based root,
+      * two timebased fragments because the fragment member count is configured to hold at most one hunderd members 
+    ```bash
+    curl http://localhost:9019/gipod/ldesfragment
+    ```
 
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2022-10-10T18:24:31.971Z>
-                       ] .
-```
-
-You can now also see the response of the first view:
-```bash
-curl http://localhost:8080/mobility-hindrances/by-location-and-time
-```
-response:
-```
-@prefix tree: <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances/by-location-and-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=0/0/0>
-                       ] .
-```
-
-Alternatively you can use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `ldesmember` document collection contains four LDES members and the `ldesfragments` document collection contains 13 LDES fragments (1 timebased view + its 2 timebased fragments in addition to 1 tilebased view + 1 root tile + 4 tiles and its 4 time fragments).
-
-#### 2. Try-out different views and fragmentation strategies.
-
-Try out different views and fragmentation strategies by
-1. By updating the value of `VIEWS_X_NAME`, `VIEWS_X_FRAGMENTATIONS_Y_NAME` and `VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`
-2. Deleting the database for example using [Mongo Compass](https://www.mongodb.com/products/compass)
-3. Recreating the ldes-server:
-   ```
-    docker compose stop ldes-server  
-    docker compose create ldes-server
-    docker compose start ldes-server   
+## Try-out Different Fragmentation Strategies.
+To try out a different fragmentation strategy you need to tune the [Docker Compose](./docker-compose.yml) file and follow these steps:
+1. Updating the values of `VIEWS_X_NAME`, `VIEWS_X_FRAGMENTATIONS_Y_NAME` and `VIEWS_X_FRAGMENTATIONS_Y_CONFIG_` as needed (see [LDES Server configuration](https://github.com/Informatievlaanderen/VSDS-LDESServer4J#application-configuration) for more information):
+    * `VIEWS_X_NAME`: view name
+    * `VIEWS_X_FRAGMENTATIONS_Y_NAME`: fragmentation type
+    * `VIEWS_X_FRAGMENTATIONS_Y_CONFIG_`: fragmentation type specific config
+2. Delete the MongoDB database (e.g. using [Mongo Compass](https://www.mongodb.com/products/compass)):
+    ```bash
+    docker compose stop ldes-mongodb
+    docker compose rm -v -f ldes-mongodb
+    docker compose up ldes-mongodb -d   
     ``` 
+3. Recreate the ldes-server:
+    ```bash
+    docker compose stop ldes-server
+    docker compose rm -v -f ldes-server
+    docker compose up ldes-server -d   
+    ``` 
+4. Re-create the workflow:
+    ```bash
+    docker compose stop ldio-workflow
+    docker compose rm -v -f ldio-workflow
+    docker compose up ldio-workflow -d   
+    ```
 
-### Test Teardown
-First stop the workflow as described [here](../../../support/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
+## Test Teardown
+To stop all systems use:
 ```bash
-docker compose down
+docker compose stop ldio-workflow
+docker compose --profile delay-started down
 ```

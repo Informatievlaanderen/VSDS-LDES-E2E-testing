@@ -210,6 +210,8 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldes-server$")
    [
      {
        keys: [
+         'versionOf',
+         'timestamp',
          'model',
          'treeNodeReferences',
          '_class'

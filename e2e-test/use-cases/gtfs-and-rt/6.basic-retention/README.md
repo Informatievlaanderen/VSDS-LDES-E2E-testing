@@ -1,8 +1,9 @@
 # LDES Server Provides a Very Basic Retention Mechanism
 This test validates user story **As a data publisher I want to implement a retention policy for my data** and was shown during the demo on November, 22th 2022.
 
-## Acceptance Criteria
+This scenario verifies that the LDES server can automatically purge fragments. It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
 
+**Acceptance Criteria**
 * **AC1**: I can configure the **retention period** as a sliding window
 * **AC2**: The LDES server automatically purges fragments older than the configured retention period.
 * **AC3**: The LDES server only purges **immutable** fragments (to prevent deleting ‘active’ fragments).
@@ -11,9 +12,8 @@ This test validates user story **As a data publisher I want to implement a reten
 * **AC6**: The LDES exposes some **metrics** to allow monitoring the retention mechanism: the amount of members purged (e.g. “deleted member count”).
 
 ## Test Scenario
-For this scenario we use a [custom Simulator / Workflow / Server / Mongo](./docker-compose.yml) context. This sets up a simulator without seeding, an empty Apache NiFi, an LDES server and a MongoDB backed by permanent storage.
 
-We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a standard InvokeHTTP processor, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).
+We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a http sender, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).
 The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. `P3D` (3 days).
 
 ### Start Systems

@@ -11,16 +11,14 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     And context 'use-cases/gtfs-and-rt/6.basic-retention' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
-    And I have aliased the data set    
-    And the NiFi workbench is available
-    And I have uploaded the workflow
+    And I have aliased the data set
     And the LDES server is available
 
     Then the LDES contains 0 members
     And the LDES has a view 'V' named 'by-short-time'
     And the LDES has a view 'W' named 'by-longer-time'
     
-    When I start the NiFi workflow
+    When I start the LDIO workflow
     And the LDES contains 501 members
     And I refresh view 'V'
     And I refresh view 'W'
@@ -49,7 +47,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then view 'V' links to 'mutable' fragment 'D' containing 51 members
     And view 'W' links to 'mutable' fragment 'G' containing 201 members
 
-    When I have uploaded the data files: 'delta,epsilon'
+    When I have uploaded the data files: 'delta,epsilon' with a duration of 10 seconds
     And the LDES contains 317 members
     And I refresh view 'V'
     And I refresh view 'W'

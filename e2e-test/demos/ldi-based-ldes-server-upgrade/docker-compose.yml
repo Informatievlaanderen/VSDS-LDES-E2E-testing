@@ -47,7 +47,7 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:20230216T1056
+    image: ghcr.io/informatievlaanderen/ldes-server:20221107T0923
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp

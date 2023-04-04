@@ -5,6 +5,7 @@ import {
     MongoRestApi, JsonDataGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
+import { ClientCli } from "../services/client-cli";
 
 let testContext: any;
 
@@ -17,6 +18,7 @@ export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
+export const clientCli = new ClientCli();
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -117,6 +119,10 @@ Given('the LDIO workflow is available', () => {
 
 // When stuff
 
+When('I launch the Client CLI', () => {
+    createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
+})
+
 When('I start the NiFi workflow', () => {
     workbenchNifi.pushStart();
 })
@@ -173,4 +179,6 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
 })
 
-
+Then('the Client CLI contains {int} members', (count: number) => {
+    clientCli.checkCount(count);
+})

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: ldes-cli
+      description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to the console output"
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        config:
+          url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances
+        # TODO: remove this TEMP workaround (adapter | name)
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut
+          config:
+            content-type: application/n-quads

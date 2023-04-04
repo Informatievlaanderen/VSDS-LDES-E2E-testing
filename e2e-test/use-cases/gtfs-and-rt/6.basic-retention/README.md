@@ -83,22 +83,22 @@ docker compose up -d
 ## Test Execution
 To execute this test scenario, run the following steps:
 
-1. verify the initial LDES:
-```bash
-curl http://localhost:8080/mobility-hindrances
-curl http://localhost:8080/mobility-hindrances/by-short-time
-curl http://localhost:8080/mobility-hindrances/by-longer-time
-```
+1. Verify the initial LDES:
+    ```bash
+    curl http://localhost:8080/mobility-hindrances
+    curl http://localhost:8080/mobility-hindrances/by-short-time
+    curl http://localhost:8080/mobility-hindrances/by-longer-time
+    ```
 
-2. send initial data set and verify simulator at http://localhost:9011:
-```bash
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
-curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
-curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
-```
+2. Send initial data set and verify simulator at http://localhost:9011:
+    ```bash
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
+    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+    ```
 
-3. open MongoDB Compass and keep an eye on the member count
+3. Open MongoDB Compass and keep an eye on the member count
 
 4. logon to the Apache NiFi user interface at https://localhost:8443/nifi, load and start the [workflow](./nifi-workflow.json)
 

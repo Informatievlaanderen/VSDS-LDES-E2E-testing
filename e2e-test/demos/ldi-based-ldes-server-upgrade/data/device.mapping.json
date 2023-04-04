@@ -1,4 +1,0 @@
-{
-    "$.id": "${@}:${nextCounter}",
-    "$.dateLastValueReported.value['@value']": "${currentTimestamp}"
-}

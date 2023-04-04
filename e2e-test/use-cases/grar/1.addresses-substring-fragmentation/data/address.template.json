@@ -42,7 +42,7 @@
         "adresPositie": {
             "geometrie": {
                 "type": "Point",
-                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>123427.34 199041.78</gml:pos></gml:Point>"
+                "gml": "<gml:Point srsName=\"https://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>123427.34 199041.78</gml:pos></gml:Point>"
             },
             "positieGeometrieMethode": "afgeleidVanObject",
             "positieSpecificatie": "gebouweenheid"
@@ -93,7 +93,7 @@
         "adresPositie": {
             "geometrie": {
                 "type": "Point",
-                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>149531.69 177745.18</gml:pos></gml:Point>"
+                "gml": "<gml:Point srsName=\"https://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>149531.69 177745.18</gml:pos></gml:Point>"
             },
             "positieGeometrieMethode": "afgeleidVanObject",
             "positieSpecificatie": "gebouweenheid"
@@ -144,7 +144,7 @@
         "adresPositie": {
             "geometrie": {
                 "type": "Point",
-                "gml": "<gml:Point srsName=\"http://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>156568.94 222882.90</gml:pos></gml:Point>"
+                "gml": "<gml:Point srsName=\"https://www.opengis.net/def/crs/EPSG/0/31370\" xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:pos>156568.94 222882.90</gml:pos></gml:Point>"
             },
             "positieGeometrieMethode": "afgeleidVanObject",
             "positieSpecificatie": "gebouweenheid"

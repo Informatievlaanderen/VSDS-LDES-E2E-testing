@@ -1,0 +1,23 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: grar-pipeline
+      description: "This pipeline uses a HTTP listener to read incoming GRAR messages, splits them in individual ones, fix a few GRAR message issues and sends them using HTTP to a LDIO pipeline."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      transformers:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+          config:
+            member-type: https://data.vlaanderen.be/ns/adres#Adres
+            delimiter: "/"
+            date-observed-property: https://data.vlaanderen.be/ns/generiek#versieIdentificator
+            generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+            versionOf-property: http://purl.org/dc/terms/isVersionOf
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://ldes-server:8080/addresses
+            content-type: application/n-quads

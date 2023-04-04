@@ -7,10 +7,9 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
 
   Scenario: Provide addresses as substring fragmentation
     Given context 'use-cases/grar/1.addresses-substring-fragmentation' is started
-    And the NiFi workbench is available
-    And I have uploaded the workflow
     And the LDES server is available
-    When I start the NiFi workflow
+    When I start the LDIO workflow
+    And the LDIO workflow is available
     And I start the JSON Data Generator
     And the LDES contains at least 13 members
     Then the substring root fragment is not immutable

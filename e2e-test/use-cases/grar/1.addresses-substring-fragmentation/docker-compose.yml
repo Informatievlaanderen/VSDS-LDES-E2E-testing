@@ -4,11 +4,9 @@ services:
   json-data-generator:
     container_name: ${USECASE_NAME:-grar-context}_json-data-generator
     image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
-    profiles:
-      - delay-started
     environment:
-      - TARGETURL=http://nifi-workflow:9012/grar/addresses
-      - SILENT=${JSON_DATA_GENERATOR_SILENT:-true}
+      - TARGETURL=http://node-red-workflow:1880/grar/addresses
+      - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
       - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/address.mapping.json}
@@ -19,21 +17,30 @@ services:
       - ./data/address.mapping.json:/tmp/data/address.mapping.json:ro
     networks:
       - ldes
+    profiles:
+      - delay-started
 
-  nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
-    container_name: ${USECASE_NAME:-grar-context}_ldi-workbench-nifi
-    environment:
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+  node-red-workflow:
+    container_name: ${USECASE_NAME:-grar-context}_node-red-workflow
+    image: nodered/node-red:${NODE_RED_TAG:-latest}
+    volumes:
+      - ./data/node-red:/data:rw
     ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
-      - ${NIFI_WORKFLOW_LISTEN_PORT_ADDRESS:-9012}:9012
+      - ${NODE_RED_PORT:-1880}:1880
+    networks:
+      - ldes
+
+  ldio-workflow:
+    container_name: ${USECASE_NAME:-grar-context}_ldio-workflow
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
     networks:
       - ldes
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-grar-context}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:

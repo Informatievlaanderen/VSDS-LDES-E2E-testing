@@ -47,7 +47,7 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:20221107T0923
+    image: ghcr.io/informatievlaanderen/ldes-server:20230120T0849
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -118,6 +118,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_ldes-list-fragments
     image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
     environment:
+      - SILENT=false
       - FOLLOW=http://localhost:8080/devices/devices-by-time
     # use the network stack of the new-ldes-server service so that 
     # localhost refers to new-ldes-server and we can follow the LDES stream

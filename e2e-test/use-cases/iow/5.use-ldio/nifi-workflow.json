@@ -86,17 +86,24 @@
                             "x": 40.0,
                             "y": 240.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",
@@ -699,10 +706,17 @@
                             "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",
@@ -1104,17 +1118,24 @@
                             "x": 200.0,
                             "y": 376.0
                         },
-                        "type": "be.vlaanderen.informatievlaanderen.ldes.processors.NgsiV2ToLdTranslatorProcessor",
+                        "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.NgsiV2ToLdProcessor",
                         "bundle": {
-                            "group": "be.vlaanderen.informatievlaanderen",
-                            "artifact": "ngsiv2-to-ngsi-ld-processor",
-                            "version": "1.0.2-SNAPSHOT"
+                            "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
+                            "artifact": "ngsiv2-to-ld-processor",
+                            "version": "0.0.1-SNAPSHOT"
                         },
                         "properties": {
+                            "DATA_IDENTIFIER": "data",
                             "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld",
                             "LD_CONTEXT": null
                         },
                         "propertyDescriptors": {
+                            "DATA_IDENTIFIER": {
+                                "name": "DATA_IDENTIFIER",
+                                "displayName": "Data array key",
+                                "identifiesControllerService": false,
+                                "sensitive": false
+                            },
                             "CORE_CONTEXT": {
                                 "name": "CORE_CONTEXT",
                                 "displayName": "NGSI LD core context",

@@ -49,17 +49,20 @@ services:
       - ldes-server
     networks:
       - ldes
-
-  ldes-cli:
-    image: ghcr.io/informatievlaanderen/ldes-cli:${LDES_CLIENT_CLI_TAG:-latest}
-    container_name: ${USECASE_NAME:-setup-caching}_ldes-client-cli
-    command: "--url http://localhost:${NGINX_PORT:-8080}/${COLLECTION_NAME:-mobility-hindrances}/${VIEW_NAME:-by-time} --input-format text/turtle"
+    
+  ldio-workflow:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-setup-caching}_ldio-workflow
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
+    networks:
+      - ldes
     profiles:
-      - delayed-started
+      - delay-started
     # use the network stack of the nginx service so that 
     # localhost refers to nginx and we can follow the LDES stream both from the host as from within the CLI
     network_mode: service:nginx
-    
+
 networks:
   ldes:
     name: ${USECASE_NAME:-setup-caching}_network

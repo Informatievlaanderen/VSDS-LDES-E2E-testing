@@ -75,7 +75,7 @@ Now, you can verify that the generated NGSI-LD by the NiFi processor matches the
 > **Note**: also that the python script adds the dummy test context to the generated result, while the NiFi processor does not require a data-specific additional context. Alternatively, configure the NiFi processor to use the same dummy test context.
 
 ## Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
 docker compose down
 ```

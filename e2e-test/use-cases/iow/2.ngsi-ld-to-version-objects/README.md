@@ -69,7 +69,7 @@ The online tool results in output similar to (only showing relevant properties):
 > **Note**: that the verson object refers to its base (state) object using `dc:isVersionOf` having a simple IRI as its value.
 
 ## Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/gtfs2ldes-workflow-server-mongo/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems, i.e.:
 ```bash
 docker compose down
 ```

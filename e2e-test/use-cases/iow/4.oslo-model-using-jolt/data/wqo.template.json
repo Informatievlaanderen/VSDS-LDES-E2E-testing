@@ -1,77 +1,82 @@
 {
-    "id": "woq",
-    "type": "WaterQualityObserved",
-    "conductivity": {
-        "type": "Number",
-        "value": 6150,
-        "metadata": {
-            "unitCode": {
-                "type": "text",
-                "value": "G42"
-            }
-        }
-    },
-    "dateObserved": {
-        "type": "DateTime",
-        "value": "2022-09-09T09:10:00.000Z",
-        "metadata": {}
-    },
-    "depth": {
-        "type": "Number",
-        "value": 1442,
-        "metadata": {
-            "unitCode": {
-                "type": "text",
-                "value": "HP"
-            }
-        }
-    },
-    "location": {
-        "type": "geo:json",
-        "value": {
-            "type": "Point",
-            "coordinates": [
-                5.4563,
-                51.41363
-            ]
-        },
-        "metadata": {
-            "name": {
+    "_subscriptionId": "something",
+    "data": [
+        {
+            "id": "woq",
+            "type": "WaterQualityObserved",
+            "conductivity": {
+                "type": "Number",
+                "value": 6150,
+                "metadata": {
+                    "unitCode": {
+                        "type": "text",
+                        "value": "G42"
+                    }
+                }
+            },
+            "dateObserved": {
+                "type": "DateTime",
+                "value": "2022-09-09T09:10:00.000Z",
+                "metadata": {}
+            },
+            "depth": {
+                "type": "Number",
+                "value": 1442,
+                "metadata": {
+                    "unitCode": {
+                        "type": "text",
+                        "value": "HP"
+                    }
+                }
+            },
+            "location": {
+                "type": "geo:json",
+                "value": {
+                    "type": "Point",
+                    "coordinates": [
+                        5.4563,
+                        51.41363
+                    ]
+                },
+                "metadata": {
+                    "name": {
+                        "type": "Text",
+                        "value": "loc-00019-33"
+                    }
+                }
+            },
+            "locationName": {
                 "type": "Text",
-                "value": "loc-00019-33"
+                "value": "loc-00019-33",
+                "metadata": {}
+            },
+            "refDevice": {
+                "type": "Relationship",
+                "value": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
+                "metadata": {}
+            },
+            "refDevices": {
+                "type": "StructuredValue",
+                "value": [
+                    "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU"
+                ],
+                "metadata": {}
+            },
+            "samplingPoint": {
+                "type": "Text",
+                "value": "spt-00035-79",
+                "metadata": {}
+            },
+            "temperature": {
+                "type": "Number",
+                "value": 20.43,
+                "metadata": {
+                    "unitCode": {
+                        "type": "text",
+                        "value": "CEL"
+                    }
+                }
             }
         }
-    },
-    "locationName": {
-        "type": "Text",
-        "value": "loc-00019-33",
-        "metadata": {}
-    },
-    "refDevice": {
-        "type": "Relationship",
-        "value": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
-        "metadata": {}
-    },
-    "refDevices": {
-        "type": "StructuredValue",
-        "value": [
-            "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU"
-        ],
-        "metadata": {}
-    },
-    "samplingPoint": {
-        "type": "Text",
-        "value": "spt-00035-79",
-        "metadata": {}
-    },
-    "temperature": {
-        "type": "Number",
-        "value": 20.43,
-        "metadata": {
-            "unitCode": {
-                "type": "text",
-                "value": "CEL"
-            }
-        }
-    }
+    ]
 }

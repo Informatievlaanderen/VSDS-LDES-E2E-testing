@@ -1,6 +1,7 @@
 Feature: IoW use case
 Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/iow
 
+
   Scenario: Ingest NGSI-v2 objects into LDES server
     Given context 'use-cases/iow/3.ngsi-v2-to-ldes' is started
     And the IoW LDES servers are available
@@ -29,10 +30,10 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the workflow
     And the 'device-models' LDES contains 1 member
-    Then the root fragment contains a dummy OSLO device model version
+    Then the root fragment contains a correct NGSI-LD device model version
     When I upload the data file 'device' to the workflow
     And the 'devices' LDES contains 1 member
-    Then the root fragment contains a correct OSLO device version
+    Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
     And the observations LDES contains at least 1 members
     Then the root fragment contains a correct OSLO observation version

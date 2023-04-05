@@ -82,26 +82,11 @@ Then('the root fragment contains a correct NGSI-LD device model version', () => 
     validateVersionAndTime(member);
 });
 
-Then('the root fragment contains a dummy OSLO device model version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
-    const member = rootFragment.members[0];
-    logMember(member);
-    validateType(member, 'http://sample.org/DeviceModel');
-    validateVersionAndTime(member);
-});
-
 Then('the root fragment contains a correct NGSI-LD device version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/Device');
-    validateVersionAndTime(member);
-});
-
-Then('the root fragment contains a correct OSLO device version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
-    const member = rootFragment.members[0];
-    validateType(member, 'http://www.w3.org/ns/sosa/Sensor');
     validateVersionAndTime(member);
 });
 

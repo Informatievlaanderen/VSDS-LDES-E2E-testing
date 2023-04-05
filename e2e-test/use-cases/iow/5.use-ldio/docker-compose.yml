@@ -128,27 +128,11 @@ services:
     depends_on:
       - ldes-mongodb
 
-  ldio-devices:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-devices
+  ldio-workflow:
+    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workflow
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
-      - ./ldio-devices.config.yml:/application.yml:ro
-    networks:
-      - ldes
-
-  ldio-models:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-models
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    volumes:
-      - ./ldio-models.config.yml:/application.yml:ro
-    networks:
-      - ldes
-
-  ldio-observations:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-observations
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    volumes:
-      - ./ldio-observations.config.yml:/application.yml:ro
+      - ./ldio-workflow.yml:/application.yml:ro
     networks:
       - ldes
 

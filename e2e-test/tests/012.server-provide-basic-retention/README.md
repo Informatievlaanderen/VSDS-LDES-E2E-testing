@@ -121,7 +121,7 @@ curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application
 10. wait for both retention periods to elapse and verify that again the views refer to the newest fragments, that the older fragments are deleted and that the member count has decreased again
 
 ## Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems as described [here](../../../support/context/simulator-workflow-sink/README.md#stop-the-systems), i.e.:
+First stop the workflow as described [here](../../tests/_nifi-workbench/README.md#stop-a-workflow) and then stop all systems:
 ```bash
 docker compose down
 ```

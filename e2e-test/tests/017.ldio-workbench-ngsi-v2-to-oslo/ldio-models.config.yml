@@ -1,21 +1,26 @@
 server:
   port: 8080
 orchestrator:
-  input:
-    name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
-    adapter:
-      name: "be.vlaanderen.informatievlaanderen.ldes.ldi.NgsiV2ToLdAdapter"
-      config:
-        coreContext: "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
-  transformers:
-    - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
-      config:
-        member-type: https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
-        delimiter: "/"
-        generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
-        versionOf-property: http://purl.org/dc/terms/isVersionOf
-  outputs:
-    - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
-      config:
-        endpoint: http://ldes-server-models:8080/device-models
-        content-type: application/n-quads
+  pipelines:
+    - name: data
+      description: "Uses a HTTP listener accepting NGSI-v2 messages, converts them to NGSI-LD, and sends NGSI-LD version objects using HTTP to an LDES server."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: "be.vlaanderen.informatievlaanderen.ldes.ldi.NgsiV2ToLdAdapter"
+          config:
+            dataIdentifier: data
+            coreContext: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld
+      transformers:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+          config:
+            member-type: https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
+            delimiter: "/"
+            date-observed-property: ""
+            generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+            versionOf-property: http://purl.org/dc/terms/isVersionOf
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://ldes-server-models:8080/device-models
+            content-type: application/n-quads

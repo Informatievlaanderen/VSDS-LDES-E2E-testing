@@ -3,7 +3,7 @@ services:
 
   json-data-generator:
     container_name: ${USECASE_NAME:-nifi-less-approach}_json-data-generator
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/json-data-generator:${JSON_DATA_GENERATOR_TAG:-20230214t1503}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
     profiles:
       - delay-started
     environment:
@@ -37,7 +37,7 @@ services:
   # Using 3 consecutive ports for the 3 LDES servers -- see https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=8073
   ldes-server-devices:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server-devices
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -63,7 +63,7 @@ services:
       
   ldes-server-models:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server-models
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -89,7 +89,7 @@ services:
 
   ldes-server-observations:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server-observations
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -117,7 +117,7 @@ services:
 
   ldio-devices:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-devices
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
     volumes:
@@ -127,7 +127,7 @@ services:
 
   ldio-models:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-models
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:8080
     volumes:
@@ -137,7 +137,7 @@ services:
 
   ldio-observations:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-observations
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230313T101729}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:8080
     volumes:
@@ -147,7 +147,7 @@ services:
 
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-nifi-less-approach}_mongodb-rest-api
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-20230214t1503}
+    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017

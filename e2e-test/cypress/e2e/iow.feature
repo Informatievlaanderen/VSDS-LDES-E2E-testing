@@ -9,10 +9,10 @@ Feature: IoW use case
     And I started the workflow
     And the 'device-model' ingest endpoint is ready
     And the 'device' ingest endpoint is ready
-    When I upload the data file 'device-model' to the workflow
+    When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version
-    When I upload the data file 'device' to the workflow
+    When I upload the data file 'device' to the NiFi workflow
     And the 'devices' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
@@ -28,10 +28,10 @@ Feature: IoW use case
     And I started the workflow
     And the 'device-model' ingest endpoint is ready
     And the 'device' ingest endpoint is ready
-    When I upload the data file 'device-model' to the workflow
+    When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version
-    When I upload the data file 'device' to the workflow
+    When I upload the data file 'device' to the NiFi workflow
     And the 'devices' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
@@ -47,10 +47,24 @@ Feature: IoW use case
     And I started the workflow
     And the 'device-model' ingest endpoint is ready
     And the 'device' ingest endpoint is ready
-    When I upload the data file 'device-model' to the workflow
+    When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version
-    When I upload the data file 'device' to the workflow
+    When I upload the data file 'device' to the NiFi workflow
+    And the 'devices' LDES contains 1 member
+    Then the root fragment contains a correct NGSI-LD device version
+    When I start the JSON Data Generator
+    And the observations LDES contains at least 1 members
+    Then the root fragment contains a correct OSLO observation version
+
+@iow @test-017
+  Scenario: 017: LDIO Workbench Can Convert NGSI-v2 to OSLO
+    Given context 'tests/017.ldio-workbench-ngsi-v2-to-oslo' is started
+    And the IoW LDES servers are available
+    When I upload the data file 'model' to the LDIO workflow
+    And the 'device-models' LDES contains 1 member
+    Then the root fragment contains a correct NGSI-LD device model version
+    When I upload the data file 'device' to the LDIO workflow
     And the 'devices' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator

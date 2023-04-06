@@ -93,7 +93,7 @@ make query
 ```
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems by executing:
+First stop the workflow as described [here](../../tests/_nifi-workbench/README.md#stop-a-workflow) and then stop all systems by executing:
 ```bash
 make stop
 ```

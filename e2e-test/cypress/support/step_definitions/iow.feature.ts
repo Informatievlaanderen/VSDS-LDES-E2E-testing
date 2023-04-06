@@ -28,9 +28,15 @@ Given('the {string} ingest endpoint is ready', (baseName: string) => {
 
 // When stuff
 
-When('I upload the data file {string} to the workflow', (baseName: string) => {
+When('I upload the data file {string} to the NiFi workflow', (baseName: string) => {
     const port = baseName === 'device' ? 9012 : 9013;
     const command = `curl -X POST "http://localhost:${port}/ngsi/${baseName}" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
+    cy.log(command).then(() => cy.exec(command));
+})
+
+When('I upload the data file {string} to the LDIO workflow', (baseName: string) => {
+    const port = baseName === 'device' ? 9012 : 9013;
+    const command = `curl -X POST "http://localhost:${port}/data" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
     cy.log(command).then(() => cy.exec(command));
 })
 

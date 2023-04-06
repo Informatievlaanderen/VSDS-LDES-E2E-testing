@@ -46,3 +46,14 @@ To stop all systems use:
 docker compose stop gtfs2ldes-js
 docker compose --profile delay-started down
 ```
+
+## C4 Diagrams
+
+### Context
+![context](./artwork/gtfs-demo.context.png)
+
+### Container
+![container](./artwork/gtfs-demo.container.png)
+
+### Component
+![component](./artwork/gtfs-demo.component.png)

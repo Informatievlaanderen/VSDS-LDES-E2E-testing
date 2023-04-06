@@ -46,3 +46,14 @@ To stop all systems use:
 docker compose stop ldio-workflow
 docker compose --profile delay-started down
 ```
+
+## C4 Diagrams
+
+### Context
+![context](./artwork/demo-ldes-client.context.png)
+
+### Container
+![container](./artwork/demo-ldes-client.container.png)
+
+### Component
+![component](./artwork/demo-ldes-client.component.png)

@@ -51,7 +51,7 @@ Then the fragments and members that have already been processed are not requeste
 > **Note**: we use 4 fragments containing 250 members each and 1 (last) fragment containing 16 members (small subset of the GIPOD).
 
 ### Test Setup
-For this scenario we use a [workflow](docker-compose.yml) based on the [Simulator / Workflow / Sink / Mongo](../../../support/context/simulator-workflow-sink-mongo/README.md) context (but without the mongo container as we use an in-memory database). Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change it as needed.
+For this scenario we use a [workflow](docker-compose.yml) based on a Simulator / Workflow / Sink context. Please copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change it as needed.
 
 This demo makes use of a [Makefile](./Makefile) to simplify the commands that need to be executed.
 

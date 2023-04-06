@@ -1,0 +1,73 @@
+{
+    "id": "urn:ngsi-ld:WaterQualityObserved:woq:1",
+    "type": "WaterQualityObserved",
+    "conductivity": {
+        "value": 6150,
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z",
+        "unitCode": "G42"
+    },
+    "dateObserved": {
+        "value": {
+            "@type": "DateTime",
+            "@value": "2023-03-09T14:16:37.006Z"
+        },
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z"
+    },
+    "depth": {
+        "value": 1442,
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z",
+        "unitCode": "HP"
+    },
+    "location": {
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                5.4563,
+                51.41363
+            ]
+        },
+        "type": "GeoProperty",
+        "observedAt": "2023-03-09T14:16:37.006Z",
+        "name": {
+            "type": "Property",
+            "value": "loc-00019-33"
+        },
+        "asWkt": {
+            "@type": "http://www.opengis.net/ont/geosparql#wktLiteral",
+            "@value": "<http://www.opengis.net/def/crs/OGC/1.3/CRS84> Point(5.4563 51.41363)"
+        }
+    },
+    "locationName": {
+        "value": "loc-00019-33",
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z"
+    },
+    "refDevice": {
+        "type": "Relationship",
+        "object": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU"
+    },
+    "refDevices": {
+        "value": [
+            "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU"
+        ],
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z"
+    },
+    "samplingPoint": {
+        "value": "spt-00035-79",
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z"
+    },
+    "temperature": {
+        "value": 20.43,
+        "type": "Property",
+        "observedAt": "2023-03-09T14:16:37.006Z",
+        "unitCode": "CEL"
+    },
+    "@context": [
+        "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
+    ]
+}

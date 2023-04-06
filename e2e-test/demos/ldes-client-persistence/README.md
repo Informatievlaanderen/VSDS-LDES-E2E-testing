@@ -78,7 +78,7 @@ To run the test, you need to:
 6. Verify that the processed fragments were requested from the server-simulator by visiting the server simulator [http://localhost:9011](http://localhost:9011).
 
 #### 3. Start the Workflow and stop when a fragment was processed
-Start the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
+Start the workflow as described [here](../../tests/_nifi-workbench/README.md#start-a-workflow).
 Stop the workflow when the queue shows 250 members or the shell logging shows a message like this:
 
 ```shell
@@ -103,7 +103,7 @@ The response should show something similar to this:
 ```
 
 #### 5. Restart the Workflow and stop when another fragment was processed
-Restart the workflow as described [here](../../../support/context/workflow/README.md#starting-a-workflow).
+Restart the workflow as described [here](../../tests/_nifi-workbench/README.md#start-a-workflow).
 
 When the queue hits 500 members, stop the workflow again.
 
@@ -126,7 +126,7 @@ No matter where in the LDES you halted the NiFi processor, none of the requested
 
 
 ### Test Teardown
-First stop the workflow as described [here](../../../support/context/workflow/README.md#stopping-a-workflow) and then stop all systems by executing:
+First stop the workflow as described [here](../../tests/_nifi-workbench/README.md#stop-a-workflow) and then stop all systems by executing:
 ```bash
 make stop
 ```

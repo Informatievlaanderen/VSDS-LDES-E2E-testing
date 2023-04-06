@@ -1,7 +1,7 @@
-@startuml "IoW Use Case TEMP - Component Diagram"
+@startuml "IoW Use Case - Component Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title IoW Use Case TEMp - Component Diagram
+title IoW Use Case - Component Diagram
 
 Person(tester, "Tester")
 

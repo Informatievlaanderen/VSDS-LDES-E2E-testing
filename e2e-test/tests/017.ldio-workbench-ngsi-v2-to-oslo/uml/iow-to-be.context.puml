@@ -1,7 +1,7 @@
-@startuml "IoW Use Case TO-BE - Context Diagram"
+@startuml "IoW Use Case - Context Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title IoW Use Case TO-BE - Context Diagram
+title IoW Use Case - Context Diagram
 
 Person(tester, "Tester")
 

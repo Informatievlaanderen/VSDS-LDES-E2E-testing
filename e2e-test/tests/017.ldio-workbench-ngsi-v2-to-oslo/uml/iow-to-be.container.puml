@@ -1,7 +1,7 @@
-@startuml "IoW Use Case TO-BE - Container Diagram"
+@startuml "IoW Use Case - Container Diagram"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title IoW Use Case TO-BE - Container Diagram
+title IoW Use Case - Container Diagram
 
 Person(tester, "Tester")
 

@@ -1,120 +1,77 @@
-# Convert Water Quality NGSI to OSLO Model
-This test verifies the convertion towards OSLO models, more specific, it demonstrates converting the [NGSI water quality model](https://github.com/smart-data-models/dataModel.WaterQuality) into its [OSLO model](https://data.vlaanderen.be/standaarden/kandidaat-standaard/vocabularium-en-applicatieprofiel-oslo-waterkwaliteit.html).
+# Convert NGSI-v2 State Objects to OSLO Version Objects
+This test verifies the convertion towards OSLO models, more specific, it demonstrates converting the [NGSI water quality model](https://github.com/smart-data-models/dataModel.WaterQuality) into its [OSLO model](https://data.vlaanderen.be/standaarden/kandidaat-standaard/vocabularium-en-applicatieprofiel-oslo-waterkwaliteit.html). The test uses a similar setup as the [NGSI-v2 to NGSI-LD conversion test](../014.nifi-workbench-ngsi-v2-to-ngsi-ld/README.md) but adds an additional component in the Apache NiFi workflow to convert the NGSI-LD to the OSLO model. This conversion happens after converting the incoming NGSI-v2 model to the NGSI-LD model and before creating a version object and sending that to an LDES server.
 
-The test uses a similar setup as the [NGSI-v2 to NGSI-LD conversion test](../3.ngsi-v2-to-ldes/README.md) but adds an additional component in the Apache NiFi workflow to convert the NGSI-LD to the OSLO model. This conversion happens after converting the incoming NGSI-v2 model to the NGSI-LD model and before creating a version object and sending that to an LDES server.
-
-The conversion from NGSI-LD to OSLO is a JSON-to-JSON format conversion and can be done using a standard Apache NiFi component ([JOLT](https://jolt-demo.appspot.com/#inception) transform [processor](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/1.17.0/org.apache.nifi.processors.standard.JoltTransformJSON/index.html)).
-
+The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done using a custom Apache NiFi component ([Sparql Construct](https://www.w3.org/TR/rdf-sparql-query/#construct) processor).
 
 ## Test Setup
-To setup this test, you need to configure your environment file, launch the systems and verify the initial state.
+> **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-### Configure Environment File
-If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+1. Run all systems except the workflow by executing the following (bash) command:
+    ```bash
+    docker compose up -d
+    ```
+    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Started Application in`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-models$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-devices$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-observations$")
+    ```
+    Press `CTRL-C` to stop following each log.
 
-### Launch Systems
-You can start all the required systems except for the observations generator using command:
-```bash
-docker compose up -d
-```
-> **Note**: it may take a minute for all the servers to start.
-
-### Verify Initial State
-Once the LDES servers are launched, you can verify that the initial LDES'es are empty:
-```bash
-curl http://localhost:8072/device-models/by-time
-curl http://localhost:8071/devices/by-time
-curl http://localhost:8073/water-quality-observations/by-time
-```
-returns:
-```
-@prefix device-models: <http://localhost:8072/device-models/> .
-@prefix ldes:          <https://w3id.org/ldes#> .
-@prefix prov:          <http://www.w3.org/ns/prov#> .
-@prefix terms:         <http://purl.org/dc/terms/> .
-@prefix tree:          <https://w3id.org/tree#> .
-
-<http://localhost:8072/device-models>
-        a                   ldes:EventStream ;
-        ldes:timestampPath  prov:generatedAtTime ;
-        ldes:versionOfPath  terms:isVersionOf ;
-        tree:view           device-models:by-time .
-
-device-models:by-time
-        a       tree:Node .
-
-----------------------------------------------------------
-
-@prefix devices: <http://localhost:8071/devices/> .
-@prefix ldes:    <https://w3id.org/ldes#> .
-@prefix prov:    <http://www.w3.org/ns/prov#> .
-@prefix terms:   <http://purl.org/dc/terms/> .
-@prefix tree:    <https://w3id.org/tree#> .
-
-devices:by-time  a  tree:Node .
-
-<http://localhost:8071/devices>
-        a                   ldes:EventStream ;
-        ldes:timestampPath  prov:generatedAtTime ;
-        ldes:versionOfPath  terms:isVersionOf ;
-        tree:view           devices:by-time .
-
-----------------------------------------------------------
-
-@prefix ldes:                       <https://w3id.org/ldes#> .
-@prefix prov:                       <http://www.w3.org/ns/prov#> .
-@prefix terms:                      <http://purl.org/dc/terms/> .
-@prefix tree:                       <https://w3id.org/tree#> .
-@prefix water-quality-observations: <http://localhost:8073/water-quality-observations/> .
-
-<http://localhost:8073/water-quality-observations>
-        a                   ldes:EventStream ;
-        ldes:timestampPath  prov:generatedAtTime ;
-        ldes:versionOfPath  terms:isVersionOf ;
-        tree:view           water-quality-observations:by-time .
-
-water-quality-observations:by-time
-        a       tree:Node .
-```
+2. Verify that the empty LDES views can be retrieved:
+    ```bash
+    curl http://localhost:8072/device-models/by-time
+    curl http://localhost:8071/devices/by-time
+    curl http://localhost:8073/water-quality-observations/by-time
+    ```
 
 ## Test Execution
-In order to execute the test, you need to load & configure a workflow and send some test data.
+1. [Logon to Apache NiFi](../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../_nifi-workbench/README.md#start-a-workflow).
 
-### Load & Configure Workflow
-Please logon to the Apache Nifi system at https://localhost:8443/nifi and add the [workflow](./nifi-workflow.json) (see [here](../../../support/context/workflow/README.md#creating-a-workflow) for details).
+    The workflow contains three flows with a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI-LD translator, the NiFi processor creating NGSI-LD version objects and a standard InvokeHTTP processor to send the LDES members to the corresponding LDES server.
 
-We have already added the provided JOLT specifications for [models](./data/transforms/device-model.jolt-transform.json), [devices](./data/transforms/device.jolt-transform.json) and water quality [observations](./data/transforms/wqo.jolt-transform.json) into the correct JOLT processor's `Jolt Specification` property.
+2. Verify that the NiFi HTTP listeners are ready (they should answer `OK`):
+    ```bash
+    curl http://localhost:9013/ngsi/device-model/healthcheck
+    curl http://localhost:9012/ngsi/device/healthcheck
+    curl hhttp://localhost:9014/ngsi/water-quality-observed/healthcheck
+    ```
 
-In addition, for the observations we added the [JOLT specification to add a WKT](./data/transforms/asWkt.jolt-transform.json) as the second JOLT transform because the OSLO model can not handle geojson.
+3. Send test data by using the following commands:
+    ```bash
+    curl -X POST http://localhost:9013/ngsi/device-model -H 'Content-Type: application/json' -d '@data/device-model.json' 
+    curl -X POST http://localhost:9012/ngsi/device -H 'Content-Type: application/json' -d '@data/device.json' 
+    ```
+   To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
+    ```bash
+    docker compose up json-data-generator -d
+    ```
 
-Start the workflow and verify that the workflow's HTTP listeners are ready to accept entities.
-* http://localhost:9013/ngsi/device-model/healthcheck
-* http://localhost:9012/ngsi/device/healthcheck
-* http://localhost:9014/ngsi/water-quality-observed/healthcheck
+4. Verify all LDES streams
 
-### Send Test Data
-To send a test model and a test device execute the following commands:
-```bash
-curl -X POST http://localhost:9013/ngsi/device-model -H 'Content-Type: application/json' -d '@data/device-model.json' 
-curl -X POST http://localhost:9012/ngsi/device -H 'Content-Type: application/json' -d '@data/device.json' 
-```
+    To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
+     ```bash
+     curl http://localhost:8072/device-models/by-time
+     curl http://localhost:8071/devices/by-time
+     curl http://localhost:8073/water-quality-observations/by-time
+     ```
 
-To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
-```bash
-docker compose up json-data-generator -d
-```
+     > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
-## Test Validation
-To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
-```bash
-curl http://localhost:8072/device-models/by-time
-curl http://localhost:8071/devices/by-time
-curl http://localhost:8073/water-quality-observations/by-time
-```
-
-## Test Cleanup
-To clean up the test, please stop all systems:
+## Test Teardown
+First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
 docker compose stop json-data-generator
 docker compose --profile delay-started down
 ```
+
+## C4 Diagrams
+
+### Context
+![context](./artwork/iow-as-is.context.png)
+
+### Container
+![container](./artwork/iow-as-is.container.png)
+
+### Component
+![component](./artwork/iow-as-is.component.png)

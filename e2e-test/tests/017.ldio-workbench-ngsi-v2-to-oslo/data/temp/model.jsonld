@@ -1,0 +1,50 @@
+{ 
+  "@context" : [ "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld" ],
+  "id" : "urn:ngsi-v2:cot-imec-be:devicemodel:imec-iow-sensor-v0005" ,
+  "type" : "DeviceModel" ,
+  "brandName" : {
+      "value" : "imec" ,
+      "type" : "Property"
+    } ,
+  "category" : {
+      "value" : [ "sensor" ] ,
+      "type" : "Property"
+    } ,
+  "controlledProperty" : {
+      "value" : [ 
+          "temperature" ,
+          "conductivity" ,
+          "pH" ,
+          "nitrate"
+        ] ,
+      "type" : "Property"
+    } ,
+  "function" : {
+      "value" : [ "sensing" ] ,
+      "type" : "Property"
+    } ,
+  "iow_tags" : {
+      "value" : [ "wqmd_sensor" ] ,
+      "type" : "Property"
+    } ,
+  "manufacturerName" : {
+      "value" : "IMEC NL" ,
+      "type" : "Property"
+    } ,
+  "maxTimeBetweenObservations" : {
+      "value" : 60 ,
+      "type" : "Property"
+    } ,
+  "modelName" : {
+      "value" : "iow-sensor-v0005" ,
+      "type" : "Property"
+    } ,
+  "supportedUnits" : {
+      "value" : [ 
+          "CEL" ,
+          "D10" ,
+          "Q30"
+        ] ,
+      "type" : "Property"
+    }
+}

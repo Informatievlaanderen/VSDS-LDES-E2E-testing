@@ -26,7 +26,7 @@ run: ## Run the containers
 stop: ## Stop the running containers
 	@docker compose --env-file ${ENV_FILE} down
 
-login: ## Login to the LDES Workbench Nifi container
+login: ## Login to the NiFi Workbench container
 	@docker exec -ti ${USECASE_NAME}_ldes-workbench-nifi /bin/bash
 
 extract: ## Extract the LDES Client state database from the docker image

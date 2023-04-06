@@ -2,7 +2,7 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Member, sosa } from '../ldes';
 import { LdesServer } from "../services";
-import { workbench, mongo, testPartialPath } from "./common_step_definitions";
+import { workbenchNifi, mongo, testPartialPath } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 const devicesServer = new LdesServer('http://localhost:8071', 'ldes-server-devices');
@@ -18,12 +18,12 @@ Given('the IoW LDES servers are available', () => {
 })
 
 Given('I started the workflow', () => {
-    workbench.pushStart();
+    workbenchNifi.pushStart();
 })
 
 Given('the {string} ingest endpoint is ready', (baseName: string) => {
     const port = baseName === 'device' ? 9012 : 9013;
-    workbench.waitIngestEndpointAvailable(`http://localhost:${port}/ngsi/${baseName}`);
+    workbenchNifi.waitIngestEndpointAvailable(`http://localhost:${port}/ngsi/${baseName}`);
 })
 
 // When stuff
@@ -82,26 +82,11 @@ Then('the root fragment contains a correct NGSI-LD device model version', () => 
     validateVersionAndTime(member);
 });
 
-Then('the root fragment contains a dummy OSLO device model version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
-    const member = rootFragment.members[0];
-    logMember(member);
-    validateType(member, 'http://sample.org/DeviceModel');
-    validateVersionAndTime(member);
-});
-
 Then('the root fragment contains a correct NGSI-LD device version', () => {
     expect(rootFragment.memberCount).to.equal(1);
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/Device');
-    validateVersionAndTime(member);
-});
-
-Then('the root fragment contains a correct OSLO device version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
-    const member = rootFragment.members[0];
-    validateType(member, 'http://www.w3.org/ns/sosa/Sensor');
     validateVersionAndTime(member);
 });
 

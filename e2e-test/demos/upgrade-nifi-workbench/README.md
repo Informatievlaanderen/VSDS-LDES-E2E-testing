@@ -1,10 +1,10 @@
 # Upgrading a LDES NiFi Workbench
 This test verifies the upgrade procedure for a LDES NiFi Workbench in a typical scenario where messages are being pushed to the workflow. We do not want to interrupt the inflow of data as some system (such as Orion) cannot buffer the messages and consequently we would loose some during the upgrade process.
 
-This test uses a docker environment a data generator simulating the system pushing data, an old LDES workbench, a new LDES workbench, a LDES server setup for timebased fragmentation and a LDES data store (mongoDB).
+This test uses a docker environment a data generator simulating the system pushing data, an old NiFi workbench, a new NiFi workbench, a LDES server setup for timebased fragmentation and a LDES data store (mongoDB).
 
 ## Test setup
-1. Launch all systems except for the new LDES workbench and JSON data generator:
+1. Launch all systems except for the new NiFi workbench and JSON data generator:
 ```bash
 docker compose up -d
 ```

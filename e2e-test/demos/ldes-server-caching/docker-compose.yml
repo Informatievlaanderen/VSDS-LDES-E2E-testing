@@ -1,9 +1,11 @@
 version: '3.3'
 services:
+
   ldes-server:
     container_name: ${USECASE_NAME:-setup-caching}_ldes-server
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-server:${LDES_SERVER_TAG:-20230214t1234}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=gipod
@@ -27,6 +29,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-setup-caching}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -34,6 +37,7 @@ services:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+
   nginx:
     image: nginx:${NGINX_TAG:-1.23.3}
     container_name: ${USECASE_NAME:-setup-caching}_nginx
@@ -45,15 +49,20 @@ services:
       - ldes-server
     networks:
       - ldes
-  ldes-cli:
-    image: ${DOCKER_REPO:-ghcr.io/informatievlaanderen}/ldes-cli:${LDES_CLIENT_CLI_TAG:-20230206t0943}
-    container_name: ${USECASE_NAME:-setup-caching}_ldes-client-cli
-    command: "--url http://localhost:${NGINX_PORT:-8080}/${COLLECTION_NAME:-mobility-hindrances}/${VIEW_NAME:-by-time} --input-format text/turtle"
+    
+  ldio-workflow:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-setup-caching}_ldio-workflow
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
+    networks:
+      - ldes
     profiles:
-      - delayed-started
+      - delay-started
     # use the network stack of the nginx service so that 
     # localhost refers to nginx and we can follow the LDES stream both from the host as from within the CLI
     network_mode: service:nginx
+
 networks:
   ldes:
     name: ${USECASE_NAME:-setup-caching}_network

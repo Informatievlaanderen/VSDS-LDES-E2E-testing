@@ -22,10 +22,10 @@ In addition, you need to retrieve the docker images that will be used in the aut
 ./get-latest-docker-images.sh
 ```
 
-### Use Default Docker Compose Tags
-By default, the automatic tests are run against the latests docker images but you can specify to use the default tags provided in the docker compose files. These are typically the tags of the docker images of the previous sprint. To use the default tags you need to add an environment variable (`--env useDefaultTags=true`):
+### Use Custom Docker Compose Tags
+By default, the automatic tests are run against the latests docker images but you can specify to use a different set of tags. These are typically the tags of the docker images of the previous sprint. To use your tags you need to add an environment variable which refers to a custom .env file (`--env useTags=<full-or-partial-path-to-user-env>`):
 ```bash
-npm run test -- --env useDefaultTags=true
+npm run test -- --env useTags="./previous-tags.env"
 ```
 
 ### Run All Tests
@@ -43,7 +43,7 @@ To run a part of the tests you can provide a feature file (or a collection of fe
 npm run test:one -- cypress/e2e/caching*.feature
 ```
 
-If you want to run one feature file containing a few related tests with the default tags you can use the following syntax:
+If you want to run one feature file containing a few related tests with custom tags you can use the following syntax:
 ```bash
-npm run test:one -- cypress/e2e/caching.feature --env useDefaultTags=true
+npm run test:one -- cypress/e2e/caching.feature --env useTags="./previous-tags.env"
 ```

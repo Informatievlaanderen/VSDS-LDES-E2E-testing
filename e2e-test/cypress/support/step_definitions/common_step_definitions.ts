@@ -1,22 +1,25 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { difference } from "cypress/types/lodash";
 import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
-    MongoRestApi, JsonDataGenerator, LdesServer
+    MongoRestApi, JsonDataGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
+import { ClientCli } from "../services/client-cli";
+import { Fragment } from "../ldes";
 
 let testContext: any;
 
-export const dockerCompose = new DockerCompose(Cypress.env('useDefaultTags'));
-export const workbench = new LdesWorkbenchNiFi('http://localhost:8000')
+export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
+export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
+export const workbenchLdio = new LdesWorkbenchLdio();
 export const sink = new LdesClientSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
+export const clientCli = new ClientCli();
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -42,6 +45,10 @@ export function testPartialPath() {
     return testContext && testContext.testPartialPath;
 }
 
+export function ensureRelationCount(fragment: Fragment, amount: number) {
+    return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
+}
+
 // Given stuff
 
 Given('the members are stored in collection {string} in database {string}', (collection: string, database: string) => {
@@ -55,8 +62,8 @@ Given('the {string} test is setup', (testPartialPath: string) => {
 });
 
 Given('context {string} is started', (composeFilePath: string) => {
-    if(!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
-    
+    if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
+
     const options: DockerComposeOptions = {
         dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,
@@ -65,19 +72,19 @@ Given('context {string} is started', (composeFilePath: string) => {
     dockerCompose.up(options);
 })
 
-Given('the LDES workbench is available', () => {
-    workbench.waitAvailable();
-    workbench.load();
+Given('the NiFi workbench is available', () => {
+    workbenchNifi.waitAvailable();
+    workbenchNifi.load();
 });
 
 Given('I have uploaded the workflow', () => {
-    workbench.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
     simulator.waitAvailable();
     simulator.seed(Cypress.env('gipodDataSet'));
-    simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
+    simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
 })
 
 Given('I have uploaded the data files: {string}', (dataSet: string) => {
@@ -92,11 +99,11 @@ Given('I have uploaded the data files: {string} with a duration of {int} seconds
 
 Given('I have aliased the data set', () => {
     simulator.waitAvailable();
-    simulator.postAlias(`${testContext.testPartialPath}/create-alias.json`);
+    simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
 })
 
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
-        testContext.additionalEnvironmentSetting[property] = value;
+    testContext.additionalEnvironmentSetting[property] = value;
 }
 
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
@@ -111,10 +118,22 @@ Given('the LDES Server Simulator is available', () => {
     simulator.waitAvailable();
 })
 
+Given('the LDIO workflow is available', () => {
+    workbenchLdio.waitAvailable()
+})
+
 // When stuff
 
-When('I start the workflow', () => {
-    workbench.pushStart();
+When('I launch the Client CLI', () => {
+    createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
+})
+
+When('I start the NiFi workflow', () => {
+    workbenchNifi.pushStart();
+})
+
+When('I start the LDIO workflow', () => {
+    createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
@@ -133,6 +152,14 @@ When('I start the JSON Data Generator', () => {
         .then(() => jsonDataGenerator.waitAvailable());
 })
 
+When('the LDES contains {int} members', (count: number) => {
+    mongo.checkCount(testContext.database, testContext.collection, count);
+})
+
+When('the LDES contains {int} fragments', (count: number) => {
+    mongo.checkCount(testContext.database, 'ldesfragment', count);
+})
+
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
 })
@@ -142,14 +169,11 @@ When('I start the GTFS2LDES service', () => {
         .then(() => gtfs2ldes.waitAvailable());
 })
 
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {
     sink.checkCount('mobility-hindrances', count);
-})
-
-Then('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, testContext.collection, count);
 })
 
 export function currentMemberCount() {
@@ -158,4 +182,8 @@ export function currentMemberCount() {
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
+})
+
+Then('the Client CLI contains {int} members', (count: number) => {
+    clientCli.checkCount(count);
 })

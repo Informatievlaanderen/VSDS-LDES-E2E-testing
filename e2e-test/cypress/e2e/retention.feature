@@ -1,26 +1,23 @@
 Feature: Basic retention
 
-Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/gtfs-and-rt/6.basic-retention 
-
-  Scenario: LDES Server Provides a Very Basic Retention Mechanism
+@gtfs @test-012
+  Scenario: 012: Server Provides a Basic Retention Mechanism
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'
     And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
     And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'
     And I have configured the 'VIEWS_1_MEMBERLIMIT' as '300'
-    And context 'use-cases/gtfs-and-rt/6.basic-retention' is started
+    And context 'tests/012.server-provide-basic-retention' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
-    And I have aliased the data set    
-    And the LDES workbench is available
-    And I have uploaded the workflow
+    And I have aliased the data set
     And the LDES server is available
 
     Then the LDES contains 0 members
     And the LDES has a view 'V' named 'by-short-time'
     And the LDES has a view 'W' named 'by-longer-time'
     
-    When I start the workflow
+    When I start the LDIO workflow
     And the LDES contains 501 members
     And I refresh view 'V'
     And I refresh view 'W'
@@ -49,7 +46,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     Then view 'V' links to 'mutable' fragment 'D' containing 51 members
     And view 'W' links to 'mutable' fragment 'G' containing 201 members
 
-    When I have uploaded the data files: 'delta,epsilon'
+    When I have uploaded the data files: 'delta,epsilon' with a duration of 10 seconds
     And the LDES contains 317 members
     And I refresh view 'V'
     And I refresh view 'W'
@@ -61,7 +58,7 @@ Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-t
     When fragment 'D' is deleted and returns HTTP code 410
     And fragment 'G' is deleted and returns HTTP code 410
     # Note that we do not know when the retention algorithm runs, so we wait until members are purged 
-    And the LDES contains 17 members
+    Then the LDES contains 17 members
     And I refresh view 'V'
     And I refresh view 'W'
     And view 'V' links to 'mutable' fragment 'H' containing 17 members

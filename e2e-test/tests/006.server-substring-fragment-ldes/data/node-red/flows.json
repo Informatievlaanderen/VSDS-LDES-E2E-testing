@@ -1,0 +1,124 @@
+[
+    {
+        "id": "b7879bd9ee1b7481",
+        "type": "tab",
+        "label": "Pre-process GRAR messages",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d620daf8c93c145f",
+        "type": "http in",
+        "z": "b7879bd9ee1b7481",
+        "name": "Listen for GRAR addresses",
+        "url": "/grar/addresses",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "5202db45cda129d3",
+                "6ef387902f37eb6d"
+            ]
+        ]
+    },
+    {
+        "id": "5202db45cda129d3",
+        "type": "http response",
+        "z": "b7879bd9ee1b7481",
+        "name": "HTTP Response OK",
+        "statusCode": "200",
+        "headers": {},
+        "x": 440,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6ef387902f37eb6d",
+        "type": "function",
+        "z": "b7879bd9ee1b7481",
+        "name": "Split messages",
+        "func": "const messages = msg.payload.map(x => ({ payload: x }));\nreturn [messages];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 140,
+        "wires": [
+            [
+                "edb8fce9447c711c"
+            ]
+        ]
+    },
+    {
+        "id": "edb8fce9447c711c",
+        "type": "function",
+        "z": "b7879bd9ee1b7481",
+        "name": "GRAR Supporting Wheel - Broken Context and SRS name",
+        "func": "const broken = JSON.stringify(msg.payload);\nconst fixed = broken\n    .replaceAll(\n        \"https://docs.basisregisters.staging-vlaanderen.be/context/adres/2022-10-17/adres_detail.jsonld\",\n        \"https://essentialcomplexity.eu/adres_detail.jsonld\")\n    .replaceAll(\n        \"https://www.opengis.net/def/crs/EPSG/0/31370\",\n        \"http://www.opengis.net/def/crs/EPSG/0/31370\");\nmsg.payload = fixed;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 140,
+        "wires": [
+            [
+                "7a99be9163c21991",
+                "0173751c0751fab9"
+            ]
+        ]
+    },
+    {
+        "id": "7a99be9163c21991",
+        "type": "http request",
+        "z": "b7879bd9ee1b7481",
+        "name": "Send to GRAR pipeline",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://ldio-workflow:8080/grar-pipeline",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/ld+json"
+            }
+        ],
+        "x": 1110,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0173751c0751fab9",
+        "type": "debug",
+        "z": "b7879bd9ee1b7481",
+        "name": "Display message",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 200,
+        "wires": []
+    }
+]

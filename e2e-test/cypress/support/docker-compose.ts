@@ -17,33 +17,12 @@ export class DockerCompose {
     private _environmentFile: string;
     private _environment: object
 
-    constructor(private useDefaultTags: boolean) { }
+    constructor(private userEnvironment: EnvironmentSettings) { }
 
     public initialize() {
-        this._environment = this.initialEnvironment;
+        this._environment = this.userEnvironment || {};
         this._environmentFile = '';
         this._isUp = false;
-    }
-
-    private get initialEnvironment() {
-        const latestTags = {
-            // Use latest tags
-            GTFS2LDES_TAG: 'latest',
-            JSON_DATA_GENERATOR_TAG: 'latest',
-            LDES_CLIENT_CLI_TAG: 'latest', // OBSOLETE
-            LDES_CLIENT_SINK_TAG: 'latest',
-            LDES_SERVER_SIMULATOR_TAG: 'latest',
-            LDES_SERVER_TAG: 'latest',
-            LDES_WORKBENCH_NIFI_TAG: 'latest', // OBSOLETE
-            LDI_WORKBENCH_NIFI_TAG: 'latest',
-            LDI_ORCHESTRATOR_TAG: 'main', // TODO: change to latest
-            MONGODB_REST_API_TAG: 'latest',
-            NIFI_TAG: 'latest',
-            MONGODB_TAG: 'latest',
-            NGINX_TAG: 'latest',
-        }
-
-        return this.useDefaultTags ? {} : { ...latestTags };
     }
 
     public up(options: Partial<DockerComposeOptions>) {
@@ -64,12 +43,10 @@ export class DockerCompose {
 
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} up -d`;
-        return cy.log(`Using latest tags: ${!this.useDefaultTags}`)
-            .log(command)
-            .exec(command, { log: true, env: this._environment }).then(result => {
-                this._isUp = result.code === 0;
-                return result;
-            });
+        return cy.log(command).exec(command, { log: true, env: this._environment }).then(result => {
+            this._isUp = result.code === 0;
+            return result;
+        });
     }
 
     public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
@@ -81,7 +58,9 @@ export class DockerCompose {
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} create ${serviceName}`;
-        return cy.log(command).exec(command, { log: true, env: this._environment })
+        return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : '')
+            .log(command)
+            .exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }
 

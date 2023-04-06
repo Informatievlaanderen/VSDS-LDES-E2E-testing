@@ -1,0 +1,48 @@
+services:
+
+  ldes-server-simulator:
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-gipod-synchronize-ldes}_ldes-server-simulator
+    environment:
+      - BASEURL=http://ldes-server-simulator
+    ports:
+      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
+    networks:
+      - ldes
+
+  ldio-workflow:
+    container_name: ${USECASE_NAME:-gipod-synchronize-ldes}_ldio-workflow
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  ldes-client-sink:
+    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-latest}
+    container_name: ${USECASE_NAME:-gipod-synchronize-ldes}_ldes-client-sink
+    environment:
+      - MEMORY=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+      - SILENT=${LDES_CLIENT_SINK_SILENT:-true}
+      - DATABASE_NAME=gipod
+      - COLLECTION_NAME=mobility-hindrances
+      - MEMBER_TYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
+    ports:
+      - ${LDES_CLIENT_SINK_PORT:-9003}:80
+    networks:
+      - ldes
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-gipod-synchronize-ldes}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-gipod-synchronize-ldes}_network

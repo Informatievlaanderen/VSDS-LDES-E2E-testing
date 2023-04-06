@@ -4,7 +4,7 @@
   "description": "Automated E2E tests using cypress and cucumber",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:all",
+    "test": "cypress run --spec \"**/*.features,**/*.feature\" --env tags=\"not @broken\"",
     "test:all": "cypress run --spec \"**/*.features,**/*.feature\"",
     "test:one": "cypress run --spec ",
     "open": "cypress open"

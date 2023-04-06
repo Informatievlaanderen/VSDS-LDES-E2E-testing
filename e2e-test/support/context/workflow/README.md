@@ -10,9 +10,8 @@ To setup the context, copy the `.env` file into an `user.env` and specify the mi
 Optionally, you can also specify different (external) port numbers for the components and other overridable variables:
 * SINGLE_USER_CREDENTIALS_USERNAME (Apache NiFi single user credentials - user name, default: `e2etest`)
 * SINGLE_USER_CREDENTIALS_PASSWORD (Apache NiFi single user credentials - password, default: `e2etest2022DEMO`)
-* LDES_WORKBENCH_NIFI_TAG (default `20230214t123440`)
 * USECASE_NAME (default: `workflow`)
-* NIFI_UI_PORT (default: `8443`)
+* NIFI_UI_PORT (default: `8000`)
 * NIFI_WORKFLOW_LISTEN_PORT (default: `9005`)
 
 ## Run the System

@@ -11,7 +11,7 @@ docker compose up -d
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
 ```bash
-echo http://old-nifi-workflow:9012/ngsi/device > ./data/TARGETURL
+echo http://old-ldio:8080/pipeline > ./data/TARGETURL
 docker compose up json-data-generator -d
 ```
 
@@ -32,28 +32,30 @@ docker compose up new-ldio -d
 
 2. Stop data generator, change destination path (TARGETURL) to new http-in and restart data generator:
 ```bash
-echo http://new-nifi-workflow:9012/ngsi/device > ./data/TARGETURL
+curl http://localhost:8082/admin/api/v1/pipeline/halt -X POST
+echo http://new-ldio:8080/pipeline > ./data/TARGETURL
 ```
 
 3. Ensure all data sent to LDES server (i.e. member count does not change) and bring old workbench down:
 ```bash
+curl http://localhost:9019/iow_devices/ldesmember
 docker compose stop old-ldio
-docker compose rm --force --volumes old-ldio
+docker compose rm -v -f old-ldio
 ```
 
 4. Verify that members are available in LDES and find last fragment (i.e. mutable):
 ```bash
-docker compose up ldes-list-fragments -d
-sleep 3 # ensure stream has been followed up to the last fragment
-export LAST_FRAGMENT=$(docker logs --tail 1 $(docker ps -q --filter "name=ldes-list-fragments$"))
-curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
 ```
 
 5. Resume new LDI-output
+```bash
+curl http://localhost:8082/admin/api/v1/pipeline/resume -X POST
+```
 
 6. Verify last fragment member count increases:
 ```bash
-curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
 ```
 
 7. Verify data store member count increases (execute repeatedly):

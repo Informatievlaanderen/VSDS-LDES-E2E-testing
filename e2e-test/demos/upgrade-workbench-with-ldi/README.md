@@ -17,7 +17,7 @@ docker compose up json-data-generator -d
 
 3. Verify that members are available in the LDES:
 ```bash
-curl http://localhost:8080/devices-by-time
+curl http://localhost:8080/devices/by-page
 ```
 and that the data store member count increases (execute repeatedly):
 ```bash

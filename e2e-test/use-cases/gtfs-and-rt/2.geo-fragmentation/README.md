@@ -56,7 +56,7 @@ Run all systems except the workflow by executing the following (bash) command:
 ```bash
 docker compose up -d
 ```
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Started Application in`:
 ```bash
 docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```

@@ -65,12 +65,10 @@ services:
       - VIEWS_0_FRAGMENTATIONS_0_NAME=substring
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
       - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=https://data.vlaanderen.be/ns/adres#volledigAdres
-
       # Additional view time-based
       - VIEWS_1_NAME=by-time
       - VIEWS_1_FRAGMENTATIONS_0_NAME=timebased
       - VIEWS_1_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
-      
       # Additional view geo-spatial
       - VIEWS_2_NAME=by-location-and-time
       - VIEWS_2_FRAGMENTATIONS_0_NAME=geospatial
@@ -79,7 +77,6 @@ services:
       - VIEWS_2_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=${GEOSPATIAL_MAXZOOMLEVEL:-13}
       - VIEWS_2_FRAGMENTATIONS_1_NAME=timebased
       - VIEWS_2_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=${LDES_SERVER_MEMBERLIMIT:-10}
-
     volumes:
       - ../../../data/epsg:/tmp/Databases:rw
     ports:

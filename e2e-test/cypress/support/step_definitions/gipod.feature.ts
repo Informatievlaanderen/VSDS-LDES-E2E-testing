@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment } from '../ldes';
-import { server } from "./common_step_definitions";
+import { ensureRelationCount, server } from "./common_step_definitions";
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
@@ -27,14 +27,17 @@ Then('the middle fragment is immutable', () => {
 Then('the middle fragment only has a {string} to the first and last fragments', (type: string) => {
     middleFragment.expectNoOtherRelationThan(type);
 
-    const urls = middleFragment.expectMultipleRelationOf(type, 2).map(x => x.link);
-    expect(urls).to.contain(firstFragment.url);
-
-    const other = urls.find(x => x !== firstFragment.url);
-    expect(other).not.to.be.undefined;
-
-    // cast is safe as expect guards that other is not undefined
-    new Fragment(other as string).visit().then(fragment => lastFragment = fragment);
+    const expectedCount = 2;
+    ensureRelationCount(middleFragment, expectedCount).then(() => {
+        const urls = middleFragment.expectMultipleRelationOf(type, expectedCount).map(x => x.link);
+        expect(urls).to.contain(firstFragment.url);
+    
+        const other = urls.find(x => x !== firstFragment.url);
+        expect(other).not.to.be.undefined;
+    
+        // cast is safe as expect guards that other is not undefined
+        new Fragment(other as string).visit().then(fragment => lastFragment = fragment);
+    });
 })
 
 Then('the middle fragment only has a {string} to the first fragment', (type: string) => {

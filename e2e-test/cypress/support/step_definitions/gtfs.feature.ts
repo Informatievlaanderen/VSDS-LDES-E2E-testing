@@ -1,6 +1,6 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { currentMemberCount, gtfs2ldes, server, setAdditionalEnvironmentSetting, workbenchNifi } from "./common_step_definitions";
+import { currentMemberCount, ensureRelationCount, gtfs2ldes, server, setAdditionalEnvironmentSetting, workbenchNifi } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 let timebasedFragment: Fragment;
@@ -45,7 +45,11 @@ Then('the geo-spatial fragment {string} contains the member', (tile: string) => 
 })
 
 Then('the multi-view root fragment contains multiple relations of type {string}', (relationType: string) => {
-    relations = rootFragment.expectMultipleRelationOf(relationType, 4);
+    const expectedCount = 4;
+    ensureRelationCount(rootFragment, expectedCount).then(() => {
+        relations = rootFragment.expectMultipleRelationOf(relationType, expectedCount);
+    });
+
 })
 
 Then('the geo-spatial fragmentation exists in the connections LDES', () => {
@@ -75,11 +79,15 @@ Then('the geo-spatial fragment {string} has a second level timebased fragmentati
 })
 
 Then('the geo-spatial root fragment contains {int} relations of type {string}', (amount: number, relationType: string) => {
-    relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+    ensureRelationCount(rootFragment, amount).then(() => {
+        relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+    });
 })
 
 Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
-    relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+    ensureRelationCount(rootFragment, amount).then(() => {
+        relations = rootFragment.expectMultipleRelationOf(relationType, amount);
+    });
 })
 
 function validateSentCount() {
@@ -94,7 +102,6 @@ function validateSentCount() {
             return counts.sentCount;
         })
     );
-
 }
 
 Then('the LDES server can ingest {int} linked connections within {int} seconds checking every {int} seconds',

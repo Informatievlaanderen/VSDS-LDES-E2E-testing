@@ -6,6 +6,7 @@ import {
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { ClientCli } from "../services/client-cli";
+import { Fragment } from "../ldes";
 
 let testContext: any;
 
@@ -42,6 +43,10 @@ After(() => {
 
 export function testPartialPath() {
     return testContext && testContext.testPartialPath;
+}
+
+export function ensureRelationCount(fragment: Fragment, amount: number) {
+    return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
 }
 
 // Given stuff

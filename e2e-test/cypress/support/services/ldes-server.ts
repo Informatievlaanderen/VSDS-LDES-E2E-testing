@@ -13,7 +13,7 @@ export class LdesServer implements CanCheckAvailability {
 
     private isReady(containerId: string, message?: string) {
         return cy.exec(`docker logs ${containerId}`)
-            .then(result => result.stdout.includes(message || "Started Application in"));
+            .then(result => result.stdout.includes(message || "Mongock has finished"));
     }
 
     waitAvailable(message?: string) {

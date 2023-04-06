@@ -1,14 +1,13 @@
 Feature: Basic retention
 
-Implements test found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/gtfs-and-rt/6.basic-retention 
-
-  Scenario: LDES Server Provides a Very Basic Retention Mechanism
+@gtfs @test-012
+  Scenario: 012: Server Provides a Basic Retention Mechanism
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'
     And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
     And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'
     And I have configured the 'VIEWS_1_MEMBERLIMIT' as '300'
-    And context 'use-cases/gtfs-and-rt/6.basic-retention' is started
+    And context 'tests/012.server-provide-basic-retention' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set

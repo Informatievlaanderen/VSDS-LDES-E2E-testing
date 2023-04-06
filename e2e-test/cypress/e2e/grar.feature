@@ -1,12 +1,11 @@
 Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream available as LDES
 
-Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/grar
-
   Background:
     Given the members are stored in collection 'ldesmember' in database 'grar'
 
-  Scenario: Provide addresses as substring fragmentation
-    Given context 'use-cases/grar/1.addresses-substring-fragmentation' is started
+@grar @test-006
+  Scenario: 006: Server Can Substring Fragment an LDES
+    Given context 'tests/006.server-substring-fragment-ldes' is started
     And the LDES server is available
     When I start the LDIO workflow
     And the LDIO workflow is available

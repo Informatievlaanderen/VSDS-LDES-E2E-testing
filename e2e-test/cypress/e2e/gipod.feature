@@ -1,24 +1,26 @@
 Feature: GIPOD use case
-Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing/tree/main/e2e-test/use-cases/gipod
 
   Background: 
     Given the members are stored in collection 'ldesmember' in database 'gipod'
 
-  Scenario: Replicate LDES
-    Given context 'use-cases/gipod/1.replicate-ldes' is started
+@gipod @test-001
+  Scenario: 001: Client Can Replicate an LDES
+    Given context 'tests/001.client-replicate-ldes' is started
     And I have aliased the pre-seeded simulator data set
     When I start the LDIO workflow
     Then the sink contains 1016 members
 
-  Scenario: Ingest LDES
-    Given context 'use-cases/gipod/2.ingest-ldes' is started
+@gipod @test-002
+  Scenario: 002: Server Can Ingest a Small LDES
+    Given context 'tests/002.server-ingest-small-ldes' is started
     And I have aliased the pre-seeded simulator data set
     And the LDES server is available
     When I start the LDIO workflow
     Then the LDES contains 1016 members
 
-  Scenario: Synchronize LDES
-    Given context 'use-cases/gipod/3.synchronize-ldes' is started
+@gipod @test-003
+  Scenario: 003: Client Can Synchronize an LDES
+    Given context 'tests/003.client-synchronize-ldes' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
@@ -29,8 +31,9 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     When I upload the data files: 'epsilon' with a duration of 10 seconds
     Then the sink contains 617 members
 
-  Scenario: Time-Fragment LDES
-    Given context 'use-cases/gipod/4.time-fragment-ldes' is started
+@gipod @test-004
+  Scenario: 004: Server Can Time-Fragment an LDES
+    Given context 'tests/004.server-time-fragment-ldes' is started
     And I have uploaded the data files: 'alfa,beta,epsilon'
     And I have aliased the data set
     And the LDES server is available
@@ -44,8 +47,9 @@ Implements tests found at https://github.com/Informatievlaanderen/VSDS-LDES-E2E-
     And the last fragment is not immutable
     And the last fragment only has a 'LessThanOrEqualToRelation' to the middle fragment
 
-  Scenario: Fragment LDES Using Simple Pagination
-    Given context 'use-cases/gipod/5.paginate-ldes' is started
+@gipod @test-005
+  Scenario: 005: Server Can Paginate an LDES
+    Given context 'tests/005.server-paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
     And the LDES server is available

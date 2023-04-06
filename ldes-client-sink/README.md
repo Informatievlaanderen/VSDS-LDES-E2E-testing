@@ -1,4 +1,6 @@
 # E2E Client Sink
+> **Note**: this folder is **OBSOLETE**. The code has been move to its [own repository](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-sink).
+
 The E2E Client Sink is a small HTTP server used for E2E testing the LDES client NiFi processor.
 
 ## Docker

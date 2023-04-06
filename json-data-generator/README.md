@@ -1,4 +1,6 @@
 # JSON Data Generator
+> **Note**: this folder is **OBSOLETE**. The code has been move to its [own repository](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator).
+
 For the Internet of Water (IoW) use case, the Vlaamse Milieu Maatschappij (VMM) uses an [Orion Context Broker](https://fiware-orion.readthedocs.io/en/master/) to send [WaterQualityObserved object](https://fiware-datamodels.readthedocs.io/en/stable/Environment/WaterQualityObserved/doc/spec/index.html) updates to the systems which have an active [NGSI-v2 subscription](https://fiware.github.io/specifications/ngsiv2/stable/).
 
 This little component can act as a simple replacement for this broker and allows to send on regular time intervals some JSON data, based on a template that gets altered before sending based on a mapping.

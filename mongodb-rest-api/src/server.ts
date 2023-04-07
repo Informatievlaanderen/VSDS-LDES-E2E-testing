@@ -40,10 +40,20 @@ interface CountParameters {
   collection: string;
 }
 
-server.get('/:database/:collection', async (request, reply) => {
+interface Record {
+  _id: string; // required for MongoDB
+}
+
+server.get('/:database/:collection', { schema: { querystring: { includeIds: { type: 'string' } } } }, async (request, reply) => {
+  const queryString = (request.query as { includeIds: string });
+  const includeIds : boolean = (/true/i).test(queryString.includeIds);
   const parameters = request.params as CountParameters;
-  const count = await mongo.db(parameters.database).collection(parameters.collection).estimatedDocumentCount({});
-  reply.send({count: count});
+  const collection = mongo.db(parameters.database).collection(parameters.collection);
+  const count = await collection.estimatedDocumentCount({});
+  const ids = includeIds 
+    ? await collection.find<Record>({}, {}).sort({ _id: 1 }).toArray().then(x => x.map(x => x._id))  // get all IDs sorted ascending
+    : undefined ;
+  reply.send(includeIds ? {count: count, ids: ids} : {count: count});
 });
 
 async function closeGracefully(signal: any) {

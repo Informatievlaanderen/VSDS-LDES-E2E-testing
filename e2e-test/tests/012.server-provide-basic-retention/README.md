@@ -33,7 +33,7 @@ First we send `alfa`, `beta` and `gamma` to the simulator which should result in
 * a first view V with three immutable (forward-connected) fragments A, B and C each containing 150 items and one mutable fragment D holding 51 items
 * a second view W with one immutable fragment F with 300 items and one mutable fragment G with 201 items
 
-![2.initial-data-ingested](https://www.plantuml.com/plantuml/png/VP8nRuCm48Lt_ufJibL2WbGCOQY2SSr2fqemL1r8uX0aR2hZDEg_xs6AR589fdlVU_BT6Hy6Ksjpant1mWZOlFMgwHdTG3q0ex2zuBVVpsx1Nj-Xi6Onix8LToWjAnUiigoQ6TTr8uKoa5gUmhPhcwjfj13gNsOQWAvcCfl9LZDiMcGrmss6hsPocyaN6VBnz0b19oucUC6xcgGUVTG5AI0uztU5TJdMir6HqecKf4vGGft8IEO48vKJd70dSa8OJK0AUHHwI20E8soMm3V-09GxR9R0gVwgJwtvII2AGppA9yzXQ3DQ6DopxLK2mxNNHcWRz727BmDf2bwxyJpw2B97m7mGHpY_fyS1SX_iS8MnIIlbpTJ7JjWEJcKBPS_-g_d2oJtd8DGP7_al "2.initial-data-ingested")
+![2.initial-data-ingested](https://www.plant![img.png](img.png)uml.com/plantuml/png/VP8nRuCm48Lt_ufJibL2WbGCOQY2SSr2fqemL1r8uX0aR2hZDEg_xs6AR589fdlVU_BT6Hy6Ksjpant1mWZOlFMgwHdTG3q0ex2zuBVVpsx1Nj-Xi6Onix8LToWjAnUiigoQ6TTr8uKoa5gUmhPhcwjfj13gNsOQWAvcCfl9LZDiMcGrmss6hsPocyaN6VBnz0b19oucUC6xcgGUVTG5AI0uztU5TJdMir6HqecKf4vGGft8IEO48vKJd70dSa8OJK0AUHHwI20E8soMm3V-09GxR9R0gVwgJwtvII2AGppA9yzXQ3DQ6DopxLK2mxNNHcWRz727BmDf2bwxyJpw2B97m7mGHpY_fyS1SX_iS8MnIIlbpTJ7JjWEJcKBPS_-g_d2oJtd8DGP7_al "2.initial-data-ingested")
 
 *Fig. 2: initial data ingested*
 

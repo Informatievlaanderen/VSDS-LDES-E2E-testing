@@ -16,7 +16,7 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
     ```bash
     docker compose up -d
     ```
-    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Started Application in`:
+    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
     ```bash
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-models$")
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-devices$")

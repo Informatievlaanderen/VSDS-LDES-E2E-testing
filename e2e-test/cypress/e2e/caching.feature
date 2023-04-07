@@ -64,3 +64,16 @@ Feature: LDES Server Caching et al.
     And the LDES server is available
     When I request the view compressed
     Then I receive a zip file containing my view
+
+@gipod @test-019 @new
+  Scenario: 019: Verify Nginx Caching Responses
+    Given I have configured the 'MAX_AGE' as '10'
+    And context 'tests/019.server-supports-cacheability' is started
+    And the LDES server is available
+    When I request the LDES view
+    Then the LDES is not yet cached
+    When I request the LDES view
+    Then the LDES comes from the cache
+    When I wait 10 seconds for the cache to expire
+    And  I request the LDES view
+    Then the LDES is re-requested from the LDES server

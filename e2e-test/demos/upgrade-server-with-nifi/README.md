@@ -5,6 +5,8 @@ This test uses a docker environment containing a data generator simulating the s
 
 The server upgrade will include changesets that alter the database schema. We will also verify that these changes have been implemented.
 
+The server upgrade will include changesets that alter the database schema. We will also verify that these changes have been implemented.
+
 ## Test setup
 1. Launch all systems except for the new LDES server:
    ```bash

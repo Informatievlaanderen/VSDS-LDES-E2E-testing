@@ -9,7 +9,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     }
 
     private isReady(containerId: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Started Application in") || result.stderr.includes("Started Application in")); // TODO: remove stderr check once the LDIO logback issues are fixed
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Started Application in"));
     }
 
     waitAvailable() {

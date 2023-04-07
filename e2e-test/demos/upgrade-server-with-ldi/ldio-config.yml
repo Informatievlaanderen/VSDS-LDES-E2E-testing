@@ -1,0 +1,16 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: pipeline
+      description: "Simple http in http out pipeline allowing to pause output."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            content-type: application/n-quads
+            endpoint: http://ldes-server:8080/devices
+            

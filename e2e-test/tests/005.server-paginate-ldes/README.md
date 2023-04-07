@@ -15,7 +15,7 @@ So, the total data set contains 617 items. The LDES server is configured to crea
     ```bash
     docker compose up -d
     ```
-    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Started Application in`:
+    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
     ```bash
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```

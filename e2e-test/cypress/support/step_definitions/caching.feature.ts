@@ -88,3 +88,16 @@ When('I request the view compressed', () => {
 Then('I receive a zip file containing my view', () => {
     expect(execResult).to.include('Content-Encoding: gzip');
 })
+
+When ('I wait {int} seconds for the cache to expire', (timeout: number) => {
+    cy.wait(timeout * 1000);
+})
+
+Then('the LDES is re-requested from the LDES server', () => {
+    expect(execResult).to.include('X-Cache-Status: EXPIRED');
+})
+
+When('I request the LDES view', () => {
+    const command = `curl -i http://localhost:8080/mobility-hindrances/by-time`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})

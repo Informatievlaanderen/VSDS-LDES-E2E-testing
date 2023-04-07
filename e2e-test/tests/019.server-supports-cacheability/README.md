@@ -33,7 +33,11 @@ To start all the systems in the context execute the following command:
 ```bash
 docker compose up -d
 ```
-> **Note**: you may need to wait approximately 30 seconds for the LDES server to start (you can check the docker logs), otherwise the cache server may return a `Bad Gateway` response and not re-query the LDES server until the cache expires.
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+```bash
+docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+```
+Press `CTRL-C` to stop following the log.
 
 ### Verify URL Naming Strategy
 As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/mobility-hindrances and the view at http://localhost:8080/mobility-hindrances/by-time, or using bash commands:
@@ -197,9 +201,23 @@ X-Cache-Status: HIT
 Notice that the headers include `Cache-Control: public,max-age=60` which indicates that the response can be cached (publicly) for a duration of 60 seconds. In addition the header `ETag: "c2ed41319c441cbc840d4b195150214fd4de340060c7eb952e1cb00c3a9f582d"` defines a unique hash which can be used to verify that the content did not change, using `--head` or `-I` which do not request the content, only the headers.
 
 ### Verify Actual Caching
-The above caching features allow to setup nginx (or another system) as a caching server for the LDES Server. The nginx [configuration](./nginx.conf) is setup as a proxy server for the LDES server and with a cache named `static-cache` which stores the responses for any HTTP verb for 60 minutes. In addition it adds a `X-Cache-Status` header to its responses to indicate a cache `Hit` or `Miss`. 
+The above caching features allow to setup nginx (or another system) as a caching server for the LDES Server. The nginx [configuration](./nginx.conf) is setup as a proxy server for the LDES server and with a cache named `static-cache` which stores the responses for any HTTP verb. In addition it adds a `X-Cache-Status` header to its responses to indicate a cache `Miss`, `Hit` or `Expired`.
 
-The nginx server is configured to listen to http://localhost:8080 by default, configurable in your `user.env`. The nginx server will forward any request to the LDES server and forward its response to the requester. However, because it is setup for caching, it will first verify if it does not have a response cached for the incoming request and, if so, return the response from cache. You can verify this by requesting a fragment twice:
+Nginx returns `X-Cache-Status: Miss` if the requested URL was not available and it queried the LDES server for the response. It returns `X-Cache-Status: Hit` if the response was found it the cache and it was not yet expired. Finally, it returns `X-Cache-Status: Expired` if the response in cache was expired and the LDES was queried for the response.
+
+A requested resource is considered expired if it has been in the cache for more than the lesser of the nginx setting (`proxy_cache_valid`, set to 60 minutes in the nginx [configuration](./nginx.conf)) and the `max-age` value from the `Cache-Control` in the headers. This max-age value is added by the LDES server based on the configured values for mutable (`REST_MAXAGE`, set to 60 seconds in the [Docker compose](./docker-compose.yml) file) and immutable(`REST_MAXAGEIMMUTABLE`, set to 604800 seconds in the [Docker compose](./docker-compose.yml) file, which is 420 days) fragments. Summarized, in our case:
+
+* if you request a resource for the first time, you get `X-Cache-Status: Miss` and nginx requests the resource from the LDES server and caches it locally
+* if you re-request a mutable resource within 60 seconds, nginx gets it from cache and returns `X-Cache-Status: Hit`
+* if you re-request an immutable resource within 60 minutes, nginx gets it from cache and returns `X-Cache-Status: Hit`
+* if you re-request a mutable resource after 60 seconds, nginx requests the resource from the LDES server, replaces the version in the cache with the response and returns `X-Cache-Status: Expired`
+* if you re-request an immutable resource after 60 minutes, nginx requests the resource from the LDES server, replaces the version in the cache with the response and returns `X-Cache-Status: Expired`
+
+> **Note**: to test the expiration behavior you need to use the [LDES view](http://localhost:8080/mobility-hindrances/by-time) becuse the [LDES itself](http://localhost:8080/mobility-hindrances) is immutable:
+
+The nginx server is configured to listen to http://localhost:8080 by default, configurable in your `user.env`. The nginx server will forward any request to the LDES server and forward its response to the requester. However, because it is setup for caching, it will first verify if it does not have a response cached for the incoming request and, if so, return the response from cache. 
+
+You can verify this by requesting a fragment twice:
 ```bash
 curl -i http://localhost:8080/mobility-hindrances
 ```

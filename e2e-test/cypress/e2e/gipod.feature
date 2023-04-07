@@ -61,3 +61,15 @@ Feature: GIPOD use case
     And the middle fragment only has a 'Relation' to the first and last fragments
     And the last fragment is not immutable
     And the last fragment only has a 'Relation' to the middle fragment
+
+@gipod @test-018
+  # Replicate and Synchronize an LDES with Client CLI
+  Scenario: 018: Client Can Output LDES members to the Console
+    Given context 'tests/018.client-output-to-console' is started
+    And I have uploaded the data files: 'gamma' with a duration of 10 seconds
+    And I have aliased the data set
+    When I launch the Client CLI
+    Then the Client CLI contains 1 members
+    When I have uploaded the data files: 'delta'
+    Then the Client CLI contains 50 members
+    

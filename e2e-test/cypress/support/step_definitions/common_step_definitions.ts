@@ -56,11 +56,6 @@ Given('the members are stored in collection {string} in database {string}', (col
     testContext.collection = collection;
 });
 
-
-Given('the {string} test is setup', (testPartialPath: string) => {
-    testContext.testPartialPath = testPartialPath;
-});
-
 Given('context {string} is started', (composeFilePath: string) => {
     if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
 

@@ -1,15 +1,17 @@
 version: '3.3'
 services:
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-ldes-server-snapshot}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
+
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-server-snapshot}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230407t0803}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
@@ -29,10 +31,19 @@ services:
       - 8080:8080
     networks:
       ldes:
-        aliases:
-          - ldes-server
     depends_on:
       - ldes-mongodb
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-gtfs-multilevel-fragment-ldes}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
 
 networks:
   ldes:

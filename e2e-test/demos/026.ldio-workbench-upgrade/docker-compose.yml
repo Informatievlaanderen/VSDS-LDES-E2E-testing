@@ -1,0 +1,101 @@
+version: '3.3'
+services:
+
+  json-data-generator:
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_json-data-generator
+    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+    environment:
+      - TARGETURL=
+      - SILENT=false
+      - CRON=* * * * * *
+      - TEMPLATEFILE=/tmp/data/device.template.json
+      - MAPPINGFILE=/tmp/data/device.mapping.json
+      - TEMPLATE=
+      - MAPPING=
+      - MIMETYPE=application/ld+json
+    volumes:
+      - ./data/device.template.json:/tmp/data/device.template.json:ro
+      - ./data/device.mapping.json:/tmp/data/device.mapping.json:ro
+      - ./data/TARGETURL:/usr/vsds/generator/TARGETURL:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  old-ldio:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230324T175226}
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_old-ldio
+    environment:
+      - SPRING_CONFIG_NAME=application
+      - SPRING_CONFIG_LOCATION=/config/
+    volumes:
+      - ./ldio-config.yml:/config/application.yml:ro
+    networks:
+      - ldes
+    ports:
+      - 8081:8080
+
+  new-ldio:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_new-ldio
+    environment:
+      - SPRING_CONFIG_NAME=application
+      - SPRING_CONFIG_LOCATION=/config/
+    volumes:
+      - ./ldio-config.yml:/config/application.yml:ro
+    networks:
+      - ldes
+    ports:
+      - 8082:8080
+    profiles:
+      - delay-started
+  
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+      - MANAGEMENT_TRACING_ENABLED=False
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=iow_devices
+      - LDES_HOSTNAME=http://localhost:8080
+      - LDES_COLLECTIONNAME=devices
+      - LDES_SHAPE=
+      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - VIEWS_0_NAME=by-page
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+    volumes:
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - 8080:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-upgrade-ldio-workbench}_network

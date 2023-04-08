@@ -81,7 +81,8 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test teardown
 Stop data generator and stop new workbench and bring all systems down:
 ```bash
-docker compose stop new-ldio
 docker compose stop json-data-generator
+docker compose stop new-ldio
+rm ./data/TARGETURL
 docker compose --profile delay-started down
 ```

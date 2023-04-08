@@ -1,7 +1,7 @@
 # E2E Tests
 These following end-to-end tests currently exist:
-* [Use Case Related Tests](./tests)
-* [Independent Demos](./demos)
+* [Manual Tests](./tests)
+* [Demos](./demos) (not yet automated) -- gradually automated and moved to [Manual Tests](./tests)
 
 > **Note**: all the tests use [Docker](http://www.docker.io) as a container technology, and therefore some knowledge is required.
 

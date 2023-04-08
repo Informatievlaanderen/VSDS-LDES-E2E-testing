@@ -52,14 +52,14 @@ services:
   
   ldes-mongodb:
     container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_new-ldes-server
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1

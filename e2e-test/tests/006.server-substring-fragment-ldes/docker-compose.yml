@@ -1,9 +1,9 @@
 version: '3.3'
 services:
 
-  json-data-generator:
-    container_name: ${USECASE_NAME:-grar-context}_json-data-generator
-    image: ghcr.io/informatievlaanderen/json-data-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+  test-message-generator:
+    container_name: ${USECASE_NAME:-grar-context}_test-message-generator
+    image: ghcr.io/informatievlaanderen/test-message-generator:${JSON_DATA_GENERATOR_TAG:-latest}
     environment:
       - TARGETURL=http://node-red-workflow:1880/grar/addresses
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}

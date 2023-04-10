@@ -2,10 +2,10 @@
 
 import { CanCheckAvailability } from "./interfaces";
 
-export class JsonDataGenerator implements CanCheckAvailability {
+export class TestMessageGenerator implements CanCheckAvailability {
 
     public get serviceName() {
-        return 'json-data-generator'
+        return 'test-message-generator'
     }
 
     private isReady(containerId: string) {

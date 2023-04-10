@@ -4,10 +4,6 @@
 ## LDES Server Simulator
 A tool for simulating an LDES Server *consumption* endpoint. See [LDES Server Simulator README](./ldes-server-simulator/README.md) for details.
 
-## LDES Client Sink
-A tool for simulating an LDES Server *ingestion* endpoint. See [LDES Client Sink README](./ldes-client-sink/README.md) for details.
-> **Note**: this tool is **OBSOLETE**. The code has been move to its [own repository](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-sink).
-
 ## JSON Data Generator
 A tool for continuously producing some JSON formatted test data. See [JSON Data Generator README](./json-data-generator/README.md) for details.
 > **Note**: this tool is **OBSOLETE**. The code has been move to its [own repository](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator).

@@ -1,7 +1,7 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
 import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
-    LdesWorkbenchNiFi, LdesServerSimulator, LdesClientSink,
+    LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, JsonDataGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
@@ -13,7 +13,7 @@ let testContext: any;
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
 export const workbenchLdio = new LdesWorkbenchLdio();
-export const sink = new LdesClientSink('http://localhost:9003');
+export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new JsonDataGenerator();

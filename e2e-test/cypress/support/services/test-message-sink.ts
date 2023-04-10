@@ -8,7 +8,7 @@ interface SinkResult {
     [key: string]: CollectionCount;
 }
 
-export class LdesClientSink {
+export class TestMessageSink {
     constructor(private baseUrl: string) { }
 
     checkCount(collectionName: string, count: number) {

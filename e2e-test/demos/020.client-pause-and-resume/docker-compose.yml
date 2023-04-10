@@ -20,15 +20,15 @@ services:
     profiles:
       - delay-started
 
-  ldes-client-sink:
-    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-latest}
-    container_name: ${USECASE_NAME:-persisted-state}_ldes-client-sink
+  test-message-sink:
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
+    container_name: ${USECASE_NAME:-persisted-state}_test-message-sink
     environment:
       - MEMORY=true
-      - COLLECTION_NAME=${LDES_CLIENT_SINK_COLLECTION_NAME:-mobility-hindrances}
-      - MEMBER_TYPE=${LDES_CLIENT_SINK_MEMBER_TYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
+      - COLLECTION_NAME=${TEST_MESSAGE_SINK_COLLECTION_NAME:-mobility-hindrances}
+      - MEMBER_TYPE=${TEST_MESSAGE_SINK_MEMBER_TYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
     ports:
-      - ${LDES_CLIENT_SINK_PORT:-9003}:80
+      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:
       - ldes
       

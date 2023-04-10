@@ -20,19 +20,19 @@ services:
     profiles:
       - delay-started
 
-  ldes-client-sink:
-    image: ghcr.io/informatievlaanderen/ldes-client-sink:${LDES_CLIENT_SINK_TAG:-latest}
-    container_name: ${USECASE_NAME:-gipod-replicate-ldes}_ldes-client-sink
+  test-message-sink:
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
+    container_name: ${USECASE_NAME:-gipod-replicate-ldes}_test-message-sink
     environment:
       - SILENT=false
       - MEMORY=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
-      - SILENT=${LDES_CLIENT_SINK_SILENT:-true}
+      - SILENT=${TEST_MESSAGE_SINK_SILENT:-true}
       - DATABASE_NAME=gipod
       - COLLECTION_NAME=mobility-hindrances
       - MEMBER_TYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
     ports:
-      - ${LDES_CLIENT_SINK_PORT:-9003}:80
+      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:
       - ldes
 

@@ -12,7 +12,7 @@ docker pull ghcr.io/informatievlaanderen/ldes-cli:20230222T0959
 # support
 docker pull ghcr.io/informatievlaanderen/json-data-generator:20230329T1705
 docker pull ghcr.io/informatievlaanderen/ldes-server-simulator:20230329T1705
-docker pull ghcr.io/informatievlaanderen/ldes-client-sink:20230329T1706
+docker pull ghcr.io/informatievlaanderen/test-message-sink:20230406T0854
 docker pull ghcr.io/informatievlaanderen/ldes-list-fragments:20230329T1705
 docker pull ghcr.io/informatievlaanderen/mongodb-rest-api:20230329T1705
 

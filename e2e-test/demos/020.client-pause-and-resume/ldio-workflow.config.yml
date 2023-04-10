@@ -16,5 +16,5 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
-            endpoint: http://ldes-client-sink/member
+            endpoint: http://test-message-sink/member
             content-type: application/n-quads

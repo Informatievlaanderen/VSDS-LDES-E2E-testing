@@ -44,7 +44,7 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
     ```
    To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
     ```bash
-    docker compose up json-data-generator -d
+    docker compose up test-message-generator -d
     ```
 
 4. Verify all LDES streams
@@ -61,7 +61,7 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
 ## Test Teardown
 First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 docker compose --profile delay-started down
 ```
 

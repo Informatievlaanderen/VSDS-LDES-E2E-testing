@@ -1,5 +1,5 @@
 # Convert NGSI-v2 State Objects to NGSI-LD Version Objects
-The test verifies that the NiFi Workbench can convert IoW messages formatted as NGSI-v2 into NGSI-LD messages. It uses a [JSON Data Generator](/json-data-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), an Apache NiFi instance containing an HTTP listener that receives the observations (and devices & models), the NiFi components translating the NGSI-v2 entities to NGSI-LD entities, the NiFi components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
+The test verifies that the NiFi Workbench can convert IoW messages formatted as NGSI-v2 into NGSI-LD messages. It uses a [JSON Data Generator](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), an Apache NiFi instance containing an HTTP listener that receives the observations (and devices & models), the NiFi components translating the NGSI-v2 entities to NGSI-LD entities, the NiFi components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -43,7 +43,7 @@ The test verifies that the NiFi Workbench can convert IoW messages formatted as 
 
 4. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
     ```bash
-    docker compose up json-data-generator -d
+    docker compose up test-message-generator -d
     ```
 
 5. Verify all LDES streams 
@@ -61,7 +61,7 @@ The test verifies that the NiFi Workbench can convert IoW messages formatted as 
 ## Test Teardown
 First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 docker compose --profile delay-started down
 ```
 

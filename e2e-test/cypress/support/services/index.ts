@@ -1,5 +1,5 @@
 export * from './interfaces';
-export * from './json-data-generator';
+export * from './test-message-generator';
 export * from './test-message-sink';
 export * from './ldes-server';
 export * from './ldes-server-simulator';

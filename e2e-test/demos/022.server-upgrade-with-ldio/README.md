@@ -16,7 +16,7 @@ This test uses a docker environment containing a data generator simulating the s
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the http listener:
    ```bash
-   docker compose up json-data-generator -d
+   docker compose up test-message-generator -d
    ```
 
 3. Verify that members are available in LDES:
@@ -78,7 +78,7 @@ This test uses a docker environment containing a data generator simulating the s
 ## Test teardown
 Stop data generator and new server, and bring all systems down:
 ```bash
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 docker compose stop new-ldes-server
 docker compose --profile delay-started down
 ```

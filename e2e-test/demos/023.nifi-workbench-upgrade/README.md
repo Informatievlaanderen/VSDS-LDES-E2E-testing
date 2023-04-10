@@ -14,7 +14,7 @@ docker compose up -d
 3. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
 ```bash
 echo http://old-nifi-workflow:9012/ngsi/device > ./data/TARGETURL
-docker compose up json-data-generator -d
+docker compose up test-message-generator -d
 ```
 
 4. Verify that members are available in the LDES:
@@ -67,7 +67,7 @@ curl http://localhost:9019/iow_devices/ldesmember
 1. Stop data generator and stop new workbench:
 ```bash
 docker compose stop new-nifi-workflow
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 ```
 
 2. Bring all systems down:

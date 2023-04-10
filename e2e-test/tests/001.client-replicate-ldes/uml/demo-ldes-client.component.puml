@@ -6,7 +6,7 @@ title LDES Client Demo - Component Diagram
 Person(tester, "Tester")
 
 System_Ext(simulator, "LDES Server Simulator", "Simple LDES fragment server")
-System_Ext(sink, "LDES Client Sink", "Little HTTP server accepting LDES members from the LDES client")
+System_Ext(sink, "Test Message Sink", "Little HTTP server accepting LDES members from the LDES client")
 
 System_Boundary(workflow_system, "LDES Workflow"){
     Container_Boundary(workflow, "LDES Client Workflow"){

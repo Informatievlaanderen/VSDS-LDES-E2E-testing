@@ -7,7 +7,7 @@ Person(tester, "Tester")
 
 System(client, "LDES Workflow")
 System_Ext(simulator, "LDES Server Simulator", "Simple LDES fragment server")
-System_Ext(sink, "LDES Client Sink", "Little HTTP server accepting LDES members from the LDES client")
+System_Ext(sink, "Test Message Sink", "Little HTTP server accepting LDES members from the LDES client")
 
 Rel_L(client, simulator, "retrieves and follows LDES fragments", "HTTP (method GET)")
 Rel_R(client, sink, "pushes LDES members", "HTTP (method POST)")

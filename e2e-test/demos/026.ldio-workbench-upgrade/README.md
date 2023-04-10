@@ -19,7 +19,7 @@ This test uses a docker environment a data generator simulating the system pushi
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
     echo http://old-ldio:8080/pipeline > ./data/TARGETURL
-    docker compose up json-data-generator -d
+    docker compose up test-message-generator -d
     ```
 
 3. Verify that members are available in the LDES:
@@ -81,7 +81,7 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test teardown
 Stop data generator and stop new workbench and bring all systems down:
 ```bash
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 docker compose stop new-ldio
 rm ./data/TARGETURL
 docker compose --profile delay-started down

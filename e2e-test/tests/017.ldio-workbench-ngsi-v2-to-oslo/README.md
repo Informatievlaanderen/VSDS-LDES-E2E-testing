@@ -35,7 +35,7 @@ This second step towards a NiFi-less approach executes the complete transformati
     ```
    To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
     ```bash
-    docker compose up json-data-generator -d
+    docker compose up test-message-generator -d
     ```
 
 2. Verify all LDES streams
@@ -52,7 +52,7 @@ This second step towards a NiFi-less approach executes the complete transformati
 ## Test Teardown
 First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop json-data-generator
+docker compose stop test-message-generator
 docker compose --profile delay-started down
 ```
 

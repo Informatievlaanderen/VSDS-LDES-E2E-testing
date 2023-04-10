@@ -10,7 +10,7 @@ docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:latest
 docker pull ghcr.io/informatievlaanderen/ldes-cli:latest
 
 # support
-docker pull ghcr.io/informatievlaanderen/json-data-generator:latest
+docker pull ghcr.io/informatievlaanderen/test-message-generator:latest
 docker pull ghcr.io/informatievlaanderen/ldes-server-simulator:latest
 docker pull ghcr.io/informatievlaanderen/test-message-sink:latest
 docker pull ghcr.io/informatievlaanderen/ldes-list-fragments:latest

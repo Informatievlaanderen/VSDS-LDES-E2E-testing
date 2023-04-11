@@ -90,7 +90,7 @@ Then('I receive a zip file containing my view', () => {
 })
 
 When ('I wait {int} seconds for the cache to expire', (timeout: number) => {
-    cy.wait(timeout * 1000);
+    cy.wait((timeout+1) * 1000);
 })
 
 Then('the LDES is re-requested from the LDES server', () => {

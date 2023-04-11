@@ -65,7 +65,7 @@ Feature: LDES Server Caching et al.
     When I request the view compressed
     Then I receive a zip file containing my view
 
-@gipod @test-019 @new
+@gipod @test-019
   Scenario: 019: Verify Nginx Caching Responses
     Given I have configured the 'MAX_AGE' as '10'
     And context 'tests/019.server-supports-cacheability' is started

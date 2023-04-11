@@ -19,4 +19,4 @@ docker pull ghcr.io/informatievlaanderen/test-message-sink:20230411T0354
 docker pull ghcr.io/julianrojas87/gtfs2ldes-js:20230306t2329
 docker pull mongo:6.0.5
 docker pull nginx:1.23.4
-docker pull apache/nifi:1.21.1
+docker pull apache/nifi:1.21.0

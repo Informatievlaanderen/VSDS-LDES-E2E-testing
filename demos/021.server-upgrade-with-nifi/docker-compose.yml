@@ -3,7 +3,7 @@ services:
 
   test-message-generator:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_test-message-generator
-    image: ghcr.io/informatievlaanderen/test-message-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
       - TARGETURL=http://nifi-workflow:9012/ngsi/device
       - SILENT=false

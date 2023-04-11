@@ -3,7 +3,7 @@ services:
 
   test-message-generator:
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_test-message-generator
-    image: ghcr.io/informatievlaanderen/test-message-generator:${JSON_DATA_GENERATOR_TAG:-latest}
+    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     profiles:
       - delay-started
     environment:

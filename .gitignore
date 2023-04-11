@@ -8,3 +8,4 @@ cypress/videos
 results
 
 user.env
+.vscode

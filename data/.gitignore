@@ -1,2 +1,2 @@
-epsg
+epsg/**
 !epsg/.placeholder

@@ -14,7 +14,7 @@ This test verifies that the LDES server can automatically purge fragments. It us
 We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a http sender, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).
 The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. `P3D` (3 days).
 
-### Start Systems7.direct-connect
+### Start Systems
 When started, we expect that the LDES server creates the initial state: the LDES itself (L) and the two views (V and W).
 
 ![1.system-started](https://www.plantuml.com/plantuml/png/LOyn2yCW48LtVyMHiH0e7HrA4BlPgQ13wP2IQo8O1RqsVxyNmI7R-xx7FRYXq9ZfkmR1WH2wUufpqgg3iO1MpHfzUu2fqZHdFMvWgxC7vwfpGZnFB-W3VgY_xbiLiv-NdOqmq4zfYvpjdbl1Trf9M75zOouIpbnA-F4mmqLOXeo4aNoA4igICc4MxgW3Vy5sm3ZnRty0 "1.system-started")
@@ -33,7 +33,7 @@ First we send `alfa`, `beta` and `gamma` to the simulator which should result in
 * a first view V with three immutable (forward-connected) fragments A, B and C each containing 150 items and one mutable fragment D holding 51 items
 * a second view W with one immutable fragment F with 300 items and one mutable fragment G with 201 items
 
-![2.initial-data-ingested](https://www.plant![img.png](img.png)uml.com/plantuml/png/VP8nRuCm48Lt_ufJibL2WbGCOQY2SSr2fqemL1r8uX0aR2hZDEg_xs6AR589fdlVU_BT6Hy6Ksjpant1mWZOlFMgwHdTG3q0ex2zuBVVpsx1Nj-Xi6Onix8LToWjAnUiigoQ6TTr8uKoa5gUmhPhcwjfj13gNsOQWAvcCfl9LZDiMcGrmss6hsPocyaN6VBnz0b19oucUC6xcgGUVTG5AI0uztU5TJdMir6HqecKf4vGGft8IEO48vKJd70dSa8OJK0AUHHwI20E8soMm3V-09GxR9R0gVwgJwtvII2AGppA9yzXQ3DQ6DopxLK2mxNNHcWRz727BmDf2bwxyJpw2B97m7mGHpY_fyS1SX_iS8MnIIlbpTJ7JjWEJcKBPS_-g_d2oJtd8DGP7_al "2.initial-data-ingested")
+![2.initial-data-ingested](https://www.plantuml.com/plantuml/png/VP8nRuCm48Lt_ufJibL2WbGCOQY2SSr2fqemL1r8uX0aR2hZDEg_xs6AR589fdlVU_BT6Hy6Ksjpant1mWZOlFMgwHdTG3q0ex2zuBVVpsx1Nj-Xi6Onix8LToWjAnUiigoQ6TTr8uKoa5gUmhPhcwjfj13gNsOQWAvcCfl9LZDiMcGrmss6hsPocyaN6VBnz0b19oucUC6xcgGUVTG5AI0uztU5TJdMir6HqecKf4vGGft8IEO48vKJd70dSa8OJK0AUHHwI20E8soMm3V-09GxR9R0gVwgJwtvII2AGppA9yzXQ3DQ6DopxLK2mxNNHcWRz727BmDf2bwxyJpw2B97m7mGHpY_fyS1SX_iS8MnIIlbpTJ7JjWEJcKBPS_-g_d2oJtd8DGP7_al "2.initial-data-ingested")
 
 *Fig. 2: initial data ingested*
 

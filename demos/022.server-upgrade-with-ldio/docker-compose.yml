@@ -44,7 +44,7 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20221107t0923}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20230405T0843}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp

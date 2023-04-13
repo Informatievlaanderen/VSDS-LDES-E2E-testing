@@ -3,7 +3,6 @@
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchLdio implements CanCheckAvailability {
-
     public get serviceName() {
         return 'ldio-workflow'
     }
@@ -20,4 +19,13 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
             });
     }
 
+    pause() {
+        return cy.exec(`curl -X POST "http://localhost:8081/admin/api/v1/pipeline/halt"`)
+            .then(exec => expect(exec.code).to.equals(0));
+    }
+
+    resume() {
+        return cy.exec(`curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"`)
+            .then(exec => expect(exec.code).to.equals(0));
+    }
 }

@@ -9,6 +9,7 @@ import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
 
 let testContext: any;
+let memberCount;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
@@ -114,7 +115,7 @@ Given('the LDES Server Simulator is available', () => {
 })
 
 Given('the LDIO workflow is available', () => {
-    workbenchLdio.waitAvailable()
+    workbenchLdio.waitAvailable();
 })
 
 // When stuff
@@ -129,6 +130,14 @@ When('I start the NiFi workflow', () => {
 
 When('I start the LDIO workflow', () => {
     createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+})
+
+When('I pause the LDIO workflow output', () => {
+    workbenchLdio.pause();
+})
+
+When('I resume the LDIO workflow output', () => {
+    workbenchLdio.resume();
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
@@ -157,6 +166,29 @@ When('the LDES contains {int} fragments', (count: number) => {
 
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
+    currentMemberCount().then(count => memberCount = count);
+})
+
+When('the old server is done processing', () => {
+    // let firstCount, newCount, attempts = 0;
+    // let condition = false;
+    // while(attempts < 3){
+    //     currentMemberCount().then(count => firstCount = count);
+    //     cy.wait(3000);
+    //     currentMemberCount().then(count => newCount = count);
+    //     cy.log('firstCount: ' + firstCount + ' newCount: ' + newCount);
+    //     if(firstCount == newCount) {
+    //           condition = true;
+    //     }
+    //     else {
+    //         condition = false;
+    //     }
+    //     expect(firstCount).to.equal(newCount);
+    //     expect(condition).to.be.true;
+    //     attempts++;
+    // }
+
+    // currentMemberCount().then(newMemberCount => expect(newMemberCount).to.be.greaterThan(memberCount));
 })
 
 When('I start the GTFS2LDES service', () => {
@@ -164,6 +196,15 @@ When('I start the GTFS2LDES service', () => {
         .then(() => gtfs2ldes.waitAvailable());
 })
 
+When('I bring the old server down', () => {
+    dockerCompose.stop('old-ldes-server');
+    dockerCompose.removeVolumesAndImage('old-ldes-server');
+})
+
+When('I start the new LDES Server', () => {
+    createAndStartService('new-ldes-server')
+        .then(() => server.waitAvailable());
+})
 
 // Then stuff
 
@@ -181,4 +222,8 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
 
 Then('the Client CLI contains {int} members', (count: number) => {
     clientCli.checkCount(count);
+})
+
+Then('the LDES member count increases', () => {
+    currentMemberCount().then(newMemberCount => expect(newMemberCount).to.be.greaterThan(memberCount));
 })

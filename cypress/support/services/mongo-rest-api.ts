@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 export class MongoRestApi {
+    
     constructor(private baseUrl: string) { }
 
     checkCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {

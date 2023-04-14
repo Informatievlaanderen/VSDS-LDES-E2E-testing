@@ -42,23 +42,23 @@ services:
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_AUTO-INDEX-CREATION=true
-      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
-      - LDES_COLLECTIONNAME=connections
-      - LDES_MEMBERTYPE=http://semweb.mmlab.be/ns/linkedconnections#Connection
-      - LDES_SHAPE=
-      - VIEW_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - VIEW_VERSIONOFPATH=http://purl.org/dc/terms/isVersionOf
-      - VIEWS_0_NAME=by-location-and-time
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=noop
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=13
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
-      - VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=100
-      - VIEWS_0_RETENTIONPOLICIES_0_NAME=timebased
-      - VIEWS_0_RETENTIONPOLICIES_0_CONFIG_DURATION=P3D # keep data for max 3 days
+      - COLLECTIONS_0_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - COLLECTIONS_0_COLLECTIONNAME=connections
+      - COLLECTIONS_0_MEMBERTYPE=http://semweb.mmlab.be/ns/linkedconnections#Connection
+      - COLLECTIONS_0_SHAPE=
+#      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+#      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_0_VIEWS_0_NAME=by-location-and-time
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=geospatial
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_PROJECTION=noop
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MAXZOOMLEVEL=13
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_FRAGMENTERPROPERTY=http://www.opengis.net/ont/geosparql#asWKT
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_1_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_1_CONFIG_MEMBERLIMIT=100
+      - COLLECTIONS_0_VIEWS_0_RETENTIONPOLICIES_0_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_RETENTIONPOLICIES_0_CONFIG_DURATION=P3D # keep data for max 3 days
     volumes:
-      - ../../data/epsg:/tmp/Databases:rw
+      - ../../data/epsg:/home/ldes/Databases:rw
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
     deploy:

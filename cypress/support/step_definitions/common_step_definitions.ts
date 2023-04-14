@@ -13,14 +13,14 @@ let memberCount;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
-export const workbenchLdio = new LdesWorkbenchLdio();
+export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
-export const clientCli = new ClientCli();
+export const clientCli = new ClientCli('http://localhost:8081');
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -145,7 +145,7 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
-function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
         .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
         .then(() => testContext.delayedServices.push(service));
@@ -170,25 +170,13 @@ When('the LDES contains at least {int} members', (count: number) => {
 })
 
 When('the old server is done processing', () => {
-    // let firstCount, newCount, attempts = 0;
-    // let condition = false;
-    // while(attempts < 3){
-    //     currentMemberCount().then(count => firstCount = count);
-    //     cy.wait(3000);
-    //     currentMemberCount().then(count => newCount = count);
-    //     cy.log('firstCount: ' + firstCount + ' newCount: ' + newCount);
-    //     if(firstCount == newCount) {
-    //           condition = true;
-    //     }
-    //     else {
-    //         condition = false;
-    //     }
-    //     expect(firstCount).to.equal(newCount);
-    //     expect(condition).to.be.true;
-    //     attempts++;
-    // }
-
-    // currentMemberCount().then(newMemberCount => expect(newMemberCount).to.be.greaterThan(memberCount));
+    let previousCount;
+    currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
+    cy.waitUntil(() => 
+        currentMemberCount().then(count => 
+            cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        {timeout:5000,interval:1000}
+    );
 })
 
 When('I start the GTFS2LDES service', () => {

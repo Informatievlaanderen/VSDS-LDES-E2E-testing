@@ -4,6 +4,10 @@ import { LdesWorkbenchLdio } from "./ldes-workbench-ldio";
 
 export class ClientCli extends LdesWorkbenchLdio {
 
+    constructor(baseUrl: string, serviceName?: string) { 
+        super(baseUrl, serviceName);
+    }
+
     hasCount(containerId: string, count: number): any {
         return cy.exec(`docker logs ${containerId}`).then(result => {
             const logs = result.stdout;

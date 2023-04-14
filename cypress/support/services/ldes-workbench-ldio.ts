@@ -3,8 +3,11 @@
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchLdio implements CanCheckAvailability {
+
+    constructor(public baseUrl: string, private _serviceName?: string) { }
+
     public get serviceName() {
-        return 'ldio-workflow'
+        return this._serviceName || 'ldio-workflow';
     }
 
     private isReady(containerId: string) {
@@ -20,12 +23,12 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     }
 
     pause() {
-        return cy.exec(`curl -X POST "http://localhost:8081/admin/api/v1/pipeline/halt"`)
+        return cy.exec(`curl -X POST "${this.baseUrl}/admin/api/v1/pipeline/halt"`)
             .then(exec => expect(exec.code).to.equals(0));
     }
 
     resume() {
-        return cy.exec(`curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"`)
+        return cy.exec(`curl -X POST "${this.baseUrl}/admin/api/v1/pipeline/resume"`)
             .then(exec => expect(exec.code).to.equals(0));
     }
 }

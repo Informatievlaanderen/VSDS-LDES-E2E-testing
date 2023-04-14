@@ -11,7 +11,7 @@ This test verifies that the LDES server can automatically purge fragments. It us
 
 ## Test Scenario
 
-We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a http sender, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (60 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (90 seconds).
+We send some test files (GIPOD mobility hindrances) to our Simulator which then serves these files on request. We use a simple workflow containing an LDES Client, which requests the test files from the Simulator, and a http sender, which POSTs the individual items to our LDES server. Our LDES server is configured to ingest the items and serve two timebased fragmented views. One view is configured to create fragments containing max. 150 members and with a short retention (30 seconds) while the other view is configured to create fragments of 300 members and keep them for a longer time (45 seconds).
 The retention periods are indicated in a standard way ([ISO 8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)), e.g. `P3D` (3 days).
 
 ### Start Systems
@@ -70,22 +70,27 @@ Finally, we wait a bit longer until the immutable fragments in both views expire
 *Fig. 6: all immutable fragments expired*
 
 ## Test Setup
-If needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
+> **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-Then you can run the systems by executing the following command:
+Run all systems except the workflow by executing the following (bash) command:
 ```bash
 docker compose up -d
 ```
-> **Note**: it may take a minute for all the servers to start.
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+```bash
+docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+```
+Press `CTRL-C` to stop following the log.
+
 
 ## Test Execution
 To execute this test scenario, run the following steps:
 
 1. Verify the initial LDES:
     ```bash
-    curl http://localhost:8080/mobility-hindrances
-    curl http://localhost:8080/mobility-hindrances/by-short-time
-    curl http://localhost:8080/mobility-hindrances/by-longer-time
+    curl -i http://localhost:8080/mobility-hindrances
+    curl -i http://localhost:8080/mobility-hindrances/by-short-time
+    curl -i http://localhost:8080/mobility-hindrances/by-longer-time
     ```
 
 2. Send initial data set and verify simulator at http://localhost:9011:
@@ -93,35 +98,60 @@ To execute this test scenario, run the following steps:
     curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'
     curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/beta.jsonld'
     curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
-    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@create-alias.json'
+    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
 
-3. Open MongoDB Compass and keep an eye on the member count
+3. Start the workflow containing the LDES Client
+    ```bash
+    docker compose up ldio-workflow -d
+    ```
+    Wait until the LDIO workflow is started by following the container log until you see the following message `Started Application in`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldio-workflow$")
+    ```
+    Press `CTRL-C` to stop following the log.
 
-4. logon to the Apache NiFi user interface at https://localhost:8443/nifi, load and start the [workflow](./nifi-workflow.json)
+4. Verify LDES Members are being ingested (execute repeatedly until 501 members):
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
 
-5. verify that all fragments are created for both views, following all links in the views, and check the mutability:
-```bash
-curl http://localhost:8080/mobility-hindrances/by-short-time
-curl http://localhost:8080/mobility-hindrances/by-longer-time
-```
+5. Verify that all fragments are created for both views, following all links in the views, and check the mutability:
+    ```bash
+    curl -i http://localhost:8080/mobility-hindrances/by-short-time
+    curl -i http://localhost:8080/mobility-hindrances/by-longer-time
+    ```
 
-6. wait for the shorter retention period to elapse and verify that the short-time view now refers to its last fragment, that requesting the other fragments returns an HTTP error (410 - GONE) and that in the database the member count did not change
+6. Wait for the shorter retention period to elapse and verify that the short-time view now refers to its last fragment, that requesting the other fragments returns an HTTP error (410 - GONE) and that in the database the member count did not change:
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
 
-7. wait for the longer retention period to elapse and verify that the longer-time view now refers to its last fragment and that the member count has decreased (because some members have no more references)
+7. Wait for the longer retention period to elapse and verify that the longer-time view now refers to its last fragment and that the member count has decreased (should be 201 because some members have no more references)
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
 
-8. feed more data:
-```bash
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
-curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
-```
+8. Feed more data:
+    ```bash
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/epsilon.jsonld'
+    ```
 
-9. verify that in each view one additional fragment is created and the previous fragment is marked immutable, and that the member count has increased (because new members have been received)
+9. Verify that in each view one additional fragment is created and the previous fragment is marked immutable, and that the member count has increased (should be 317 because new members have been received)
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
 
-10. wait for both retention periods to elapse and verify that again the views refer to the newest fragments, that the older fragments are deleted and that the member count has decreased again
+
+10. Wait for both retention periods to elapse and verify that again the views refer to the newest fragments, that the older fragments are deleted and that the member count has decreased again (should be 17):
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```
 
 ## Test Teardown
-First stop the workflow as described [here](../../tests/_nifi-workbench/README.md#stop-a-workflow) and then stop all systems:
+To stop all systems use:
 ```bash
-docker compose down
+docker compose stop ldio-workflow
+docker compose --profile delay-started down
 ```

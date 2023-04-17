@@ -80,16 +80,16 @@ services:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - LDES_HOSTNAME=http://localhost:8080
-      - LDES_COLLECTIONNAME=devices
-      - LDES_SHAPE=
-      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_0_COLLECTIONNAME=devices
+      - COLLECTIONS_0_SHAPE=
+      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       # TODO: can be change this to view name 'by-time' and simple 'pagination'?
-      - VIEWS_0_NAME=devices-by-time
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

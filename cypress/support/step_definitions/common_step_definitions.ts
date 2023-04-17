@@ -110,7 +110,7 @@ Given('the LDES server is available', () => {
     return server.waitAvailable();
 })
 
-Given('the LDES server has started', () => {
+Given('the old LDES server is available', () => {
     return server.waitAvailable(LdesServer.ApplicationStarted);
 })
 

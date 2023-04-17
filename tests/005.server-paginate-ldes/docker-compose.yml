@@ -29,17 +29,17 @@ services:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_DATABASE=${SPRING_DATA_MONGODB_DATABASE:-gipod}
-      - LDES_COLLECTIONNAME=${LDES_COLLECTIONNAME:-mobility-hindrances}
-      - LDES_MEMBERTYPE=${LDES_MEMBERTYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
+      - COLLECTIONS_0_COLLECTIONNAME=${LDES_COLLECTIONNAME:-mobility-hindrances}
+      - COLLECTIONS_0_MEMBERTYPE=${LDES_MEMBERTYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
-      - LDES_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
-      - LDES_SHAPE=${LDES_SHAPE:-https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape}
-      - VIEW_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
-      - VIEW_VERSIONOFPATH=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
-      - VIEWS_0_NAME=${VIEWS_0_NAME:-by-page}
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-300}
+      - COLLECTIONS_0_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+      - COLLECTIONS_0_SHAPE=${LDES_SHAPE:-https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape}
+      - COLLECTIONS_0_TIMESTAMPPATH=${VIEW_TIMESTAMPPATH:-http://www.w3.org/ns/prov#generatedAtTime}
+      - COLLECTIONS_0_VERSIONOF=${VIEW_VERSIONOFPATH:-http://purl.org/dc/terms/isVersionOf}
+      - COLLECTIONS_0_VIEWS_0_NAME=${VIEWS_0_NAME:-by-page}
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT:-300}
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

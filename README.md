@@ -47,3 +47,8 @@ If you want to run one feature file containing a few related tests with custom t
 ```bash
 npm run test:one -- cypress/e2e/caching.feature --env useTags="./previous-tags.env"
 ```
+
+If you want to run one test from one feature file you can use the following command:
+```bash
+npm run test:one -- cypress/e2e/gipod*.feature --env tags="@test-005"
+```

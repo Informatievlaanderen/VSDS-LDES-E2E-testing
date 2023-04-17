@@ -1,6 +1,9 @@
 /// <reference types="cypress" />
 
+type CountResult = { count: number, ids: string[] };
+
 export class MongoRestApi {
+    
     constructor(private baseUrl: string) { }
 
     checkCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
@@ -10,12 +13,18 @@ export class MongoRestApi {
     private hasCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean) {
         return cy.request(`${this.baseUrl}/${database}/${collection}`)
             .then(response => response.body)
-            .then((result: { count: number }) => cy.log('Actual count: ' + result.count).then(() => checkFn(result.count , count)));
+            .then((result: CountResult) => cy.log('Actual count: ' + result.count).then(() => checkFn(result.count , count)));
     }
 
     count(database: string, collection: string) {
         return cy.request(`${this.baseUrl}/${database}/${collection}`)
             .then(response => response.body)
-            .then((result: { count: number }) => result.count);
+            .then((result: CountResult) => result.count);
+    }
+
+    fragments(database: string, collection: string) {
+        return cy.request(`${this.baseUrl}/${database}/${collection}?includeIds=true`)
+            .then(response => response.body)
+            .then((result: CountResult) => result.ids);
     }
 }

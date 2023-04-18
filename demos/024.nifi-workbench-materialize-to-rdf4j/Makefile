@@ -18,10 +18,12 @@ help: ## This help message
 
 run: ## Run the containers
 	@echo Env file: ${ENV_FILE}
+	@mkdir -m 777 nifi
 	@docker compose --env-file ${ENV_FILE} up -d
 
 stop: ## Stop the running containers
 	@docker compose --env-file ${ENV_FILE} down
+	@rm -rf nifi
 
 login-nifi: ## Login to the NiFi Workbench container
 	@docker exec -ti ${USECASE_NAME}-ldi-workbench-nifi /bin/bash

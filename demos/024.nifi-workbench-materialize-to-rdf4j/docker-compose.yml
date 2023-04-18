@@ -16,7 +16,7 @@ services:
     image: eclipse/rdf4j-workbench:${RDF4J_SERVER_TAG:-latest}
     container_name: ${USECASE_NAME:-rdf4j-repository-materialisation}-rdf4j-server
     environment:
-      - JAVA_OPTS="-Xms1g -Xmx4g"
+      - "JAVA_OPTS=-Xms1g -Xmx4g"
     ports:
       - 8080:8080
     networks:

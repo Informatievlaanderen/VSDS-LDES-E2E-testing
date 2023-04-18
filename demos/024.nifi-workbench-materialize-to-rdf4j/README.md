@@ -81,7 +81,7 @@ make query
 ```
 
 #### 6. Copy the updated person data
-You can either manually copy the (update file)[./data/update/17_taylor_kennedy_changed.nq] or run the following command:
+You can either manually copy the [update file](./data/update/17_taylor_kennedy_changed.nq) or run the following command:
 ```shell
 make update
 ```

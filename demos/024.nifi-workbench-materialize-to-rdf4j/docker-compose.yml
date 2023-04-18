@@ -10,13 +10,13 @@ services:
     networks:
       - ldes
     volumes:
-      - "./nifi:/home/nifi/data"
+      - ./nifi:/home/nifi/data
       
   rdf4j-server:
-    image: eclipse/rdf4j-workbench:${RDF4J_SERVER_TAG:-4.2.2}
+    image: eclipse/rdf4j-workbench:${RDF4J_SERVER_TAG:-latest}
     container_name: ${USECASE_NAME:-rdf4j-repository-materialisation}-rdf4j-server
     environment:
-      - "JAVA_OPTS=-Xms1g -Xmx4g"
+      - JAVA_OPTS="-Xms1g -Xmx4g"
     ports:
       - 8080:8080
     networks:

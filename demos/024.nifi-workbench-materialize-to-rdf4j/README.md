@@ -24,7 +24,7 @@ export ENV_FILE=user.env
 make run
 ```
 
-The dockers are exposed on port 8080 ([rdf4j-workbench](http://localhost:8080/rdf4j-workbench)) and 8443 ([ldi-workbench-nifi](http://localhost:8443/nifi))
+The dockers are exposed on port 8080 ([rdf4j-workbench](http://localhost:8080/rdf4j-workbench)) and 8000 ([ldi-workbench-nifi](http://localhost:8000/nifi))
 
 ### Test Execution
 To run the test, you need to:
@@ -44,7 +44,7 @@ To run the test, you need to:
 - On the next page, select 'In Memory Store' and click 'Create'
 
 #### 2. Upload and start NiFi Workflow
-Browse to the [Apache NiFi user interface](https://localhost:8443/nifi) (it may take a minute or two before it is available) and upload the [NiFi workflow](rdf4j-repository-materialisation-workflow.json) process group.
+Browse to the [Apache NiFi user interface](http://localhost:8000/nifi) (it may take a minute or two before it is available) and upload the [NiFi workflow](rdf4j-repository-materialisation-workflow.json) process group.
 
 You can verify the GetFile processor and rdf4j processor properties.
 

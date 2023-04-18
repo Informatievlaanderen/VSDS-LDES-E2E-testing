@@ -11,7 +11,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-server-snapshot}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: sha256:29a947e5416d205f83c9173e2a3fffc0d0a7e79603181c55ed7efe6f802d7209 #ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2

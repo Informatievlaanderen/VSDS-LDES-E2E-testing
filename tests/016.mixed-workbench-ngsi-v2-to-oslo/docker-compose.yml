@@ -11,12 +11,9 @@ services:
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
-      - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/wqo.mapping.json}
-      - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
-      - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
+      - MIMETYPE=${JSON_DATA_GENERATOR_MIMETYPE:-application/ld+json}
     volumes:
       - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
-      - ./data/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
     networks:
       - ldes
     depends_on:

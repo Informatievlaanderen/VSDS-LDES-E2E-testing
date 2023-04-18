@@ -11,16 +11,9 @@ services:
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
-      - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/wqo.mapping.json}
-      - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
-      - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
       - MIMETYPE=application/json
     volumes:
-#      - ./data/temp/wqo.template.json:/tmp/data/wqo.template.json:ro
-#      - ./data/temp/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
-    # TODO: use ngsi-v2 templates below instead of the JSON-LD ones above
       - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
-      - ./data/wqo.mapping.json:/tmp/data/wqo.mapping.json:ro
     networks:
       - ldes
     depends_on:

@@ -3,7 +3,7 @@
         "https://json-ld.org/test-suite/context.jsonld",
         "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
     ],
-    "id": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU",
+    "id": "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU:{{index}}",
     "type": "Device",
     "adminState": {
         "type": "Property",
@@ -47,7 +47,7 @@
         "type": "Property",
         "value": {
             "@type": "DateTime",
-            "@value": "2022-06-28T08:26:06.000Z"
+            "@value": "{{timestamp}}"
         }
     },
     "extraMeasurementAttributes": {

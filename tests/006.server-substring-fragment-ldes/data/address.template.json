@@ -6,7 +6,7 @@
             "id": "https://data.vlaanderen.be/id/adres/1781020",
             "naamruimte": "https://data.vlaanderen.be/id/adres",
             "objectId": "1781020",
-            "versieId": "2022-04-28T08:06:25+02:00"
+            "versieId": "{{timestamp}}"
         },
         "gemeente": {
             "objectId": "46014",
@@ -57,7 +57,7 @@
             "id": "https://data.vlaanderen.be/id/adres/1781021",
             "naamruimte": "https://data.vlaanderen.be/id/adres",
             "objectId": "1781021",
-            "versieId": "2011-04-29T15:05:57+02:00"
+            "versieId": "{{timestamp}}"
         },
         "gemeente": {
             "objectId": "23025",
@@ -108,7 +108,7 @@
             "id": "https://data.vlaanderen.be/id/adres/1781022",
             "naamruimte": "https://data.vlaanderen.be/id/adres",
             "objectId": "1781022",
-            "versieId": "2022-04-28T08:06:25+02:00"
+            "versieId": "{{timestamp}}"
         },
         "gemeente": {
             "objectId": "11023",

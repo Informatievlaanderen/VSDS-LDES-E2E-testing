@@ -9,12 +9,9 @@ services:
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
-      - MAPPINGFILE=/tmp/data/device.mapping.json
-      - TEMPLATE=
-      - MAPPING=
+      - MIMETYPE=application/ld+json
     volumes:
       - ./data/device.template.json:/tmp/data/device.template.json:ro
-      - ./data/device.mapping.json:/tmp/data/device.mapping.json:ro
     networks:
       - ldes
     profiles:

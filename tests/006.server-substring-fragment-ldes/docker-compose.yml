@@ -9,12 +9,9 @@ services:
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
-      - MAPPINGFILE=${JSON_DATA_GENERATOR_MAPPINGFILE:-/tmp/data/address.mapping.json}
-      - TEMPLATE=${JSON_DATA_GENERATOR_TEMPLATE:-}
-      - MAPPING=${JSON_DATA_GENERATOR_MAPPING:-}
+      - MIMETYPE=${JSON_DATA_GENERATOR_MIMETYPE:-application/ld+json}
     volumes:
       - ./data/address.template.json:/tmp/data/address.template.json:ro
-      - ./data/address.mapping.json:/tmp/data/address.mapping.json:ro
     networks:
       - ldes
     profiles:

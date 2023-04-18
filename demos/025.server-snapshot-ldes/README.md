@@ -82,7 +82,7 @@ A schematic overview is given below:
     ```bash
     curl http://localhost:8080/mobility-hindrances/by-page?pageNumber=1 -s | grep "terms:isVersionOf" | wc -l
     ```
-    > **Note**: for the small data set this should be 11. For the medium-sized this returns 100 members, as do an additional 6 pages. The last page contains the final 26 members:
+    > **Note**: for the small data set this should be 9. For the medium-sized this returns 100 members, as do an additional 6 pages. The last page contains the final 20 members:
     ```bash
     curl http://localhost:8080/mobility-hindrances/by-page?pageNumber=8 -s | grep "terms:isVersionOf" | wc -l
     ```

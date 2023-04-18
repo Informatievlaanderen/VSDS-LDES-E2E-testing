@@ -9,7 +9,7 @@ services:
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/address.template.json}
-      - MIMETYPE=${JSON_DATA_GENERATOR_MIMETYPE:-application/ld+json}
+      - MIMETYPE=${JSON_DATA_GENERATOR_MIMETYPE:-application/json}
     volumes:
       - ./data/address.template.json:/tmp/data/address.template.json:ro
     networks:

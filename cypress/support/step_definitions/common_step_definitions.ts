@@ -122,6 +122,15 @@ Given('the LDIO workflow is available', () => {
     workbenchLdio.waitAvailable();
 })
 
+Given('I start the new LDIO workflow', () => {
+    createAndStartService('new-ldio')
+        .then(() => workbenchLdio.waitAvailable());
+})
+
+When('I pause the data generator', () => {
+    
+})
+
 // When stuff
 
 When('I launch the Client CLI', () => {
@@ -156,8 +165,14 @@ export function createAndStartService(service: string, additionalEnvironmentSett
 }
 
 When('I start the JSON Data Generator', () => {
+    cy.wait(10000);
     createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
         .then(() => jsonDataGenerator.waitAvailable());
+})
+
+Given('I update the targeturl of the JSON Data Generator to the old http listener', () => {
+    const command = `echo ${server.baseUrl}/pipeline > ./data/TARGETURL`;
+    return cy.log(command).exec(command, { log: true })
 })
 
 When('the LDES contains {int} members', (count: number) => {
@@ -176,10 +191,10 @@ When('the LDES contains at least {int} members', (count: number) => {
 When('the old server is done processing', () => {
     let previousCount;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
-    cy.waitUntil(() => 
-        currentMemberCount().then(count => 
+    cy.waitUntil(() =>
+        currentMemberCount().then(count =>
             cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
-        {timeout:5000,interval:1000}
+        { timeout: 5000, interval: 1000 }
     );
 })
 

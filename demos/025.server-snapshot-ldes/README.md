@@ -16,11 +16,24 @@ Scenario: Create a snapshot using the LDES server
   And the snapshot can be retrieved as an LDES stream
 ```
 
+```gherkin
+Scenario: Create a snapshot using the LDES server based on a previous snapshot
+  Given An LDES server with the defaultView enabled
+  And The LDES server has created a snapshot
+  And I have ingested a series of tree members
+  When I create a snapshot via the admin api by making a post request on '/admin/api/v1/snapshots'
+  Then the snapshot is created
+  And the snapshot contains only the latest version of every resource
+  And the snapshot has a relation to the mutable tree node of the default view
+  And the snapshot is saved in the database
+  And the snapshot can be retrieved as an LDES stream
+```
+
 ### Small dataset
 If you chose to use the small dataset then 11 members will be ingested in the server. These members are all version objects of three resources. A schematic overview of the members is given in the following figure:
 ![small_dataset](images/small_dataset.png)
 
-When a snapshot is created only the latest version objects are kept in the snapshotand therefore it only contains three members:
+When a snapshot is created only the latest version objects are kept in the snapshot and therefore it only contains three members:
 * https://test-data/mobility-hindrance/1/2
 * https://test-data/mobility-hindrance/2/4
 * https://test-data/mobility-hindrance/3/5
@@ -48,7 +61,7 @@ A schematic overview is given below:
 
 2. Ingest the small data set:
     ```bash
-    for member in {1..11}; do \
+    for member in {1..9}; do \
       curl -i -X POST \
         --url 'http://localhost:8080/mobility-hindrances' \
         -H "Content-Type: text/turtle" \
@@ -57,7 +70,7 @@ A schematic overview is given below:
     ```
     OR the medium-sized data set:
     ```bash
-    for member in {1..726} ; do
+    for member in {1..720} ; do
       curl -i -X POST \
         --url 'http://localhost:8080/mobility-hindrances' \
         -H "Content-Type: text/turtle" \
@@ -83,8 +96,8 @@ A schematic overview is given below:
    {
       "count":2,
       "ids":[
-        "/by-page",
-        "/by-page?pageNumber=1"
+        "/mobility-hindrances/by-page",
+        "/mobility-hindrances/by-page?pageNumber=1"
       ]
    }
    ```
@@ -93,7 +106,7 @@ A schematic overview is given below:
 ## Test execution
 1. Create a snapshot:
     ```bash
-    curl -X POST http://localhost:8080/admin/api/v1/snapshots
+    curl -X POST http://localhost:8080/admin/api/v1/mobility-hindrances/snapshots
     ```
 
 2. Verify that a new collection is created named `snapshot` containing 1 document:
@@ -104,7 +117,7 @@ A schematic overview is given below:
    ```json
    {
     "count":1,
-    "ids":["snapshot-2023-04-07T12:52:23.931014032"]
+    "ids":["mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032"]
    }
    ```
 
@@ -113,14 +126,72 @@ A schematic overview is given below:
    curl http://localhost:9019/test/ldesfragment?includeIds=true
    ```
    The collection `ldesfragment` now contains additional fragments which are part of the snapshot view, E.g. (for the medium-sized data set):
-    ```json
+   ```json
     {
       "count":4,
       "ids":[
-        "/by-page",
-        "/by-page?pageNumber=1",
-        "/snapshot-2023-04-07T12:52:23.931014032",
-        "/snapshot-2023-04-07T12:52:23.931014032?pageNumber=1"
+        "/mobility-hindrances/by-page",
+        "/mobility-hindrances/by-page?pageNumber=1",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032?pageNumber=1"
+      ]
+    }
+    ```
+   
+4. Expand the dataset using the small dataset:
+   ```bash
+    for member in {10..11}; do \
+      curl -i -X POST \
+        --url 'http://localhost:8080/mobility-hindrances' \
+        -H "Content-Type: text/turtle" \
+        --data-binary "@./data/small/member$member.ttl"
+    done
+    ```
+
+   OR using the medium dataset:
+   ```bash
+    for member in {721..726} ; do
+      curl -i -X POST \
+        --url 'http://localhost:8080/mobility-hindrances' \
+        -H "Content-Type: text/turtle" \
+        --data-binary "@./data/medium/member$member.ttl"
+    done
+    ```
+   
+5. Create a second snapshot:
+    ```bash
+    curl -X POST http://localhost:8080/admin/api/v1/mobility-hindrances/snapshots
+    ```
+   
+6. Verify that a new collection is created like in step 2
+   ```bash
+   curl http://localhost:9019/test/snapshot?includeIds=true
+   ```
+   this returns something similar to:
+   ```json
+   {
+    "count":2,
+    "ids":["mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032",
+      "mobility-hindrances/snapshot-2023-04-07T12:52:25.752463851"]
+   }
+   ```
+
+7. Verify the fragment count has increased like in step 3:
+   ```bash
+   curl http://localhost:9019/test/ldesfragment?includeIds=true
+   ```
+   For the medium dataset:
+   Note that even though only a couple of members were added, atleast 2 non-root fragments were created to contain the latest versions of the 204 resources.
+    ```json
+    {
+      "count":6,
+      "ids":[
+        "/mobility-hindrances/by-page",
+        "/mobility-hindrances/by-page?pageNumber=1",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032?pageNumber=1",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:25.752463851",
+        "/mobility-hindrances/snapshot-2023-04-07T12:52:25.752463851?pageNumber=1"
       ]
     }
     ```

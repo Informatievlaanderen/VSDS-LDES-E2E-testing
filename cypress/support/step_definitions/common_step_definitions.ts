@@ -21,6 +21,8 @@ export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
 export const clientCli = new ClientCli('http://localhost:8081');
+export const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
+export const workbench = new LdesWorkbenchLdio('http://localhost:8082');
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -124,7 +126,6 @@ Given('the LDIO workflow is available', () => {
 
 Given('I start the new LDIO workflow', () => {
     //wanneer containerId wordt opgehaald in waitAvailable = ldio-workflow, daarom lijn 127 toegevoegd
-    const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
     createAndStartService('new-ldio')
         .then(() => newWorkbenchLdio.waitAvailable());
 })
@@ -145,10 +146,19 @@ When('I start the LDIO workflow', () => {
 
 When('I pause the LDIO workflow output', () => {
     workbenchLdio.pause();
+
+})
+
+When('I pause the new LDIO workflow output', () => {
+    workbench.pause();
 })
 
 When('I resume the LDIO workflow output', () => {
     workbenchLdio.resume();
+})
+
+When('I resume the new LDIO workflow output', () => {
+    workbench.resume();
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {

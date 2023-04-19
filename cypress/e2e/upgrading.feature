@@ -26,8 +26,11 @@ Feature: server upgrade use case
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
     And I start the new LDIO workflow
-    When I pause the LDIO workflow output
+    When I pause the new LDIO workflow output
     And I update the targeturl
     And the old server is done processing
+    And I remember the last fragment member count
     And I bring the old LDIO workbench down
+    And I resume the new LDIO workflow output
     Then the LDES member count increases
+    And the last fragment member count increases

@@ -1,4 +1,0 @@
-{
-    "$.data.*.id": "${@}:${nextCounter}",
-    "$.data.*.dateObserved.value": "${currentTimestamp}"
-}

@@ -1,9 +1,9 @@
 # Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model - Part 2
-This tests is the second and final step towards a setup which does not require the use of Apache NiFi to host the workflow which converts the incoming NGSI-v2 messages towards an OSLO model (or a NGSI-LD model if no corresponding OSLO model exists). The test is based on the [previous IoW test](../016.mixed-workbench-ngsi-v2-to-oslo/README.md).
+The test verifies that the LDES Server can host multiple LDES.
+This test is based on the [IoW test 017](../017.ldio-workbench-ngsi-v2-to-oslo/README.md) where multiple servers are required.
+In this test we recreate the same scenario but host all three LDES collections on one LDES server.
 
-This second step towards a NiFi-less approach executes the complete transformation pipline using the [new runner](https://github.com/Informatievlaanderen/VSDS-Linked-Data-Interactions). The result is then ingested in an LDES server.
-
-> **Note**: that the steps and the results are identical to these from the [previous IoW test](../015.nifi-workbench-ngsi-v2-to-oslo/README.md).
+> **Note**: that the steps and the results are identical to these from the [IoW test 017](../017.ldio-workbench-ngsi-v2-to-oslo/README.md).
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -32,7 +32,7 @@ This second step towards a NiFi-less approach executes the complete transformati
 ## Test Execution
 1. Send test data by using the following commands:
     ```bash
-    curl -X POST http://localhost:9012/models -H 'Content-Type: application/json' -d '@data/model.json' 
+    curl -X POST http://localhost:9012/device-models -H 'Content-Type: application/json' -d '@data/model.json' 
     ```
     ```bash
     curl -X POST http://localhost:9012/devices -H 'Content-Type: application/json' -d '@data/device.json' 
@@ -59,14 +59,3 @@ First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then
 docker compose stop test-message-generator
 docker compose --profile delay-started down
 ```
-
-## C4 Diagrams
-
-### Context
-![context](./artwork/iow-to-be.context.png)
-
-### Container
-![container](./artwork/iow-to-be.container.png)
-
-### Component
-![component](./artwork/iow-to-be.component.png)

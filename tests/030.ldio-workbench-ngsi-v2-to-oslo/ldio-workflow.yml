@@ -24,7 +24,7 @@ orchestrator:
           config:
             endpoint: http://ldes-server:8080/devices
             content-type: application/n-quads
-    - name: models
+    - name: device-models
       description: "Uses a HTTP listener accepting NGSI-v2 messages, converts them to NGSI-LD, and sends NGSI-LD version objects using HTTP to an LDES server."
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn

@@ -7,7 +7,7 @@ services:
     profiles:
       - delay-started
     environment:
-      - TARGETURL=http://ldio-workflow:8080/observations
+      - TARGETURL=http://ldio-observations:8080/data
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
@@ -17,7 +17,7 @@ services:
     networks:
       - ldes
     depends_on:
-      - ldio-workflow
+      - ldio-observations
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-mongodb
@@ -54,7 +54,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
-      
+
   ldes-server-models:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server-models
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
@@ -111,35 +111,35 @@ services:
     depends_on:
       - ldes-mongodb
 
-  ldio-workflow:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-workflow
+  ldio-devices:
+    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-devices
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
     volumes:
-      - ./ldio-workflow.yml:/application.yml:ro
+      - ./ldio-devices.config.yml:/application.yml:ro
     networks:
       - ldes
 
-#  ldio-models:
-#    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-models
-#    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-#    ports:
-#      - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:8080
-#    volumes:
-#      - ./ldio-models.config.yml:/application.yml:ro
-#    networks:
-#      - ldes
+  ldio-models:
+    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-models
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    ports:
+      - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:8080
+    volumes:
+      - ./ldio-models.config.yml:/application.yml:ro
+    networks:
+      - ldes
 
-#  ldio-observations:
-#    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-observations
-#    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-#    ports:
-#      - ${LDIO_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:8080
-#    volumes:
-#      - ./ldio-observations.config.yml:/application.yml:ro
-#    networks:
-#      - ldes
+  ldio-observations:
+    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-observations
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    ports:
+      - ${LDIO_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:8080
+    volumes:
+      - ./ldio-observations.config.yml:/application.yml:ro
+    networks:
+      - ldes
 
   mongodb-rest-api:
     container_name: ${USECASE_NAME:-nifi-less-approach}_mongodb-rest-api
@@ -151,7 +151,7 @@ services:
       - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
-      
+
 networks:
   ldes:
     name: ${USECASE_NAME:-nifi-less-approach}_network

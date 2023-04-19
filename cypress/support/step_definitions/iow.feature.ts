@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { Fragment, Member, sosa } from '../ldes';
+import { Fragment, Member } from '../ldes';
 import { LdesServer } from "../services";
 import { workbenchNifi, mongo, testPartialPath } from "./common_step_definitions";
 
@@ -39,31 +39,54 @@ When('I upload the data file {string} to the NiFi workflow', (baseName: string) 
     cy.log(command).then(() => cy.exec(command));
 })
 
-When('I upload the data file {string} to the LDIO workflow with port {int}', (baseName: string, port: number) => {
-    const command = `curl -X POST "http://localhost:${port}/models" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
+When('I upload the data file {string} to the LDIO workflow with port {int} and endpoint {string}',
+    (baseName: string, port: number, endpoint: string) => {
+    const command = `curl -X POST "http://localhost:${port}/${endpoint}" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
     cy.log(command).then(() => cy.exec(command));
 })
 
 When('the {string} LDES contains 1 member', (ldes: string) => {
     const useDevices = ldes === 'devices';
     const database = useDevices ? 'iow_devices' : 'iow_models';
-    const collection = 'ldesmember';
-    mongo.checkCount(database, collection, 1).then(() => {
-        const server = multiLdesServer;
-        // const server = useDevices ? devicesServer : modelsServer;
-        return server.getLdes(ldes)
-            .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
-            .then(view => new Fragment(view.relation.link).visit())
-            .then(fragment => rootFragment = fragment);
-    });
+    const server = useDevices ? devicesServer : modelsServer;
+    verifyMemberCount(database, server, 1);
 })
 
+When('the multi LDES server contains {int} members', (count: number) => {
+    verifyMemberCount('iow', multiLdesServer, count);
+})
+
+function verifyMemberCount(database: string, server: LdesServer, count: number, checkFn?: (actual: number, expected: number) => boolean) {
+    mongo.checkCount(database, 'ldesmember', count, checkFn);
+}
+
+When('the root fragment of {string} is obtained', (ldes: string) => {
+    let server;
+    switch (ldes) {
+        case 'device-models': server = modelsServer; break;
+        case 'devices': server = devicesServer; break;
+        case 'water-quality-observations': server = observationsServer; break;
+    }
+    obtainRootFragment(server, ldes);
+})
+
+When('the root fragment of {string} is obtained from the multi LDES server', (ldes: string) => {
+    obtainRootFragment(multiLdesServer, ldes);
+})
+
+function obtainRootFragment(server: LdesServer, ldes: string) {
+    return server.getLdes(ldes)
+        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(view => new Fragment(view.relation.link).visit())
+        .then(fragment => rootFragment = fragment);
+}
+
 When('the observations LDES contains at least 1 members', () => {
-    mongo.checkCount('iow_observations', 'ldesmember', 1, (x, y) => x >= y).then(() =>
-        observationsServer.getLdes('water-quality-observations')
-            .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
-            .then(view => new Fragment(view.relation.link).visit())
-            .then(fragment => rootFragment = fragment));
+    verifyMemberCount('iow_observations', observationsServer, 1, (x, y) => x >= y);
+})
+
+When('the multi LDES server contains at least 3 members', () => {
+    verifyMemberCount('iow', multiLdesServer, 3, (x, y) => x >= y);
 })
 
 // Then stuff

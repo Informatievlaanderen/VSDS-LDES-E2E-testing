@@ -39,9 +39,8 @@ When('I upload the data file {string} to the NiFi workflow', (baseName: string) 
     cy.log(command).then(() => cy.exec(command));
 })
 
-When('I upload the data file {string} to the LDIO workflow with port {number}', (baseName: string, port: number) => {
-    const port = baseName === 'device' ? 9012 : 9013;
-    const command = `curl -X POST "http://localhost:${port}/data" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
+When('I upload the data file {string} to the LDIO workflow with port {int}', (baseName: string, port: number) => {
+    const command = `curl -X POST "http://localhost:${port}/models" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
     cy.log(command).then(() => cy.exec(command));
 })
 
@@ -50,7 +49,8 @@ When('the {string} LDES contains 1 member', (ldes: string) => {
     const database = useDevices ? 'iow_devices' : 'iow_models';
     const collection = 'ldesmember';
     mongo.checkCount(database, collection, 1).then(() => {
-        const server = useDevices ? devicesServer : modelsServer;
+        const server = multiLdesServer;
+        // const server = useDevices ? devicesServer : modelsServer;
         return server.getLdes(ldes)
             .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
             .then(view => new Fragment(view.relation.link).visit())

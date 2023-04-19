@@ -123,12 +123,10 @@ Given('the LDIO workflow is available', () => {
 })
 
 Given('I start the new LDIO workflow', () => {
+    //wanneer containerId wordt opgehaald in waitAvailable = ldio-workflow, daarom lijn 127 toegevoegd
+    const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
     createAndStartService('new-ldio')
-        .then(() => workbenchLdio.waitAvailable());
-})
-
-When('I pause the data generator', () => {
-    
+        .then(() => newWorkbenchLdio.waitAvailable());
 })
 
 // When stuff
@@ -165,14 +163,8 @@ export function createAndStartService(service: string, additionalEnvironmentSett
 }
 
 When('I start the JSON Data Generator', () => {
-    cy.wait(10000);
     createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
         .then(() => jsonDataGenerator.waitAvailable());
-})
-
-Given('I update the targeturl of the JSON Data Generator to the old http listener', () => {
-    const command = `echo ${server.baseUrl}/pipeline > ./data/TARGETURL`;
-    return cy.log(command).exec(command, { log: true })
 })
 
 When('the LDES contains {int} members', (count: number) => {
@@ -211,6 +203,16 @@ When('I bring the old server down', () => {
 When('I start the new LDES Server', () => {
     createAndStartService('new-ldes-server')
         .then(() => server.waitAvailable());
+})
+
+When('I update the targeturl', () => {
+    const command = `echo ${server.baseUrl}/pipeline > ./data/TARGETURL`;
+    return cy.log(command).exec(command, { log: true })
+})
+
+When('I bring the old LDIO workbench down', () => {
+    dockerCompose.stop('old-ldio');
+    dockerCompose.removeVolumesAndImage('old-ldio');
 })
 
 // Then stuff

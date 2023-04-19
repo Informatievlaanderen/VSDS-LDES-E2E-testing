@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://old-ldio:8080/pipeline
+      - TARGETURL=
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json

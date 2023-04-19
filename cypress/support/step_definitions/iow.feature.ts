@@ -8,6 +8,7 @@ let rootFragment: Fragment;
 const devicesServer = new LdesServer('http://localhost:8071', 'ldes-server-devices');
 const modelsServer = new LdesServer('http://localhost:8072', 'ldes-server-models');
 const observationsServer = new LdesServer('http://localhost:8073', 'ldes-server-observations');
+const multiLdesServer = new LdesServer('http://localhost:8071', 'ldes-server');
 
 // Given stuff
 
@@ -15,6 +16,10 @@ Given('the IoW LDES servers are available', () => {
     devicesServer.waitAvailable();
     modelsServer.waitAvailable();
     observationsServer.waitAvailable();
+})
+
+Given('the IoW multi LDES server is available', () => {
+    multiLdesServer.waitAvailable();
 })
 
 Given('I started the workflow', () => {
@@ -34,7 +39,7 @@ When('I upload the data file {string} to the NiFi workflow', (baseName: string) 
     cy.log(command).then(() => cy.exec(command));
 })
 
-When('I upload the data file {string} to the LDIO workflow', (baseName: string) => {
+When('I upload the data file {string} to the LDIO workflow with port {number}', (baseName: string, port: number) => {
     const port = baseName === 'device' ? 9012 : 9013;
     const command = `curl -X POST "http://localhost:${port}/data" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
     cy.log(command).then(() => cy.exec(command));

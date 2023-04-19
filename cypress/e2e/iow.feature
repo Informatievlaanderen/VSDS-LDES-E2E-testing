@@ -61,10 +61,24 @@ Feature: IoW use case
   Scenario: 017: LDIO Workbench Can Convert NGSI-v2 to OSLO
     Given context 'tests/017.ldio-workbench-ngsi-v2-to-oslo' is started
     And the IoW LDES servers are available
-    When I upload the data file 'model' to the LDIO workflow
+    When I upload the data file 'model' to the LDIO workflow with port
     And the 'device-models' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device model version
-    When I upload the data file 'device' to the LDIO workflow
+    When I upload the data file 'device' to the LDIO workflow with port
+    And the 'devices' LDES contains 1 member
+    Then the root fragment contains a correct NGSI-LD device version
+    When I start the JSON Data Generator
+    And the observations LDES contains at least 1 members
+    Then the root fragment contains a correct OSLO observation version
+
+@iow @test-030
+  Scenario: 030: LDIO Supports multi ldes
+    Given context 'tests/030.ldio-workbench-ngsi-v2-to-oslo' is started
+    And the IoW multi LDES server is available
+    When I upload the data file 'model' to the LDIO workflow with port
+    And the 'device-models' LDES contains 1 member
+    Then the root fragment contains a correct NGSI-LD device model version
+    When I upload the data file 'device' to the LDIO workflow with port
     And the 'devices' LDES contains 1 member
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator

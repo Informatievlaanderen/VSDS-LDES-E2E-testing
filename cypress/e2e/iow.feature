@@ -11,12 +11,15 @@ Feature: IoW use case
     And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
+    And the root fragment of 'device-models' is obtained
     Then the root fragment contains a correct NGSI-LD device model version
     When I upload the data file 'device' to the NiFi workflow
     And the 'devices' LDES contains 1 member
+    And the root fragment of 'devices' is obtained
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
     And the observations LDES contains at least 1 members
+    And the root fragment of 'water-quality-observations' is obtained
     Then the root fragment contains a correct NGSI-LD observation version
 
 @iow @test-015
@@ -30,12 +33,15 @@ Feature: IoW use case
     And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
+    And the root fragment of 'device-models' is obtained
     Then the root fragment contains a correct NGSI-LD device model version
     When I upload the data file 'device' to the NiFi workflow
     And the 'devices' LDES contains 1 member
+    And the root fragment of 'devices' is obtained
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
     And the observations LDES contains at least 1 members
+    And the root fragment of 'water-quality-observations' is obtained
     Then the root fragment contains a correct OSLO observation version
 
 @iow @test-016
@@ -49,12 +55,15 @@ Feature: IoW use case
     And the 'device' ingest endpoint is ready
     When I upload the data file 'device-model' to the NiFi workflow
     And the 'device-models' LDES contains 1 member
+    And the root fragment of 'device-models' is obtained
     Then the root fragment contains a correct NGSI-LD device model version
     When I upload the data file 'device' to the NiFi workflow
     And the 'devices' LDES contains 1 member
+    And the root fragment of 'devices' is obtained
     Then the root fragment contains a correct NGSI-LD device version
     When I start the JSON Data Generator
     And the observations LDES contains at least 1 members
+    And the root fragment of 'water-quality-observations' is obtained
     Then the root fragment contains a correct OSLO observation version
 
 @iow @test-017

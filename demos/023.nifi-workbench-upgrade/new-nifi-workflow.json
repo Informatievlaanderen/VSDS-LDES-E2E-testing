@@ -493,7 +493,7 @@
                 },
                 "properties": {
                     "GENERATED_AT_TIME_PROPERTY": "http://www.w3.org/ns/prov#generatedAtTime",
-                    "DATE_OBSERVED_VALUE_JSON_PATH": "$.dateLastValueReported.value['@value']",
+                    "DATE_OBSERVED_VALUE_RDF_PROPERTY": "https://uri.etsi.org/ngsi-ld/observedAt",
                     "DATA_DESTINATION_FORMAT": "n-quads",
                     "MEMBER_RDF_SYNTAX_TYPE": "https://uri.etsi.org/ngsi-ld/default-context/Device",
                     "DELIMITER": "/",
@@ -506,9 +506,9 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATE_OBSERVED_VALUE_JSON_PATH": {
-                        "name": "DATE_OBSERVED_VALUE_JSON_PATH",
-                        "displayName": "JSON path to a timestamp value",
+                    "DATE_OBSERVED_VALUE_RDF_PROPERTY": {
+                        "name": "DATE_OBSERVED_VALUE_RDF_PROPERTY",
+                        "displayName": "RDF property to find the timestamp value",
                         "identifiesControllerService": false,
                         "sensitive": false
                     },

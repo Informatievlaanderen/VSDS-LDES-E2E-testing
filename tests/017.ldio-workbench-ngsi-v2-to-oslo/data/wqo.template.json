@@ -2,7 +2,7 @@
     "subscriptionId": "57458eb60962ef754e7c0997",
     "data": [
         {
-            "id": "woq",
+            "id": "woq:{{index}}",
             "type": "WaterQualityObserved",
             "conductivity": {
                 "type": "Number",
@@ -16,7 +16,7 @@
             },
             "dateObserved": {
                 "type": "DateTime",
-                "value": "2022-09-09T09:10:00.000Z",
+                "value": "{{timestamp}}",
                 "metadata": {}
             },
             "depth": {

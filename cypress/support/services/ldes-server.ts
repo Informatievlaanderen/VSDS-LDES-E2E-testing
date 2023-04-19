@@ -5,6 +5,9 @@ import { CanCheckAvailability } from './interfaces';
 
 export class LdesServer implements CanCheckAvailability {
 
+    public static ApplicationStarted = 'Started Application in';
+    public static DatabaseUpgradeFinished = 'Mongock has finished';
+
     constructor(public baseUrl: string, private _serviceName?: string) { }
 
     public get serviceName() {
@@ -13,14 +16,14 @@ export class LdesServer implements CanCheckAvailability {
 
     private isReady(containerId: string, message?: string) {
         return cy.exec(`docker logs ${containerId}`)
-            .then(result => result.stdout.includes(message || "Mongock has finished"));
+            .then(result => result.stdout.includes(message || LdesServer.DatabaseUpgradeFinished));
     }
 
     waitAvailable(message?: string) {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message), { timeout: 60000, interval: 5000 });
+                return cy.waitUntil(() => this.isReady(containerId, message), { timeout: 120000, interval: 5000 });
             });
     }
 

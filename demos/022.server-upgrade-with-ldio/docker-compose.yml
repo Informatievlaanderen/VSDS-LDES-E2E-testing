@@ -9,13 +9,9 @@ services:
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
-      - MAPPINGFILE=/tmp/data/device.mapping.json
-      - TEMPLATE=
-      - MAPPING=
       - MIMETYPE=application/ld+json
     volumes:
       - ./data/device.template.json:/tmp/data/device.template.json:ro
-      - ./data/device.mapping.json:/tmp/data/device.mapping.json:ro
     networks:
       - ldes
     profiles:
@@ -44,7 +40,10 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20221107t0923}
+    # NOTE: because the old server 20221107t0923 did not yet support MacOS, 
+    #       we need to use the version 20230405T0843 which is based on the 
+    #       20221107t0923 code base but adds a docker image for ARM64.
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20230405T0843}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -77,16 +76,16 @@ services:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - LDES_HOSTNAME=http://localhost:8080
-      - LDES_COLLECTIONNAME=devices
-      - LDES_SHAPE=
-      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_0_COLLECTIONNAME=devices
+      - COLLECTIONS_0_SHAPE=
+      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       # TODO: can be change this to view name 'by-time' and simple 'pagination'?
-      - VIEWS_0_NAME=devices-by-time
-      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

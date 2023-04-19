@@ -58,7 +58,7 @@ export class DockerCompose {
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} create ${serviceName}`;
-        return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : '')
+        return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : 'No user env.')
             .log(command)
             .exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
@@ -99,5 +99,12 @@ export class DockerCompose {
                 .then(exec => expect(exec.code).to.equals(0))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
         }
+    }
+
+    public removeVolumesAndImage(serviceName: string) {
+        const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
+        const command = `docker compose ${environmentFile} rm --force --volumes ${serviceName}`;
+        return cy.log(command).exec(command, { log: true, env: this._environment })
+            .then(result => expect(result.code).to.equal(0));
     }
 }

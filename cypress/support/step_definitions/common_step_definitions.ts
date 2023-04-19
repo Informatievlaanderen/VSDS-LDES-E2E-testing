@@ -9,17 +9,18 @@ import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
 
 let testContext: any;
+let memberCount;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
-export const workbenchLdio = new LdesWorkbenchLdio();
+export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
-export const clientCli = new ClientCli();
+export const clientCli = new ClientCli('http://localhost:8081');
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -109,12 +110,16 @@ Given('the LDES server is available', () => {
     return server.waitAvailable();
 })
 
+Given('the old LDES server is available', () => {
+    return server.waitAvailable(LdesServer.ApplicationStarted);
+})
+
 Given('the LDES Server Simulator is available', () => {
     simulator.waitAvailable();
 })
 
 Given('the LDIO workflow is available', () => {
-    workbenchLdio.waitAvailable()
+    workbenchLdio.waitAvailable();
 })
 
 // When stuff
@@ -131,12 +136,20 @@ When('I start the LDIO workflow', () => {
     createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
+When('I pause the LDIO workflow output', () => {
+    workbenchLdio.pause();
+})
+
+When('I resume the LDIO workflow output', () => {
+    workbenchLdio.resume();
+})
+
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
     simulator.waitAvailable();
     dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
-function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
+export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
         .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
         .then(() => testContext.delayedServices.push(service));
@@ -157,6 +170,17 @@ When('the LDES contains {int} fragments', (count: number) => {
 
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
+    currentMemberCount().then(count => memberCount = count);
+})
+
+When('the old server is done processing', () => {
+    let previousCount;
+    currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
+    cy.waitUntil(() => 
+        currentMemberCount().then(count => 
+            cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        {timeout:5000,interval:1000}
+    );
 })
 
 When('I start the GTFS2LDES service', () => {
@@ -164,6 +188,15 @@ When('I start the GTFS2LDES service', () => {
         .then(() => gtfs2ldes.waitAvailable());
 })
 
+When('I bring the old server down', () => {
+    dockerCompose.stop('old-ldes-server');
+    dockerCompose.removeVolumesAndImage('old-ldes-server');
+})
+
+When('I start the new LDES Server', () => {
+    createAndStartService('new-ldes-server')
+        .then(() => server.waitAvailable());
+})
 
 // Then stuff
 
@@ -181,4 +214,8 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
 
 Then('the Client CLI contains {int} members', (count: number) => {
     clientCli.checkCount(count);
+})
+
+Then('the LDES member count increases', () => {
+    currentMemberCount().then(newMemberCount => expect(newMemberCount).to.be.greaterThan(memberCount));
 })

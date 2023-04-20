@@ -50,7 +50,7 @@ services:
       - COLLECTIONS_0_VIEWS_1_RETENTION-POLICIES_0_NAME=timebased
       - COLLECTIONS_0_VIEWS_1_RETENTION-POLICIES_0_CONFIG_DURATION=${VIEWS_1_RETENTION_PERIOD:-PT45S}
     volumes:
-      - ../../data/epsg:/home/ldes/Databases:rw
+      - ../../data/epsg:/tmp/Databases:rw
     ports:
       - ${LDES_SERVER_PORT:-8080}:8080
     networks:

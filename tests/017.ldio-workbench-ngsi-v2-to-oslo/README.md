@@ -12,13 +12,13 @@ This second step towards a NiFi-less approach executes the complete transformati
     ```bash
     docker compose up -d
     ```
-    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
+   Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
     ```bash
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-models$")
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-devices$")
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-observations$")
     ```
-    Press `CTRL-C` to stop following each log.
+   Press `CTRL-C` to stop following each log.
 
 2. Verify that the empty LDES views can be retrieved:
     ```bash
@@ -40,14 +40,14 @@ This second step towards a NiFi-less approach executes the complete transformati
 
 2. Verify all LDES streams
 
-    To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
+   To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
      curl http://localhost:8072/device-models/by-time
      curl http://localhost:8071/devices/by-time
      curl http://localhost:8073/water-quality-observations/by-time
      ```
 
-     > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
+   > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
 ## Test Teardown
 First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:

@@ -54,7 +54,7 @@ services:
       - ldes
     depends_on:
       - ldes-mongodb
-      
+
   ldes-server-models:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server-models
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
@@ -151,7 +151,7 @@ services:
       - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
-      
+
 networks:
   ldes:
     name: ${USECASE_NAME:-nifi-less-approach}_network

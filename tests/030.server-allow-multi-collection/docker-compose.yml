@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   test-message-generator:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_test-message-generator
+    container_name: ${USECASE_NAME:-server-multi-collection}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     profiles:
       - delay-started
@@ -20,7 +20,7 @@ services:
       - ldio-workflow
 
   ldes-mongodb:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-mongodb
+    container_name: ${USECASE_NAME:-server-multi-collection}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
     ports:
       - ${MONGODB_PORT:-27017}:27017
@@ -28,7 +28,7 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server
+    container_name: ${USECASE_NAME:-server-multi-collection}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
@@ -75,7 +75,7 @@ services:
       - ldes-mongodb
 
   ldio-workflow:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-workflow
+    container_name: ${USECASE_NAME:-server-multi-collection}_ldio-workflow
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
@@ -85,7 +85,7 @@ services:
       - ldes
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-server-multi-collection}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
@@ -97,4 +97,4 @@ services:
       
 networks:
   ldes:
-    name: ${USECASE_NAME:-nifi-less-approach}_network
+    name: ${USECASE_NAME:-server-multi-collection}_network

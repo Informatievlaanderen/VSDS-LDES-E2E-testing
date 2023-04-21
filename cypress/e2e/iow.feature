@@ -85,7 +85,7 @@ Feature: IoW use case
 
 @iow @test-030
   Scenario: 030: LDIO Supports multi ldes
-    Given context 'tests/030.ldio-workbench-ngsi-v2-to-oslo' is started
+    Given context 'tests/030.server-allow-multi-collection' is started
     And the IoW multi LDES server is available
     When I upload the data file 'model' to the LDIO workflow with endpoint 'device-models'
     And the multi LDES server contains 1 members

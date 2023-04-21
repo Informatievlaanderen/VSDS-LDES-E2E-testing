@@ -65,7 +65,7 @@ services:
       - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-25}
     volumes:
-      - ../../data/epsg:/home/ldes/Databases:rw
+      - ../../data/epsg:/tmp/Databases:rw
       - ./data/static:/tmp/static:ro
     ports:
       - ${DEVICES_LDES_SERVER_PORT:-8071}:8080

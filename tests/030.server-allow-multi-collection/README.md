@@ -1,4 +1,4 @@
-# Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model - Part 2
+# Host different collections on the same LDES Server
 The test verifies that the LDES Server can host multiple LDES.
 This test is based on the [IoW test 017](../017.ldio-workbench-ngsi-v2-to-oslo/README.md) where multiple servers are required.
 In this test we recreate the same scenario but host all three LDES collections on one LDES server.

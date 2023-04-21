@@ -30,7 +30,7 @@ This test uses a docker environment containing a data generator simulating the s
 
 ## Test execution
 1. Pause the LDIO workflow output:
-    ```
+    ```bash
     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/halt"
     ```
 

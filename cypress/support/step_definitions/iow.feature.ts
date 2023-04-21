@@ -39,11 +39,20 @@ When('I upload the data file {string} to the NiFi workflow', (baseName: string) 
     cy.log(command).then(() => cy.exec(command));
 })
 
-When('I upload the data file {string} to the LDIO workflow with port {int} and endpoint {string}',
-    (baseName: string, port: number, endpoint: string) => {
+When('I upload the data file {string} to the LDIO workflow', (baseName: string) => {
+    const port = baseName === 'device' ? 9012 : 9013;
+    postToLdioWorkflow(baseName, port, 'data');
+})
+
+When('I upload the data file {string} to the LDIO workflow with endpoint {string}',
+    (baseName: string, endpoint: string) => {
+    postToLdioWorkflow(baseName, 9012, endpoint);
+})
+
+function postToLdioWorkflow(baseName: string, port: number, endpoint: string) {
     const command = `curl -X POST "http://localhost:${port}/${endpoint}" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
     cy.log(command).then(() => cy.exec(command));
-})
+}
 
 When('the {string} LDES contains 1 member', (ldes: string) => {
     const useDevices = ldes === 'devices';

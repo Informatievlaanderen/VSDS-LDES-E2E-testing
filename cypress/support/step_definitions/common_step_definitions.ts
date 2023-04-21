@@ -52,6 +52,11 @@ export function ensureRelationCount(fragment: Fragment, amount: number) {
     return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
 }
 
+export function setTargetUrl(targeturl: string) {
+    const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
+    return cy.log(command).exec(command, { log: true })
+}
+
 // Given stuff
 
 Given('the members are stored in collection {string} in database {string}', (collection: string, database: string) => {
@@ -215,10 +220,6 @@ When('I start the new LDES Server', () => {
         .then(() => server.waitAvailable());
 })
 
-When('I update the targeturl', () => {
-    const command = `echo ${server.baseUrl}/pipeline > ./data/TARGETURL`;
-    return cy.log(command).exec(command, { log: true })
-})
 
 When('I bring the old LDIO workbench down', () => {
     dockerCompose.stop('old-ldio');

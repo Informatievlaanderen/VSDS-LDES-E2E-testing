@@ -22,12 +22,12 @@ Feature: server upgrade use case
     Given the members are stored in collection 'ldesmember' in database 'iow_devices'
     Given context 'demos/026.ldio-workbench-upgrade' is started
     And the LDES server is available
-    When I update the targeturl
+    When I update the targeturl of the old LDI
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
     And I start the new LDIO workflow
     When I pause the new LDIO workflow output
-    And I update the targeturl
+    And I update the targeturl of the new LDI
     And the old server is done processing
     And I remember the last fragment member count
     And I bring the old LDIO workbench down

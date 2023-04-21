@@ -215,8 +215,13 @@ When('I start the new LDES Server', () => {
         .then(() => server.waitAvailable());
 })
 
-When('I update the targeturl', () => {
-    const command = `echo ${server.baseUrl}/pipeline > ./data/TARGETURL`;
+When('I update the targeturl of the old LDI', () => {
+    const command = `echo http://old-ldio:8080/pipeline > ./data/TARGETURL`;
+    return cy.log(command).exec(command, { log: true })
+})
+
+When('I update the targeturl of the new LDI', () => {
+    const command = `echo http://new-ldio:8080/pipeline > ./data/TARGETURL`;
     return cy.log(command).exec(command, { log: true })
 })
 

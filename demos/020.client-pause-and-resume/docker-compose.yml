@@ -14,7 +14,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-persisted-state}_ldio-workflow
     volumes:
-      - ./ldio-workflow.config.yml:/application.yml:ro
+      - ./ldio-workflow.config.yml:/ldes/application.yml:ro
     networks:
       - ldes
     profiles:
@@ -31,7 +31,7 @@ services:
       - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:
       - ldes
-      
+
 networks:
   ldes:
     name: ${USECASE_NAME:-persisted-state}_network

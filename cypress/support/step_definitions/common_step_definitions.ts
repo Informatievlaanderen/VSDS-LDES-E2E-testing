@@ -21,6 +21,8 @@ export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
 export const clientCli = new ClientCli('http://localhost:8081');
+export const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
+export const workbench = new LdesWorkbenchLdio('http://localhost:8082');
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -48,6 +50,11 @@ export function testPartialPath() {
 
 export function ensureRelationCount(fragment: Fragment, amount: number) {
     return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
+}
+
+export function setTargetUrl(targeturl: string) {
+    const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
+    return cy.log(command).exec(command, { log: true })
 }
 
 // Given stuff
@@ -122,6 +129,12 @@ Given('the LDIO workflow is available', () => {
     workbenchLdio.waitAvailable();
 })
 
+Given('I start the new LDIO workflow', () => {
+    //wanneer containerId wordt opgehaald in waitAvailable = ldio-workflow, daarom lijn 127 toegevoegd
+    createAndStartService('new-ldio')
+        .then(() => newWorkbenchLdio.waitAvailable());
+})
+
 // When stuff
 
 When('I launch the Client CLI', () => {
@@ -138,10 +151,19 @@ When('I start the LDIO workflow', () => {
 
 When('I pause the LDIO workflow output', () => {
     workbenchLdio.pause();
+
+})
+
+When('I pause the new LDIO workflow output', () => {
+    workbench.pause();
 })
 
 When('I resume the LDIO workflow output', () => {
     workbenchLdio.resume();
+})
+
+When('I resume the new LDIO workflow output', () => {
+    workbench.resume();
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
@@ -176,10 +198,10 @@ When('the LDES contains at least {int} members', (count: number) => {
 When('the old server is done processing', () => {
     let previousCount;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
-    cy.waitUntil(() => 
-        currentMemberCount().then(count => 
+    cy.waitUntil(() =>
+        currentMemberCount().then(count =>
             cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
-        {timeout:5000,interval:1000}
+        { timeout: 5000, interval: 1000 }
     );
 })
 
@@ -196,6 +218,11 @@ When('I bring the old server down', () => {
 When('I start the new LDES Server', () => {
     createAndStartService('new-ldes-server')
         .then(() => server.waitAvailable());
+})
+
+When('I bring the old LDIO workbench down', () => {
+    dockerCompose.stop('old-ldio');
+    dockerCompose.removeVolumesAndImage('old-ldio');
 })
 
 // Then stuff

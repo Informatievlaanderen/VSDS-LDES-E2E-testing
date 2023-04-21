@@ -24,7 +24,7 @@ services:
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - COLLECTIONS_0_MEMBERTYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
-      - DEFAULT_VIEW=true
+      - COLLECTIONS_0_DEFAULT_VIEW=true
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

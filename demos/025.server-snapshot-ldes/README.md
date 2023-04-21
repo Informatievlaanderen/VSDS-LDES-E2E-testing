@@ -93,7 +93,7 @@ A schematic overview is given below:
 ## Test execution
 1. Create a snapshot:
     ```bash
-    curl -X POST http://localhost:8080/admin/api/v1/snapshots
+    curl -X POST http://localhost:8080/admin/api/v1/mobility-hindrances/snapshots
     ```
 
 2. Verify that a new collection is created named `snapshot` containing 1 document:
@@ -104,7 +104,7 @@ A schematic overview is given below:
    ```json
    {
     "count":1,
-    "ids":["snapshot-2023-04-07T12:52:23.931014032"]
+    "ids":["mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032"]
    }
    ```
 
@@ -117,10 +117,10 @@ A schematic overview is given below:
     {
       "count":4,
       "ids":[
-        "/by-page",
-        "/by-page?pageNumber=1",
-        "/snapshot-2023-04-07T12:52:23.931014032",
-        "/snapshot-2023-04-07T12:52:23.931014032?pageNumber=1"
+        "mobility-hindrances/by-page",
+        "mobility-hindrances/by-page?pageNumber=1",
+        "mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032",
+        "mobility-hindrances/snapshot-2023-04-07T12:52:23.931014032?pageNumber=1"
       ]
     }
     ```

@@ -1,4 +1,4 @@
-# LDES Server Can Create a Snapshot
+# LDES Server Imposes An Ingest Order Per Collection
 This scenario verifies that the LDES server imposes an order on ingested members per collection. It uses a [custom context](./docker-compose.yml) containing an LDES Server backed by a data store (mongodb).
 
 For this test you can use the provided [dataset](./data).
@@ -59,7 +59,7 @@ Scenario: Server imposes an order on ingested members
 
 3. Verify that the collection `member_sequence` has two documents:
    ```bash
-   curl http://localhost:9019/test/member_sequence?includeIds=true
+   curl http://localhost:9019/test/member_sequence?includeDocuments=true
    ```
    this returns something similar to:
    ```json
@@ -79,32 +79,74 @@ Scenario: Server imposes an order on ingested members
 
    ```
 
-4. Verify that each ingested member has a sequence number:
+4. Verify that each ingested member has a sequence number (please download and install [jq](https://stedolan.github.io/jq/download/) in needed):
    ```bash
-   curl http://localhost:9019/test/ldesmember?includeDocuments=true
+   curl -s http://localhost:9019/test/ldesmember?includeDocuments=true | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"
    ```
    this returns something similar to:
    ```json
-   {
-      "count":15,
-      "documents":[
-         {
-            "_id":"http://test-data/mobility-hindrance/1/1",
-            "collectionName":"mobility-hindrances",
-            "sequenceNr":1,
-            otherAttributes...
-         },
-         {
-            "_id":"http://test-data/mobility-hindrance/2/1",
-            "collectionName":"mobility-hindrances",
-            "sequenceNr":2,
-            otherAttributes...
-         },
-         {
-            ...
-         }
-      ]
-   }
+   [
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 1
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 2
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 3
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 4
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 5
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 6
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 7
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 8
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 9
+      },
+      {
+         "collection": "mobility-hindrances",
+         "sequence": 10
+      },
+      {
+         "collection": "addresses",
+         "sequence": 1
+      },
+      {
+         "collection": "addresses",
+         "sequence": 2
+      },
+      {
+         "collection": "addresses",
+         "sequence": 3
+      },
+      {
+         "collection": "addresses",
+         "sequence": 4
+      },
+      {
+         "collection": "addresses",
+         "sequence": 5
+      }
+   ]
    ```
 
 ## Test teardown

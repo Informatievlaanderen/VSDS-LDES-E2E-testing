@@ -220,7 +220,6 @@ When('I start the new LDES Server', () => {
         .then(() => server.waitAvailable());
 })
 
-
 When('I bring the old LDIO workbench down', () => {
     dockerCompose.stop('old-ldio');
     dockerCompose.removeVolumesAndImage('old-ldio');

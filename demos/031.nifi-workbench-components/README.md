@@ -18,24 +18,49 @@ Optionally, combine both tests in one E2E test.
 * NiFi workbench containing: 
     * data publishing workflow = HTTP listener => v2 to LD
         * => sparql construct (OSLO transformation) => version object creation => http out to LDES server observations
-        * => sparql select (extract refDevice + add dateLastValueReported = dateObserved) => version object creation  =>  => http out to LDES server devices
+        * => sparql construct (extract refDevice + add dateLastValueReported = dateObserved) => version object creation => RD4J materialize
     * data consumption workflows:
         * observations = LDES client for observations => convert GeoJSON to WKT => version materialize => send to message sink
-        * devices = LDES client for devices => RDF4J materialization
+        * sparql Select? => create some object => send to message sink
 * LDES server holding both observations and devices LDES, both paginated
 * test message sink for capturing observations (state objects)
 * RDF4J system for capturing device info (state objects)
 
 ## Test Setup
-1. start systems (except message generator)
+1. Run all systems except the message generator by executing the following (bash) command:
+    ```bash
+    docker compose up -d
+    ```
+    Please ensure that the LDES Server is ready to ingest by following the container logs until you see the following message `Mongock has finished`:
+    ```bash
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+    ```
+    Press `CTRL-C` to stop following the log.
 
-2. wait for LDES server, NiFi system and RDF4J to be available
+    Please ensure that the Nifi Workbench is available by repeatedly execution this command until the response is HTTP 200:
+    ```bash
+    curl -I http://localhost:8000/nifi/
+    ```
+> **TODO**: RDF4J to be available
+
+2. Create the test RDF4J repository
+- Browse to the [RDF4J Workbench](http://localhost:9004/rdf4j-workbench)
+- Click on 'New repository'
+- Select type 'Memory Store', give it the id 'test' and click 'Next'
+- On the next page, select 'In Memory Store' and click 'Create'
+
+3. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./data/NiFi_Workbench_Components.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
+
+    Verify that the NiFi HTTP listener is ready (it should answer `OK`):
+    ```bash
+    curl http://localhost:9005/observations/healthcheck
+    ```
 
 ## Test Execution
-
-1. open NiFi UI, load & start workflows
-
-2. start message generation
+2. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
+    ```bash
+    docker compose up test-message-generator -d
+    ```
 
 3. verify observation is being update (observation date) - using the message sink (also check count = 1)
 

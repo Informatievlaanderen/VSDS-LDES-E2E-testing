@@ -22,7 +22,7 @@ services:
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-      - HOSTNAME=$(hostname)
+      - HOSTNAME=${HOSTNAME}
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
@@ -47,7 +47,7 @@ services:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_ldes
-      - COLLECTIONS_0_HOSTNAME=http://$(hostname):8080
+      - COLLECTIONS_0_HOSTNAME=http://${HOSTNAME}:8080
       - COLLECTIONS_0_COLLECTIONNAME=observations
       - COLLECTIONS_0_SHAPE=
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime

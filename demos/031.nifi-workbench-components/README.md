@@ -29,6 +29,7 @@ Optionally, combine both tests in one E2E test.
 ## Test Setup
 1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
+    export HOSTNAME=$(hostname)
     docker compose up -d
     ```
     Please ensure that the LDES Server is ready to ingest by following the container logs until you see the following message `Mongock has finished`:

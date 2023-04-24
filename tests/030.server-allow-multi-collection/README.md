@@ -54,7 +54,7 @@ In this test we recreate the same scenario but host all three LDES collections o
      > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
 ## Test Teardown
-First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
 docker compose stop test-message-generator
 docker compose --profile delay-started down

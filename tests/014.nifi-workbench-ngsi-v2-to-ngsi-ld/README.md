@@ -24,7 +24,7 @@ The test verifies that the NiFi Workbench can convert IoW messages formatted as 
     ```
 
 ## Test Execution
-1. [Logon to Apache NiFi](../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../_nifi-workbench/README.md#start-a-workflow).
+1. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
     The workflow contains three flows with a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI-LD translator, the NiFi processor creating NGSI-LD version objects and a standard InvokeHTTP processor to send the LDES members to the corresponding LDES server.
 
@@ -32,7 +32,7 @@ The test verifies that the NiFi Workbench can convert IoW messages formatted as 
     ```bash
     curl http://localhost:9013/ngsi/device-model/healthcheck
     curl http://localhost:9012/ngsi/device/healthcheck
-    curl hhttp://localhost:9014/ngsi/water-quality-observed/healthcheck
+    curl http://localhost:9014/ngsi/water-quality-observed/healthcheck
     ```
 
 3. Upload the [device](./data/device.json) and [device model](./data/device-model.json) test files to the corresponding HTTP listener:
@@ -59,7 +59,7 @@ The test verifies that the NiFi Workbench can convert IoW messages formatted as 
 
 
 ## Test Teardown
-First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
 docker compose stop test-message-generator
 docker compose --profile delay-started down

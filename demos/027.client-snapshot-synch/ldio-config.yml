@@ -1,0 +1,17 @@
+server:
+  port: 8088
+orchestrator:
+  pipelines:
+    - name: client-snapshot-synch
+      description: "This pipeline uses a HTTP listener to read incoming GRAR messages, splits them in individual ones, fix a few GRAR message issues and sends them using HTTP to a LDIO pipeline."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        config:
+          url: https://private-api.gipod.vlaanderen.be/api/v1/ldes/mobility-hindrances
+          retries:
+            enabled: true
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://localhost:8080/mobility-hindrances
+            content-type: application/n-quads

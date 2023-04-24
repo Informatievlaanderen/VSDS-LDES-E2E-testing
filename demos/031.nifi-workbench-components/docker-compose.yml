@@ -22,12 +22,14 @@ services:
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+      - HOSTNAME=$(hostname)
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
-  
+      - hostnet
+
   ldes-mongodb:
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-6.0.4}
@@ -45,7 +47,7 @@ services:
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
       - SPRING_DATA_MONGODB_DATABASE=iow_ldes
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_0_HOSTNAME=http://$(hostname):8080
       - COLLECTIONS_0_COLLECTIONNAME=observations
       - COLLECTIONS_0_SHAPE=
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
@@ -101,4 +103,7 @@ services:
     
 networks:
   ldes:
-    name: ${USECASE_NAME:-nifi-workbench-components}_network
+    name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network
+  hostnet:
+    driver: bridge
+    name: ${USECASE_NAME:-nifi-workbench-components}_host_network

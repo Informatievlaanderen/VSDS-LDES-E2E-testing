@@ -249,3 +249,7 @@ Then('the LDES member count increases', () => {
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })
+
+Then('all but the first fragment have been requested once', () => {
+    
+})

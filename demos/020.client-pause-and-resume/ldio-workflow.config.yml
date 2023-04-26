@@ -8,7 +8,7 @@ orchestrator:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
           url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances
-          state: sqlite
+          state: memory
           keep-state: true
         # TODO: remove this TEMP workaround (adapter | name)
         adapter:

@@ -14,7 +14,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-persisted-state}_ldio-workflow
     volumes:
-      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+      - ./ldio-workflow.config.yml:/application.yml:ro
     networks:
       - ldes
     profiles:

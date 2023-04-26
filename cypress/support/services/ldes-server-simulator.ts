@@ -1,6 +1,20 @@
 /// <reference types="cypress" />
 
 import { CanCheckAvailability } from "./interfaces";
+export interface FragmentResponse {
+    count: number;
+    at: string[];
+}
+
+export interface FragmentResponses {
+    [key: string]: FragmentResponse;
+}
+
+interface RootResponse {
+    aliases: string[];
+    fragments: string[];
+    responses: FragmentResponses;
+}
 
 export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
@@ -32,4 +46,7 @@ export class LdesServerSimulator implements CanCheckAvailability {
         return cy.exec(`curl -X DELETE "${this.baseUrl}/ldes"`).then(exec => expect(exec.code).to.equals(0));
     }
 
+    public getResponses() {
+        return cy.request(this.baseUrl).then(response => response.body as RootResponse).then(rootResponse => rootResponse.responses);
+    }
 }

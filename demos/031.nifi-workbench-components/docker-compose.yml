@@ -28,7 +28,9 @@ services:
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
-      - hostnet
+    extra_hosts:
+      - "${HOSTNAME}:192.168.0.200"
+    #  - hostnet
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
@@ -104,6 +106,6 @@ services:
 networks:
   ldes:
     name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network
-  hostnet:
-    driver: bridge
-    name: ${USECASE_NAME:-nifi-workbench-components}_host_network
+  #hostnet:
+    #driver: bridge
+    #name: ${USECASE_NAME:-nifi-workbench-components}_host_network

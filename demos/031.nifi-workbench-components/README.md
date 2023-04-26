@@ -58,21 +58,46 @@ Optionally, combine both tests in one E2E test.
     ```
 
 ## Test Execution
-2. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
+1. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
     ```bash
     docker compose up test-message-generator -d
     ```
 
-3. verify observation is being update (observation date) - using the message sink (also check count = 1)
+2. Verify observation is being updated (observation date) - using the message sink (also check count = 1)
 
-4. request the observation from the message sink and validate the OSLO state model - note the device reference and observation date
+3. Request the observation from the message sink and validate the OSLO state model - note the device reference and observation date
 
-5. verify the presence of a asWkt with a WktLiteral value
+4. Verify the presence of a asWkt with a WktLiteral value (TODO missing!)
 
-6. verify device is being updated with the same date in the RDF4J data store
+5. Verify the observations are being updated with the same sensor in the RDF4J data store
+
+    The query should contain only 3 observation results linked to the 1 sensor we keep sending updates about. Therefor these values should increase in time as they are, in this example, linked to the index of a generated test message.
+
+    ```bash
+    curl --location 'http://localhost:7200/repositories/observations' \
+    --header 'Accept: application/x-sparqlstar-results+json' \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'query=PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX sosa: <http://www.w3.org/ns/sosa/>
+    PREFIX omObservation: <http://def.isotc211.org/iso19156/2011/Observation#>
+    select * where { 
+        ?observation <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> [
+            omObservation:OM_Observation.observedProperty ?type ;
+            omObservation:OM_Observation.result [
+                <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> [
+                        <https://schema.org/value> ?result
+                    ] 
+                ]
+            ]
+    }'
+    ```
+
 
 ## Test Teardown
 
 1. stop message generation
+    ```bash
+    docker compose stop test-message-generator
+    ```
 
 2. stop and destroy all remaining systems

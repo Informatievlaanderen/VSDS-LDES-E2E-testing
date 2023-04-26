@@ -2,11 +2,11 @@
     "_subscriptionId": "something",
     "data": [
         {
-            "id": "woq:{{index}}",
+            "id": "woq:sensor-1",
             "type": "WaterQualityObserved",
             "conductivity": {
                 "type": "Number",
-                "value": 6150,
+                "value": "{{index}}",
                 "metadata": {
                     "unitCode": {
                         "type": "text",
@@ -21,7 +21,7 @@
             },
             "depth": {
                 "type": "Number",
-                "value": 1442,
+                "value": "{{index}}",
                 "metadata": {
                     "unitCode": {
                         "type": "text",
@@ -69,7 +69,7 @@
             },
             "temperature": {
                 "type": "Number",
-                "value": 20.43,
+                "value": "{{index}}",
                 "metadata": {
                     "unitCode": {
                         "type": "text",

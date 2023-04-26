@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings, FragmentResponse } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
@@ -251,5 +251,11 @@ Then('the LDES member count increases', () => {
 })
 
 Then('all but the first fragment have been requested once', () => {
-    
+    const firstFragmentUrl = "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z";
+
+    simulator.getResponses().then(responses => {
+        expect(responses[firstFragmentUrl].count).to.be.equal(2);
+        delete responses[firstFragmentUrl];
+        Object.keys(responses).forEach(x => { expect(responses[x].count).to.be.equal(1); })
+    })
 })

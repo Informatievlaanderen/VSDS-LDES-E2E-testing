@@ -29,7 +29,7 @@ Optionally, combine both tests in one E2E test.
 ## Test Setup
 1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
-    export HOSTNAME=$(hostname)
+    export LDES_SERVER=host.docker.internal
     docker compose up -d
     ```
     Please ensure that the LDES Server is ready to ingest by following the container logs until you see the following message `Mongock has finished`:
@@ -42,13 +42,14 @@ Optionally, combine both tests in one E2E test.
     ```bash
     curl -I http://localhost:8000/nifi/
     ```
-> **TODO**: RDF4J to be available
+2. Verify GraphDB server with collection is available
 
-2. Create the test RDF4J repository
-- Browse to the [RDF4J Workbench](http://localhost:9004/rdf4j-workbench)
-- Click on 'New repository'
-- Select type 'Memory Store', give it the id 'test' and click 'Next'
-- On the next page, select 'In Memory Store' and click 'Create'
+    To verify the server is up and the collection is available, execute the following command. If it returns a 200 Code, everything is up and running. 
+
+    ```bash
+    curl -X GET --header 'Accept: text/plain' 'http://localhost:7200/repositories/observations/size'
+    ```
+    
 
 3. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./data/NiFi_Workbench_Components.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
@@ -63,9 +64,15 @@ Optionally, combine both tests in one E2E test.
     docker compose up test-message-generator -d
     ```
 
-2. Verify observation is being updated (observation date) - using the message sink (also check count = 1)
+2. Verify if observations are being inserted on the sink (the number of members should increase over time)
+    ```bash
+    curl http://localhost:9003
+    ```
 
 3. Request the observation from the message sink and validate the OSLO state model - note the device reference and observation date
+    ```bash
+    curl http://localhost:9003/member
+    ```
 
 4. Verify the presence of a asWkt with a WktLiteral value (TODO missing!)
 

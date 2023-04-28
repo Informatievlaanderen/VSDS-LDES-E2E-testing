@@ -44,12 +44,11 @@ Optionally, combine both tests in one E2E test.
     ```
 2. Verify GraphDB server with collection is available
 
-    To verify the server is up and the collection is available, execute the following command. If it returns a 200 Code, everything is up and running. 
+    To verify the server is up and the collection is available, execute the following command. If it returns a HTTP code 200, everything is up and running. 
 
     ```bash
-    curl -X GET --header 'Accept: text/plain' 'http://localhost:7200/repositories/observations/size'
-    ```
-    
+    curl -I --header 'Accept: text/plain' http://localhost:7200/repositories/observations/size
+    ```    
 
 3. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./data/NiFi_Workbench_Components.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
@@ -106,3 +105,8 @@ Optionally, combine both tests in one E2E test.
     ```
 
 2. stop and destroy all remaining systems
+    ```bash
+    docker compose rm -f test-message-generator
+    docker compose down
+    rm -f ./data/graphdb/init.lock
+    ```

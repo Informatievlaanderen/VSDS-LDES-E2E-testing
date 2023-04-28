@@ -69,14 +69,12 @@ Optionally, combine both tests in one E2E test.
     curl http://localhost:9003
     ```
 
-3. Request the observation from the message sink and validate the OSLO state model - note the device reference and observation date
+3. Request an observation from the message sink and validate the OSLO state model - note the device reference and observation date
     ```bash
     curl http://localhost:9003/member
     ```
 
-4. Verify the presence of a asWkt with a WktLiteral value (TODO missing!)
-
-5. Verify the observations are being updated with the same sensor in the RDF4J data store
+4. Verify the observations are being updated with the same sensor in the RDF4J data store
 
     The query should contain only 3 observation results linked to the 1 sensor we keep sending updates about. Therefor these values should increase in time as they are, in this example, linked to the index of a generated test message.
 

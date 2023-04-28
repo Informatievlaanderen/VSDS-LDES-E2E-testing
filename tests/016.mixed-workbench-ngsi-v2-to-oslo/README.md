@@ -32,7 +32,7 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
     ```
 
 ## Test Execution
-1. [Logon to Apache NiFi](../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../_nifi-workbench/README.md#start-a-workflow).
+1. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
     The workflow contains three flows with a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI-LD translator, the NiFi processor creating NGSI-LD version objects and a standard InvokeHTTP processor to send the LDES members to the corresponding LDES server.
 
@@ -40,7 +40,7 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
     ```bash
     curl http://localhost:9013/ngsi/device-model/healthcheck
     curl http://localhost:9012/ngsi/device/healthcheck
-    curl hhttp://localhost:9014/ngsi/water-quality-observed/healthcheck
+    curl http://localhost:9014/ngsi/water-quality-observed/healthcheck
     ```
 
 3. Send test data by using the following commands:
@@ -65,7 +65,7 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
      > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
 ## Test Teardown
-First [stop the workflow](../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
 docker compose stop test-message-generator
 docker compose --profile delay-started down

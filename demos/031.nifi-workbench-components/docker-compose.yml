@@ -1,0 +1,107 @@
+version: '3.3'
+services:
+
+  test-message-generator:
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_test-message-generator
+    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
+    environment:
+      - TARGETURL=http://nifi-workbench:9005/observations
+      - SILENT=false
+      - CRON=* * * * * *
+      - TEMPLATEFILE=/tmp/data/template.json
+      - MIMETYPE=application/json
+    volumes:
+      - ./data/template.json:/tmp/data/template.json:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  nifi-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldi-workbench-nifi
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+      - LDES_SERVER=${LDES_SERVER}
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+      - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
+    networks:
+      - ldes
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.4}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_new-ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+      - MANAGEMENT_TRACING_ENABLED=False
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=iow_ldes
+      - COLLECTIONS_0_HOSTNAME=http://${LDES_SERVER}:8080
+      - COLLECTIONS_0_COLLECTIONNAME=observations
+      - COLLECTIONS_0_SHAPE=
+      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_0_MEMBERTYPE=http://www.w3.org/ns/sosa/ObservationCollection
+      - COLLECTIONS_0_VIEWS_0_NAME=by-page
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
+    volumes:
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - 8080:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+  test-message-sink:
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_test-message-sink
+    environment:
+      - SILENT=false
+      - MEMORY=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+      - DATABASE_NAME=iow_sink
+      - COLLECTION_NAME=observations
+      - MEMBER_TYPE=http://www.w3.org/ns/sosa/ObservationCollection
+    ports:
+      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
+    networks:
+      - ldes
+
+  graphdb:
+    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_graphdb
+    volumes:
+      - ./data/graphdb:/repository.init/observations:rw
+    ports:
+      - ${GRAPHDB_PORT:-7200}:7200
+    networks:
+      - ldes
+    
+networks:
+  ldes:
+    name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network

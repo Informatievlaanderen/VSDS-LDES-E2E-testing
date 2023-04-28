@@ -50,7 +50,7 @@ docker compose up -d
 
 4. Stop the workflow when the member count is around 250 members:
    ```bash
-   docker stop ldio-workflow
+   docker compose stop ldio-workflow
    ```
 
 5. Verify which fragments have been requested by the workflow:
@@ -61,7 +61,7 @@ docker compose up -d
 
 6. Continue the workflow:
    ```bash
-   docker start ldio-workflow
+   docker compose start ldio-workflow
    ```
    until the LDES is fully replicated (member count will be 1016):
     ```bash

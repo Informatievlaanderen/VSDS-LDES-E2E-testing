@@ -219,7 +219,7 @@ When('I remember the last fragment member count', () => {
 })
 
 When('I stop the LDIO workflow', () => {
-    dockerCompose.stop('ldi-orchestrator');
+    dockerCompose.stop(workbenchLdio.serviceName);
 })
 
 // Then stuff
@@ -252,14 +252,4 @@ Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
-})
-
-Then('all but the first fragment have been requested once', () => {
-    const firstFragmentUrl = "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z";
-
-    simulator.getResponses().then(responses => {
-        expect(responses[firstFragmentUrl].count).to.be.equal(2);
-        delete responses[firstFragmentUrl];
-        Object.keys(responses).forEach(x => { expect(responses[x].count).to.be.equal(1); })
-    })
 })

@@ -55,8 +55,6 @@ services:
     container_name: ${USECASE_NAME:-setup-caching}_ldio-workflow
     volumes:
       - ./ldio-workflow.config.yml:/application.yml:ro
-    networks:
-      - ldes
     profiles:
       - delay-started
     # use the network stack of the nginx service so that 

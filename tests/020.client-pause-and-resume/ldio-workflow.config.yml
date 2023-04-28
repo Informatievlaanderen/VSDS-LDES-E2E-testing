@@ -7,8 +7,8 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-          url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances
-          state: memory
+          url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z
+          state: sqlite
           keep-state: true
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut

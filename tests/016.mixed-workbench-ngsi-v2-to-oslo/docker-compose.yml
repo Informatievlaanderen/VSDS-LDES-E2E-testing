@@ -129,7 +129,7 @@ services:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workflow
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
-      - ./ldio-workflow.yml:/application.yml:ro
+      - ./ldio-workflow.yml:/ldio/application.yml:ro
     networks:
       - ldes
 

@@ -54,9 +54,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-setup-caching}_ldio-workflow
     volumes:
-      - ./ldio-workflow.config.yml:/application.yml:ro
-    networks:
-      - ldes
+      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
     profiles:
       - delay-started
     # use the network stack of the nginx service so that 

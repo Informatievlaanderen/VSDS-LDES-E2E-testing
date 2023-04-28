@@ -31,7 +31,7 @@ services:
     container_name: ${USECASE_NAME:-grar-context}_ldio-workflow
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
-      - ./ldio-workflow.config.yml:/application.yml:ro
+      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
     networks:
       - ldes
 

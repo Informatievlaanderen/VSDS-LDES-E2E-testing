@@ -12,6 +12,11 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```bash
    docker compose up -d
    ```
+   Please ensure that the NiFi Workbench is started by executing the following command until it returns `HTTP/1.1 200 OK`:
+   ```bash
+   curl -I http://localhost:8000/nifi/
+   ```
+   Press `CTRL-C` to stop following the log.
 
 2. Connect to [NiFi workbench](http://localhost:8000/nifi), upload and start [workflow](./nifi-workflow.json) (containing a http listener, a version creation component and a http sender).
 
@@ -20,9 +25,9 @@ The server upgrade will include changesets that alter the database schema. We wi
    docker compose up test-message-generator -d
    ```
 
-4. Verify that members are available in LDES:
+4. Verify that members are available in LDES by following the link in ther `tree:node`:
    ```bash
-   curl http://localhost:8080/devices-by-time
+   curl -s http://localhost:8080/devices-by-time | grep "tree:node"
    ```
    and data store member count increases (execute repeatedly):
    ```bash
@@ -31,86 +36,30 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 5. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   docker exec -it upgrade-server-using-nifi_ldes-mongodb mongosh iow_devices --eval '
-     var map = function(){
-       var keys = [];
-       Object.keys(this).forEach(function(k){
-         if(k != "_id"){
-           keys.push(k);
-         }
-        })
-        emit(this.type,{"keys":keys});
-     };
-     var reduce = function(key,values){
-       var uniqueKeys = {};
-       var result = [];
-       values.forEach(function(value){
-         value.keys.forEach(function(k){
-           if(!uniqueKeys[k]){
-             uniqueKeys[k] = 1;
-             result.push(k);
-           }
-         });
-       });
-       return {"keys":result};
-     };
-     db.ldesfragment.mapReduce(map, reduce, {out:"ldesfragment_keys"});
-     db.ldesfragment_keys.aggregate([{$project:{"_id": 0, "keys":"$value.keys"}}]);'
+   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
    [
-     {
-       keys: [
-         'root',
-         'viewName',
-         'fragmentPairs',
-         'immutable',
-         'relations',
-         'members',
-         '_class'
-       ]
-     }
+     "_class",
+     "fragmentPairs",
+     "immutable",
+     "members",
+     "relations",
+     "root",
+     "viewName"
    ]
    ```
 
 6. Verify that the ldesmember collection is structured as expected:
    ```bash
-   docker exec -it upgrade-server-using-nifi_ldes-mongodb mongosh iow_devices --eval '
-     var map = function(){
-       var keys = [];
-       Object.keys(this).forEach(function(k){
-         if(k != "_id"){
-           keys.push(k);
-         }
-        })
-        emit(this.type,{"keys":keys});
-     };
-     var reduce = function(key,values){
-       var uniqueKeys = {};
-       var result = [];
-       values.forEach(function(value){
-         value.keys.forEach(function(k){
-           if(!uniqueKeys[k]){
-             uniqueKeys[k] = 1;
-             result.push(k);
-           }
-         });
-       });
-       return {"keys":result};
-     };
-     db.ldesmember.mapReduce(map, reduce, {out:"ldesmember_keys"});
-     db.ldesmember_keys.aggregate([{$project:{"_id": 0, "keys":"$value.keys"}}]);'
+   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
    [
-     {
-       keys: [
-         'ldesMember',
-         '_class'
-       ]
-     } 
+     "_class",
+     "ldesMember"
    ]
    ```
 
@@ -118,107 +67,53 @@ The server upgrade will include changesets that alter the database schema. We wi
 1. Stop http sender in workflow.
 
 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
-```bash
-docker compose stop old-ldes-server
-docker compose rm --force --volumes old-ldes-server
-```
+   ```bash
+   docker compose stop old-ldes-server
+   docker compose rm --force --volumes old-ldes-server
+   ```
 
 3. Launch new server, wait until database migrated and server started (i.e. check logs):
-```bash
-docker compose up new-ldes-server -d
-docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldes-server$")
-```
-> **Note**: the  database has been fully migrated when the log file contains `Mongock has finished` at or near the end (press `CTRL-C` to end following the log file).
+   ```bash
+   docker compose up new-ldes-server -d
+   docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldes-server$")
+   ```
+   > **Note**: the  database has been fully migrated when the log file contains `Mongock has finished` at or near the end (press `CTRL-C` to end following the log file).
 
 4. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   docker exec -it upgrade-server-using-nifi_ldes-mongodb mongosh iow_devices --eval '
-     var map = function(){
-       var keys = [];
-       Object.keys(this).forEach(function(k){
-         if(k != "_id"){
-           keys.push(k);
-         }
-        })
-        emit(this.type,{"keys":keys});
-     };
-     var reduce = function(key,values){
-       var uniqueKeys = {};
-       var result = [];
-       values.forEach(function(value){
-         value.keys.forEach(function(k){
-           if(!uniqueKeys[k]){
-             uniqueKeys[k] = 1;
-             result.push(k);
-           }
-         });
-       });
-       return {"keys":result};
-     };
-     db.ldesfragment.mapReduce(map, reduce, {out:"ldesfragment_keys"});
-     db.ldesfragment_keys.aggregate([{$project:{"_id": 0, "keys":"$value.keys"}}]);'
+   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
    [
-     {
-       keys: [
-         'root',
-         'viewName',
-         'fragmentPairs',
-         'immutable',
-         'softDeleted',
-         'parentId',
-         'numberOfMembers',
-         'relations',
-         '_class',
-         'immutableTimestamp'
-       ]
-     }
+     "_class",
+     "fragmentPairs",
+     "immutable",
+     "immutableTimestamp",
+     "numberOfMembers",
+     "parentId",
+     "relations",
+     "root",
+     "softDeleted",
+     "viewName"
    ]
    ```
+   > **Note**: the `immutableTimestamp` may not be in this list if no fragment is currently immutable
+
    > **Note**: Changeset-1 will add the `softDeleted`, `parentId` and `immutableTimestamp` values to the model and will replace the `members` array with a value indicating the amount of members in the fragment in `numberOfMembers`
 
 5. Verify that the ldesmember collection is structured as expected:
    ```bash
-   docker exec -it upgrade-server-using-nifi_ldes-mongodb mongosh iow_devices --eval '
-     var map = function(){
-       var keys = [];
-       Object.keys(this).forEach(function(k){
-         if(k != "_id"){
-           keys.push(k);
-         }
-        })
-        emit(this.type,{"keys":keys});
-     };
-     var reduce = function(key,values){
-       var uniqueKeys = {};
-       var result = [];
-       values.forEach(function(value){
-         value.keys.forEach(function(k){
-           if(!uniqueKeys[k]){
-             uniqueKeys[k] = 1;
-             result.push(k);
-           }
-         });
-       });
-       return {"keys":result};
-     };
-     db.ldesmember.mapReduce(map, reduce, {out:"ldesmember_keys"});
-     db.ldesmember_keys.aggregate([{$project:{"_id": 0, "keys":"$value.keys"}}]);'
+   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
    [
-     {
-       keys: [
-         'versionOf',
-         'timestamp',
-         'model',
-         'treeNodeReferences',
-         '_class'
-       ]
-     }
+     "_class",
+     "model",
+     "timestamp",
+     "treeNodeReferences",
+     "versionOf"
    ]
    ```
    > **Note**: Changeset-1 will rename `ldesmember` to `model` and add a list of tree:node references in `treeNodeReferences`

@@ -2,29 +2,26 @@
 
 We verify the functionality of all the core components using LDIO workbench instead of with the NiFi workbench. In order to ensure that the NiFi components still work one or two E2E tests are needed which demonstrates the usage of the core components in a NiFi workflow and ensures the NiFi wrappers for these core components are correctly implemented and that these remain functional.
 
-Create an E2E test combining all the NiFi components used for data publishing (NGSI v2 to LD adaptor, sparql construct & create version object).
+Create an E2E test combining all the NiFi components used for data publishing (NGSI v2 to LD adaptor, sparql construct, create version object, version materialization & RDF4J materialization).
 
-Create an E2E test combining all the NiFi components used for data consumption (LDES client, GeoJSON to WKT, version materialization & RDF4J materialization).
+Create an E2E test combining all the NiFi components used for data consumption (LDES client).
 
 Optionally, combine both tests in one E2E test.
-
-
 
 **Goal**: Can create NiFi workflows with all LDES related components to demonstrate its usage, both for data publishing and data consumption
 
 **Context**: docker compose with (use test-015 as basis)
 
-* message generator (NGSI-v2 with 1 wqo), 
+* Message Generator (NGSI-v2 with 1 wqo), 
 * NiFi workbench containing: 
-    * data publishing workflow = HTTP listener => v2 to LD
-        * => sparql construct (OSLO transformation) => version object creation => http out to LDES server observations
-        * => sparql construct (extract refDevice + add dateLastValueReported = dateObserved) => version object creation => RD4J materialize
+    * data publishing workflow = HTTP listener => v2 to LD => sparql construct (OSLO transformation) => version object creation
+        * => http out to LDES server observations
+        * => Version Materialising => RD4J put
     * data consumption workflows:
-        * observations = LDES client for observations => convert GeoJSON to WKT => version materialize => send to message sink
-        * sparql Select? => create some object => send to message sink
-* LDES server holding both observations and devices LDES, both paginated
-* test message sink for capturing observations (state objects)
-* RDF4J system for capturing device info (state objects)
+        * observations = LDES client for observations => send to message sink
+* LDES server holding observations LDES, paginated
+* test message sink for capturing observations (version objects)
+* RDF4J system for capturing observations (state objects)
 
 ## Test Setup
 1. Run all systems except the message generator by executing the following (bash) command:

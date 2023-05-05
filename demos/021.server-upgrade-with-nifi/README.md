@@ -25,7 +25,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    docker compose up test-message-generator -d
    ```
 
-4. Verify that members are available in LDES by following the link in ther `tree:node`:
+4. Verify that members are available in LDES by following the link in the `tree:node`:
    ```bash
    curl -s http://localhost:8080/devices-by-time | grep "tree:node"
    ```
@@ -68,8 +68,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
    ```bash
-   docker compose stop old-ldes-server
-   docker compose rm --force --volumes old-ldes-server
+   docker compose rm --stop --force --volumes old-ldes-server
    ```
 
 3. Launch new server, wait until database migrated and server started (i.e. check logs):
@@ -86,16 +85,17 @@ The server upgrade will include changesets that alter the database schema. We wi
    This should return the following list of keys for the ldesfragment collection:
    ```json
    [
-     "_class",
-     "fragmentPairs",
-     "immutable",
-     "immutableTimestamp",
-     "numberOfMembers",
-     "parentId",
-     "relations",
-     "root",
-     "softDeleted",
-     "viewName"
+   "_class",
+   "collectionName",
+   "fragmentPairs",
+   "immutable",
+   "immutableTimestamp",
+   "numberOfMembers",
+   "parentId",
+   "relations",
+   "root",
+   "softDeleted",
+   "viewName"
    ]
    ```
    > **Note**: the `immutableTimestamp` may not be in this list if no fragment is currently immutable
@@ -109,11 +109,13 @@ The server upgrade will include changesets that alter the database schema. We wi
    This should return the following list of keys for the ldesmember collection:
    ```json
    [
-     "_class",
-     "model",
-     "timestamp",
-     "treeNodeReferences",
-     "versionOf"
+   "_class",
+   "collectionName",
+   "model",
+   "sequenceNr",
+   "timestamp",
+   "treeNodeReferences",
+   "versionOf"
    ]
    ```
    > **Note**: Changeset-1 will rename `ldesmember` to `model` and add a list of tree:node references in `treeNodeReferences`

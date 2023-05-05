@@ -38,7 +38,7 @@ Feature: server upgrade use case
   @upgrading @test-021
   Scenario: 021: Upgrade LDES workbench with NiFi
     Given the members are stored in collection 'ldesmember' in database 'iow_devices'
-    Given context 'demos/021.server-upgrade-with-nifi' is started
+    Given context 'tests/021.server-upgrade-with-nifi' is started
     And the NiFi workbench is available
     And I have uploaded the workflow
     And I started the workflow

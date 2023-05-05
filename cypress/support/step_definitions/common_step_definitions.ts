@@ -233,7 +233,8 @@ When('I stop the http sender in the workflow', () => {
 
 When('I start the http sender in the workflow', () => {
     workbenchNifi.selectProcessor('InvokeHTTP');
-    workbenchNifi.pushStart(); });
+    workbenchNifi.pushStart(); 
+});
 
 When('I stop the LDIO workflow', () => {
     dockerCompose.stop(workbenchLdio.serviceName);

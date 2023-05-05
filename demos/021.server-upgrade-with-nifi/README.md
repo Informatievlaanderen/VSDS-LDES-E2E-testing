@@ -29,7 +29,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```bash
    curl -s http://localhost:8080/devices-by-time | grep "tree:node"
    ```
-   and data store member count increases (execute repeatedly):
+   and data store member count increases (execute repeatedly until at least 11 members - will produce more than one fragment):
    ```bash
    curl http://localhost:9019/iow_devices/ldesmember
    ```
@@ -119,6 +119,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ]
    ```
    > **Note**: Changeset-1 will rename `ldesmember` to `model` and add a list of tree:node references in `treeNodeReferences`
+   
    > **Note**: Changeset-2 will extract the `versionOf` and `timestamp` fields from the model
 
 6. Verify that members are available in LDES and check member count in the last fragment:

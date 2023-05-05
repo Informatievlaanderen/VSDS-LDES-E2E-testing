@@ -2,26 +2,37 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { mongo, setTargetUrl } from "./common_step_definitions";
 import { Fragment } from "../ldes";
 
-let lastMemberCount;
+let lastMemberCount: number;
+
+const commonFragmentProperties = ['_class', 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
+const commonMemberProperties = ['_class'];
+const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
+const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
+
+function checkDatabaseStructure(collectionUrl: string, expected: string[],) {
+    cy.exec(`curl '${collectionUrl}?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
+        .then(result => {
+            const actual = JSON.parse(result.stdout) as string[];
+            expect(actual).to.have.same.members(expected);
+        });
+}
 
 Given('the ldesfragment collection is structured as expected', () => {
-    const expected: string[] = ['class', 'fragmentPairs', 'immutable', 'members', 'relations', 'root', 'viewName'];
-    cy.exec(`curl 'http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
-        .then(result => {
-            expected.forEach(element => {
-                expect(result.stdout).to.contain(element);
-            });
-        })
+    checkDatabaseStructure(fragmentCollectionUrl, [...commonFragmentProperties, 'members']);
 })
 
 Given('the ldesmember collection is structured as expected', () => {
-    const expected: string[] = ['class', 'ldesMember'];
-    cy.exec(`curl 'http://localhost:9019/iow_devices/ldesmember?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
-        .then(result => {
-            expected.forEach(element => {
-                expect(result.stdout).to.contain(element);
-            });
-        })
+    checkDatabaseStructure(memberCollectionUrl, [...commonMemberProperties, 'ldesMember']);
+})
+
+Then('the ldesfragment collection on the new server is structured as expected', () => {
+    checkDatabaseStructure(fragmentCollectionUrl, 
+        [...commonFragmentProperties, 'collectionName', 'immutableTimestamp', 'numberOfMembers', 'parentId', 'softDeleted']);
+})
+
+Then('the ldesmember collection on the new server is structured as expected', () => {
+    checkDatabaseStructure(memberCollectionUrl, 
+        [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
 })
 
 When('I remember the last fragment member count', () => {
@@ -55,26 +66,3 @@ When('I set the TARGETURL to the old LDIO', () => {
 When('I set the TARGETURL to the new LDIO', () => {
     setTargetUrl("http://new-ldio:8080/pipeline");
 })
-
-Then('the ldesfragment collection on the new server is structured as expected', () => {
-    // immutableTimestamp not always present
-    const expected: string[] = ['class', 'fragmentPairs', 'immutable', 'numberOfMembers',
-     'parentId', 'relations', 'root', 'softDeleted', 'viewName'];
-    cy.exec(`curl 'http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
-        .then(result => {
-            expected.forEach(element => {
-                expect(result.stdout).to.contain(element);
-            });
-        })
-})
-
-Then('the ldesmember collection on the new server is structured as expected', () => {
-    const expected: string[] = ['class', 'model', 'timestamp', 'treeNodeReferences', 'versionOf'];
-    cy.exec(`curl 'http://localhost:9019/iow_devices/ldesmember?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
-        .then(result => {
-            expected.forEach(element => {
-                expect(result.stdout).to.contain(element);
-            });
-        })
-})
-

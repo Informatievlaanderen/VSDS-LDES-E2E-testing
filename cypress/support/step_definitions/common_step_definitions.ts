@@ -196,7 +196,7 @@ When('the LDES contains at least {int} members', (count: number) => {
 })
 
 When('the old server is done processing', () => {
-    let previousCount;
+    let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     cy.waitUntil(() =>
         currentMemberCount().then(count =>
@@ -223,6 +223,17 @@ When('I start the new LDES Server', () => {
 When('I bring the old LDIO workbench down', () => {
     dockerCompose.stop('old-ldio');
     dockerCompose.removeVolumesAndImage('old-ldio');
+})
+
+When('I stop the http sender in the workflow', () => {
+    workbenchNifi.openWorkflow();
+    workbenchNifi.selectProcessor('InvokeHTTP');
+    workbenchNifi.pushStop();
+})
+
+When('I start the http sender in the workflow', () => {
+    workbenchNifi.selectProcessor('InvokeHTTP');
+    workbenchNifi.pushStart();
 })
 
 // Then stuff

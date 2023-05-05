@@ -18,8 +18,8 @@ services:
       - delay-started
 
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:20221107t094816
-    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_ldes-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-upgrade-server-using-nifi}-ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     ports:
@@ -37,7 +37,7 @@ services:
 
   old-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}_old-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20221107t0923}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20230405T0843}
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
@@ -51,7 +51,7 @@ services:
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - VIEWS_0_NAME=devices-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
     ports:
       - 8080:8080
     networks:
@@ -67,6 +67,7 @@ services:
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
+      - MONGOCK_MIGRATIONSCANPACKAGE_2=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset3
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
       - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
@@ -77,10 +78,9 @@ services:
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      # TODO: can be change this to view name 'by-time' and simple 'pagination'?
       - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
       - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

@@ -3,6 +3,7 @@
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
+
     constructor(private baseUrl: string) {
     }
 
@@ -72,5 +73,17 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
 
     pushStart() {
         cy.get('#operate-start').click();
+    }
+
+    pushStop() {
+        cy.get('#operate-stop').click();
+    }
+
+    openWorkflow() {
+        cy.get('#operation-context-id').then(div => cy.get(`#id-${div.text()}`).dblclick());
+    }
+
+    selectProcessor(processorName: string) {
+        cy.get(`g.processor > text > title:contains(${processorName})`).parent().parent().click();
     }
 }

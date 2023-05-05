@@ -73,4 +73,8 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     pushStart() {
         cy.get('#operate-start').click();
     }
+
+    pushStop() {
+        cy.get('#operate-stop').click();
+    }
 }

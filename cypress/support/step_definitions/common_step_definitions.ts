@@ -225,6 +225,10 @@ When('I bring the old LDIO workbench down', () => {
     dockerCompose.removeVolumesAndImage('old-ldio');
 })
 
+When('I stop the http sender in the workflow', () => {
+    workbenchNifi.pushStop();
+})
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {

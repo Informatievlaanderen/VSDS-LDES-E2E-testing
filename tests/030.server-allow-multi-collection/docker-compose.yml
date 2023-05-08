@@ -80,7 +80,7 @@ services:
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
     volumes:
-      - ./ldio-workflow.yml:/application.yml:ro
+      - ./ldio-workflow.yml:/ldio/application.yml:ro
     networks:
       - ldes
 

@@ -117,7 +117,7 @@ services:
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080
     volumes:
-      - ./ldio-devices.config.yml:/application.yml:ro
+      - ./ldio-devices.config.yml:/ldio/application.yml:ro
     networks:
       - ldes
 
@@ -127,7 +127,7 @@ services:
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICEMODEL:-9013}:8080
     volumes:
-      - ./ldio-models.config.yml:/application.yml:ro
+      - ./ldio-models.config.yml:/ldio/application.yml:ro
     networks:
       - ldes
 
@@ -137,7 +137,7 @@ services:
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_WATERQUALITYOBSERVED:-9014}:8080
     volumes:
-      - ./ldio-observations.config.yml:/application.yml:ro
+      - ./ldio-observations.config.yml:/ldio/application.yml:ro
     networks:
       - ldes
 

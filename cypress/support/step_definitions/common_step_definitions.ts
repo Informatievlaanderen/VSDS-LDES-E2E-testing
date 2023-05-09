@@ -255,5 +255,7 @@ Then('the Client CLI contains {int} members', (count: number) => {
 })
 
 Then('the LDES member count increases', () => {
-    currentMemberCount().then(newMemberCount => expect(newMemberCount).to.be.greaterThan(memberCount));
+    currentMemberCount().then(currentCount => 
+        mongo.checkCount(testContext.database, testContext.collection, currentCount, 
+                (actual, expected) => actual > expected));
 })

@@ -10,7 +10,7 @@ const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
 const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
 
 function checkDatabaseStructure(collectionUrl: string, expected: string[],) {
-    cy.exec(`curl '${collectionUrl}?includeDocuments=true' | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'`, { failOnNonZeroExit: false })
+    cy.exec(`curl -s "${collectionUrl}?includeDocuments=true" | jq "[.documents[] | keys] | flatten | unique | map(select(. != \\"_id\\"))"`, { failOnNonZeroExit: false })
         .then(result => {
             const actual = JSON.parse(result.stdout) as string[];
             expect(actual).to.have.same.members(expected);

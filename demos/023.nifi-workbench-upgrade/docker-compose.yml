@@ -19,7 +19,7 @@ services:
       - delay-started
 
   old-nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:20221107t094816
+    image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
     container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-workbench-nifi
     environment:
       - NIFI_WEB_HTTPS_PORT=${NIFI_UI_PORT:-8443}
@@ -65,7 +65,7 @@ services:
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
+      - COLLECTIONS_0_VIEWS_0_NAME=by-time
       - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
       - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
     volumes:
@@ -92,7 +92,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-list-fragments
     image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
     environment:
-      - FOLLOW=http://localhost:8080/devices-by-time
+      - FOLLOW=http://localhost:8080/devices/by-time
     # use the network stack of the new-ldes-server service so that 
     # localhost refers to new-ldes-server and we can follow the LDES stream
     network_mode: service:ldes-server

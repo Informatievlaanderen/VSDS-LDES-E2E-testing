@@ -7,12 +7,14 @@ import {
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
+import { credentials } from "../credentials";
 
 let testContext: any;
 let memberCount;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
+export const oldWorkbenchNifi = new LdesWorkbenchNiFi('https://localhost:8443')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
@@ -80,8 +82,22 @@ Given('the NiFi workbench is available', () => {
     workbenchNifi.load();
 });
 
+Given('the old NiFi workbench is available', () => {
+    oldWorkbenchNifi.waitForOldWorkbenchAvailable();
+    // oldWorkbenchNifi.load();
+    oldWorkbenchNifi.logon(credentials);
+})
+
 Given('I have uploaded the workflow', () => {
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+})
+
+Given('I have uploaded the old workflow', () => {
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/old-nifi-workflow.json`);
+})
+
+Given('I have uploaded the new workflow', () => {
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/new-nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
@@ -215,6 +231,17 @@ When('I bring the old server down', () => {
     dockerCompose.removeVolumesAndImage('old-ldes-server');
 })
 
+When('I bring the old NiFi workflow down', () => {
+    dockerCompose.stop('old-nifi-workflow');
+    dockerCompose.removeVolumesAndImage('old-nifi-workflow');
+    cy.wait(10000);
+})
+
+When('I start the new LDES workbench', () => {
+    createAndStartService('new-nifi-workflow')
+        .then(() => server.waitAvailable());
+})
+
 When('I start the new LDES Server', () => {
     createAndStartService('new-ldes-server')
         .then(() => server.waitAvailable());
@@ -255,7 +282,7 @@ Then('the Client CLI contains {int} members', (count: number) => {
 })
 
 Then('the LDES member count increases', () => {
-    currentMemberCount().then(currentCount => 
-        mongo.checkCount(testContext.database, testContext.collection, currentCount, 
-                (actual, expected) => actual > expected));
+    currentMemberCount().then(currentCount =>
+        mongo.checkCount(testContext.database, testContext.collection, currentCount,
+            (actual, expected) => actual > expected));
 })

@@ -3,7 +3,7 @@
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
-
+    
     constructor(private baseUrl: string) {
     }
 
@@ -15,8 +15,16 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
+    private isOldWorkbenchReady(): Cypress.Chainable<boolean> {
+        return cy.exec(`curl --insecure -I ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+    }
+
     waitAvailable() {
         return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
+    }
+
+    waitForOldWorkbenchAvailable() {
+        return cy.waitUntil(() => this.isOldWorkbenchReady(), { timeout: 600000, interval: 5000 });
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
@@ -85,5 +93,14 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
 
     selectProcessor(processorName: string) {
         cy.get(`g.processor > text > title:contains(${processorName})`).parent().parent().click();
+    }
+
+    logon(credentials: { username: string; password: string; }) {
+        const loaded = 'flowClusterSummary';
+        return cy.intercept(`${this.baseUrl}/nifi-api/flow/cluster/summary`).as(loaded)
+            .visit(`${this.baseUrl}/nifi/login`)
+            .get('#username').type(credentials.username)
+            .get('#password').type(credentials.password)
+            .get('#login-submission-button').click().wait(`@${loaded}`);
     }
 }

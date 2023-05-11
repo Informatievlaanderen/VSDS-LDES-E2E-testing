@@ -1,0 +1,98 @@
+version: '3.3'
+services:
+
+  ldes-server-simulator:
+    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-server-simulator
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
+    environment:
+      - BASEURL=http://ldes-server-simulator
+    ports:
+      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
+    networks:
+      - ldes
+
+  nginx:
+    image: nginx:${NGINX_TAG:-1.23.3}
+    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_nginx
+    ports:
+      - ${NGINX_PORT:-8081}:8080
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./fwd-ldes-server.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro
+      - ./oauth2.js:/etc/nginx/oauth2.js:ro
+#      - ./lua:/etc/nginx/lua:ro
+#    depends_on:
+#      - ldes-server
+    networks:
+      - ldes
+
+  mock-oauth2-server:
+    image: ghcr.io/navikt/mock-oauth2-server:0.5.8
+    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_mock-oauth2-server
+    environment:
+      - BASEURL=http://mock-oauth2-server
+    ports:
+      - 8090:8080
+    networks:
+      - ldes
+
+  ldio-workflow:
+    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldio-workflow
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./ldio-workflow.config.yml:/application.yml:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+#
+#  ldes-server:
+#    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-server
+#    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+#    environment:
+#      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+#      - MANAGEMENT_TRACING_ENABLED=False
+#      - SIS_DATA=/tmp
+#      - SPRING_DATA_MONGODB_DATABASE=gipod
+#      - COLLECTIONS_0_COLLECTIONNAME=mobility-hindrances
+#      - COLLECTIONS_0_MEMBERTYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
+#      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+#      - SPRING_DATA_MONGODB_PORT=27017
+#      - COLLECTIONS_0_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
+#      - COLLECTIONS_0_SHAPE=https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/shape
+#      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+#      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+#      - COLLECTIONS_0_VIEWS_0_NAME=by-time
+#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1500
+#    volumes:
+#      - ../../data/epsg:/tmp/Databases:rw
+#    ports:
+#      - ${LDES_SERVER_PORT:-8080}:8080
+#    networks:
+#      - ldes
+#    depends_on:
+#      - ldes-mongodb
+#
+#  ldes-mongodb:
+#    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-mongodb
+#    image: mongo:${MONGODB_TAG:-latest}
+#    ports:
+#      - ${MONGODB_PORT:-27017}:27017
+#    networks:
+#      - ldes
+#
+#  mongodb-rest-api:
+#    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_mongodb-rest-api
+#    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+#    environment:
+#      - SILENT=false
+#      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+#    ports:
+#      - ${MONGODB_REST_API_PORT:-9019}:80
+#    networks:
+#      - ldes
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-gipod-ingest-ldes}_network

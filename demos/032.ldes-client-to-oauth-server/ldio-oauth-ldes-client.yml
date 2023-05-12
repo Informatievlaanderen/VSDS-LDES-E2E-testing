@@ -7,8 +7,6 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-#          url: http://ldes-server:8080/devices
-#          sourceFormat: text/turtle
           url: http://localhost:8080/devices
           auth:
             type: OAUTH2_CLIENT_CREDENTIALS

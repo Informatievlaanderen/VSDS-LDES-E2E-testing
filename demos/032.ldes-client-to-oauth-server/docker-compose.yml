@@ -26,8 +26,8 @@ services:
       - ldes
     ports:
       - 8081:8080
-    profiles:
-      - delay-started
+    depends_on:
+      - ldes-server
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
@@ -62,27 +62,20 @@ services:
     networks:
       - ldes
 
-  mongodb-rest-api:
-    container_name: ${USECASE_NAME:-ldes-oauth-client}_mongodb-rest-api
-    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
-    environment:
-      - SILENT=false
-      - CONNECTION_URI=mongodb://ldes-mongodb:27017
-    ports:
-      - ${MONGODB_REST_API_PORT:-9019}:80
-    networks:
-      - ldes
-
   ldio-oauth-ldes-client:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-oauth-ldes-client
     volumes:
       - ./ldio-oauth-ldes-client.yml:/ldio/config/application.yml:ro
+    # Use the network stack of the nginx service so that localhost refers to the nginx api gateway
+    # so that we can follow the LDES stream.
+    network_mode: service:api-gateway
+    depends_on:
+      - test-message-sink
+      - mock-oauth2-server
+      - api-gateway
     profiles:
       - delay-started
-    # use the network stack of the nginx service so that
-    # localhost refers to nginx and we can follow the LDES stream both from the host as from within the CLI
-    network_mode: service:api-gateway
 
   api-gateway:
     image: nginx:${NGINX_TAG:-1.23.3}
@@ -95,6 +88,9 @@ services:
       - ./oauth2.js:/etc/nginx/oauth2.js:ro
     networks:
       - ldes
+    depends_on:
+      - ldes-server
+      - mock-oauth2-server
 
   mock-oauth2-server:
     image: ghcr.io/navikt/mock-oauth2-server:0.5.8
@@ -118,6 +114,8 @@ services:
       - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:
       - ldes
+    depends_on:
+      - ldes-mongodb
 
 networks:
   ldes:

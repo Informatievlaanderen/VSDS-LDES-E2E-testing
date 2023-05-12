@@ -3,11 +3,7 @@ The test verifies that the LDES Client can consume data from an OAUTH 2 protecte
 It uses a context containing a (LDES Server) simulator serving the fragments, an NGINX reverse proxy in front of the simulator,
 an Oauth 2 server, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
 
-The simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served. 
-
-
-TODO:
-   reverse proxy en oauth 2 server
+The simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served.
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -35,7 +31,10 @@ Press `CTRL-C` to stop following the log.
 
 2. Start the workflow containing to ingest the members:
    ```bash
-   docker compose up ldio-workflow -d
+   docker compose up ldio-oauth-ldes-client -d
+   ```
+   ```bash
+   docker compose up test-message-generator -d
    ```
 
 3. Verify LDES members are correctly received

@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ldio-seed-server:8080/seed-server
+      - TARGETURL=http://ldio-server-seeder:8080/seed-server
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
@@ -17,15 +17,13 @@ services:
     profiles:
       - delay-started
 
-  ldio-seed-server:
+  ldio-server-seeder:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-seed-server
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-server-seeder
     volumes:
-      - ./ldio-seed-server.yml:/ldio/config/application.yml:ro
+      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
     networks:
       - ldes
-    ports:
-      - 8081:8080
     depends_on:
       - ldes-server
 
@@ -97,6 +95,8 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_mock-oauth2-server
     environment:
       - BASEURL=http://mock-oauth2-server
+    ports:
+      - ${OAUTH2_SERVER_PORT:-8090}:8080
     networks:
       - ldes
 

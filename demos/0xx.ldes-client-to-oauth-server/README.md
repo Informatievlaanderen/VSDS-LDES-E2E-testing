@@ -46,6 +46,12 @@ Press `CTRL-C` to stop following the log.
 
    > **Note**: there are more alternatives to verify the member count in the database. See [notes](#notes) below.
 
+4. Verify that the nginx endpoint returns forbidden when it is called without correction authorization
+    ```bash
+    curl http://localhost:9020/api/v1/ldes/mobility-hindrances
+    ```
+   The above call should return 403 - forbidden.
+
 ## Test Teardown
 To stop all systems use:
 ```bash
@@ -55,49 +61,3 @@ docker compose --profile delay-started down
 
 ## Notes
 To verify the member count, alternatively use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `gipod.ldesmember` document collection contains all the LDES members (check the document count).
-
-To get the **LDES** (event stream) itself use:
-```bash
-curl http://localhost:8080/mobility-hindrances
-```
-response (simplified):
-```
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
-@prefix tree:                <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
-```
-You can follow the `tree:view` link to get the **view**:
-```bash
-curl http://localhost:8080/mobility-hindrances/by-time
-```
-response (simplified):
-```
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
-@prefix tree:                <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances/by-time>
-        a              tree:Node ;
-        tree:relation  [ a          tree:Relation ;
-                         tree:node  <http://localhost:8080/mobility-hindrances/by-time?generatedAtTime=2023-01-13T20:38:13.134Z>
-                       ] .
-
-<http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-time> .
-```
-This allows you to follow the `tree:node` and retrieve the **fragment** containing the members:
-```
-curl <replace-by-tree:node>
-```
-> **Note**: you can also verify that the fragment contains 1016 members by capturing the response to a file and counting the number of occurrences of `<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>`. E.g.:
-```
-curl --silent <replace-by-tree:node> | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l
-```
-response: 1016

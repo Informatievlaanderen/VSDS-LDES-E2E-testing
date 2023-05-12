@@ -11,11 +11,11 @@ services:
     networks:
       - ldes
 
-  nginx:
+  api-gateway:
     image: nginx:${NGINX_TAG:-1.23.3}
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nginx
     ports:
-      - ${NGINX_PORT:-8081}:8080
+      - ${NGINX_PORT:-9020}:8080
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./fwd-ldes-server.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro

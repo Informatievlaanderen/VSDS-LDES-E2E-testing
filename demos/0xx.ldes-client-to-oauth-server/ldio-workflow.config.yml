@@ -7,7 +7,7 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-          url: http://nginx:8080/api/v1/ldes/mobility-hindrances
+          url: http://api-gateway:8080/api/v1/ldes/mobility-hindrances
           auth:
             type: OAUTH2_CLIENT_CREDENTIALS
             client-id: clientId

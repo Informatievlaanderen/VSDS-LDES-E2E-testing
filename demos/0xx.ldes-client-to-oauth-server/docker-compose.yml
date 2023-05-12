@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   ldes-server-simulator:
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-server-simulator
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server-simulator
     image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
     environment:
       - BASEURL=http://ldes-server-simulator
@@ -13,7 +13,7 @@ services:
 
   nginx:
     image: nginx:${NGINX_TAG:-1.23.3}
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_nginx
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_nginx
     ports:
       - ${NGINX_PORT:-8081}:8080
     volumes:
@@ -25,7 +25,7 @@ services:
 
   mock-oauth2-server:
     image: ghcr.io/navikt/mock-oauth2-server:0.5.8
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_mock-oauth2-server
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_mock-oauth2-server
     environment:
       - BASEURL=http://mock-oauth2-server
     ports:
@@ -34,7 +34,7 @@ services:
       - ldes
 
   ldio-workflow:
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldio-workflow
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-workflow
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/application.yml:ro
@@ -44,7 +44,7 @@ services:
       - delay-started
 
   ldes-server:
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-server
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
@@ -72,7 +72,7 @@ services:
       - ldes-mongodb
 
   ldes-mongodb:
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldes-mongodb
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
@@ -80,7 +80,7 @@ services:
       - ldes
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-gipod-ingest-ldes}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
@@ -92,4 +92,4 @@ services:
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-gipod-ingest-ldes}_network
+    name: ${USECASE_NAME:-ldes-oauth-client}_network

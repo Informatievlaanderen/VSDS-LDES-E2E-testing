@@ -1,6 +1,6 @@
 # LDES Client can consume an OAUTH 2 protected endpoint using client-credentials
 The test verifies that the LDES Client can consume data from an OAUTH 2 protected server.
-It uses a context containing a (LDES Server) simulator serving the fragments, a reverse proxy in front of the simulator,
+It uses a context containing a (LDES Server) simulator serving the fragments, an NGINX reverse proxy in front of the simulator,
 an Oauth 2 server, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
 
 The simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served. 

@@ -1,3 +1,5 @@
+export default { introspectAccessToken }
+
 function introspectAccessToken(r) {
     r.subrequest("/default/introspect",
         function(reply) {
@@ -14,5 +16,3 @@ function introspectAccessToken(r) {
         }
     );
 }
-
-export default { introspectAccessToken }

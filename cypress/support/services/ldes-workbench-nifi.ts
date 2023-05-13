@@ -4,7 +4,11 @@ import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
 
-    constructor(private baseUrl: string) {
+    constructor(private baseUrl: string, private _serviceName?: string) {
+    }
+
+    public get serviceName() {
+        return this._serviceName || 'nifi-workbench';
     }
 
     private _lastUploadedWorkflowId: string;

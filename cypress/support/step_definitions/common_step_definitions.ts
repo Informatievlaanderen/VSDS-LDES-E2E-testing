@@ -160,8 +160,21 @@ When('I launch the Client CLI', () => {
     createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
 })
 
-When('I start the NiFi workflow', () => {
-    workbenchNifi.pushStart();
+When('I start the {string} workflow', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+            workbenchNifi.load();
+            workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })
 
 When('I start the LDIO workflow', () => {

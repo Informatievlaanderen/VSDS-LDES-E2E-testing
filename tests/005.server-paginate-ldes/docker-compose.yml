@@ -21,6 +21,18 @@ services:
     profiles:
       - delay-started
 
+  nifi-workbench:
+    container_name: ${USECASE_NAME:-gipod-page-fragment-ldes}_ldi-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
   ldes-server:
     container_name: ${USECASE_NAME:-gipod-page-fragment-ldes}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}

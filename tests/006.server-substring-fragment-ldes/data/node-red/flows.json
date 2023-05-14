@@ -83,7 +83,7 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "http://ldio-workflow:8080/grar-pipeline",
+        "url": "http://ldes-workbench:8080/grar-pipeline",
         "tls": "",
         "persist": false,
         "proxy": "",

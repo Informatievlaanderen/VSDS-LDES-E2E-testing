@@ -26,13 +26,14 @@ Press `CTRL-C` to stop following the log.
 
 ## Test Execution
 
-1. Start the workflow with the LDES client:
-   ```bash
-   docker compose up ldio-oauth-ldes-client -d
-   ```
-2. Seed the LDES Server by starting the message generator:
+1. Seed the LDES Server by starting the message generator:
    ```bash
    docker compose up test-message-generator -d
+   ```
+
+2. Start the workflow with the LDES client:
+   ```bash
+   docker compose up ldio-oauth-ldes-client -d
    ```
 
 3. Verify LDES members are correctly received in the message sink

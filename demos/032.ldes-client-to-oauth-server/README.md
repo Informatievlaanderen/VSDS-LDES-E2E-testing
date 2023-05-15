@@ -1,9 +1,15 @@
 # LDES Client can consume an OAUTH 2 protected endpoint using client-credentials
 The test verifies that the LDES Client can consume data from an OAUTH 2 protected server.
-It uses a context containing a (LDES Server) simulator serving the fragments, an NGINX reverse proxy in front of the simulator,
-an Oauth 2 server, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
+It uses the following setup:
 
-The simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served.
+![img](artwork/test-32.drawio.png)
+
+The message generator creates messages and sends these to an LDIO workflow.
+This workflow creates version objects and seeds the LDES server.
+The LDES server cannot be reached from outside the docker network but is exposed through and API Gateway
+which is set up using NGINX and a mock OAUTH2 server.
+A second LDIO workflow with an OAUTH2 enabled LDES Client is used to consume the server and write the messages
+to a message sink to verify the LDES Client supports the OAUTH2 Client Credentials flow.
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -19,43 +25,36 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 ## Test Execution
-1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
-    ```bash
-    for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
-    curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
-    ```
-    To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command: 
-    ```bash
-    curl http://localhost:9011/
-    ```
 
-2. Start the workflow containing to ingest the members:
+1. Start the workflow with the LDES client:
    ```bash
    docker compose up ldio-oauth-ldes-client -d
    ```
+2. Seed the LDES Server by starting the message generator:
    ```bash
    docker compose up test-message-generator -d
    ```
 
-3. Verify LDES members are correctly received
+3. Verify LDES members are correctly received in the message sink
    ```bash
-   curl http://localhost:9019/gipod/ldesmember
+   curl http://localhost:9003
    ```
-   Please run the previous command repeatedly until it returns the correct member count (1016).
+Please run the previous command repeatedly until the member count increases. The LDES Client checks the fragments 
+for updates every 60 seconds. The count will increase in bursts of this interval.
 
    > **Note**: there are more alternatives to verify the member count in the database. See [notes](#notes) below.
 
-4. Verify that the nginx endpoint returns forbidden when it is called without correction authorization
+4. Verify that the api gateway returns forbidden when it is called without correction authorization
     ```bash
-    curl http://localhost:9020/api/v1/ldes/mobility-hindrances
+    curl http://localhost:8080/devices
     ```
    The above call should return 403 - forbidden.
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
 docker compose --profile delay-started down
+docker compose down
 ```
 
 ## Notes

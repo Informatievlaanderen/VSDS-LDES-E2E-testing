@@ -37,10 +37,10 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     uploadWorkflow(partialPath: string) {
-        cy.intercept('**/upload').as('upload');
-        cy.intercept('/nifi-api/flow/cluster/summary').as('readyForUploadingWorkflow')
+        cy.intercept({url: '**/upload', times: 1}).as('uploaded');
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToUpload');
         cy.origin(this.baseUrl, { args: {file: partialPath} } , ({file}) => {
-            cy.visit('/nifi/').wait('@readyForUploadingWorkflow');
+            cy.visit('/nifi/').wait('@readyToUpload');
 
             cy.get("#group-component")
                 .trigger("mousedown", 1, 1, {
@@ -66,7 +66,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
                         lastModified: Date.now()
                     }, { force: true })
                     .get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true })
-                    .wait('@upload').then(upload => cy.get('#operation-context-id').should('have.text', upload.response.body.id))
+                    .wait('@uploaded').then(upload => cy.get('#operation-context-id').should('have.text', upload.response.body.id))
                 );
         });
     }
@@ -96,7 +96,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     login(credentials: { username: string; password: string; }) {
-        cy.intercept('/nifi-api/flow/cluster/summary').as('loggedIn')
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
         return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/login')
                 .get('#username').type(credentials.username)
                 .get('#password').type(credentials.password)
@@ -105,6 +105,10 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     logout() {
-        return cy.origin(this.baseUrl, () => cy.visit('/nifi/logout'));
+        cy.origin(this.baseUrl, () => {
+            cy.visit('/nifi/logout');
+            cy.clearLocalStorage();
+            return cy.clearAllSessionStorage();
+        });
     }
 }

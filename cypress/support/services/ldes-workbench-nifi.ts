@@ -107,6 +107,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     logout() {
         cy.origin(this.baseUrl, () => {
             cy.visit('/nifi/logout');
+            cy.clearCookies();
             cy.clearLocalStorage();
             return cy.clearAllSessionStorage();
         });

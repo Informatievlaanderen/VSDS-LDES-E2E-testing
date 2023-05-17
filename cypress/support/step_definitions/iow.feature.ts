@@ -2,7 +2,7 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Member } from '../ldes';
 import { LdesServer } from "../services";
-import { workbenchNifi, mongo, testPartialPath } from "./common_step_definitions";
+import { workbenchNifi, mongo, testPartialPath, oldWorkbenchNifi } from "./common_step_definitions";
 
 let rootFragment: Fragment;
 const devicesServer = new LdesServer('http://localhost:8071', 'ldes-server-devices');
@@ -24,6 +24,10 @@ Given('the IoW multi LDES server is available', () => {
 
 Given('I started the workflow', () => {
     workbenchNifi.pushStart();
+})
+
+Given('I started the old workflow', () => {
+    oldWorkbenchNifi.pushStart();
 })
 
 Given('the {string} ingest endpoint is ready', (baseName: string) => {

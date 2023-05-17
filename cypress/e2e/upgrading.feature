@@ -65,7 +65,7 @@ Feature: server upgrade use case
     And the LDES server is available
     And the old NiFi workbench is available
     And I have uploaded the old workflow
-    And I started the workflow
+    And I started the old workflow
     # And the old ingest endpoint is ready
     And I set the TARGETURL to the old workflow
     And I start the JSON Data Generator
@@ -77,7 +77,6 @@ Feature: server upgrade use case
     And the old server is done processing
     And I bring the old NiFi workflow down
     And the NiFi workbench is available
-    And I clear my cache
     And I have uploaded the new workflow
     # And I started the workflow
     # And I started the workflow

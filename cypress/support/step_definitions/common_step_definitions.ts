@@ -242,6 +242,10 @@ Then('the sink contains {int} members', (count: number) => {
     sink.checkCount('mobility-hindrances', count);
 })
 
+Then('the {string} sink contains at least {int} members', (collectionName: string, count: number) => {
+    sink.checkCount(collectionName, count, (x, y) => x >= y);
+})
+
 export function currentMemberCount() {
     return mongo.count(testContext.database, testContext.collection);
 }

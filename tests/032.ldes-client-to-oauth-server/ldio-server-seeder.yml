@@ -1,0 +1,23 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: seed-server
+      description: "Simple http in, version creation, http out pipeline allowing to pause output."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      transformers:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+          config:
+            member-type: https://uri.etsi.org/ngsi-ld/default-context/Device
+            delimiter: "/"
+            date-observed-property: ""
+            generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+            versionOf-property: http://purl.org/dc/terms/isVersionOf
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            content-type: application/n-quads
+            endpoint: http://ldes-server:8080/devices

@@ -1,0 +1,94 @@
+<mxfile host="app.diagrams.net" modified="2023-05-12T15:29:20.123Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/113.0" etag="uwHiG4FJftUDUTMV8l6d" version="21.2.9" type="google">
+  <diagram name="Page-1" id="xZSvtKnVIfYFNbxJ1uxX">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-1" target="zM5nsOcxDUziJYWUCTA9-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-1" value="&lt;div style=&quot;background-color:#ffffff;color:#080808;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9.8pt;&quot;&gt;&lt;pre&gt;Message generator&lt;br&gt;(test-message-generator) &lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-2" target="zM5nsOcxDUziJYWUCTA9-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-2" value="&lt;div style=&quot;background-color:#ffffff;color:#080808;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9.8pt;&quot;&gt;&lt;pre&gt;LDIO workflow&lt;br&gt;(ldio-server-seeder)&lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="190" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-4" value="&lt;div align=&quot;left&quot;&gt;Http listener -&amp;gt; Version object creator -&amp;gt; Post to LDES Server&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="205" width="350" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-6" value="&lt;div align=&quot;left&quot;&gt;Generate messages -&amp;gt; Post to LDIO&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="95" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-7" value="&lt;div&gt;LDES SERVER&lt;/div&gt;&lt;div&gt;(ldes-server)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-9" value="&lt;div align=&quot;left&quot;&gt;- Ingest members from LDIO workflow&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- Serve LDES from ingested members&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="310" width="230" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-10" value="&lt;div style=&quot;background-color:#ffffff;color:#080808;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9.8pt;&quot;&gt;&lt;pre&gt;ldes-mongodb&lt;/pre&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="200" y="340" width="50" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-15" target="zM5nsOcxDUziJYWUCTA9-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-15" value="&lt;div&gt;API Gateway&lt;/div&gt;&lt;div&gt;(api-gateway)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-16" value="&lt;div style=&quot;color: rgb(8, 8, 8); font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;&lt;pre&gt;&lt;span style=&quot;background-color: rgb(213, 232, 212);&quot;&gt;mock-oauth2-server&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="190" y="470" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-17" value="&lt;div align=&quot;left&quot;&gt;- Exposes server to the outside world&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- Secures server with OAUTH 2&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="430" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-19" value="send message to workflow" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="148" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-20" value="&lt;div&gt;send member to server&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-15" y="258" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-21" value="fetch member from server" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-25" y="378" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-22" target="zM5nsOcxDUziJYWUCTA9-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.575;entryY=1.067;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-22" target="zM5nsOcxDUziJYWUCTA9-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zM5nsOcxDUziJYWUCTA9-22" target="zM5nsOcxDUziJYWUCTA9-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-22" value="&lt;div style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;&lt;pre&gt;&lt;font color=&quot;#080808&quot;&gt;LDIO workflow&lt;br&gt;(ldio-oauth-ldes-client)&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="590" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-23" value="&lt;div align=&quot;left&quot;&gt;LdesClient -&amp;gt; Post to message sink&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="605" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-26" value="get token" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="185" y="558" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-27" value="fetch member from server" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-15" y="530" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-28" value="&lt;div style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;&lt;pre&gt;&lt;font color=&quot;#080808&quot;&gt;Message sink&lt;br&gt;(&lt;/font&gt;test-message-sink&lt;font color=&quot;#080808&quot;&gt;)&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="710" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-30" value="send member to message sink" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-55" y="658" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-31" value="&lt;div align=&quot;left&quot;&gt;Sink for message to view test results&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="725" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-32" value="Exposed to outside world" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="560" y="50" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="zM5nsOcxDUziJYWUCTA9-33" value="Private components" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="80" width="160" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -77,6 +77,7 @@ Feature: server upgrade use case
     And the old server is done processing
     And I bring the old NiFi workflow down
     And the NiFi workbench is available
+    And I clear my cache
     And I have uploaded the new workflow
     # And I started the workflow
     # And I started the workflow

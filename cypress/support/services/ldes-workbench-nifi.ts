@@ -3,7 +3,7 @@
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
-    
+
     constructor(private baseUrl: string) {
     }
 
@@ -45,38 +45,45 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     uploadWorkflow(file: string) {
         cy.intercept('**/upload').as('upload');
 
-        cy.get('#splash').should('not.be.visible');
+        // const sentArgs = { file }
+        // cy.origin('http://localhost:8000', { args: sentArgs}, () => {
+        //     cy.visit('/nifi')
 
-        cy.get("#group-component")
-            .trigger("mousedown", 1, 1, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            })
-            .trigger("mousemove", 200, 200, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            })
-            .trigger("mouseup", 200, 200, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            });
+            
+        //     console.log('File: ' + file);
+            cy.get('#splash').should('not.be.visible');
 
-        return cy.readFile(file, null).then(buffer => {
-            cy.get('#upload-file-field').selectFile({
-                contents: buffer,
-                fileName: 'nifi-workflow.json',
-                mimeType: 'application/json',
-                lastModified: Date.now(),
-            }, { force: true });
-            cy.get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true });
-            return cy.wait('@upload').then(upload => {
-                const processGroupId = upload.response.body.id;
-                return cy.get('#operation-context-id').should('have.text', processGroupId);
+            cy.get("#group-component")
+                .trigger("mousedown", 1, 1, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                })
+                .trigger("mousemove", 200, 200, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                })
+                .trigger("mouseup", 200, 200, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                });
+
+            return cy.readFile(file, null).then(buffer => {
+                cy.get('#upload-file-field').selectFile({
+                    contents: buffer,
+                    fileName: 'nifi-workflow.json',
+                    mimeType: 'application/json',
+                    lastModified: Date.now(),
+                }, { force: true });
+                cy.get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true });
+                return cy.wait('@upload').then(upload => {
+                    const processGroupId = upload.response.body.id;
+                    return cy.get('#operation-context-id').should('have.text', processGroupId);
+                });
             });
-        });
+        //});
     }
 
     pushStart() {

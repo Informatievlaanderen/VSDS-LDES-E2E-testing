@@ -97,7 +97,7 @@ Given('I have uploaded the old workflow', () => {
 })
 
 Given('I have uploaded the new workflow', () => {
-    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/new-nifi-workflow.json`);
+        workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/new-nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
@@ -149,6 +149,16 @@ Given('I start the new LDIO workflow', () => {
     //wanneer containerId wordt opgehaald in waitAvailable = ldio-workflow, daarom lijn 127 toegevoegd
     createAndStartService('new-ldio')
         .then(() => newWorkbenchLdio.waitAvailable());
+})
+
+Given('I clear my cache', () => {
+    //cy.clearCookies(); //The command was expected to run against origin https://localhost:8443 but the application is at origin http://localhost:8000.
+    
+    //cy.clearLocalStorage();
+    //Blocked a frame with origin "https://localhost:8443" from accessing a cross-origin frame.
+
+    cy.clearAllSessionStorage({log: true}); //niks?
+
 })
 
 // When stuff

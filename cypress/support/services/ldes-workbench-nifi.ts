@@ -7,6 +7,8 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     constructor(private baseUrl: string) {
     }
 
+    private _lastUploadedWorkflowId: string;
+
     /**
      * Checks if the Apache NiFi workbench is ready to accept login attempts
      * @returns true if ready, false otherwise
@@ -66,9 +68,11 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
                         lastModified: Date.now()
                     }, { force: true })
                     .get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true })
-                    .wait('@uploaded').then(upload => cy.get('#operation-context-id').should('have.text', upload.response.body.id))
+                    .wait('@uploaded')
+                    .then(upload => upload.response.body.id)
+                    .then((id: string) => cy.get('#operation-context-id').should('have.text', id).then(() => id))
                 );
-        });
+        }).then((id: string) => this._lastUploadedWorkflowId = id);
     }
 
     pushStart() {
@@ -84,8 +88,10 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     openWorkflow() {
-        cy.origin(this.baseUrl, () => {
-            cy.get('#operation-context-id').then(div => cy.get(`#id-${div.text()}`).dblclick());
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToOpenWorkflow');
+        cy.origin(this.baseUrl, { args: {workflowId: this._lastUploadedWorkflowId} } , ({workflowId}) => {
+            cy.visit('/nifi/').wait('@readyToOpenWorkflow');
+            cy.get(`#id-${workflowId}`).dblclick();
         });
     }
 

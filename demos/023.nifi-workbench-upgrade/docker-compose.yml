@@ -51,7 +51,7 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_new-ldes-server
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1

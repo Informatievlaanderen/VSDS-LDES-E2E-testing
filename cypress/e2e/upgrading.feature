@@ -28,7 +28,7 @@ Feature: server upgrade use case
     When I start the new LDIO workflow
     And I pause the new LDIO workflow output
     And I set the TARGETURL to the new LDIO
-    And the old server is done processing
+    And the member count does not change
     And I remember the last fragment member count
     And I bring the old LDIO workbench down
     And I resume the new LDIO workflow output
@@ -46,6 +46,7 @@ Feature: server upgrade use case
     And the LDES contains at least 11 members
     And the ldesfragment collection is structured as expected
     And the ldesmember collection is structured as expected
+    
     When I stop the http sender in the workflow
     And the old server is done processing
     And I remember the last fragment member count
@@ -54,6 +55,7 @@ Feature: server upgrade use case
     And the LDES server is available
     Then the ldesfragment collection on the new server is structured as expected
     And the ldesmember collection on the new server is structured as expected
+    
     When I start the http sender in the workflow
     Then the LDES member count increases
     And the last fragment member count increases
@@ -69,13 +71,16 @@ Feature: server upgrade use case
     And I set the TARGETURL to the old workflow
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
-    When I start the new LDES workbench
-    And I set the TARGETURL to the new workflow
-    And the old server is done processing
-    And I bring the old NiFi workflow down
-    And the NiFi workbench is available
+    
+    When I start the new NiFi workbench
     And I have uploaded the new workflow
     And I started the workflow
-    And I start the JSON Data Generator
-    And the LDES member count increases
+    And I stop the http sender in the workflow
+    And I set the TARGETURL to the new workflow
+    Then the member count does not change
+    
+    When I bring the old NiFi workbench down
+    And I remember the last fragment member count
+    And I start the http sender in the workflow
+    Then the LDES member count increases
     And the last fragment member count increases

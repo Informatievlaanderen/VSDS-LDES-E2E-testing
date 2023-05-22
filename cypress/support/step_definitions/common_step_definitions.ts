@@ -207,7 +207,7 @@ When('the LDES contains at least {int} members', (count: number) => {
     currentMemberCount().then(count => memberCount = count);
 })
 
-When('the old server is done processing', () => {
+function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     cy.waitUntil(() =>
@@ -215,7 +215,11 @@ When('the old server is done processing', () => {
             cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
         { timeout: 5000, interval: 1000 }
     );
-})
+}
+
+When('the old server is done processing', waitUntilMemberCountStable);
+
+Then('the member count does not change', waitUntilMemberCountStable);
 
 When('I start the GTFS2LDES service', () => {
     createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
@@ -226,14 +230,14 @@ When('I bring the old server down', () => {
     dockerCompose.removeVolumesAndImage('old-ldes-server');
 })
 
-When('I bring the old NiFi workflow down', () => {
+When('I bring the old NiFi workbench down', () => {
     oldWorkbenchNifi.logout();
     dockerCompose.stop('old-nifi-workflow');
     dockerCompose.removeVolumesAndImage('old-nifi-workflow');
 })
 
-When('I start the new LDES workbench', () => {
-    createAndStartService('new-nifi-workflow').then(() => server.waitAvailable());
+When('I start the new NiFi workbench', () => {
+    createAndStartService('new-nifi-workflow').then(() => workbenchNifi.waitAvailable());
 })
 
 When('I start the new LDES Server', () => {
@@ -252,6 +256,7 @@ When('I stop the http sender in the workflow', () => {
 })
 
 When('I start the http sender in the workflow', () => {
+    workbenchNifi.openWorkflow();
     workbenchNifi.selectProcessor('InvokeHTTP');
     workbenchNifi.pushStart();
 })

@@ -66,21 +66,16 @@ Feature: server upgrade use case
     And the old NiFi workbench is available
     And I have uploaded the old workflow
     And I started the old workflow
-    # And the old ingest endpoint is ready
     And I set the TARGETURL to the old workflow
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
-
     When I start the new LDES workbench
     And I set the TARGETURL to the new workflow
-    # And the new LDES workbench is available
     And the old server is done processing
     And I bring the old NiFi workflow down
     And the NiFi workbench is available
     And I have uploaded the new workflow
     And I started the workflow
     And I start the JSON Data Generator
-    # And I have started the new workflow (except sending members)
-    # And the new ingest endpoint is ready
     And the LDES member count increases
     And the last fragment member count increases

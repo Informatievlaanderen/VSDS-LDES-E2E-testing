@@ -66,3 +66,12 @@ When('I set the TARGETURL to the old LDIO', () => {
 When('I set the TARGETURL to the new LDIO', () => {
     setTargetUrl("http://new-ldio:8080/pipeline");
 })
+
+Given('I set the TARGETURL to the old workflow', () => {
+    setTargetUrl("http://old-nifi-workflow:9012/ngsi/device");
+})
+
+Given('I set the TARGETURL to the new workflow', () => {
+    setTargetUrl("http://new-nifi-workflow:9012/ngsi/device");
+})
+

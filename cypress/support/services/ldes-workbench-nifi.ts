@@ -7,6 +7,8 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     constructor(private baseUrl: string) {
     }
 
+    private _lastUploadedWorkflowId: string;
+
     /**
      * Checks if the Apache NiFi workbench is ready to accept login attempts
      * @returns true if ready, false otherwise
@@ -15,8 +17,16 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
+    private isOldWorkbenchReady(): Cypress.Chainable<boolean> {
+        return cy.exec(`curl --insecure -I ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+    }
+
     waitAvailable() {
         return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
+    }
+
+    waitForOldWorkbenchAvailable() {
+        return cy.waitUntil(() => this.isOldWorkbenchReady(), { timeout: 600000, interval: 5000 });
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
@@ -28,62 +38,84 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
             .then(response => response.isOkStatusCode && response.body === 'OK');
     }
 
-    load() {
-        const loaded = 'flowClusterSummary';
-        return cy.intercept(`${this.baseUrl}/nifi-api/flow/cluster/summary`).as(loaded)
-            .visit(`${this.baseUrl}/nifi/`).wait(`@${loaded}`);
-    }
+    uploadWorkflow(partialPath: string) {
+        cy.intercept({url: '**/upload', times: 1}).as('uploaded');
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToUpload');
+        cy.origin(this.baseUrl, { args: {file: partialPath} } , ({file}) => {
+            cy.visit('/nifi/').wait('@readyToUpload');
 
-    uploadWorkflow(file: string) {
-        cy.intercept('**/upload').as('upload');
+            cy.get("#group-component")
+                .trigger("mousedown", 1, 1, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                })
+                .trigger("mousemove", 200, 200, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                })
+                .trigger("mouseup", 200, 200, {
+                    button: 0,
+                    force: true,
+                    eventConstructor: "MouseEvent"
+                });
 
-        cy.get('#splash').should('not.be.visible');
-
-        cy.get("#group-component")
-            .trigger("mousedown", 1, 1, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            })
-            .trigger("mousemove", 200, 200, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            })
-            .trigger("mouseup", 200, 200, {
-                button: 0,
-                force: true,
-                eventConstructor: "MouseEvent"
-            });
-
-        return cy.readFile(file, null).then(buffer => {
-            cy.get('#upload-file-field').selectFile({
-                contents: buffer,
-                fileName: 'nifi-workflow.json',
-                mimeType: 'application/json',
-                lastModified: Date.now(),
-            }, { force: true });
-            cy.get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true });
-            return cy.wait('@upload').then(upload => {
-                const processGroupId = upload.response.body.id;
-                return cy.get('#operation-context-id').should('have.text', processGroupId);
-            });
-        });
+            return cy.readFile(file, 'utf8').then(data => cy.get('#upload-file-field').selectFile({
+                        contents: Cypress.Buffer.from(JSON.stringify(data)), 
+                        fileName: 'nifi-workflow.json',
+                        mimeType: 'application/json',
+                        lastModified: Date.now()
+                    }, { force: true })
+                    .get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true })
+                    .wait('@uploaded')
+                    .then(upload => upload.response.body.id)
+                    .then((id: string) => cy.get('#operation-context-id').should('have.text', id).then(() => id))
+                );
+        }).then((id: string) => this._lastUploadedWorkflowId = id);
     }
 
     pushStart() {
-        cy.get('#operate-start').click();
+        cy.origin(this.baseUrl, () => {
+            cy.get('#operate-start').click();
+        });
     }
 
     pushStop() {
-        cy.get('#operate-stop').click();
+        cy.origin(this.baseUrl, () => { 
+            cy.get('#operate-stop').click();
+        });
     }
 
     openWorkflow() {
-        cy.get('#operation-context-id').then(div => cy.get(`#id-${div.text()}`).dblclick());
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToOpenWorkflow');
+        cy.origin(this.baseUrl, { args: {workflowId: this._lastUploadedWorkflowId} } , ({workflowId}) => {
+            cy.visit('/nifi/').wait('@readyToOpenWorkflow');
+            cy.get(`#id-${workflowId}`).dblclick();
+        });
     }
 
-    selectProcessor(processorName: string) {
-        cy.get(`g.processor > text > title:contains(${processorName})`).parent().parent().click();
+    selectProcessor(name: string) {
+        cy.origin(this.baseUrl, {args: {processorName: name}}, ({processorName}) => {
+            cy.get(`g.processor > text > title:contains(${processorName})`).parent().parent().click();
+        });
+    }
+
+    login(credentials: { username: string; password: string; }) {
+        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
+        return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/login')
+                .get('#username').type(credentials.username)
+                .get('#password').type(credentials.password)
+                .get('#login-submission-button').click().wait('@loggedIn')
+            );
+    }
+
+    logout() {
+        cy.origin(this.baseUrl, () => {
+            cy.visit('/nifi/logout');
+            cy.clearCookies();
+            cy.clearLocalStorage();
+            return cy.clearAllSessionStorage();
+        });
     }
 }

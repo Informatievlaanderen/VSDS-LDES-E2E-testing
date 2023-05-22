@@ -22,10 +22,6 @@ Given('the IoW multi LDES server is available', () => {
     multiLdesServer.waitAvailable();
 })
 
-Given('I started the workflow', () => {
-    workbenchNifi.pushStart();
-})
-
 Given('the {string} ingest endpoint is ready', (baseName: string) => {
     const port = baseName === 'device' ? 9012 : 9013;
     workbenchNifi.waitIngestEndpointAvailable(`http://localhost:${port}/ngsi/${baseName}`);

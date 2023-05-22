@@ -7,12 +7,14 @@ import {
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
+import { credentials } from "../credentials";
 
 let testContext: any;
 let memberCount;
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
+export const oldWorkbenchNifi = new LdesWorkbenchNiFi('https://localhost:8443')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
@@ -77,11 +79,23 @@ Given('context {string} is started', (composeFilePath: string) => {
 
 Given('the NiFi workbench is available', () => {
     workbenchNifi.waitAvailable();
-    workbenchNifi.load();
 });
+
+Given('the old NiFi workbench is available', () => {
+    oldWorkbenchNifi.waitForOldWorkbenchAvailable();
+    oldWorkbenchNifi.login(credentials);
+})
 
 Given('I have uploaded the workflow', () => {
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+})
+
+Given('I have uploaded the old workflow', () => {
+    oldWorkbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/old-nifi-workflow.json`);
+})
+
+Given('I have uploaded the new workflow', () => {
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/new-nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
@@ -130,9 +144,15 @@ Given('the LDIO workflow is available', () => {
 })
 
 Given('I start the new LDIO workflow', () => {
-    //wanneer containerId wordt opgehaald in waitAvailable = ldio-workflow, daarom lijn 127 toegevoegd
-    createAndStartService('new-ldio')
-        .then(() => newWorkbenchLdio.waitAvailable());
+    createAndStartService('new-ldio').then(() => newWorkbenchLdio.waitAvailable());
+})
+
+Given('I started the workflow', () => {
+    workbenchNifi.pushStart();
+})
+
+Given('I started the old workflow', () => {
+    oldWorkbenchNifi.pushStart();
 })
 
 // When stuff
@@ -195,7 +215,7 @@ When('the LDES contains at least {int} members', (count: number) => {
     currentMemberCount().then(count => memberCount = count);
 })
 
-When('the old server is done processing', () => {
+function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     cy.waitUntil(() =>
@@ -203,11 +223,14 @@ When('the old server is done processing', () => {
             cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
         { timeout: 5000, interval: 1000 }
     );
-})
+}
+
+When('the old server is done processing', waitUntilMemberCountStable);
+
+Then('the member count does not change', waitUntilMemberCountStable);
 
 When('I start the GTFS2LDES service', () => {
-    createAndStartService(gtfs2ldes.serviceName)
-        .then(() => gtfs2ldes.waitAvailable());
+    createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
 })
 
 When('I bring the old server down', () => {
@@ -215,9 +238,18 @@ When('I bring the old server down', () => {
     dockerCompose.removeVolumesAndImage('old-ldes-server');
 })
 
+When('I bring the old NiFi workbench down', () => {
+    oldWorkbenchNifi.logout();
+    dockerCompose.stop('old-nifi-workflow');
+    dockerCompose.removeVolumesAndImage('old-nifi-workflow');
+})
+
+When('I start the new NiFi workbench', () => {
+    createAndStartService('new-nifi-workflow').then(() => workbenchNifi.waitAvailable());
+})
+
 When('I start the new LDES Server', () => {
-    createAndStartService('new-ldes-server')
-        .then(() => server.waitAvailable());
+    createAndStartService('new-ldes-server').then(() => server.waitAvailable());
 })
 
 When('I bring the old LDIO workbench down', () => {
@@ -232,6 +264,7 @@ When('I stop the http sender in the workflow', () => {
 })
 
 When('I start the http sender in the workflow', () => {
+    workbenchNifi.openWorkflow();
     workbenchNifi.selectProcessor('InvokeHTTP');
     workbenchNifi.pushStart();
 })
@@ -259,7 +292,7 @@ Then('the Client CLI contains {int} members', (count: number) => {
 })
 
 Then('the LDES member count increases', () => {
-    currentMemberCount().then(currentCount => 
-        mongo.checkCount(testContext.database, testContext.collection, currentCount, 
-                (actual, expected) => actual > expected));
+    currentMemberCount().then(currentCount =>
+        mongo.checkCount(testContext.database, testContext.collection, currentCount,
+            (actual, expected) => actual > expected));
 })

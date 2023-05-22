@@ -9,9 +9,6 @@ orchestrator:
         config:
           url: http://localhost:8080/mobility-hindrances/by-time
           source-format: text/turtle
-        # TODO: remove this TEMP workaround (adapter | name)
-        adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut
           config:

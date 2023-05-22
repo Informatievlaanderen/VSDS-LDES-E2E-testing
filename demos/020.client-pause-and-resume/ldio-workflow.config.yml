@@ -10,9 +10,6 @@ orchestrator:
           url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances
           state: sqlite
           keep-state: true
-        # TODO: remove this TEMP workaround (adapter | name)
-        adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:

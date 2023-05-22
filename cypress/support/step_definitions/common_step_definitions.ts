@@ -147,6 +147,14 @@ Given('I start the new LDIO workflow', () => {
     createAndStartService('new-ldio').then(() => newWorkbenchLdio.waitAvailable());
 })
 
+Given('I started the workflow', () => {
+    workbenchNifi.pushStart();
+})
+
+Given('I started the old workflow', () => {
+    oldWorkbenchNifi.pushStart();
+})
+
 // When stuff
 
 When('I launch the Client CLI', () => {

@@ -169,7 +169,7 @@ When('I start the {string} workflow', (workbench) => {
             break;
         }
         case 'LDIO': {
-            createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+            createAndStartService('ldio-workbench').then(() => workbenchLdio.waitAvailable()); // TODO: use workbenchLdio.serviceName
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);

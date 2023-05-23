@@ -21,8 +21,8 @@ services:
     profiles:
       - delay-started
 
-  ldio-workflow:
-    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldio-workflow
+  ldio-workbench:
+    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldio-workbench
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
@@ -34,7 +34,7 @@ services:
       - delay-started
   
   nifi-workbench:
-    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldi-workbench-nifi
+    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_nifi-workbench
     image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}

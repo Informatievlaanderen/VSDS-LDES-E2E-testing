@@ -38,14 +38,14 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 ## Test Execution
 1. Start the workflow containing the LDES Client:
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
     ```
 
 2. Verify replication
     
     Check that exactly one member is output to the log:
     ```bash
-    docker logs $(docker ps -q --filter "name=ldio-workflow$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+    docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
     ```
     As we have specified a freshness of 10 seconds the LDES Client CLI will re-request the fragment every 10 seconds. You can verify this by waiting a while and then querying the LDES Server Simulator (see the data under `responses`):
     ```bash
@@ -62,13 +62,13 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 
     Check that exactly one member is output to the log:
     ```bash
-    docker logs $(docker ps -q --filter "name=ldio-workflow$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+    docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
     ```
     Again, wait a while and request the LDES Server Simulator home page (http://localhost:9011/) and ensure that the repeated re-requesting has ended.
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
 docker compose --profile delay-started down
 ```

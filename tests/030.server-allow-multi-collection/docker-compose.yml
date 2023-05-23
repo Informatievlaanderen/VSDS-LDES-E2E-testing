@@ -7,7 +7,7 @@ services:
     profiles:
       - delay-started
     environment:
-      - TARGETURL=http://ldio-workflow:8080/observations
+      - TARGETURL=http://ldio-workbench:8080/observations
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
@@ -17,7 +17,7 @@ services:
     networks:
       - ldes
     depends_on:
-      - ldio-workflow
+      - ldio-workbench
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-server-multi-collection}_ldes-mongodb
@@ -74,8 +74,8 @@ services:
     depends_on:
       - ldes-mongodb
 
-  ldio-workflow:
-    container_name: ${USECASE_NAME:-server-multi-collection}_ldio-workflow
+  ldio-workbench:
+    container_name: ${USECASE_NAME:-server-multi-collection}_ldio-workbench
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     ports:
       - ${LDIO_WORKFLOW_LISTEN_PORT_DEVICE:-9012}:8080

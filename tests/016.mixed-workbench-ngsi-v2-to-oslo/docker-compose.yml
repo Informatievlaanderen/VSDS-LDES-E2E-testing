@@ -125,8 +125,8 @@ services:
     depends_on:
       - ldes-mongodb
 
-  ldio-workflow:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workflow
+  ldio-workbench:
+    container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workbench
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.yml:/ldio/application.yml:ro

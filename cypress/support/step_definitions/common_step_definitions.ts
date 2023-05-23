@@ -239,12 +239,12 @@ When('I bring the old server down', () => {
 })
 
 When('I bring the old NiFi workbench down', () => {
-    oldWorkbenchNifi.logout();
     dockerCompose.stop('old-nifi-workflow');
     dockerCompose.removeVolumesAndImage('old-nifi-workflow');
 })
 
 When('I start the new NiFi workbench', () => {
+    oldWorkbenchNifi.logout();
     createAndStartService('new-nifi-workflow').then(() => workbenchNifi.waitAvailable());
 })
 

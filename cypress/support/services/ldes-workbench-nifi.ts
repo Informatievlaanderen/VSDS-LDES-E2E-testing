@@ -42,7 +42,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         cy.intercept({url: '**/upload', times: 1}).as('uploaded');
         cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToUpload');
         cy.origin(this.baseUrl, { args: {file: partialPath} } , ({file}) => {
-            cy.visit('/nifi/').wait('@readyToUpload');
+            cy.visit('/nifi/').wait('@readyToUpload', { timeout: 30000 });
 
             cy.get("#group-component")
                 .trigger("mousedown", 1, 1, {

@@ -69,7 +69,11 @@ Press `CTRL-C` to stop following the log.
 
 2. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
     ```
 
 3. Verify the LDES member is ingested (execute repeatedly until the `ldesmember` document collection contains 1 member):
@@ -107,6 +111,11 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
+docker compose --profile delay-started down
+```
+or:
+```bash
+docker compose stop nifi-workbench
 docker compose --profile delay-started down
 ```

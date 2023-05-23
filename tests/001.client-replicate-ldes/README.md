@@ -22,11 +22,13 @@ docker compose up -d
     curl http://localhost:9011/
     ```
 
-2. Start the workflow containing the LDES Client
-
-    Run the replication using:
+2. Start the workflow containing the LDES Client to run the replication using:
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
     ```
 
 3. Verify LDES members are correctly received
@@ -41,7 +43,12 @@ docker compose up -d
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
+docker compose --profile delay-started down
+```
+or:
+```bash
+docker compose stop nifi-workbench
 docker compose --profile delay-started down
 ```
 

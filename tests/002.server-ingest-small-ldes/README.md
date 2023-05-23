@@ -28,9 +28,13 @@ Press `CTRL-C` to stop following the log.
     ```
 
 2. Start the workflow containing to ingest the members:
-   ```bash
-   docker compose up ldio-workflow -d
-   ```
+    ```bash
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
+    ```
 
 3. Verify LDES members are correctly received
    ```bash
@@ -43,7 +47,12 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
+docker compose --profile delay-started down
+```
+or:
+```bash
+docker compose stop nifi-workbench
 docker compose --profile delay-started down
 ```
 

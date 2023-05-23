@@ -212,7 +212,10 @@ When('the LDES contains {int} fragments', (count: number) => {
 
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
-    currentMemberCount().then(count => memberCount = count);
+})
+
+When('the LDES contains at least {int} fragments', (count: number) => {
+    mongo.checkCount(testContext.database, 'ldesfragment', count, (x, y) => x >= y);
 })
 
 function waitUntilMemberCountStable() {

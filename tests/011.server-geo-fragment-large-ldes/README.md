@@ -40,7 +40,7 @@ Press `CTRL-C` to stop following the log.
     curl http://localhost:9019/bustang/ldesfragment
     ```
 
-3.Verify the geo-spatial fragmentation by requesting the view's root fragment:
+3. Verify the geo-spatial fragmentation by requesting the view's root fragment:
     ```bash
     curl 'http://localhost:8080/connections/by-location-and-time?tile=0/0/0'
     ```

@@ -2,7 +2,7 @@ Feature: server upgrade use case
 
   @upgrading @test-022
   Scenario: 022: Upgrade LDES Server with LDIO
-    Given the members are stored in collection 'ldesmember' in database 'iow_devices'
+    Given the members are stored in database 'iow_devices'
     And context 'tests/022.server-upgrade-with-ldio' is started
     And the old LDES server is available
     And I start the JSON Data Generator
@@ -19,7 +19,7 @@ Feature: server upgrade use case
 
   @upgrading @test-026
   Scenario: 026: Upgrade LDES workbench with LDI
-    Given the members are stored in collection 'ldesmember' in database 'iow_devices'
+    Given the members are stored in database 'iow_devices'
     And context 'tests/026.ldio-workbench-upgrade' is started
     And the LDES server is available
     And I set the TARGETURL to the old LDIO
@@ -37,7 +37,7 @@ Feature: server upgrade use case
 
   @upgrading @test-021
   Scenario: 021: Upgrade LDES workbench with NiFi
-    Given the members are stored in collection 'ldesmember' in database 'iow_devices'
+    Given the members are stored in database 'iow_devices'
     Given context 'tests/021.server-upgrade-with-nifi' is started
     And the NiFi workbench is available
     And I have uploaded the workflow
@@ -62,7 +62,7 @@ Feature: server upgrade use case
 
   @upgrading @test-023
   Scenario: 023: Upgrade LDES workbench
-    Given the members are stored in collection 'ldesmember' in database 'iow_devices'
+    Given the members are stored in database 'iow_devices'
     Given context 'tests/023.nifi-workbench-upgrade' is started
     And the LDES server is available
     And the old NiFi workbench is available

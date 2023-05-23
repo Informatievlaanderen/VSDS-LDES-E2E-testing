@@ -1,7 +1,7 @@
 Feature: GIPOD use case
 
   Background: 
-    Given the members are stored in collection 'ldesmember' in database 'gipod'
+    Given the members are stored in database 'gipod'
 
 @gipod @test-001
   Scenario: 001: Client Can Replicate an LDES

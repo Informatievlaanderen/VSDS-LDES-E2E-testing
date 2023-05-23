@@ -1,7 +1,7 @@
 Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream available as LDES
 
   Background:
-    Given the members are stored in collection 'ldesmember' in database 'grar'
+    Given the members are stored in database 'grar'
 
 @grar @test-006
   Scenario: 006: Server Can Substring Fragment an LDES

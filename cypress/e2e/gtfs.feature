@@ -2,7 +2,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-007
   Scenario: 007: Server Can Ingest a Large LDES
-    Given the members are stored in collection 'ldesmember' in database 'bustang'
+    Given the members are stored in database 'bustang'
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'tests/007.server-ingest-large-ldes' is started
     And the LDIO workflow is available
@@ -15,7 +15,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-008
   Scenario: 008: Server Can Geospatially Fragment a Small LDES
-    Given the members are stored in collection 'ldesmember' in database 'gipod'
+    Given the members are stored in database 'gipod'
     And context 'tests/008.server-geo-fragment-small-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'one-member'
@@ -33,7 +33,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-009
   Scenario: 009: Server Can Multi-level Fragment an LDES
-    Given the members are stored in collection 'ldesmember' in database 'gipod'
+    Given the members are stored in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
@@ -51,7 +51,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-010
   Scenario: 010: Server Allows Multiple Views in an LDES
-    Given the members are stored in collection 'ldesmember' in database 'gipod'
+    Given the members are stored in database 'gipod'
     And context 'tests/010.server-allow-multi-view-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
@@ -67,7 +67,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-011
   Scenario: 011: Server Can Geospatially Fragment a Large LDES
-    Given the members are stored in collection 'ldesmember' in database 'bustang'
+    Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
     And the LDIO workflow is available
     And the LDES server is available
@@ -82,7 +82,7 @@ Feature: GTFS/RT use case
 
 @gtfs @test-013
   Scenario: 013: Server Performs Fast Enough for GTFS/RT Processing
-    Given the members are stored in collection 'ldesmember' in database 'bustang'
+    Given the members are stored in database 'bustang'
     And I have configured the GTFS trottle rate as 200
     And context 'tests/013.server-perform-fast-enough' is started
     And the LDES server is available

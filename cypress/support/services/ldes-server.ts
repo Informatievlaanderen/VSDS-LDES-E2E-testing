@@ -6,7 +6,7 @@ import { CanCheckAvailability } from './interfaces';
 export class LdesServer implements CanCheckAvailability {
 
     public static ApplicationStarted = 'Started Application in';
-    public static DatabaseUpgradeFinished = 'Mongock has finished';
+    public static DatabaseUpgradeFinished = 'Cancelled mongock lock daemon';
 
     constructor(public baseUrl: string, private _serviceName?: string) { }
 

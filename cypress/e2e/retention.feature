@@ -2,7 +2,7 @@ Feature: Basic retention
 
 @gtfs @test-012
   Scenario: 012: Server Provides a Basic Retention Mechanism
-    Given the members are stored in collection 'ldesmember' in database 'gipod'
+    Given the members are stored in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'
     And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
     And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'

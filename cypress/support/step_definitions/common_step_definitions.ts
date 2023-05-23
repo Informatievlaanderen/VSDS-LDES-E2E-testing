@@ -10,7 +10,7 @@ import { Fragment } from "../ldes";
 import { credentials } from "../credentials";
 
 let testContext: any;
-let memberCount;
+const ldesMemberCollection = 'ldesmember';
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
@@ -61,9 +61,8 @@ export function setTargetUrl(targeturl: string) {
 
 // Given stuff
 
-Given('the members are stored in collection {string} in database {string}', (collection: string, database: string) => {
+Given('the members are stored in database {string}', (database: string) => {
     testContext.database = database;
-    testContext.collection = collection;
 });
 
 Given('context {string} is started', (composeFilePath: string) => {
@@ -203,7 +202,7 @@ When('I start the JSON Data Generator', () => {
 })
 
 When('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, testContext.collection, count);
+    mongo.checkCount(testContext.database, ldesMemberCollection, count);
 })
 
 When('the LDES contains {int} fragments', (count: number) => {
@@ -211,7 +210,7 @@ When('the LDES contains {int} fragments', (count: number) => {
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, testContext.collection, count, (x, y) => x >= y);
+    mongo.checkCount(testContext.database, ldesMemberCollection, count, (x, y) => x >= y);
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {
@@ -283,7 +282,7 @@ Then('the {string} sink contains at least {int} members', (collectionName: strin
 })
 
 export function currentMemberCount() {
-    return mongo.count(testContext.database, testContext.collection);
+    return mongo.count(testContext.database, ldesMemberCollection);
 }
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
@@ -296,6 +295,6 @@ Then('the Client CLI contains {int} members', (count: number) => {
 
 Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
-        mongo.checkCount(testContext.database, testContext.collection, currentCount,
+        mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })

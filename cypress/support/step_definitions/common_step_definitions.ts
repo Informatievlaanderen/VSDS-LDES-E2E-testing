@@ -165,7 +165,6 @@ When('I start the {string} workflow', (workbench) => {
     switch(workbench) {
         case 'NIFI': {
             createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
-            workbenchNifi.load();
             workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
             workbenchNifi.pushStart();
             break;

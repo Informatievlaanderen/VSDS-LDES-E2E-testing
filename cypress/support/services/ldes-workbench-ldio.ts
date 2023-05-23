@@ -7,7 +7,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     constructor(public baseUrl: string, private _serviceName?: string) { }
 
     public get serviceName() {
-        return this._serviceName || 'ldio-workflow';
+        return this._serviceName || 'ldio-workbench';
     }
 
     private isReady(containerId: string) {

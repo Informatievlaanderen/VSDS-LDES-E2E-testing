@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ldio-workflow:8080/pipeline
+      - TARGETURL=http://ldio-workbench:8080/pipeline
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
@@ -17,9 +17,9 @@ services:
     profiles:
       - delay-started
 
-  ldio-workflow:
+  ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldio-workflow
+    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/

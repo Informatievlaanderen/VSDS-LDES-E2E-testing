@@ -334,13 +334,13 @@ rm view.ttl
 ### Verify HTTP 304 Handling
 To launch the LDES client and follow its behavior run the following command:
 ```bash
-docker compose up ldio-workflow -d
+docker compose up ldio-workbench -d
 ```
 > **NOTE**: it is not yet possible to validate that the HTTP 304 (Not Modified) header is correctly handled by the LDES client. The behavior is implemented but not yet logged. We are adding logging to the LDES client so very soon this will be available.
 
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
 docker compose --profile delayed-started down
 ```

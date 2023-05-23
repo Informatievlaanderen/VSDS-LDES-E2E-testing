@@ -103,11 +103,11 @@ To execute this test scenario, run the following steps:
 
 3. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
     ```
     Wait until the LDIO workflow is started by following the container log until you see the following message `Started Application in`:
     ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldio-workflow$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldio-workbench$")
     ```
     Press `CTRL-C` to stop following the log.
 
@@ -152,6 +152,6 @@ To execute this test scenario, run the following steps:
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
 docker compose --profile delay-started down
 ```

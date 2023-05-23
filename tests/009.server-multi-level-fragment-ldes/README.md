@@ -29,7 +29,11 @@ Press `CTRL-C` to stop following the log.
 
 2. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
     ```
 
 3. Verify the LDES members are ingested (execute repeatedly until the `ldesmember` document collection contains 6 members):
@@ -104,14 +108,25 @@ To try out a different fragmentation strategy you need to tune the [Docker Compo
     ``` 
 4. Re-create the workflow:
     ```bash
-    docker compose stop ldio-workflow
-    docker compose rm -v -f ldio-workflow
-    docker compose up ldio-workflow -d   
+    docker compose stop ldio-workbench
+    docker compose rm -v -f ldio-workbench
+    docker compose up ldio-workbench -d   
+    ```
+    or:
+    ```bash
+    docker compose stop nifi-workbench
+    docker compose rm -v -f nifi-workbench
+    docker compose up nifi-workbench -d   
     ```
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
+docker compose --profile delay-started down
+```
+or:
+```bash
+docker compose stop nifi-workbench
 docker compose --profile delay-started down
 ```

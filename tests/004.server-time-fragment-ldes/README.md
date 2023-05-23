@@ -32,7 +32,11 @@ So, the total data set contains 617 items. The LDES server is configured to crea
 ## Test Execution
 1. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
     ```
 
 2. Verify all (617) LDES members are ingested (execute repeatedly):
@@ -60,9 +64,15 @@ So, the total data set contains 617 items. The LDES server is configured to crea
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
+docker compose stop ldio-workbench
 docker compose --profile delay-started down
 ```
+or:
+```bash
+docker compose stop nifi-workbench
+docker compose --profile delay-started down
+```
+
 
 ## C4 Diagrams
 

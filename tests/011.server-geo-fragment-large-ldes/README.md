@@ -21,7 +21,16 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 ## Test Execution
-1. Start the GTFS to LDES convertor:
+1. Start the workbench:
+    ```bash
+    docker compose up ldio-workbench -d
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
+    ```
+
+2. Start the GTFS to LDES convertor:
     ```bash
     docker compose up gtfs2ldes-js -d
     ```
@@ -31,7 +40,7 @@ Press `CTRL-C` to stop following the log.
     ```
     Press `CTRL-C` to stop following the log.
 
-2. Verify LDES Members are being ingested (execute repeatedly until at least one member):
+3. Verify LDES Members are being ingested (execute repeatedly until at least one member):
     ```bash
     curl http://localhost:9019/bustang/ldesmember
     ```
@@ -40,7 +49,7 @@ Press `CTRL-C` to stop following the log.
     curl http://localhost:9019/bustang/ldesfragment
     ```
 
-3. Verify the geo-spatial fragmentation by requesting the view's root fragment:
+4. Verify the geo-spatial fragmentation by requesting the view's root fragment:
     ```bash
     curl 'http://localhost:8080/connections/by-location-and-time?tile=0/0/0'
     ```
@@ -49,5 +58,12 @@ Press `CTRL-C` to stop following the log.
 To stop all systems use:
 ```bash
 docker compose stop gtfs2ldes-js
+docker compose stop ldio-workbench
+docker compose --profile delay-started down
+```
+or:
+```bash
+docker compose stop gtfs2ldes-js
+docker compose stop nifi-workbench
 docker compose --profile delay-started down
 ```

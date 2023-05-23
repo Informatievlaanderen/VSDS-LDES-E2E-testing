@@ -74,6 +74,7 @@ Feature: GTFS/RT use case
     When I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 1000 members
+    And the LDES contains at least 3 fragments
     Then the geo-spatial fragmentation exists in the connections LDES
     And the geo-spatial root fragment contains only relations of type 'GeospatiallyContainsRelation'
     And the first timebased second level fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'

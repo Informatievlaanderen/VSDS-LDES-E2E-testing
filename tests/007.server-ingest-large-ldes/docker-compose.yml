@@ -9,7 +9,7 @@ services:
       - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
       - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}
       - NODE_OPTIONS=${NODE_OPTIONS:-}
-      - TARGET_URL=http://ldio-workflow:8080/gtfs-pipeline
+      - TARGET_URL=http://ldes-workbench:8080/gtfs-pipeline
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}
       - RUN_ON_LAUNCH=${RUN_ON_LAUNCH:-true}
@@ -27,7 +27,25 @@ services:
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
     networks:
-      - ldes
+      ldes:
+        aliases:
+          - ldes-workbench
+    profiles:
+      - delay-started
+  
+  nifi-workbench:
+    container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldi-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+    networks:
+      ldes:
+        aliases:
+          - ldes-workbench
+    profiles:
+      - delay-started
 
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_ldes-server

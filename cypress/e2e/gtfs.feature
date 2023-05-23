@@ -1,27 +1,32 @@
 Feature: GTFS/RT use case
 
 @gtfs @test-007
-  Scenario: 007: Server Can Ingest a Large LDES
+  Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in collection 'ldesmember' in database 'bustang'
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'tests/007.server-ingest-large-ldes' is started
-    And the LDIO workflow is available
     And the LDES server is available
-    When I start the GTFS2LDES service
+    When I start the '<workbench>' workflow
+    And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 250 members
     Then the pagination fragmentation exists in the connections LDES
     And the first page contains 250 members
 
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
 @gtfs @test-008
-  Scenario: 008: Server Can Geospatially Fragment a Small LDES
+  Scenario Outline: 008: Server Can Geospatially Fragment a Small LDES Using '<workbench>' Workbench
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And context 'tests/008.server-geo-fragment-small-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'one-member'
     And I have aliased the data set
     And the LDES server is available
-    When I start the LDIO workflow
+    When I start the '<workbench>' workflow
     And the LDES contains 1 members
     And the LDES contains 6 fragments
     Then the geo-spatial root fragment is not immutable
@@ -31,15 +36,20 @@ Feature: GTFS/RT use case
     And the geo-spatial fragment '15/16742/11010' contains the member
     And the geo-spatial fragment '15/16743/11010' contains the member
 
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
 @gtfs @test-009
-  Scenario: 009: Server Can Multi-level Fragment an LDES
+  Scenario Outline: 009: Server Can Multi-level Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    When I start the LDIO workflow
+    When I start the '<workbench>' workflow
     And the LDES contains 6 members
     And the LDES contains 14 fragments
     Then the multi-level root fragment is not immutable
@@ -49,15 +59,20 @@ Feature: GTFS/RT use case
     And the geo-spatial fragment '15/16742/11010' has a second level timebased fragmentation which contains the members
     And the geo-spatial fragment '15/16743/11010' has a second level timebased fragmentation which contains the members
 
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
 @gtfs @test-010
-  Scenario: 010: Server Allows Multiple Views in an LDES
+  Scenario Outline: 010: Server Allows Multiple Views in an LDES Using '<workbench>' Workbench
     Given the members are stored in collection 'ldesmember' in database 'gipod'
     And context 'tests/010.server-allow-multi-view-ldes' is started
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    When I start the LDIO workflow
+    When I start the '<workbench>' workflow
     And the LDES contains 6 members
     And the LDES contains 13 fragments
     Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
@@ -65,19 +80,29 @@ Feature: GTFS/RT use case
     And the time-based fragmentation exists
     And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
 
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
 @gtfs @test-011
-  Scenario: 011: Server Can Geospatially Fragment a Large LDES
+  Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in collection 'ldesmember' in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
-    And the LDIO workflow is available
     And the LDES server is available
-    When I start the GTFS2LDES service
+    When I start the '<workbench>' workflow
+    And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 1000 members
     Then the geo-spatial fragmentation exists in the connections LDES
     And the geo-spatial root fragment contains only relations of type 'GeospatiallyContainsRelation'
     And the first timebased second level fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
     And the first timebased second level fragment contains arrival and departure stops
+
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
 
 @gtfs @test-013
   Scenario: 013: Server Performs Fast Enough for GTFS/RT Processing

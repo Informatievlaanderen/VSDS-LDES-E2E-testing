@@ -18,7 +18,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
-    echo http://old-ldio:8080/pipeline > ./data/TARGETURL
+    echo http://old-ldio-workbench:8080/pipeline > ./data/TARGETURL
     docker compose up test-message-generator -d
     ```
 
@@ -34,28 +34,27 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test execution
 1. Launch new workbench and pause new LDI-output (via control channel):
     ```bash
-    docker compose up new-ldio -d
+    docker compose up new-ldio-workbench -d
     ```
     Please ensure that the new workbench is ready to process the pipeline by following the container log until you see the following message `Started Application in`:
     ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldio$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldio-workbench$")
     ```
     Press `CTRL-C` to stop following the log.
 
 2. Stop data generator, change destination path (TARGETURL) to new http-in and restart data generator:
     ```bash
     curl http://localhost:8082/admin/api/v1/pipeline/halt -X POST
-    echo http://new-ldio:8080/pipeline > ./data/TARGETURL
+    echo http://new-ldio-workbench:8080/pipeline > ./data/TARGETURL
     ```
 
 3. Ensure all data sent to LDES server i.e. member count does not change (execute repeatedly)):
     ```bash
     curl http://localhost:9019/iow_devices/ldesmember
     ```
-    and bring old workbench down
+    and bring old workbench down:
     ```bash
-    docker compose stop old-ldio
-    docker compose rm --force --volumes old-ldio
+    docker compose rm --stop --force --volumes old-ldio-workbench
     ```
 
 4. Verify that members are available in LDES and find last fragment (i.e. mutable):
@@ -82,7 +81,7 @@ This test uses a docker environment a data generator simulating the system pushi
 Stop data generator and stop new workbench and bring all systems down:
 ```bash
 docker compose stop test-message-generator
-docker compose stop new-ldio
+docker compose stop new-ldio-workbench
 rm ./data/TARGETURL
 docker compose --profile delay-started down
 ```

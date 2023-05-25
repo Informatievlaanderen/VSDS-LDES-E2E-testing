@@ -2,7 +2,7 @@
 Feature: LDES Server Retention
 
 @test-012 @gtfs
-  Scenario: 012: Server Provides a Basic Retention Mechanism
+  Scenario Outline: 012: Server Provides a Basic Retention Mechanism Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'
     And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
@@ -18,7 +18,7 @@ Feature: LDES Server Retention
     And the LDES has a view 'V' named 'by-short-time'
     And the LDES has a view 'W' named 'by-longer-time'
     
-    When I start the LDIO workflow
+    When I start the '<workbench>' workflow
     And the LDES contains 501 members
     And I refresh view 'V'
     And I refresh view 'W'
@@ -64,3 +64,13 @@ Feature: LDES Server Retention
     And I refresh view 'W'
     And view 'V' links to 'mutable' fragment 'H' containing 17 members
     And view 'W' links to 'mutable' fragment 'E' containing 17 members
+
+    @ldio
+    Examples:
+      | workbench |
+      | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
+      | NIFI      |

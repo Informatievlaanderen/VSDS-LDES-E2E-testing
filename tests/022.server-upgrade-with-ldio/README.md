@@ -7,6 +7,7 @@ This test uses a docker environment containing a data generator simulating the s
 1. Launch all systems except for the new LDES server:
     ```bash
     docker compose up -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
     Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Started Application in`:
     ```bash

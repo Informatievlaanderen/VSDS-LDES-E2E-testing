@@ -101,9 +101,9 @@ export class DockerCompose {
         }
     }
 
-    public removeVolumesAndImage(serviceName: string) {
+    public stopContainerAndRemoveVolumesAndImage(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} rm --force --volumes ${serviceName}`;
+        const command = `docker compose ${environmentFile} rm --stop --force --volumes ${serviceName}`;
         return cy.log(command).exec(command, { log: true, env: this._environment })
             .then(result => expect(result.code).to.equal(0));
     }

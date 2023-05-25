@@ -18,9 +18,9 @@ services:
     profiles:
       - delay-started
 
-  old-ldio:
+  old-ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230324T175226}
-    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_old-ldio
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_old-ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
@@ -31,9 +31,9 @@ services:
     ports:
       - 8081:8080
 
-  new-ldio:
+  new-ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_new-ldio
+    container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_new-ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/

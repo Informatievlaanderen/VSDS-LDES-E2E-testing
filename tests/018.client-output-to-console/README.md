@@ -39,6 +39,7 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 1. Start the workflow containing the LDES Client:
     ```bash
     docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
 
 2. Verify replication

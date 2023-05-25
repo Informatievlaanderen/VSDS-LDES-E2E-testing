@@ -43,7 +43,7 @@ Feature: LDES Client Basic Functionality
       | workbench |
       | NIFI      |
 
-@test-018 @cli @gipod 
+@test-018 @cli @ldio @gipod 
   # Replicate and Synchronize an LDES with Client CLI
   Scenario: 018: Client Can Output LDES members to the Console
     Given the members are stored in database 'gipod'

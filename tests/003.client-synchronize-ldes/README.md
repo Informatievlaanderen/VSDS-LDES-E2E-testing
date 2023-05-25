@@ -40,11 +40,14 @@ We need to upload all but the last fragment as an immutable fragment and the las
 3. Start the workflow containing the LDES Client
     ```bash
     docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
     or:
     ```bash
     docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
     ```
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
 
 4. Verify that all members are received by the [sink](http://localhost:9003/) (execute repeatedly):
     ```bash

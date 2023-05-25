@@ -23,7 +23,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 3. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
-    echo http://old-nifi-workflow:9012/ngsi/device > ./data/TARGETURL
+    echo http://old-nifi-workbench:9012/ngsi/device > ./data/TARGETURL
     docker compose up test-message-generator -d
     ```
 
@@ -39,17 +39,17 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test execution
 1. Launch the [new NiFi workbench](http://localhost:8000/nifi), connect to it in an incognito tab or a different browser (due to the different security) upload & start the [new workflow](./new-nifi-workflow.json) (containing a newer version of a http listener, a version creation processor and a http sender), and stop the new http sender.
     ```bash
-    docker compose up new-nifi-workflow -d
+    docker compose up new-nifi-workbench -d
     ```
 
 2. Change the destination path (TARGETURL) to the new http listener:
     ```bash
-    echo http://new-nifi-workflow:9012/ngsi/device > ./data/TARGETURL
+    echo http://new-nifi-workbench:9012/ngsi/device > ./data/TARGETURL
     ```
 
 3. Ensure all the data is sent to the LDES server, i.e. the old workflow queues are empty. Then, stop the old workflow and bring the old workbench down:
     ```bash
-    docker compose rm --stop --force --volumes old-nifi-workflow
+    docker compose rm --stop --force --volumes old-nifi-workbench
     ```
 
 4. Verify that members are available in LDES and check member count in the last fragment:
@@ -75,7 +75,7 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test teardown
 1. Stop data generator and stop new workbench:
     ```bash
-    docker compose stop new-nifi-workflow
+    docker compose stop new-nifi-workbench
     docker compose stop test-message-generator
     ```
 

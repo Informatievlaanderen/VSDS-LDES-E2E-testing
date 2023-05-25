@@ -335,6 +335,7 @@ rm view.ttl
 To launch the LDES client and follow its behavior run the following command:
 ```bash
 docker compose up ldio-workbench -d
+while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
 ```
 > **NOTE**: it is not yet possible to validate that the HTTP 304 (Not Modified) header is correctly handled by the LDES client. The behavior is implemented but not yet logged. We are adding logging to the LDES client so very soon this will be available.
 

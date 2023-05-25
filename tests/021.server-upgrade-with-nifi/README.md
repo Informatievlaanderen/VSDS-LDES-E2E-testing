@@ -16,7 +16,10 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```bash
    curl -I http://localhost:8000/nifi/
    ```
-   Press `CTRL-C` to stop following the log.
+   or use this command until it exists with a HTTP code 200:
+   ```bash
+   while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+   ```
 
 2. Connect to [NiFi workbench](http://localhost:8000/nifi), upload and start [workflow](./nifi-workflow.json) (containing a http listener, a version creation component and a http sender).
 

@@ -41,6 +41,7 @@ docker compose up -d
 2. Start the workflow containing to ingest the members:
    ```bash
    docker compose up ldio-workbench -d
+   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
    ```
 
 3. Verify how many members are already ingested (execute repeatedly):

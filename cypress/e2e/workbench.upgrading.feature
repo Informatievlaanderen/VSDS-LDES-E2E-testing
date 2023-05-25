@@ -1,46 +1,34 @@
+@workbench @upgrading 
 Feature: LDES Workbench Upgrading
 
-# TODO: merge tests 023 and 026
-  @test-023 @workbench @upgrading 
-  Scenario: 023: Upgrade LDES workbench
+  @iow
+  Scenario Outline: <test-number>: Upgrade LDES '<workbench>' Workbench
     Given the members are stored in database 'iow_devices'
-    Given context 'tests/023.nifi-workbench-upgrade' is started
+    And context 'tests/<test-number>.<test-name>' is started
     And the LDES server is available
-    And the old NiFi workbench is available
-    And I have uploaded the old workflow
-    And I started the old workflow
-    And I set the TARGETURL to the old workflow
+    And the old '<workbench>' workbench is available
+    
+    When I set the TARGETURL to the old '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
     
-    When I start the new NiFi workbench
-    And I have uploaded the new workflow
-    And I started the workflow
-    And I stop the http sender in the workflow
-    And I set the TARGETURL to the new workflow
+    When I start the new '<workbench>' workbench
+    And I pause the new '<workbench>' workbench output
+    And I set the TARGETURL to the new '<workbench>' workbench
     Then the member count does not change
     
-    When I bring the old NiFi workbench down
+    When I bring the old '<workbench>' workbench down
     And I remember the last fragment member count
-    And I start the http sender in the workflow
+    And I resume the new '<workbench>' workbench output
     Then the LDES member count increases
     And the last fragment member count increases
 
-# TODO: merge tests 023 and 026
-  @test-026 @workbench @upgrading 
-  Scenario: 026: Upgrade LDES workbench with LDI
-    Given the members are stored in database 'iow_devices'
-    And context 'tests/026.ldio-workbench-upgrade' is started
-    And the LDES server is available
-    And I set the TARGETURL to the old LDIO
-    And I start the JSON Data Generator
-    And the LDES contains at least 1 members
-    When I start the new LDIO workflow
-    And I pause the new LDIO workflow output
-    And I set the TARGETURL to the new LDIO
-    And the member count does not change
-    And I remember the last fragment member count
-    And I bring the old LDIO workbench down
-    And I resume the new LDIO workflow output
-    Then the LDES member count increases
-    And the last fragment member count increases
+    @test-023 @nifi
+    Examples:
+      | workbench | test-number | test-name              |
+      | NIFI      | 023         | nifi-workbench-upgrade |
+  
+    @test-026 @ldio
+    Examples:
+      | workbench | test-number | test-name              |
+      | LDIO      | 026         | ldio-workbench-upgrade |

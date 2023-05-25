@@ -1,4 +1,4 @@
-Feature: TODO: name this correctly
+Feature: IoW tests - TODO: name this correctly
 
 # TODO: drop tests 014
 @test-014 @workbench @iow
@@ -87,6 +87,7 @@ Feature: TODO: name this correctly
     And the root fragment of 'water-quality-observations' is obtained
     Then the root fragment contains a correct OSLO observation version
 
+# TODO: move this test to server.basics.feature
 @test-030 @server @multi-collection @iow
   Scenario: 030: LDIO Supports multi ldes
     Given context 'tests/030.server-allow-multi-collection' is started

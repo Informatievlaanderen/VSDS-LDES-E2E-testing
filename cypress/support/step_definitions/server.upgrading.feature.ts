@@ -1,5 +1,9 @@
-import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { setTargetUrl } from "./common_step_definitions";
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { createAndStartService, dockerCompose, testPartialPath, waitUntilMemberCountStable, workbenchLdio, workbenchNifi } from "./common_step_definitions";
+import { LdesServer } from "../services";
+
+const oldServer = new LdesServer('http://localhost:8080', 'old-ldes-server');
+const newServer = new LdesServer('http://localhost:8080', 'new-ldes-server');
 
 const commonFragmentProperties = ['_class', 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
 const commonMemberProperties = ['_class'];
@@ -22,29 +26,74 @@ Given('the ldesmember collection is structured as expected', () => {
     checkDatabaseStructure(memberCollectionUrl, [...commonMemberProperties, 'ldesMember']);
 })
 
-Then('the ldesfragment collection on the new server is structured as expected', () => {
+Given('the old LDES server is available', () => {
+    return oldServer.waitAvailable(LdesServer.ApplicationStarted);
+})
+
+Given('the {string} workbench is available', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.waitAvailable();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.waitAvailable();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+
+Then('the ldesfragment collection is upgraded as expected', () => {
     checkDatabaseStructure(fragmentCollectionUrl, 
         [...commonFragmentProperties, 'collectionName', 'immutableTimestamp', 'numberOfMembers', 'parentId', 'softDeleted']);
 })
 
-Then('the ldesmember collection on the new server is structured as expected', () => {
+Then('the ldesmember collection is upgraded as expected', () => {
     checkDatabaseStructure(memberCollectionUrl, 
         [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
 })
 
-When('I set the TARGETURL to the old LDIO', () => {
-    setTargetUrl("http://old-ldio:8080/pipeline");
+When('I pause the {string} workbench output', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.openWorkflow();
+            workbenchNifi.selectProcessor('InvokeHTTP');
+            workbenchNifi.pushStop();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.pause();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })
 
-When('I set the TARGETURL to the new LDIO', () => {
-    setTargetUrl("http://new-ldio:8080/pipeline");
+When('I resume the {string} workbench output', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.openWorkflow();
+            workbenchNifi.selectProcessor('InvokeHTTP');
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.resume();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })
 
-Given('I set the TARGETURL to the old workflow', () => {
-    setTargetUrl("http://old-nifi-workflow:9012/ngsi/device");
+When('the old server is done processing', waitUntilMemberCountStable);
+
+When('I bring the old server down', () => {
+    dockerCompose.stopContainerAndRemoveVolumesAndImage(oldServer.serviceName);
 })
 
-Given('I set the TARGETURL to the new workflow', () => {
-    setTargetUrl("http://new-nifi-workflow:9012/ngsi/device");
+When('I start the new LDES Server', () => {
+    createAndStartService(newServer.serviceName).then(() => newServer.waitAvailable());
 })
-

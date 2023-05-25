@@ -1,11 +1,9 @@
 Feature: GIPOD use case
 
-  Background: 
-    Given the members are stored in database 'gipod'
-
 @gipod @test-001
   Scenario Outline: 001: Client Can Replicate an LDES Using '<workbench>' Workbench
-    Given context 'tests/001.client-replicate-ldes' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/001.client-replicate-ldes' is started
     And I have aliased the pre-seeded simulator data set
     When I start the '<workbench>' workflow
     Then the sink contains 1016 members
@@ -17,7 +15,8 @@ Feature: GIPOD use case
 
 @gipod @test-002
   Scenario Outline: 002: Server Can Ingest a Small LDES Using '<workbench>' Workbench
-    Given context 'tests/002.server-ingest-small-ldes' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/002.server-ingest-small-ldes' is started
     And I have aliased the pre-seeded simulator data set
     And the LDES server is available
     When I start the '<workbench>' workflow
@@ -30,7 +29,8 @@ Feature: GIPOD use case
 
 @gipod @test-003
   Scenario Outline: 003: Client Can Synchronize an LDES Using '<workbench>' Workbench
-    Given context 'tests/003.client-synchronize-ldes' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/003.client-synchronize-ldes' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
@@ -48,7 +48,8 @@ Feature: GIPOD use case
 
 @gipod @test-004
   Scenario Outline: 004: Server Can Time-Fragment an LDES Using '<workbench>' Workbench
-    Given context 'tests/004.server-time-fragment-ldes' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/004.server-time-fragment-ldes' is started
     And I have uploaded the data files: 'alfa,beta,epsilon'
     And I have aliased the data set
     And the LDES server is available
@@ -69,7 +70,8 @@ Feature: GIPOD use case
 
 @gipod @test-005
   Scenario Outline: 005: Server Can Paginate an LDES Using '<workbench>' Workbench
-    Given context 'tests/005.server-paginate-ldes' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/005.server-paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
     And the LDES server is available
@@ -90,7 +92,8 @@ Feature: GIPOD use case
 @gipod @test-018
   # Replicate and Synchronize an LDES with Client CLI
   Scenario: 018: Client Can Output LDES members to the Console
-    Given context 'tests/018.client-output-to-console' is started
+    Given the members are stored in database 'gipod'
+    And context 'tests/018.client-output-to-console' is started
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
     When I launch the Client CLI

@@ -1,6 +1,7 @@
+@server @retention 
 Feature: LDES Server Retention
 
-@test-012 @server @retention @gtfs
+@test-012 @gtfs
   Scenario: 012: Server Provides a Basic Retention Mechanism
     Given the members are stored in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'

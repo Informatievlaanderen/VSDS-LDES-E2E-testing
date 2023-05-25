@@ -1,6 +1,6 @@
-Feature: Oauth2 use case
+Feature: LDES Client Security
 
-@oauth @test-032
+@test-032 @client @security @oauth
 Scenario: 032: LDES Client can consume OAUTH2 protected server
   Given context 'tests/032.ldes-client-to-oauth-server' is started
   When the LDES server is available

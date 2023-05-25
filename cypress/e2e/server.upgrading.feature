@@ -1,7 +1,8 @@
+@server @upgrading
 Feature: LDES Server Upgrading
 
 # TODO: merge tests 021 and 022
-  @test-021 @server @upgrading 
+  @test-021 @iow 
   Scenario: 021: Upgrade LDES workbench with NiFi
     Given the members are stored in database 'iow_devices'
     Given context 'tests/021.server-upgrade-with-nifi' is started
@@ -27,7 +28,7 @@ Feature: LDES Server Upgrading
     And the last fragment member count increases
 
 # TODO: merge tests 021 and 022
-  @test-022 @server @upgrading 
+  @test-022 @iow 
   Scenario: 022: Upgrade LDES Server with LDIO
     Given the members are stored in database 'iow_devices'
     And context 'tests/022.server-upgrade-with-ldio' is started

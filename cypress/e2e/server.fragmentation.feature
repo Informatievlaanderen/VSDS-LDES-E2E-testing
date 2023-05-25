@@ -1,6 +1,7 @@
+@server @fragmentation
 Feature: LDES Server Fragmentation
 
-@test-004 @server @fragmentation @time @gipod
+@test-004 @time @gipod
   Scenario Outline: 004: Server Can Time-Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/004.server-time-fragment-ldes' is started
@@ -17,12 +18,17 @@ Feature: LDES Server Fragmentation
     And the last fragment is not immutable
     And the last fragment only has a 'LessThanOrEqualToRelation' to the middle fragment
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-005 @server @fragmentation @partition @gipod
+@test-005 @partition @gipod
   Scenario Outline: 005: Server Can Paginate an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/005.server-paginate-ldes' is started
@@ -38,12 +44,17 @@ Feature: LDES Server Fragmentation
     And the last fragment is not immutable
     And the last fragment only has a 'Relation' to the middle fragment
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-006 @server @fragmentation @substring @grar
+@test-006 @substring @grar
   Scenario Outline: 006: Server Can Substring Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'grar'
     And context 'tests/006.server-substring-fragment-ldes' is started
@@ -56,12 +67,17 @@ Feature: LDES Server Fragmentation
     When the LDES contains at least 73 members
     Then the fragment exists for substring 'ka,ho,gr'
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-008 @server @fragmentation @geospatial @gipod
+@test-008 @geospatial @gipod
   Scenario Outline: 008: Server Can Geospatially Fragment a Small LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/008.server-geo-fragment-small-ldes' is started
@@ -79,12 +95,17 @@ Feature: LDES Server Fragmentation
     And the geo-spatial fragment '15/16742/11010' contains the member
     And the geo-spatial fragment '15/16743/11010' contains the member
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-009 @server @fragmentation @multi-level @gipod
+@test-009 @multi-level @gipod
   Scenario Outline: 009: Server Can Multi-level Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
@@ -102,12 +123,17 @@ Feature: LDES Server Fragmentation
     And the geo-spatial fragment '15/16742/11010' has a second level timebased fragmentation which contains the members
     And the geo-spatial fragment '15/16743/11010' has a second level timebased fragmentation which contains the members
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-010 @server @fragmentation @multi-view @gipod
+@test-010 @multi-view @gipod
   Scenario Outline: 010: Server Allows Multiple Views in an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/010.server-allow-multi-view-ldes' is started
@@ -123,12 +149,17 @@ Feature: LDES Server Fragmentation
     And the time-based fragmentation exists
     And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |
 
-@test-011 @server @fragmentation @geospatial @gtfs
+@test-011 @geospatial @gtfs
   Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
@@ -143,7 +174,12 @@ Feature: LDES Server Fragmentation
     And the first timebased second level fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
     And the first timebased second level fragment contains arrival and departure stops
 
+    @ldio
     Examples:
       | workbench |
       | LDIO      |
+
+    @nifi
+    Examples:
+      | workbench |
       | NIFI      |

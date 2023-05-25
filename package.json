@@ -4,9 +4,11 @@
   "description": "Automated E2E tests using cypress and cucumber",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run --spec \"**/*.features,**/*.feature\" --env tags=\"not @broken\"",
-    "test:all": "cypress run --spec \"**/*.features,**/*.feature\"",
-    "test:one": "cypress run --spec ",
+    "test": "npm run test:all",
+    "test:all": "cypress run --env tags=\"not @broken\" --spec \"**/*.features,**/*.feature\"",
+    "test:one": "cypress run --env tags=\"not @broken\" --spec ",
+    "test:no-nifi": "cypress run --env tags=\"not (@nifi or @broken)\" --spec \"**/*.features,**/*.feature\"",
+    "test:no-ldio": "cypress run --env tags=\"not (@ldio or @broken)\" --spec \"**/*.features,**/*.feature\"",
     "open": "cypress open"
   },
   "repository": {

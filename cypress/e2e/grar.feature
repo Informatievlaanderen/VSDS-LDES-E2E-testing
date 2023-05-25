@@ -1,11 +1,9 @@
 Feature: Make the Gebouwenregister en Adressenregister (GRAR) data stream available as LDES
 
-  Background:
-    Given the members are stored in database 'grar'
-
 @grar @test-006
   Scenario Outline: 006: Server Can Substring Fragment an LDES Using '<workbench>' Workbench
-    Given context 'tests/006.server-substring-fragment-ldes' is started
+    Given the members are stored in database 'grar'
+    And context 'tests/006.server-substring-fragment-ldes' is started
     And the LDES server is available
     When I start the '<workbench>' workflow
     And I start the JSON Data Generator

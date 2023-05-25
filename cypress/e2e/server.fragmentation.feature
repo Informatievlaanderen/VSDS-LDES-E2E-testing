@@ -1,24 +1,67 @@
-Feature: GTFS/RT use case
+Feature: LDES Server Fragmentation
 
-@gtfs @test-007
-  Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
-    Given the members are stored in database 'bustang'
-    And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
-    And context 'tests/007.server-ingest-large-ldes' is started
+@test-004 @server @fragmentation @time @gipod
+  Scenario Outline: 004: Server Can Time-Fragment an LDES Using '<workbench>' Workbench
+    Given the members are stored in database 'gipod'
+    And context 'tests/004.server-time-fragment-ldes' is started
+    And I have uploaded the data files: 'alfa,beta,epsilon'
+    And I have aliased the data set
     And the LDES server is available
     When I start the '<workbench>' workflow
-    And I start the GTFS2LDES service
-    And the GTFS to LDES service starts sending linked connections
-    And the LDES contains at least 250 members
-    Then the pagination fragmentation exists in the connections LDES
-    And the first page contains 250 members
+    And the LDES contains 617 members
+    Then the first fragment is immutable
+    And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
+    And the middle fragment is immutable
+    And the middle fragment only has a 'LessThanOrEqualToRelation' to the first fragment
+    And the middle fragment only has a 'GreaterThanOrEqualToRelation' to the last fragment
+    And the last fragment is not immutable
+    And the last fragment only has a 'LessThanOrEqualToRelation' to the middle fragment
 
     Examples:
       | workbench |
       | LDIO      |
       | NIFI      |
 
-@gtfs @test-008
+@test-005 @server @fragmentation @partition @gipod
+  Scenario Outline: 005: Server Can Paginate an LDES Using '<workbench>' Workbench
+    Given the members are stored in database 'gipod'
+    And context 'tests/005.server-paginate-ldes' is started
+    And I have uploaded the data files: 'alfa,beta,gamma'
+    And I have aliased the data set
+    And the LDES server is available
+    When I start the '<workbench>' workflow
+    And the LDES contains 617 members
+    Then the first fragment is immutable
+    And the first fragment only has a 'Relation' to the middle fragment
+    And the middle fragment is immutable
+    And the middle fragment only has a 'Relation' to the first and last fragments
+    And the last fragment is not immutable
+    And the last fragment only has a 'Relation' to the middle fragment
+
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
+@test-006 @server @fragmentation @substring @grar
+  Scenario Outline: 006: Server Can Substring Fragment an LDES Using '<workbench>' Workbench
+    Given the members are stored in database 'grar'
+    And context 'tests/006.server-substring-fragment-ldes' is started
+    And the LDES server is available
+    When I start the '<workbench>' workflow
+    And I start the JSON Data Generator
+    And the LDES contains at least 13 members
+    Then the substring root fragment is not immutable
+    And the root fragment contains 'SubstringRelation' relations with values: 'k,1,9,l,g,h,2'
+    When the LDES contains at least 73 members
+    Then the fragment exists for substring 'ka,ho,gr'
+
+    Examples:
+      | workbench |
+      | LDIO      |
+      | NIFI      |
+
+@test-008 @server @fragmentation @geospatial @gipod
   Scenario Outline: 008: Server Can Geospatially Fragment a Small LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/008.server-geo-fragment-small-ldes' is started
@@ -41,7 +84,7 @@ Feature: GTFS/RT use case
       | LDIO      |
       | NIFI      |
 
-@gtfs @test-009
+@test-009 @server @fragmentation @multi-level @gipod
   Scenario Outline: 009: Server Can Multi-level Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
@@ -64,7 +107,7 @@ Feature: GTFS/RT use case
       | LDIO      |
       | NIFI      |
 
-@gtfs @test-010
+@test-010 @server @fragmentation @multi-view @gipod
   Scenario Outline: 010: Server Allows Multiple Views in an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/010.server-allow-multi-view-ldes' is started
@@ -85,7 +128,7 @@ Feature: GTFS/RT use case
       | LDIO      |
       | NIFI      |
 
-@gtfs @test-011
+@test-011 @server @fragmentation @geospatial @gtfs
   Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
@@ -104,13 +147,3 @@ Feature: GTFS/RT use case
       | workbench |
       | LDIO      |
       | NIFI      |
-
-@gtfs @test-013
-  Scenario: 013: Server Performs Fast Enough for GTFS/RT Processing
-    Given the members are stored in database 'bustang'
-    And I have configured the GTFS trottle rate as 200
-    And context 'tests/013.server-perform-fast-enough' is started
-    And the LDES server is available
-    When I start the GTFS2LDES service
-    And the GTFS to LDES service starts sending linked connections
-    Then the LDES server can ingest 10000 linked connections within 120 seconds checking every 2 seconds

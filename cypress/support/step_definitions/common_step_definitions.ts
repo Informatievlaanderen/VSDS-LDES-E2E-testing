@@ -5,7 +5,6 @@ import {
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
-import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
 import { credentials } from "../credentials";
 
@@ -22,7 +21,6 @@ export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
-export const clientCli = new ClientCli('http://localhost:8081');
 export const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
 export const workbench = new LdesWorkbenchLdio('http://localhost:8082');
 
@@ -156,10 +154,6 @@ Given('I started the old workflow', () => {
 
 // When stuff
 
-When('I launch the Client CLI', () => {
-    createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
-})
-
 When('I start the {string} workflow', (workbench) => {
     switch(workbench) {
         case 'NIFI': {
@@ -283,6 +277,22 @@ When('I start the http sender in the workflow', () => {
     workbenchNifi.pushStart();
 })
 
+let lastMemberCount: number;
+When('I remember the last fragment member count', () => {
+    mongo.fragments('iow_devices', 'ldesfragment')
+        .then(fragments => fragments.pop())
+        .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
+            .visit()
+            .then(fragment => cy.log(`Member count: ${fragment.memberCount}`)
+                .then(() => lastMemberCount = fragment.memberCount)
+            )
+        );
+})
+
+When('the GTFS to LDES service starts sending linked connections', () => {
+    gtfs2ldes.isSendingLinkedConnections();
+})
+
 // Then stuff
 
 Then('the sink contains {int} members', (count: number) => {
@@ -301,12 +311,22 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
 })
 
-Then('the Client CLI contains {int} members', (count: number) => {
-    clientCli.checkCount(count);
-})
-
 Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
+})
+
+
+Then('the last fragment member count increases', () => {
+    cy.waitUntil(() =>
+        mongo.fragments('iow_devices', 'ldesfragment')
+            .then(fragments => fragments.pop())
+            .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
+                .visit()
+                .then(fragment => cy.log(`New member count: ${fragment.memberCount}`)
+                    .then(() => lastMemberCount < fragment.memberCount)
+                )
+            ),
+        { timeout: 5000, interval: 1000 });
 })

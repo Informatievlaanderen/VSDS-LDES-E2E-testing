@@ -34,7 +34,9 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      # - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - COLLECTIONS_0_HOSTNAME=http://localhost:8080
       - COLLECTIONS_0_COLLECTIONNAME=devices
@@ -60,13 +62,40 @@ services:
     networks:
       - ldes
 
-  ldio-oauth-ldes-client:
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+  ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-oauth-ldes-client
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-workbench
     volumes:
       - ./ldio-oauth-ldes-client.yml:/ldio/config/application.yml:ro
     # Use the network stack of the nginx service so that localhost refers to the nginx api gateway
     # so that we can follow the LDES stream.
+    network_mode: service:api-gateway
+    depends_on:
+      - test-message-sink
+      - mock-oauth2-server
+      - api-gateway
+    profiles:
+      - delay-started
+
+  nifi-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-ldes-oauth-client}_nifi-workbench
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    # NOTE: as we are using the API gateway's network, we need to do the port mapping there
+    # ports:
+    #   - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     network_mode: service:api-gateway
     depends_on:
       - test-message-sink
@@ -80,6 +109,7 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nginx
     ports:
       - ${NGINX_PORT:-8080}:8080
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./fwd-ldes-server.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro

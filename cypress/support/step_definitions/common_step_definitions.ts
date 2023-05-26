@@ -119,6 +119,29 @@ Given('I started the workflow', () => {
     workbenchNifi.pushStart();
 })
 
+Given('the {string} workbench is available', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.waitAvailable();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.waitAvailable();
+            break;
+        }
+        case 'NIFI & LDIO': {
+            workbenchNifi.waitAvailable();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            workbenchLdio.waitAvailable();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+
 // When stuff
 
 When('I start the {string} workflow', (workbench) => {

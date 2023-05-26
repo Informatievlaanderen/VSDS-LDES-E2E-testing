@@ -1,7 +1,7 @@
-@workbench @ngsi
+@workbench @converting
 Feature: TODO: move this to workbench.converting.feature after manual test rework
 
-@test-014 @iow
+@test-014 @ngsi @iow
   Scenario: 014: NiFi Workbench Can Convert NGSI-v2 to NGSI-LD
     Given context 'tests/014.nifi-workbench-ngsi-v2-to-ngsi-ld' is started
     And the IoW LDES servers are available

@@ -1,7 +1,7 @@
-@workbench @ngsi
+@server
 Feature: TODO: move this to server.basics.feature after manual test rework
 
-@test-030 @server @multi-collection @iow
+@test-030 @multi-collection @iow
   Scenario: 030: LDIO Supports multi ldes
     Given context 'tests/030.server-allow-multi-collection' is started
     And the IoW multi LDES server is available

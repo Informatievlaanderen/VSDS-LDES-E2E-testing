@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, dockerCompose, testPartialPath, waitUntilMemberCountStable, workbenchLdio, workbenchNifi } from "./common_step_definitions";
+import { createAndStartService, dockerCompose, waitUntilMemberCountStable, workbenchLdio, workbenchNifi } from "./common_step_definitions";
 import { LdesServer } from "../services";
 
 const oldServer = new LdesServer('http://localhost:8080', 'old-ldes-server');
@@ -28,22 +28,6 @@ Given('the ldesmember collection is structured as expected', () => {
 
 Given('the old LDES server is available', () => {
     return oldServer.waitAvailable(LdesServer.ApplicationStarted);
-})
-
-Given('the {string} workbench is available', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            workbenchNifi.waitAvailable();
-            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
-            workbenchNifi.pushStart();
-            break;
-        }
-        case 'LDIO': {
-            workbenchLdio.waitAvailable();
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
 })
 
 Then('the ldesfragment collection is upgraded as expected', () => {

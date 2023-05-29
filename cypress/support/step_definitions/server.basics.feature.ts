@@ -105,3 +105,17 @@ Then('the LDES is re-requested from the LDES server', () => {
 Then('the server accepts this member file', () => {
     expect(execResult).to.include('HTTP/1.1 200').and.to.include('Server: nginx');
 })
+
+function obtainRootFragment(ldes: string) {
+    return server.getLdes(ldes)
+        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(view => new Fragment(view.relation.link).visit());
+}
+
+Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
+    obtainRootFragment(ldes).then(fragment => fragment.memberCount === count);
+})
+
+Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {
+    obtainRootFragment(ldes).then(fragment => fragment.memberCount >= count);
+})

@@ -5,16 +5,13 @@ import {
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
-import { ClientCli } from "../services/client-cli";
 import { Fragment } from "../ldes";
-import { credentials } from "../credentials";
 
 let testContext: any;
 const ldesMemberCollection = 'ldesmember';
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
-export const oldWorkbenchNifi = new LdesWorkbenchNiFi('https://localhost:8443')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
@@ -22,9 +19,6 @@ export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
-export const clientCli = new ClientCli('http://localhost:8081');
-export const newWorkbenchLdio = new LdesWorkbenchLdio('http://localhost:8081', 'new-ldio');
-export const workbench = new LdesWorkbenchLdio('http://localhost:8082');
 
 Before(() => {
     testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
@@ -80,21 +74,8 @@ Given('the NiFi workbench is available', () => {
     workbenchNifi.waitAvailable();
 });
 
-Given('the old NiFi workbench is available', () => {
-    oldWorkbenchNifi.waitForOldWorkbenchAvailable();
-    oldWorkbenchNifi.login(credentials);
-})
-
 Given('I have uploaded the workflow', () => {
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
-})
-
-Given('I have uploaded the old workflow', () => {
-    oldWorkbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/old-nifi-workflow.json`);
-})
-
-Given('I have uploaded the new workflow', () => {
-    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/new-nifi-workflow.json`);
 })
 
 Given('I have aliased the pre-seeded simulator data set', () => {
@@ -130,59 +111,53 @@ Given('the LDES server is available', () => {
     return server.waitAvailable();
 })
 
-Given('the old LDES server is available', () => {
-    return server.waitAvailable(LdesServer.ApplicationStarted);
-})
-
 Given('the LDES Server Simulator is available', () => {
     simulator.waitAvailable();
-})
-
-Given('the LDIO workflow is available', () => {
-    workbenchLdio.waitAvailable();
-})
-
-Given('I start the new LDIO workflow', () => {
-    createAndStartService('new-ldio').then(() => newWorkbenchLdio.waitAvailable());
 })
 
 Given('I started the workflow', () => {
     workbenchNifi.pushStart();
 })
 
-Given('I started the old workflow', () => {
-    oldWorkbenchNifi.pushStart();
+Given('the {string} workbench is available', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.waitAvailable();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.waitAvailable();
+            break;
+        }
+        case 'NIFI & LDIO': {
+            workbenchNifi.waitAvailable();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            workbenchLdio.waitAvailable();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })
 
 // When stuff
 
-When('I launch the Client CLI', () => {
-    createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
-})
-
-When('I start the NiFi workflow', () => {
-    workbenchNifi.pushStart();
-})
-
-When('I start the LDIO workflow', () => {
-    createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
-})
-
-When('I pause the LDIO workflow output', () => {
-    workbenchLdio.pause();
-
-})
-
-When('I pause the new LDIO workflow output', () => {
-    workbench.pause();
-})
-
-When('I resume the LDIO workflow output', () => {
-    workbenchLdio.resume();
-})
-
-When('I resume the new LDIO workflow output', () => {
-    workbench.resume();
+When('I start the {string} workflow', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+            workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })
 
 When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
@@ -217,7 +192,7 @@ When('the LDES contains at least {int} fragments', (count: number) => {
     mongo.checkCount(testContext.database, 'ldesfragment', count, (x, y) => x >= y);
 })
 
-function waitUntilMemberCountStable() {
+export function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     cy.waitUntil(() =>
@@ -227,48 +202,24 @@ function waitUntilMemberCountStable() {
     );
 }
 
-When('the old server is done processing', waitUntilMemberCountStable);
-
-Then('the member count does not change', waitUntilMemberCountStable);
-
 When('I start the GTFS2LDES service', () => {
     createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
 })
 
-When('I bring the old server down', () => {
-    dockerCompose.stop('old-ldes-server');
-    dockerCompose.removeVolumesAndImage('old-ldes-server');
+let lastMemberCount: number;
+When('I remember the last fragment member count', () => {
+    mongo.fragments('iow_devices', 'ldesfragment')
+        .then(fragments => fragments.pop())
+        .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
+            .visit()
+            .then(fragment => cy.log(`Member count: ${fragment.memberCount}`)
+                .then(() => lastMemberCount = fragment.memberCount)
+            )
+        );
 })
 
-When('I bring the old NiFi workbench down', () => {
-    dockerCompose.stop('old-nifi-workflow');
-    dockerCompose.removeVolumesAndImage('old-nifi-workflow');
-})
-
-When('I start the new NiFi workbench', () => {
-    oldWorkbenchNifi.logout();
-    createAndStartService('new-nifi-workflow').then(() => workbenchNifi.waitAvailable());
-})
-
-When('I start the new LDES Server', () => {
-    createAndStartService('new-ldes-server').then(() => server.waitAvailable());
-})
-
-When('I bring the old LDIO workbench down', () => {
-    dockerCompose.stop('old-ldio');
-    dockerCompose.removeVolumesAndImage('old-ldio');
-})
-
-When('I stop the http sender in the workflow', () => {
-    workbenchNifi.openWorkflow();
-    workbenchNifi.selectProcessor('InvokeHTTP');
-    workbenchNifi.pushStop();
-})
-
-When('I start the http sender in the workflow', () => {
-    workbenchNifi.openWorkflow();
-    workbenchNifi.selectProcessor('InvokeHTTP');
-    workbenchNifi.pushStart();
+When('the GTFS to LDES service starts sending linked connections', () => {
+    gtfs2ldes.isSendingLinkedConnections();
 })
 
 // Then stuff
@@ -289,12 +240,22 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
     currentMemberCount().then(count => expect(count).to.equal(memberCount));
 })
 
-Then('the Client CLI contains {int} members', (count: number) => {
-    clientCli.checkCount(count);
-})
-
 Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
+})
+
+
+Then('the last fragment member count increases', () => {
+    cy.waitUntil(() =>
+        mongo.fragments('iow_devices', 'ldesfragment')
+            .then(fragments => fragments.pop())
+            .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
+                .visit()
+                .then(fragment => cy.log(`New member count: ${fragment.memberCount}`)
+                    .then(() => lastMemberCount < fragment.memberCount)
+                )
+            ),
+        { timeout: 5000, interval: 1000 });
 })

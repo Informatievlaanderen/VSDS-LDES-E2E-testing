@@ -5,12 +5,13 @@ services:
     container_name: ${USECASE_NAME:-rdf4j-repository-materialisation}-ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ./nifi:/home/nifi/data
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
       - ldes
-    volumes:
-      - ./nifi:/home/nifi/data
       
   rdf4j-server:
     image: eclipse/rdf4j-workbench:${RDF4J_SERVER_TAG:-latest}

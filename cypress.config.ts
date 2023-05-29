@@ -55,7 +55,7 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
   // read user environment file
   function parseEnvironmentFile(filePath: string) {
     const content = filePath && fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf-8');
-    const lines = content?.split('\n').filter(x => !x);
+    const lines = content?.split('\n').filter(x => !!x);
     const parsed = lines?.reduce((aggregated, line, _) => {
       const keyValue = line.split('=').map(x => x.trim());
       const key = keyValue[0];
@@ -66,7 +66,8 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     return parsed;
   }
   config.env.userEnvironment = parseEnvironmentFile(config.env.userEnv);
-
+  if (config.env.userEnvironment) console.log("User Environment: ", config.env.userEnvironment);
+  
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
 }

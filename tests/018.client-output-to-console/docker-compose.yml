@@ -11,9 +11,9 @@ services:
     networks:
       - ldes
 
-  ldio-workflow:
+  ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-simulator-cli}_ldio-workflow
+    container_name: ${USECASE_NAME:-simulator-cli}_ldio-workbench
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
     networks:

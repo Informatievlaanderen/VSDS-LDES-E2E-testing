@@ -37,23 +37,35 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 ## Test Execution
-1. Start the address updates message generation:
+1. Start the workbench:
+    ```bash
+    docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+    ```
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
+
+2. Start the address updates message generation:
    ```bash
    docker compose up test-message-generator -d
    ```
 
-2. Verify that the LDES members are ingested (execute repeatedly):
+3. Verify that the LDES members are ingested (execute repeatedly):
    ```bash
    curl http://localhost:9019/grar/ldesmember
    ```
 
-3. Request the collections:
+4. Request the collections:
    ```bash
    curl http://localhost:8080/addresses/by-name
    curl http://localhost:8080/addresses/by-time
    ```
 
-4. Verify that the LDES is substring fragmented: SubstringRelation
+5. Verify that the LDES is substring fragmented: SubstringRelation
    ```bash
    curl -s 'http://localhost:8080/mobility-hindrances/by-location?substring=' | grep "substring="
    ```
@@ -61,6 +73,13 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or:
+```bash
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```

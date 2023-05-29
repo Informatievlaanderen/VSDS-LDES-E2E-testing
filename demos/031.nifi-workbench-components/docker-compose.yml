@@ -23,6 +23,8 @@ services:
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
       - LDES_SERVER=${LDES_SERVER}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
@@ -46,7 +48,8 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_ldes
       - COLLECTIONS_0_HOSTNAME=http://${LDES_SERVER}:8080
       - COLLECTIONS_0_COLLECTIONNAME=observations

@@ -12,35 +12,31 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
     ```
     Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
     ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-models$")
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-devices$")
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-observations$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```
     Press `CTRL-C` to stop following each log.
 
 2. Verify that the empty LDES views can be retrieved:
     ```bash
-    curl http://localhost:8072/device-models/by-time
-    curl http://localhost:8071/devices/by-time
-    curl http://localhost:8073/water-quality-observations/by-time
+    curl http://localhost:8080/device-models/by-time
+    curl http://localhost:8080/devices/by-time
+    curl http://localhost:8080/water-quality-observations/by-time
     ```
 
 ## Test Execution
 1. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
-    The workflow contains three flows with a standard HTTP listener (ListenHTTP), the NGSI-v2 to NGSI-LD translator, the NiFi processor creating NGSI-LD version objects and a standard InvokeHTTP processor to send the LDES members to the corresponding LDES server.
+    The workflow contains three flows with a standard HTTP listener (one common ListenHTTP), the NGSI-v2 to NGSI-LD translator, the NiFi processor creating NGSI-LD version objects and a standard InvokeHTTP processor to send the LDES members to the corresponding LDES server.
 
-2. Verify that the NiFi HTTP listeners are ready (they should answer `OK`):
+2. Verify that the NiFi HTTP listener is ready (it should answer `OK`):
     ```bash
-    curl http://localhost:9013/ngsi/device-model/healthcheck
-    curl http://localhost:9012/ngsi/device/healthcheck
-    curl hhttp://localhost:9014/ngsi/water-quality-observed/healthcheck
+    curl http://localhost:8081/healthcheck
     ```
 
 3. Send test data by using the following commands:
     ```bash
-    curl -X POST http://localhost:9013/ngsi/device-model -H 'Content-Type: application/json' -d '@data/device-model.json' 
-    curl -X POST http://localhost:9012/ngsi/device -H 'Content-Type: application/json' -d '@data/device.json' 
+    curl -X POST http://localhost:8081/device-models-pipeline -H 'Content-Type: application/json' -d '@data/device-model.json' 
+    curl -X POST http://localhost:8081/devices-pipeline -H 'Content-Type: application/json' -d '@data/device.json' 
     ```
    To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
     ```bash
@@ -51,9 +47,9 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
 
     To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
-     curl http://localhost:8072/device-models/by-time
-     curl http://localhost:8071/devices/by-time
-     curl http://localhost:8073/water-quality-observations/by-time
+     curl http://localhost:8080/device-models/by-time
+     curl http://localhost:8080/devices/by-time
+     curl http://localhost:8080/water-quality-observations/by-time
      ```
 
      > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
@@ -61,8 +57,8 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
 ## Test Teardown
 First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose down
 ```
 
 ## C4 Diagrams

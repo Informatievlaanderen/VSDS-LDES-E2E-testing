@@ -18,24 +18,33 @@ In this test we recreate the same scenario but host all three LDES collections o
     ```
     Press `CTRL-C` to stop following each log.
 
-2. Verify that the empty LDES views can be retrieved:
+2. Start the workbench:
     ```bash
-    curl http://localhost:8071/device-models/by-time
+    docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
+    or:
     ```bash
-    curl http://localhost:8071/devices/by-time
+    docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
     ```
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it. Finally, verify that the NiFi HTTP listeners are ready (they should answer `OK`):
+    > ```bash
+    > curl http://localhost:8081/healthcheck
+    > ```
+
+3. Verify that the empty LDES can be retrieved:
     ```bash
-    curl http://localhost:8071/water-quality-observations/by-time
+    curl http://localhost:8080/device-models/by-time
+    curl http://localhost:8080/devices/by-time
+    curl http://localhost:8080/water-quality-observations/by-time
     ```
 
 ## Test Execution
 1. Send test data by using the following commands:
     ```bash
-    curl -X POST http://localhost:9012/device-models -H 'Content-Type: application/json' -d '@data/model.json' 
-    ```
-    ```bash
-    curl -X POST http://localhost:9012/devices -H 'Content-Type: application/json' -d '@data/device.json' 
+    curl -X POST http://localhost:8081/device-models -H 'Content-Type: application/json' -d '@data/model.json' 
+    curl -X POST http://localhost:8081/devices -H 'Content-Type: application/json' -d '@data/device.json' 
     ```
    To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
     ```bash
@@ -46,16 +55,23 @@ In this test we recreate the same scenario but host all three LDES collections o
 
     To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
-     curl http://localhost:8071/device-models/by-time
-     curl http://localhost:8071/devices/by-time
-     curl http://localhost:8071/water-quality-observations/by-time
+     curl http://localhost:8080/device-models/by-time
+     curl http://localhost:8080/devices/by-time
+     curl http://localhost:8080/water-quality-observations/by-time
      ```
 
-     > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
+     > **Note**: that only the observations are converted to an OSLO model. The object type should be `http://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
 ## Test Teardown
-First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+If using NiFi, first [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or
+```bash
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```

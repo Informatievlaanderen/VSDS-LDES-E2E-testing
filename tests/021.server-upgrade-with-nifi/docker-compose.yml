@@ -22,6 +22,8 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server-using-nifi}-ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
@@ -41,7 +43,8 @@ services:
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - LDES_HOSTNAME=http://localhost:8080
       - LDES_COLLECTIONNAME=devices
@@ -71,7 +74,8 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_3=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset4
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - COLLECTIONS_0_HOSTNAME=http://localhost:8080
       - COLLECTIONS_0_COLLECTIONNAME=devices

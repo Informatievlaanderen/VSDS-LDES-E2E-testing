@@ -1,0 +1,121 @@
+/// <reference types="cypress" />
+
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { EventStream, Fragment } from '../ldes';
+import { server, testPartialPath } from "./common_step_definitions";
+
+let ldes: EventStream;
+let view: Fragment;
+let execResult: string;
+
+// When
+
+When('I request the view formatted as {string}', (mimeType: string) => {
+    return new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit({mimeType: mimeType}).then(page => {
+        expect(page.success).to.be.true;
+        view = page;
+    })
+})
+
+When('I request the view from a different url {string}', (url: string) => {
+    const command = `curl -i -X OPTIONS -H "Origin: ${url}" -H "Access-Control-Request-Method: GET" http://localhost:8080/mobility-hindrances/by-time`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+When('I only request the view headers', () => {
+    const command = `curl --head http://localhost:8080/mobility-hindrances/by-time`
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+When('I request the LDES', () => {
+    const command = `curl -i http://localhost:8080/mobility-hindrances`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+When('I request the view compressed', () => {
+    const command = `curl -I -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-time`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+When('I request the LDES view', () => {
+    const command = `curl -i http://localhost:8080/mobility-hindrances/by-time`;
+    return cy.exec(command).then(result => execResult = result.stdout);
+})
+
+When('I send the member file {string} of type {string}', (fileName: string, mimeType: string) => {
+    return server.sendMemberFile('mobility-hindrances', `${testPartialPath()}/${fileName}`, mimeType)
+        .then(result => {
+            expect(result.code).to.equal(0);
+            execResult = result.stdout;
+        })
+})
+
+When ('I wait {int} seconds for the cache to expire', (timeout: number) => {
+    cy.wait((timeout+1) * 1000);
+})
+
+// Then
+
+Then('the collection is available at {string}', (url: string) => {
+    new EventStream(url).visit().then(page => {
+        expect(page.success).to.be.true;
+        expect(page.isEventStream).to.be.true;
+        ldes = page;
+    });
+})
+
+Then('the view is available at {string}', (url: string) => {
+    new Fragment(url).visit().then(page => {
+        expect(page.success).to.be.true;
+        expect(page.isNode).to.be.true;
+        expect(page.isViewOf(ldes.url)).to.be.true;
+    });
+})
+
+Then('I receive a response similar to {string}', (fileName: string) => {
+    cy.fixture(`ldes-server-caching/${fileName}`).then((content: string | object) => {
+        view.expectContent(content);
+    });
+})
+
+Then('the server returns the supported HTTP Verbs', () => {
+    expect(execResult).to.include('Access-Control-Allow-Origin: *').and.to.include('Access-Control-Allow-Methods: GET').and.to.include('Allow: GET, HEAD');
+})
+
+Then('the headers include an Etag which is used for caching purposes', () => {
+    expect(execResult).to.include('ETag:');
+})
+
+Then('the LDES is not yet cached', () => {
+    expect(execResult).to.include('X-Cache-Status: MISS');
+})
+
+Then('the LDES comes from the cache', () => {
+    expect(execResult).to.include('X-Cache-Status: HIT');
+})
+
+Then('I receive a zip file containing my view', () => {
+    expect(execResult).to.include('Content-Encoding: gzip');
+})
+
+Then('the LDES is re-requested from the LDES server', () => {
+    expect(execResult).to.include('X-Cache-Status: EXPIRED');
+})
+
+Then('the server accepts this member file', () => {
+    expect(execResult).to.include('HTTP/1.1 200').and.to.include('Server: nginx');
+})
+
+function obtainRootFragment(ldes: string) {
+    return server.getLdes(ldes)
+        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(view => new Fragment(view.relation.link).visit());
+}
+
+Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
+    obtainRootFragment(ldes).then(fragment => fragment.memberCount === count);
+})
+
+Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {
+    obtainRootFragment(ldes).then(fragment => fragment.memberCount >= count);
+})

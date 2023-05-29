@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ldio-workflow:8080/pipeline
+      - TARGETURL=http://ldio-workbench:8080/pipeline
       - SILENT=false
       - CRON=* * * * * *
       - TEMPLATEFILE=/tmp/data/device.template.json
@@ -17,9 +17,9 @@ services:
     profiles:
       - delay-started
 
-  ldio-workflow:
+  ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldio-workflow
+    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
@@ -47,7 +47,8 @@ services:
     environment:
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - LDES_HOSTNAME=http://localhost:8080
       - LDES_COLLECTIONNAME=devices
@@ -57,7 +58,7 @@ services:
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - VIEWS_0_NAME=devices-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
     ports:
       - 8080:8080
     networks:
@@ -77,7 +78,8 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_3=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset4
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - COLLECTIONS_0_HOSTNAME=http://localhost:8080
       - COLLECTIONS_0_COLLECTIONNAME=devices
@@ -87,7 +89,7 @@ services:
       - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
       - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

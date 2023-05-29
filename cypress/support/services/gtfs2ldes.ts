@@ -26,12 +26,12 @@ export class Gtfs2Ldes implements CanCheckAvailability {
         return cy.exec(`docker logs -n 1 ${this._containerId}`).then(result => result.stdout.startsWith('Posted'));
     }
 
-    sendLinkedConnectionCount() {
+    sendLinkedConnectionCount(): Cypress.Chainable<number> {
         return cy.exec(`docker logs -n 1 ${this._containerId}`)
             .then(result => result.stdout)
             .then(lastLine => lastLine.startsWith('Posted')
                 ? Number.parseInt(lastLine.replace(/[^0-9]/g, ''))
-                : undefined
+                : 0
             );
     }
 }

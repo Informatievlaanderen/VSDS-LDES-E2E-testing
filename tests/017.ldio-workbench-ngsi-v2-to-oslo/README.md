@@ -12,39 +12,37 @@ This second step towards a NiFi-less approach executes the complete transformati
     ```bash
     docker compose up -d
     ```
-   Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
+   Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
     ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-models$")
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-devices$")
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server-observations$")
+    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```
    Press `CTRL-C` to stop following each log.
 
 2. Verify that the empty LDES views can be retrieved:
     ```bash
-    curl http://localhost:8072/device-models/by-time
-    curl http://localhost:8071/devices/by-time
-    curl http://localhost:8073/water-quality-observations/by-time
+    curl http://localhost:8080/device-models/by-time
+    curl http://localhost:8080/devices/by-time
+    curl http://localhost:8080/water-quality-observations/by-time
     ```
 
 ## Test Execution
 1. Send test data by using the following commands:
     ```bash
-    curl -X POST http://localhost:9013/data -H 'Content-Type: application/json' -d '@data/model.json' 
-    curl -X POST http://localhost:9012/data -H 'Content-Type: application/json' -d '@data/device.json' 
+    curl -X POST http://localhost:8081/device-models-pipeline -H 'Content-Type: application/json' -d '@data/model.json' 
+    curl -X POST http://localhost:8081/devices-pipeline -H 'Content-Type: application/json' -d '@data/device.json' 
     ```
-   To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
+2. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
     ```bash
     docker compose up test-message-generator -d
     ```
 
-2. Verify all LDES streams
+3. Verify all LDES streams
 
    To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
-     curl http://localhost:8072/device-models/by-time
-     curl http://localhost:8071/devices/by-time
-     curl http://localhost:8073/water-quality-observations/by-time
+     curl http://localhost:8080/device-models/by-time
+     curl http://localhost:8080/devices/by-time
+     curl http://localhost:8080/water-quality-observations/by-time
      ```
 
    > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
@@ -52,8 +50,8 @@ This second step towards a NiFi-less approach executes the complete transformati
 ## Test Teardown
 First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose down
 ```
 
 ## C4 Diagrams

@@ -1,0 +1,123 @@
+version: '3.3'
+services:
+
+  test-message-generator:
+    container_name: ${USECASE_NAME:-iow-context}_test-message-generator
+    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
+    environment:
+      - TARGETURL=http://ingest-workbench:8080/observations-pipeline
+      - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
+      - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
+      - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
+      - MIMETYPE=application/json
+    volumes:
+      - ./data/wqo.template.json:/tmp/data/wqo.template.json:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  nifi-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-iow-context}_nifi-workbench
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+      - 8081:8080
+    networks:
+      ldes:
+        aliases:
+          - ingest-workbench
+    profiles:
+      - delay-started
+
+  ldio-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-iow-context}_ldio-workbench
+    ports:
+      - 8081:8080
+    volumes:
+      - ./ldio-workbench.config.yml:/ldio/application.yml:ro
+      - ./observations.rq:/ldio/observations.rq:ro
+    networks:
+      ldes:
+        aliases:
+          - ingest-workbench
+    profiles:
+      - delay-started
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-iow-context}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-6.0.4}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-iow-context}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    environment:
+      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+      - MANAGEMENT_TRACING_ENABLED=False
+      - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=iow
+      - SPRING_WEB_RESOURCES_STATIC_LOCATIONS=file:/tmp/static
+
+      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_0_COLLECTIONNAME=devices
+      - COLLECTIONS_0_SHAPE=
+      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - COLLECTIONS_0_VIEWS_0_NAME=by-time
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${DEVICES_LDES_SERVER_MEMBERLIMIT:-10}
+
+      - COLLECTIONS_1_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_1_COLLECTIONNAME=device-models
+      - COLLECTIONS_1_SHAPE=
+      - COLLECTIONS_1_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_1_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_1_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
+      - COLLECTIONS_1_VIEWS_0_NAME=by-time
+      - COLLECTIONS_1_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_1_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MODELS_LDES_SERVER_MEMBERLIMIT:-10}
+
+      - COLLECTIONS_2_HOSTNAME=http://localhost:8080
+      - COLLECTIONS_2_COLLECTIONNAME=water-quality-observations
+      - COLLECTIONS_2_SHAPE=
+      - COLLECTIONS_2_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - COLLECTIONS_2_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - COLLECTIONS_2_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved
+      - COLLECTIONS_2_VIEWS_0_NAME=by-time
+      - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-25}
+    volumes:
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - 8080:8080
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-iow-context}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-iow-context}_network

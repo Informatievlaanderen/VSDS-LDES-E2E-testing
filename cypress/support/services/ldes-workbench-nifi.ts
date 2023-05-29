@@ -4,7 +4,11 @@ import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
 
-    constructor(private baseUrl: string) {
+    constructor(private baseUrl: string, private _serviceName?: string) {
+    }
+
+    public get serviceName() {
+        return this._serviceName || 'nifi-workbench';
     }
 
     private _lastUploadedWorkflowId: string;
@@ -14,19 +18,11 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
      * @returns true if ready, false otherwise
      */
     private isReady(): Cypress.Chainable<boolean> {
-        return cy.exec(`curl ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
-    }
-
-    private isOldWorkbenchReady(): Cypress.Chainable<boolean> {
         return cy.exec(`curl --insecure -I ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
     waitAvailable() {
         return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
-    }
-
-    waitForOldWorkbenchAvailable() {
-        return cy.waitUntil(() => this.isOldWorkbenchReady(), { timeout: 600000, interval: 5000 });
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {

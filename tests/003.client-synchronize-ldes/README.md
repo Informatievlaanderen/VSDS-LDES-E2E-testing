@@ -39,8 +39,15 @@ We need to upload all but the last fragment as an immutable fragment and the las
 
 3. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+    ```
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
 
 4. Verify that all members are received by the [sink](http://localhost:9003/) (execute repeatedly):
     ```bash
@@ -91,6 +98,12 @@ This part verifies that the *synchronization* works after the initial data set i
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```
+or:
+```bash
+docker compose rm -s -f -v nifi-workbench
+docker compose down
+```
+

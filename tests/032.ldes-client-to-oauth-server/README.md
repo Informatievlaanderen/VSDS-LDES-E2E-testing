@@ -33,8 +33,15 @@ Press `CTRL-C` to stop following the log.
 
 2. Start the workflow with the LDES client:
    ```bash
-   docker compose up ldio-oauth-ldes-client -d
+   docker compose up ldio-workbench -d
+   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
    ```
+   or:
+   ```bash
+   docker compose up nifi-workbench -d
+   while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+   ```
+   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
 
 3. Verify LDES members are correctly received in the message sink
    ```bash
@@ -54,7 +61,12 @@ for updates every 60 seconds. The count will increase in bursts of this interval
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or:
+```bash
+docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```
 

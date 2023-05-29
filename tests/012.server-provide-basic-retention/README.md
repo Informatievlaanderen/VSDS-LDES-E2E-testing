@@ -103,13 +103,15 @@ To execute this test scenario, run the following steps:
 
 3. Start the workflow containing the LDES Client
     ```bash
-    docker compose up ldio-workflow -d
+    docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
-    Wait until the LDIO workflow is started by following the container log until you see the following message `Started Application in`:
+    or:
     ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldio-workflow$")
+    docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
     ```
-    Press `CTRL-C` to stop following the log.
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
 
 4. Verify LDES Members are being ingested (execute repeatedly until 501 members):
     ```bash
@@ -152,6 +154,11 @@ To execute this test scenario, run the following steps:
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or
+```bash
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```

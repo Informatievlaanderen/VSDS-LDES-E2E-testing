@@ -18,9 +18,9 @@ services:
     profiles:
       - delay-started
 
-  old-nifi-workflow:
+  old-nifi-workbench:
     image: ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
-    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-workbench-nifi
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_old-nifi-workbench
     environment:
       - NIFI_WEB_HTTPS_PORT=${NIFI_UI_PORT:-8443}
       - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME:-e2etest}
@@ -30,11 +30,13 @@ services:
     networks:
       - ldes
 
-  new-nifi-workflow:
+  new-nifi-workbench:
     image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldi-workbench-nifi
+    container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_new-nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
@@ -57,7 +59,8 @@ services:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_URI=mongodb://ldes-mongodb:27017
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
       - COLLECTIONS_0_HOSTNAME=http://localhost:8080
       - COLLECTIONS_0_COLLECTIONNAME=devices

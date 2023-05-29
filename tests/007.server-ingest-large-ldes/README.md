@@ -19,7 +19,19 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 ## Test Execution
-1. Start the GTFS to LDES convertor:
+1. Start the workbench:
+    ```bash
+    docker compose up ldio-workbench -d
+    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
+    ```
+    or:
+    ```bash
+    docker compose up nifi-workbench -d
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+    ```
+    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
+
+2. Start the GTFS to LDES convertor:
     ```bash
     docker compose up gtfs2ldes-js -d
     ```
@@ -29,7 +41,7 @@ Press `CTRL-C` to stop following the log.
     ```
     Press `CTRL-C` to stop following the log.
 
-2. Verify LDES Members are being ingested (execute repeatedly):
+3. Verify LDES Members are being ingested (execute repeatedly):
     ```bash
     curl http://localhost:9019/bustang/ldesmember
     ```
@@ -41,8 +53,15 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop gtfs2ldes-js
-docker compose --profile delay-started down
+docker compose rm -s -f -v gtfs2ldes-js
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or:
+```bash
+docker compose rm -s -f -v gtfs2ldes-js
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```
 
 ## C4 Diagrams

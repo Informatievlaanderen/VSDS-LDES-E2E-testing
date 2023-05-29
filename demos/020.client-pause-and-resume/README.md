@@ -40,7 +40,8 @@ docker compose up -d
 
 2. Start the workflow containing to ingest the members:
    ```bash
-   docker compose up ldio-workflow -d
+   docker compose up ldio-workbench -d
+   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
    ```
 
 3. Verify how many members are already ingested (execute repeatedly):
@@ -50,7 +51,7 @@ docker compose up -d
 
 4. Stop the workflow when the member count is around 250 members:
    ```bash
-   docker stop ldio-workflow
+   docker stop ldio-workbench
    ```
 
 5. Verify which fragments have been requested by the workflow:
@@ -61,7 +62,7 @@ docker compose up -d
 
 6. Continue the workflow:
    ```bash
-   docker start ldio-workflow
+   docker start ldio-workbench
    ```
    until the LDES is fully replicated (member count will be 1016):
     ```bash
@@ -77,6 +78,6 @@ docker compose up -d
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workflow
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```

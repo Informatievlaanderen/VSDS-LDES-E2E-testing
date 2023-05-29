@@ -27,7 +27,7 @@ Given('the ldesmember collection is structured as expected', () => {
 })
 
 Given('the old LDES server is available', () => {
-    return oldServer.waitAvailable(LdesServer.ApplicationStarted);
+    return oldServer.waitAvailable(LdesServer.ApplicationStarted, 1);
 })
 
 Then('the ldesfragment collection is upgraded as expected', () => {

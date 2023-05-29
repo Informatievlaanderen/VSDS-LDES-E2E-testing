@@ -92,6 +92,8 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     # NOTE: as we are using the API gateway's network, we need to do the port mapping there
     # ports:
     #   - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}

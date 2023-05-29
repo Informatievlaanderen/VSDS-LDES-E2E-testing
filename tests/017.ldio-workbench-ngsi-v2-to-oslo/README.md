@@ -31,12 +31,12 @@ This second step towards a NiFi-less approach executes the complete transformati
     curl -X POST http://localhost:8081/device-models-pipeline -H 'Content-Type: application/json' -d '@data/model.json' 
     curl -X POST http://localhost:8081/devices-pipeline -H 'Content-Type: application/json' -d '@data/device.json' 
     ```
-   To send a few water quality observations, briefly start the observations generator (type `CTRL-C` to stop it):
+2. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
     ```bash
     docker compose up test-message-generator -d
     ```
 
-2. Verify all LDES streams
+3. Verify all LDES streams
 
    To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash

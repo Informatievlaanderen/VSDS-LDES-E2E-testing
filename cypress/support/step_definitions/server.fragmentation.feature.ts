@@ -101,10 +101,6 @@ Then('the fragment exists for substring {string}', (fragmentValues: string) => {
     });
 })
 
-Given('the gtfs ingest endpoint is ready', () => {
-    workbenchNifi.waitIngestEndpointAvailable('http://localhost:9005/gtfs');
-})
-
 Then('the geo-spatial root fragment is not immutable', () => {
     server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
 })

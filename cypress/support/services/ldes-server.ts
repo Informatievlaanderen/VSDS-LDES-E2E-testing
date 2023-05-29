@@ -14,16 +14,19 @@ export class LdesServer implements CanCheckAvailability {
         return this._serviceName || 'ldes-server';
     }
 
-    private isReady(containerId: string, message?: string) {
+    private isReady(containerId: string, message?: string, occurences: number = 2 ) {
         return cy.exec(`docker logs ${containerId}`)
-            .then(result => result.stdout.includes(message || LdesServer.DatabaseUpgradeFinished));
+            .then(result => {
+                const regex = new RegExp(message || LdesServer.DatabaseUpgradeFinished, "g");
+                return (result.stdout.match(regex) || []).length === occurences;
+            });
     }
 
-    waitAvailable(message?: string) {
+    waitAvailable(message?: string, occurences: number = 2) {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message), { timeout: 120000, interval: 5000 });
+                return cy.waitUntil(() => this.isReady(containerId, message, occurences), { timeout: 120000, interval: 5000 });
             });
     }
 

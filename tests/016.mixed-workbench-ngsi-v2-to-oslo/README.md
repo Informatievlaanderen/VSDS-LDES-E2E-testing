@@ -63,8 +63,8 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
 ## Test Teardown
 First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose down
 ```
 
 ## C4 Diagrams

@@ -63,8 +63,15 @@ The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages for
 ## Test Teardown
 If using NiFi, first [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v ldio-workbench
+docker compose down
+```
+or
+```bash
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```
 
 ## C4 Diagrams

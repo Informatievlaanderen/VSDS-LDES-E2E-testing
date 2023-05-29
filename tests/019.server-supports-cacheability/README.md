@@ -342,6 +342,6 @@ while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Ap
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose stop ldio-workbench
-docker compose --profile delayed-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```

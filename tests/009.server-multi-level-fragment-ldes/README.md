@@ -127,11 +127,11 @@ To try out a different fragmentation strategy you need to tune the [Docker Compo
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```
 or:
 ```bash
-docker compose stop nifi-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```

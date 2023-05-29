@@ -73,13 +73,9 @@ This test uses a docker environment a data generator simulating the system pushi
     ```
 
 ## Test teardown
-1. Stop data generator and stop new workbench:
-    ```bash
-    docker compose stop new-nifi-workbench
-    docker compose stop test-message-generator
-    ```
-
-2. Bring all systems down:
-    ```bash
-    docker compose --profile delay-started down
-    ```
+Stop data generator and new workbench, and bring all systems down:
+```bash
+docker compose rm -s -f -v test-message-generator
+docker compose rm -s -f -v new-nifi-workbench
+docker compose down
+```

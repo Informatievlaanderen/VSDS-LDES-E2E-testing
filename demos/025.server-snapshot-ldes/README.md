@@ -197,7 +197,7 @@ A schematic overview is given below:
     ```
 
 ## Test teardown
-Stop data generator and new server, and bring all systems down:
+Bring all systems down:
 ```bash
 docker compose down
 ```

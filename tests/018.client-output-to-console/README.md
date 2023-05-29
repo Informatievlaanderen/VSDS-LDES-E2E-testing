@@ -70,6 +70,6 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```

@@ -78,6 +78,6 @@ docker compose up -d
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldio-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```

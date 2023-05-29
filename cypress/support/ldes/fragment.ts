@@ -1,9 +1,11 @@
-import { ldes, rdf, tree } from './rdf-common';
+/// <reference types="cypress" />
+
+import { rdf, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
 export class Fragment extends UrlResponse {
-    
+
     get relations(): Relation[] {
         return this.store.getObjects(null, tree.relation, null)
             .map(relation => new Relation(this.store.getQuads(relation, null, null, null)));
@@ -17,6 +19,13 @@ export class Fragment extends UrlResponse {
 
     get isNode(): boolean {
         return this.store.getQuads(this.url, rdf.type, tree.Node, null).length === 1;
+    }
+
+    getLatestFragment(nextType: string): Cypress.Chainable<Fragment> {
+        const relations = this.relations.filter(x => x.type === tree.prefix(nextType));
+        return relations.length === 1
+            ? new Fragment(relations[0].link).visit().then(fragment => fragment.getLatestFragment(nextType))
+            : cy.wrap(this);
     }
 
     isViewOf(ldesUrl: string): boolean {

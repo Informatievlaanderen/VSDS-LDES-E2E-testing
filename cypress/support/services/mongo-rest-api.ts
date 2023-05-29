@@ -22,9 +22,4 @@ export class MongoRestApi {
             .then((result: CountResult) => result.count);
     }
 
-    fragments(database: string, collection: string) {
-        return cy.request(`${this.baseUrl}/${database}/${collection}?includeIds=true`)
-            .then(response => response.body)
-            .then((result: CountResult) => result.ids);
-    }
 }

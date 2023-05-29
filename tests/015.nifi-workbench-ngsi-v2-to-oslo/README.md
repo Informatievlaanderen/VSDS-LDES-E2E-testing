@@ -57,8 +57,8 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
 ## Test Teardown
 First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
 ```bash
-docker compose stop test-message-generator
-docker compose --profile delay-started down
+docker compose rm -s -f -v test-message-generator
+docker compose down
 ```
 
 ## C4 Diagrams

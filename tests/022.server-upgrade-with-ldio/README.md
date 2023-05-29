@@ -79,7 +79,7 @@ This test uses a docker environment containing a data generator simulating the s
 ## Test teardown
 Stop data generator and new server, and bring all systems down:
 ```bash
-docker compose stop test-message-generator
-docker compose stop new-ldes-server
-docker compose --profile delay-started down
+docker compose rm -s -f -v new-ldes-server
+docker compose rm -s -f -v test-message-generator
+docker compose down
 ```

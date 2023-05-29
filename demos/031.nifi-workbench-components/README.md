@@ -103,7 +103,7 @@ Optionally, combine both tests in one E2E test.
 
 2. stop and destroy all remaining systems
     ```bash
-    docker compose rm -f test-message-generator
+    docker compose rm -s -f -v test-message-generator
     docker compose down
     rm -f ./data/graphdb/init.lock
     ```

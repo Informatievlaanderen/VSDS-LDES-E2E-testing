@@ -52,7 +52,7 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop ldes-list-fragments
-docker compose stop gtfs2ldes-js
-docker compose --profile delay-started down
+docker compose rm -s -f -v ldes-list-fragments
+docker compose rm -s -f -v gtfs2ldes-js
+docker compose down
 ```

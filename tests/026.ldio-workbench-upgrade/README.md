@@ -80,8 +80,8 @@ This test uses a docker environment a data generator simulating the system pushi
 ## Test teardown
 Stop data generator and stop new workbench and bring all systems down:
 ```bash
-docker compose stop test-message-generator
-docker compose stop new-ldio-workbench
+docker compose rm -s -f -v test-message-generator
 rm ./data/TARGETURL
-docker compose --profile delay-started down
+docker compose rm -s -f -v new-ldio-workbench
+docker compose down
 ```

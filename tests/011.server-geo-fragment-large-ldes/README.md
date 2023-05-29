@@ -60,13 +60,13 @@ Press `CTRL-C` to stop following the log.
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose stop gtfs2ldes-js
-docker compose stop ldio-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v gtfs2ldes-js
+docker compose rm -s -f -v ldio-workbench
+docker compose down
 ```
 or:
 ```bash
-docker compose stop gtfs2ldes-js
-docker compose stop nifi-workbench
-docker compose --profile delay-started down
+docker compose rm -s -f -v gtfs2ldes-js
+docker compose rm -s -f -v nifi-workbench
+docker compose down
 ```

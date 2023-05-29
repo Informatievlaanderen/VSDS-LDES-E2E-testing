@@ -8,7 +8,7 @@ Feature: LDES Server Upgrading
     And the old LDES server is available
     And the '<workbench>' workbench is available
     And I start the JSON Data Generator
-    And the LDES contains at least 11 members
+    And the LDES contains at least 26 members
     And the ldesfragment collection is structured as expected
     And the ldesmember collection is structured as expected
 

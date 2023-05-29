@@ -58,7 +58,7 @@ services:
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - VIEWS_0_NAME=devices-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
     ports:
       - 8080:8080
     networks:
@@ -89,7 +89,7 @@ services:
       - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - COLLECTIONS_0_VIEWS_0_NAME=devices-by-time
       - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=10
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

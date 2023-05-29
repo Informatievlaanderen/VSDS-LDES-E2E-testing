@@ -70,9 +70,9 @@ services:
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
       - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
       - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - COLLECTIONS_0_VIEWS_0_NAME=by-page
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
+      - COLLECTIONS_0_VIEWS_0_NAME=by-time
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=100
     volumes:
       - ../../data/epsg:/tmp/Databases:rw
     ports:

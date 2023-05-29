@@ -120,7 +120,7 @@ Given('I started the workflow', () => {
 })
 
 Given('the {string} workbench is available', (workbench) => {
-    switch(workbench) {
+    switch (workbench) {
         case 'NIFI': {
             workbenchNifi.waitAvailable();
             workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
@@ -145,7 +145,7 @@ Given('the {string} workbench is available', (workbench) => {
 // When stuff
 
 When('I start the {string} workflow', (workbench) => {
-    switch(workbench) {
+    switch (workbench) {
         case 'NIFI': {
             createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
             workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
@@ -206,23 +206,27 @@ When('I start the GTFS2LDES service', () => {
     createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
 })
 
-let lastMemberCount: number;
-When('I remember the last fragment member count', () => {
-    mongo.fragments('iow_devices', 'ldesfragment')
-        .then(fragments => fragments.pop())
-        .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
-            .visit()
-            .then(fragment => cy.log(`Member count: ${fragment.memberCount}`)
-                .then(() => lastMemberCount = fragment.memberCount)
-            )
-        );
-})
-
 When('the GTFS to LDES service starts sending linked connections', () => {
     gtfs2ldes.isSendingLinkedConnections();
 })
 
+let lastMemberCount: number;
+When('I remember the last fragment member count', () => {
+    server.getLdes('devices')
+        .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit())
+        .then(fragment => fragment.getLatestFragment('GreaterThanOrEqualToRelation'))
+        .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount)));
+})
+
 // Then stuff
+
+Then('the last fragment member count increases', () => {
+    cy.waitUntil(() => server.getLdes('devices')
+        .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit()))
+        .then(fragment =>cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
+        { timeout: 5000, interval: 1000 }
+    );
+})
 
 Then('the sink contains {int} members', (count: number) => {
     sink.checkCount('mobility-hindrances', count);
@@ -244,18 +248,4 @@ Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
-})
-
-
-Then('the last fragment member count increases', () => {
-    cy.waitUntil(() =>
-        mongo.fragments('iow_devices', 'ldesfragment')
-            .then(fragments => fragments.pop())
-            .then(partialUrl => new Fragment(`http://localhost:8080${partialUrl}`)
-                .visit()
-                .then(fragment => cy.log(`New member count: ${fragment.memberCount}`)
-                    .then(() => lastMemberCount < fragment.memberCount)
-                )
-            ),
-        { timeout: 5000, interval: 1000 });
 })

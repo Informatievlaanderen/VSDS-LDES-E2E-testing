@@ -6,7 +6,7 @@ Feature: LDES Workbench Conversions
     Given the members are stored in database 'iow'
     And context 'tests/014.workbench-ngsi-v2-to-ngsi-ld' is started
     And the LDES server is available
-    And I start the '<workbench>' workflow
+    And I start the '<workbench>' workbench
 
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members

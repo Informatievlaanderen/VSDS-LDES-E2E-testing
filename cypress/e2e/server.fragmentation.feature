@@ -8,7 +8,7 @@ Feature: LDES Server Fragmentation
     And I have uploaded the data files: 'alfa,beta,epsilon'
     And I have aliased the data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 617 members
     Then the first fragment is immutable
     And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
@@ -35,7 +35,7 @@ Feature: LDES Server Fragmentation
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 617 members
     Then the first fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment
@@ -59,7 +59,7 @@ Feature: LDES Server Fragmentation
     Given the members are stored in database 'grar'
     And context 'tests/006.server-substring-fragment-ldes' is started
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 13 members
     Then the substring root fragment is not immutable
@@ -85,7 +85,7 @@ Feature: LDES Server Fragmentation
     And I have uploaded the data files: 'one-member'
     And I have aliased the data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 1 members
     And the LDES contains 6 fragments
     Then the geo-spatial root fragment is not immutable
@@ -113,7 +113,7 @@ Feature: LDES Server Fragmentation
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 6 members
     And the LDES contains 14 fragments
     Then the multi-level root fragment is not immutable
@@ -141,7 +141,7 @@ Feature: LDES Server Fragmentation
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 6 members
     And the LDES contains 13 fragments
     Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
@@ -164,7 +164,7 @@ Feature: LDES Server Fragmentation
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 1000 members

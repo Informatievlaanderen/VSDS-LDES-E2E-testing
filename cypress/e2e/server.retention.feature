@@ -18,7 +18,7 @@ Feature: LDES Server Retention
     And the LDES has a view 'V' named 'by-short-time'
     And the LDES has a view 'W' named 'by-longer-time'
     
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And the LDES contains 501 members
     And I refresh view 'V'
     And I refresh view 'W'

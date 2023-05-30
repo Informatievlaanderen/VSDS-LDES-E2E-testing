@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings, FragmentResponse } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
@@ -144,7 +144,7 @@ Given('the {string} workbench is available', (workbench) => {
 
 // When stuff
 
-When('I start the {string} workflow', (workbench) => {
+When('I start the {string} workbench', (workbench) => {
     switch (workbench) {
         case 'NIFI': {
             createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
@@ -154,6 +154,65 @@ When('I start the {string} workflow', (workbench) => {
         }
         case 'LDIO': {
             createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+
+When('I stop the {string} workbench', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            dockerCompose.stop(workbenchNifi.serviceName);
+            break;
+        }
+        case 'LDIO': {
+            dockerCompose.stop(workbenchLdio.serviceName);
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+
+When('I restart the {string} workbench', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            dockerCompose.start(workbenchNifi.serviceName);
+            break;
+        }
+        case 'LDIO': {
+            dockerCompose.start(workbenchLdio.serviceName);
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+When('I pause the {string} workbench output', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.openWorkflow();
+            workbenchNifi.selectProcessor('InvokeHTTP');
+            workbenchNifi.pushStop();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.pause();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
+
+When('I resume the {string} workbench output', (workbench) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.openWorkflow();
+            workbenchNifi.selectProcessor('InvokeHTTP');
+            workbenchNifi.pushStart();
+            break;
+        }
+        case 'LDIO': {
+            workbenchLdio.resume();
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);

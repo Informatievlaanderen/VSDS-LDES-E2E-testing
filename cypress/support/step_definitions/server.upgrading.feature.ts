@@ -40,38 +40,6 @@ Then('the ldesmember collection is upgraded as expected', () => {
         [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
 })
 
-When('I pause the {string} workbench output', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            workbenchNifi.openWorkflow();
-            workbenchNifi.selectProcessor('InvokeHTTP');
-            workbenchNifi.pushStop();
-            break;
-        }
-        case 'LDIO': {
-            workbenchLdio.pause();
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
-})
-
-When('I resume the {string} workbench output', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            workbenchNifi.openWorkflow();
-            workbenchNifi.selectProcessor('InvokeHTTP');
-            workbenchNifi.pushStart();
-            break;
-        }
-        case 'LDIO': {
-            workbenchLdio.resume();
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
-})
-
 When('the old server is done processing', waitUntilMemberCountStable);
 
 When('I bring the old server down', () => {

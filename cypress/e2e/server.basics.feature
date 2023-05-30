@@ -7,7 +7,7 @@ Feature: LDES Server Basic Functionality
     And context 'tests/002.server-ingest-small-ldes' is started
     And I have aliased the pre-seeded simulator data set
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     Then the LDES contains 1016 members
 
     @ldio
@@ -26,7 +26,7 @@ Feature: LDES Server Basic Functionality
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'tests/007.server-ingest-large-ldes' is started
     And the LDES server is available
-    When I start the '<workbench>' workflow
+    When I start the '<workbench>' workbench
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 250 members
@@ -126,7 +126,7 @@ Feature: LDES Server Basic Functionality
     Given the members are stored in database 'iow'
     And context 'tests/030.server-allow-multi-collection' is started
     And the LDES server is available
-    And I start the '<workbench>' workflow
+    And I start the '<workbench>' workbench
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
     Then the 'device-models' root fragment contains 1 members

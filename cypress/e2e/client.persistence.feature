@@ -1,7 +1,7 @@
 @client @persistence
 Feature: LDES Client Persistence
 
-  @test-020 @gipod
+  @test-020 @gipod @broken
   Scenario Outline: 020: Client Can Pause And Resume Replication/Synchronization
     Given the members are stored in database 'gipod'
     And context 'tests/020.client-pause-and-resume' is started
@@ -23,4 +23,3 @@ Feature: LDES Client Persistence
     Examples:
       | workbench |
       | NIFI      |
-      

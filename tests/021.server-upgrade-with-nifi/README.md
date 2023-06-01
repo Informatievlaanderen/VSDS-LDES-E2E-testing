@@ -79,7 +79,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    docker compose up new-ldes-server -d
    docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldes-server$")
    ```
-   > **Note**: the  database has been fully migrated when the log file contains `Mongock has finished` at or near the end (press `CTRL-C` to end following the log file).
+   > **Note**: the  database has been fully migrated when the log file contains `Cancelled mongock lock daemon` at or near the end (press `CTRL-C` to end following the log file).
 
 4. Verify that the ldesfragment collection is structured as expected:
    ```bash

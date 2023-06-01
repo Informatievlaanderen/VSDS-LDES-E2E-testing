@@ -20,7 +20,7 @@ Scenario: Server imposes an order on ingested members
     ```bash
     docker compose up -d
     ```
-    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
     ```bash
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```

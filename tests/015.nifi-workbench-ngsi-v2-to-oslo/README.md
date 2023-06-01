@@ -10,7 +10,7 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
     ```bash
     docker compose up -d
     ```
-    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Mongock has finished`:
+    Please ensure that the LDES Servers are ready to ingest by following the container logs until you see the following message `Cancelled mongock lock daemon`:
     ```bash
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```

@@ -14,7 +14,7 @@ docker compose up -d
 > * for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 > * the GTFS2LDES service is assigned to an arbitrary profile named `delay-started` to prevent it from starting immediately.
 
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Mongock has finished`:
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
 ```bash
 docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```

@@ -51,7 +51,7 @@ This test uses a docker environment containing a data generator simulating the s
     docker compose up new-ldes-server -d
     docker logs --tail 1000 -f $(docker ps -q --filter "name=new-ldes-server$")
     ```
-    > **Note**: the  database has been fully migrated when the log file contains `Mongock has finished` at or near the end (press `CTRL-C` to end following the log file).
+    > **Note**: the  database has been fully migrated when the log file contains `Cancelled mongock lock daemon` at or near the end (press `CTRL-C` to end following the log file).
 
 4. Verify that members are available in LDES and check member count in the last fragment:
    ```bash

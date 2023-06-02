@@ -35,7 +35,7 @@ Scenario: Server imposes an order on ingested members
       curl -i -X POST \
         --url 'http://localhost:8080/mobility-hindrances' \
         -H "Content-Type: text/turtle" \
-        --data-binary "@./data/mobility-hindrance$member.ttl"
+        --data-binary "@./data/mobility-hindrances$member.ttl"
     done
    
     for member in {1..5}; do \

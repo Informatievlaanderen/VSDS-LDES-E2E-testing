@@ -2,8 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { server, testPartialPath } from "./common_step_definitions";
-import { Collection } from "cypress/types/lodash";
+import { server, testPartialPath, range } from "./common_step_definitions";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -55,9 +54,8 @@ When('I wait {int} seconds for the cache to expire', (timeout: number) => {
     cy.wait((timeout + 1) * 1000);
 })
 
-When('I ingest {int} {string}', (count, memberType) => {
-    const members = new Array(count).fill(1).map((_, i) => i + 1);
-    members.forEach(member => {
+When('I ingest {int} {string}', (count:number, memberType: string) => {
+    range(1, count).forEach(member => {
         const command = `curl -i -X POST --url "http://localhost:8080/${memberType}" -H "Content-Type: text/turtle" --data-binary "@${testPartialPath()}/data/${memberType}${member}.ttl"`;
         cy.log(command).then(() => cy.exec(command));
     });

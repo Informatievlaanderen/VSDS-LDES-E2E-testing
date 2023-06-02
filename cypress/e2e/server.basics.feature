@@ -146,3 +146,14 @@ Feature: LDES Server Basic Functionality
     Examples: 
       | workbench |
       | LDIO      |
+
+  @test-027 @ingestion @sequencing @iow @grar @focus
+  Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
+    Given context 'tests/027.server-generates-member-sequence' is started
+    And the LDES server is available
+    When I ingest 10 'mobility-hindrances'
+    And I ingest 5 'addresses'
+    Then the 'mobility-hindrances' LDES contains 10 members
+    And the 'addresses' LDES contains 5 members
+    And all 10 'mobility-hindrances' have a unique sequence number
+    And all 5 'addresses' have a unique sequence number

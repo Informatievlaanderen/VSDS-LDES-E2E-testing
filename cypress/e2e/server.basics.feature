@@ -147,7 +147,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | LDIO      |
 
-  @test-027 @ingestion @sequencing @iow @grar @focus
+  @test-027 @ingestion @sequencing @iow @grar
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
     Given context 'tests/027.server-generates-member-sequence' is started
     And the LDES server is available

@@ -4,7 +4,6 @@ import { EventStream, Fragment } from '../ldes';
 import { CanCheckAvailability } from './interfaces';
 
 export class LdesServer implements CanCheckAvailability {
-
     public static ApplicationStarted = 'Started Application in';
     public static DatabaseUpgradeFinished = 'Cancelled mongock lock daemon';
 
@@ -54,6 +53,10 @@ export class LdesServer implements CanCheckAvailability {
                 expect(url).not.to.be.undefined;
                 return new Fragment(url).visit();
             });
+    }
+
+    createSnapshot(collection: string) {
+        return cy.request({method: 'POST', url: `http://localhost:8080/admin/api/v1/${collection}/snapshots`});
     }
 
 }

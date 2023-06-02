@@ -44,6 +44,10 @@ export function testPartialPath() {
     return testContext && testContext.testPartialPath;
 }
 
+export function testDatabase() {
+    return testContext && testContext.database;
+}
+
 export function ensureRelationCount(fragment: Fragment, amount: number) {
     return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
 }
@@ -51,6 +55,10 @@ export function ensureRelationCount(fragment: Fragment, amount: number) {
 export function setTargetUrl(targeturl: string) {
     const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
     return cy.log(command).exec(command, { log: true })
+}
+
+export function range(start: number, end: number) {
+    return new Array(end - start + 1).fill(start).map((_, i) => i + 1);
 }
 
 // Given stuff

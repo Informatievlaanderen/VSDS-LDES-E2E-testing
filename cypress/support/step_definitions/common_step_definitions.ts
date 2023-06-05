@@ -115,8 +115,13 @@ Given('I have configured the {string} as {string}', (property: string, value: st
     setAdditionalEnvironmentSetting(property, value);
 })
 
+// TODO: remove obsolete step
 Given('the LDES server is available', () => {
     return server.waitAvailable();
+})
+
+Given('the LDES server is available and configured', () => {
+    return server.waitAvailable().then(server => server.sendConfiguration(testContext.testPartialPath));
 })
 
 Given('the LDES Server Simulator is available', () => {

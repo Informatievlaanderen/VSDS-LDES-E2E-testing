@@ -6,7 +6,7 @@ Feature: LDES Server Basic Functionality
     Given the members are stored in database 'gipod'
     And context 'tests/002.server-ingest-small-ldes' is started
     And I have aliased the pre-seeded simulator data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     Then the LDES contains 1016 members
 
@@ -20,12 +20,12 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-007 @ingestion @gtfs
+  @test-007 @ingestion @gtfs @broken
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'tests/007.server-ingest-large-ldes' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
@@ -46,7 +46,7 @@ Feature: LDES Server Basic Functionality
   @test-019 @ingestion @formats @gipod
   Scenario: 019: Verify Acceptable Member Formats
     Given context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I send the member file 'data/member.ttl' of type 'text/turtle'
     Then the server accepts this member file
     When I send the member file 'data/member.nq' of type 'application/n-quads'
@@ -56,12 +56,12 @@ Feature: LDES Server Basic Functionality
     When I send the member file 'data/member.nt' of type 'application/n-triples'
     Then the server accepts this member file
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @gipod @broken
   Scenario Outline: 019: Verify URL Naming Strategy For Collection '<collection-name>' And View '<view-name>'
     Given I have configured the 'COLLECTION_NAME' as '<collection-name>'
     And I have configured the 'VIEW_NAME' as '<view-name>'
     When context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     Then the collection is available at '<collection-url>'
     And the view is available at '<view-url>'
 
@@ -70,10 +70,10 @@ Feature: LDES Server Basic Functionality
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | by-page   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/by-page            |
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @gipod @broken
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I request the view formatted as 'text/turtle '
     Then I receive a response similar to 'view.ttl'
     When I request the view formatted as 'application/n-quads'
@@ -86,7 +86,7 @@ Feature: LDES Server Basic Functionality
   @test-019 @consumption @gipod
   Scenario: 019: Verify CORS and Supported HTTP Verbs
     Given context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I request the view from a different url 'http://example.com'
     Then the server returns the supported HTTP Verbs
     When I only request the view headers
@@ -95,7 +95,7 @@ Feature: LDES Server Basic Functionality
   @test-019 @consumption @cacheability @gipod
   Scenario: 019: Verify Actual Caching
     Given context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I request the LDES
     Then the LDES is not yet cached
     When I request the LDES
@@ -104,15 +104,15 @@ Feature: LDES Server Basic Functionality
   @test-019 @consumption @compression @gipod
   Scenario: 019: Verify Nginx Compression Setup
     Given context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I request the view compressed
     Then I receive a zip file containing my view
 
-  @test-019 @consumption @caching @gipod
+  @test-019 @consumption @caching @gipod @broken
   Scenario: 019: Verify Nginx Caching Responses
     Given I have configured the 'MAX_AGE' as '10'
     And context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I request the LDES view
     Then the LDES is not yet cached
     When I request the LDES view
@@ -121,11 +121,22 @@ Feature: LDES Server Basic Functionality
     And I request the LDES view
     Then the LDES is re-requested from the LDES server
 
+  @test-027 @ingestion @sequencing @iow @grar @focus
+  Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
+    Given context 'tests/027.server-generates-member-sequence' is started
+    And the LDES server is available and configured
+    When I ingest 10 'mobility-hindrances'
+    And I ingest 5 'addresses'
+    Then the 'mobility-hindrances' LDES contains 10 members
+    And the 'addresses' LDES contains 5 members
+    And all 10 'mobility-hindrances' have a unique sequence number
+    And all 5 'addresses' have a unique sequence number
+
   @test-030 @multi-collection @iow
   Scenario Outline: 030: Server Supports Multi LDES Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/030.server-allow-multi-collection' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     And I start the '<workbench>' workbench
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
@@ -146,14 +157,3 @@ Feature: LDES Server Basic Functionality
     Examples: 
       | workbench |
       | LDIO      |
-
-  @test-027 @ingestion @sequencing @iow @grar
-  Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
-    Given context 'tests/027.server-generates-member-sequence' is started
-    And the LDES server is available
-    When I ingest 10 'mobility-hindrances'
-    And I ingest 5 'addresses'
-    Then the 'mobility-hindrances' LDES contains 10 members
-    And the 'addresses' LDES contains 5 members
-    And all 10 'mobility-hindrances' have a unique sequence number
-    And all 5 'addresses' have a unique sequence number

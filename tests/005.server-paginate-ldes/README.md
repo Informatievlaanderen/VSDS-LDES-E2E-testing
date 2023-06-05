@@ -21,6 +21,12 @@ So, the total data set contains 617 items. The LDES server is configured to crea
     ```
     Press `CTRL-C` to stop following the log.
 
+    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+    ```
+    chmod +x ./config/seed.sh
+    sh -c "cd ./config && ./seed.sh"
+    ```
+
 2. Seed the data set to the [simulator](http://localhost:9011/) and [alias it](./create-alias.json):
     ```bash
     curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/alfa.jsonld'

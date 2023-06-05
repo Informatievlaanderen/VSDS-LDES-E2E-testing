@@ -11,28 +11,11 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-server-order}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230417t0740}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=test
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_0_COLLECTIONNAME=mobility-hindrances
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
-      - COLLECTIONS_0_DEFAULT_VIEW=true
-      - COLLECTIONS_1_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_1_COLLECTIONNAME=addresses
-      - COLLECTIONS_1_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_1_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_1_MEMBERTYPE=https://data.vlaanderen.be/ns/adres#Adres
-      - COLLECTIONS_1_DEFAULT_VIEW=true
     volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080

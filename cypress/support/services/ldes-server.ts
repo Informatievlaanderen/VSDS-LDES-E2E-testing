@@ -13,7 +13,7 @@ export class LdesServer implements CanCheckAvailability {
         return this._serviceName || 'ldes-server';
     }
 
-    private isReady(containerId: string, message?: string, occurences: number = 2 ) {
+    private isReady(containerId: string, message?: string, occurences: number = 1 ) {
         return cy.exec(`docker logs ${containerId}`)
             .then(result => {
                 const regex = new RegExp(message || LdesServer.DatabaseUpgradeFinished, "g");
@@ -21,11 +21,11 @@ export class LdesServer implements CanCheckAvailability {
             });
     }
 
-    waitAvailable(message?: string, occurences: number = 2) {
+    waitAvailable(message?: string, occurences: number = 1) {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message, occurences), { timeout: 120000, interval: 5000 });
+                return cy.waitUntil(() => this.isReady(containerId, message, occurences), { timeout: 120000, interval: 5000 }).then(() => this);
             });
     }
 
@@ -57,6 +57,11 @@ export class LdesServer implements CanCheckAvailability {
 
     createSnapshot(collection: string) {
         return cy.request({method: 'POST', url: `http://localhost:8080/admin/api/v1/${collection}/snapshots`});
+    }
+
+    sendConfiguration(testPartialPath: string): any {
+        const cmd = `cd ${testPartialPath}/config && ./seed.sh`;
+        cy.log(cmd).exec(cmd).its('code').should('eq', 0);
     }
 
 }

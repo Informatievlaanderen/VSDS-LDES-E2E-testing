@@ -37,7 +37,8 @@ services:
       - SPRING_DATA_MONGODB_HOST=ldes-mongodb
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
+      - LDESSERVER_HOSTNAME=http://localhost:8080
+
       - COLLECTIONS_0_COLLECTIONNAME=devices
       - COLLECTIONS_0_SHAPE=
       - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime

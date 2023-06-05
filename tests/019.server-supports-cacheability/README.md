@@ -39,6 +39,12 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```
 Press `CTRL-C` to stop following the log.
 
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+```
+chmod +x ./config/seed.sh
+sh -c "cd ./config && ./seed.sh"
+```
+
 ### Verify URL Naming Strategy
 As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/mobility-hindrances and the view at http://localhost:8080/mobility-hindrances/by-time, or using bash commands:
 ```bash

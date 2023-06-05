@@ -27,6 +27,12 @@ Please ensure that the LDES Server is ready to ingest by following the container
     ```
 Press `CTRL-C` to stop following the log.
 
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+```
+chmod +x ./config/seed.sh
+sh -c "cd ./config && ./seed.sh"
+```
+
 ## Test Execution
 1. Ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):
     ```bash

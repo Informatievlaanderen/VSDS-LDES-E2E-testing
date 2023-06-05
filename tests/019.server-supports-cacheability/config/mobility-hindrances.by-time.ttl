@@ -1,0 +1,13 @@
+@prefix tree: <https://w3id.org/tree#>.
+@prefix server: <http://example.org/> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@base <http://localhost:8080> .
+
+</mobility-hindrances/by-time> tree:viewDescription [
+   server:fragmentationStrategy [
+		a server:Fragmentation ;
+		server:name "timebased" ;
+		server:memberLimit "2"^^xsd:integer ;
+	] ;
+] .

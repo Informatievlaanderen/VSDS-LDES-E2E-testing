@@ -18,6 +18,12 @@ In this test we recreate the same scenario but host all three LDES collections o
     ```
     Press `CTRL-C` to stop following each log.
 
+    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+    ```
+    chmod +x ./config/seed.sh
+    sh -c "cd ./config && ./seed.sh"
+    ```
+
 2. Start the workbench:
     ```bash
     docker compose up ldio-workbench -d

@@ -9,6 +9,6 @@
     server:fragmentationStrategy [
 		a server:Fragmentation ;
 		server:name "pagination" ;
-		server:memberLimit "100"^^xsd:integer ;
+		server:memberLimit "250"^^xsd:integer ;
 	] ;
 ] .

@@ -23,7 +23,7 @@ The Docker compose context is setup to require no custom settings. If needed, co
 * COLLECTION_NAME (base URL for ingesting/serving the collection, default: `mobility-hindrances`)
 * VIEW_NAME (name of the view, used for serving the view, default: `by-time`)
 * MEMBER_LIMIT (maximum number of members per fragment, default: `2`)
-* MAX_AGE (mutable time-to-live, allowed cache time in seconds for mutable fragments, default: `60`)
+* MAX_AGE (mutable time-to-live, allowed cache time in seconds for mutable fragments, default: `10`)
 * MAX_AGE_IMMUTABLE (immutable time-to-live, allowed cache time in seconds for immutable fragments, default: `604800`)
 
 ## Test Execution and Verification

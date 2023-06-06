@@ -111,11 +111,11 @@ export function setAdditionalEnvironmentSetting(property: string, value: string)
     testContext.additionalEnvironmentSetting[property] = value;
 }
 
+// TODO: remove obsolete step
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
     setAdditionalEnvironmentSetting(property, value);
 })
 
-// TODO: remove obsolete step
 Given('the LDES server is available', () => {
     return server.waitAvailable();
 })

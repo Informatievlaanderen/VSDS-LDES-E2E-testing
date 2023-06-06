@@ -105,7 +105,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-@test-009 @multi-level @gipod @broken
+@test-009 @multi-level @gipod @github-704
   Scenario Outline: 009: Server Can Multi-level Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
@@ -133,7 +133,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-@test-010 @multi-view @gipod @broken
+@test-010 @multi-view @gipod
   Scenario Outline: 010: Server Allows Multiple Views in an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/010.server-allow-multi-view-ldes' is started
@@ -143,7 +143,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
-    And the LDES contains 13 fragments
+    And the LDES contains 9 fragments
     Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the time-based fragmentation exists
@@ -159,7 +159,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-@test-011 @geospatial @gtfs @broken
+@test-011 @geospatial @gtfs @github-704
   Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started

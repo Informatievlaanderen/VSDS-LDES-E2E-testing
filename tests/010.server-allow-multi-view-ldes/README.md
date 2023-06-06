@@ -56,12 +56,11 @@ sh -c "cd ./config && ./seed.sh"
     ```bash
     curl http://localhost:9019/gipod/ldesmember
     ```
-    and the `ldesfragment` document collection contains 13 fragments (execute repeatedly):
+    and the `ldesfragment` document collection contains 9 fragments (execute repeatedly):
     * the real root/redirection fragment, 
     * view 1:
       * the geo-spatial root fragment 0/0/0, 
       * four tile fragments
-      * four timebased fragments because the fragment member count is configured to hold at most one hunderd members
     * view 2:
       * the time-based root,
       * two timebased fragments because the fragment member count is configured to hold at most one hunderd members 

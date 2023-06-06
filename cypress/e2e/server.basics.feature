@@ -20,10 +20,9 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-007 @ingestion @gtfs @broken
+  @test-007 @ingestion @gtfs 
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
-    And I have configured the 'VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT' as '250'
     And context 'tests/007.server-ingest-large-ldes' is started
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
@@ -56,12 +55,12 @@ Feature: LDES Server Basic Functionality
     When I send the member file 'data/member.nt' of type 'application/n-triples'
     Then the server accepts this member file
 
-  @test-019 @consumption @gipod @broken
+  @test-019 @consumption @gipod
   Scenario Outline: 019: Verify URL Naming Strategy For Collection '<collection-name>' And View '<view-name>'
-    Given I have configured the 'COLLECTION_NAME' as '<collection-name>'
-    And I have configured the 'VIEW_NAME' as '<view-name>'
-    When context 'tests/019.server-supports-cacheability' is started
-    And the LDES server is available and configured
+    Given context 'tests/019.server-supports-cacheability' is started
+    And the LDES server is available
+    When I configure a LDES named '<collection-name>'
+    And I configure a view named '<view-name>' for LDES '<collection-name>'
     Then the collection is available at '<collection-url>'
     And the view is available at '<view-url>'
 
@@ -108,10 +107,9 @@ Feature: LDES Server Basic Functionality
     When I request the view compressed
     Then I receive a zip file containing my view
 
-  @test-019 @consumption @caching @gipod @broken
+  @test-019 @consumption @caching @gipod
   Scenario: 019: Verify Nginx Caching Responses
-    Given I have configured the 'MAX_AGE' as '10'
-    And context 'tests/019.server-supports-cacheability' is started
+    Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
     When I request the LDES view
     Then the LDES is not yet cached
@@ -121,7 +119,7 @@ Feature: LDES Server Basic Functionality
     And I request the LDES view
     Then the LDES is re-requested from the LDES server
 
-  @test-027 @ingestion @sequencing @iow @grar @focus
+  @test-027 @ingestion @sequencing @iow @grar
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
     Given context 'tests/027.server-generates-member-sequence' is started
     And the LDES server is available and configured

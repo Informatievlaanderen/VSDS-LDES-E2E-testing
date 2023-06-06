@@ -14,7 +14,3 @@
 		server:fragmenterProperty "http://www.opengis.net/ont/geosparql#asWKT" ;
 	] ;
 ] .
-
-		# sub-level:
-		# server:name "timebased" ;
-		# server:memberLimit "100"^^xsd:integer ;

@@ -37,6 +37,8 @@ services:
       - ../../data/epsg:/tmp/Databases:rw
     networks:
       - ldes
+    ports:
+      - 8081:8080 # needed for admin API
     depends_on:
       - ldes-mongodb
 

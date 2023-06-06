@@ -27,8 +27,8 @@ Then('the LDES server can ingest {int} linked connections within {int} seconds c
         const timer = new PerformanceTimer();
         let previousSentCount = 0;
         cy.waitUntil(() => validateSentCount()
-            .then(sentCount => cy.log(`Rate   : ${(sentCount-previousSentCount) * 1000/timer.lap}`).then(() => previousSentCount = sentCount))
-            .then(sentCount => cy.log(`Average: ${sentCount * 1000/timer.end}`).then(() => sentCount))
+            .then(sentCount => cy.log(`Last ingest rate : ${(sentCount-previousSentCount) * 1000/timer.lap} / second`).then(() => previousSentCount = sentCount))
+            .then(sentCount => cy.log(`Running average  : ${sentCount * 1000/timer.end} / second`).then(() => sentCount))
             .then(sentCount => sentCount >= count),
-        { timeout: seconds * 1000, interval: interval * 1000 });
+        { timeout: seconds * 1000, interval: interval * 1000 }).then(() => cy.task('log', `\tAverage ingest rate: ${previousSentCount * 1000/timer.end}`));
     })

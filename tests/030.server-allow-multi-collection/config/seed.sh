@@ -1,5 +1,5 @@
 #!/bin/sh
-curl -X PUT 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./device-models.ttl'
+curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./device-models.ttl'
 if [ $? != 0 ] 
     then exit $? 
 fi
@@ -9,7 +9,7 @@ if [ $? != 0 ]
     then exit $? 
 fi
 
-curl -X PUT 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./devices.ttl'
+curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./devices.ttl'
 if [ $? != 0 ] 
     then exit $? 
 fi
@@ -19,7 +19,7 @@ if [ $? != 0 ]
     then exit $? 
 fi
 
-curl -X PUT 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./water-quality-observations.ttl'
+curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./water-quality-observations.ttl'
 if [ $? != 0 ] 
     then exit $? 
 fi

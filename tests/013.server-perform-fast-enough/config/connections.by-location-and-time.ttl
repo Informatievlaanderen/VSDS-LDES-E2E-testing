@@ -7,7 +7,7 @@
 
 </connections/by-location-and-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy [
+    server:fragmentationStrategy ([
 		a server:Fragmentation ;
 		server:name "geospatial" ;
 		server:projection "noop" ;

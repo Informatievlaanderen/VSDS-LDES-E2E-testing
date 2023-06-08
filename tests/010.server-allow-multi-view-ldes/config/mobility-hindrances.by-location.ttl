@@ -6,11 +6,11 @@
 
 </mobility-hindrances/by-location-and-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy [
+    server:fragmentationStrategy ([
 		a server:Fragmentation ;
 		server:name "geospatial" ;
 		server:projection "lambert72" ;
 		server:maxZoomLevel "15"^^xsd:integer ;
 		server:fragmenterProperty "http://www.opengis.net/ont/geosparql#asWKT" ;
-	] ;
+	]) ;
 ] .

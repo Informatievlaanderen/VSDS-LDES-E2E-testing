@@ -6,10 +6,10 @@
 
 </addresses/by-name> a tree:Node ; 
 	tree:viewDescription [ a tree:ViewDescription ;
-		server:fragmentationStrategy [
+		server:fragmentationStrategy ([
 			a server:Fragmentation ;
 			server:name "substring" ;
 			server:memberLimit "10"^^xsd:integer ;
 			server:fragmenterProperty "https://data.vlaanderen.be/ns/adres#volledigAdres" ;
-		] ;
+		]) ;
 	] .

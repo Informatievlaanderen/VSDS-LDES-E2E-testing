@@ -7,11 +7,11 @@
 
 </connections/by-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy [
+    server:fragmentationStrategy ([
 		a server:Fragmentation ;
 		server:name "timebased" ;
 		server:memberLimit "100"^^xsd:integer ;
-	] ;
+	]) ;
 	ldes:retentionPolicy [
     	a ldes:DurationAgoPolicy  ;
         tree:value "P3D"^^xsd:duration ;

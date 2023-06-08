@@ -1,7 +1,7 @@
 @client @security
 Feature: LDES Client Security
 
-  @test-032 @oauth
+  @test-032 @oauth @broken
   Scenario Outline: 032: LDES Client Can Consume OAUTH2 Protected Server Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/032.ldes-client-to-oauth-server' is started

@@ -1,4 +1,4 @@
-@server @snapshotting
+@server @snapshotting @upgrading
 Feature: LDES Server Snapshot Functionality
 
   @test-025 @iow

@@ -37,7 +37,7 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 Press `CTRL-C` to stop following the log.
 
 > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
-```
+```bash
 chmod +x ./config/seed.sh
 sh -c "cd ./config && ./seed.sh"
 ```
@@ -73,7 +73,7 @@ sh -c "cd ./config && ./seed.sh"
 
 5. Verify that the LDES is substring fragmented: SubstringRelation
    ```bash
-   curl -s 'http://localhost:8080/mobility-hindrances/by-location?substring=' | grep "substring="
+   curl -s 'http://localhost:8080/addresses/by-name?substring=' | grep "substring="
    ```
 
 ## Test Teardown

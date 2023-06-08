@@ -105,7 +105,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-@test-009 @multi-level @gipod @github-704
+@test-009 @multi-level @gipod
   Scenario Outline: 009: Server Can Multi-level Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/009.server-multi-level-fragment-ldes' is started
@@ -159,7 +159,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-@test-011 @geospatial @gtfs @github-704
+@test-011 @geospatial @gtfs
   Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started

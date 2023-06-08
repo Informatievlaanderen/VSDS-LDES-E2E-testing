@@ -6,15 +6,17 @@
 
 </addresses/by-location-and-time> a tree:Node ; 
 	tree:viewDescription [ a tree:ViewDescription ;
-		server:fragmentationStrategy ([
+		server:fragmentationStrategy (
+		[
 			a server:Fragmentation ;
 			server:name "geospatial" ;
 			server:projection "noop" ;
 			server:fragmenterProperty "http://www.opengis.net/ont/geosparql#asGML" ;
 			server:maxZoomLevel "13"^^xsd:integer ;
+		]
+		[
+            a server:Fragmentation ;
+		    server:name "timebased" ;
+		    server:memberLimit "10"^^xsd:integer ;
 		]) ;
 	] .
-	
-			# sub-level:
-			# server:name "timebased" ;
-			# server:memberLimit "10"^^xsd:integer ;

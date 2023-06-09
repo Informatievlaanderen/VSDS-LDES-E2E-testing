@@ -83,11 +83,11 @@ When('I configure a LDES named {string}', (collectionName: string) => {
     cy.fixture('test-019/templates/ldes.ttl').then((content: string) => {
         const body = content.replace('{collectionName}', collectionName);
         cy.request({
-            method: 'PUT', 
+            method: 'POST',
             url: 'http://localhost:8080/admin/api/v1/eventstreams', 
             headers: {'Content-Type': 'text/turtle'},
             body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
+        }).then(response => {expect(response.status).to.equal(201);});
     });
 })
 

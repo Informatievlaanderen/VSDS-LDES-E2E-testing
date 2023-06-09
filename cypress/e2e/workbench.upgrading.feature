@@ -1,11 +1,11 @@
-@workbench @upgrading 
+@workbench
 Feature: LDES Workbench Upgrading
 
   @iow
   Scenario Outline: <test-number>: Upgrade LDES '<workbench>' Workbench
     Given the members are stored in database 'iow_devices'
     And context 'tests/<test-number>.<test-name>' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     And the old '<workbench>' workbench is available
     
     When I set the TARGETURL to the old '<workbench>' workbench
@@ -28,7 +28,7 @@ Feature: LDES Workbench Upgrading
       | workbench | test-number | test-name              |
       | NIFI      | 023         | nifi-workbench-upgrade |
   
-    @test-026 @ldio
+    @test-026 @ldio @upgrading
     Examples:
       | workbench | test-number | test-name              |
       | LDIO      | 026         | ldio-workbench-upgrade |

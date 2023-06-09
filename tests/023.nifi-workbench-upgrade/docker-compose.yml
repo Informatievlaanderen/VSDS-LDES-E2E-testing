@@ -56,22 +56,12 @@ services:
     container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_0_COLLECTIONNAME=devices
-      - COLLECTIONS_0_SHAPE=
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - COLLECTIONS_0_VIEWS_0_NAME=by-time
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=100
+#      - COLLECTIONS_0_VIEWS_0_NAME=by-time
+#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=100
     volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080

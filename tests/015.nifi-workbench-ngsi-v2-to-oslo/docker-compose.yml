@@ -41,7 +41,7 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server
+    container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp

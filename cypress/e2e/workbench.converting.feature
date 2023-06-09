@@ -1,11 +1,11 @@
 @workbench @converting
 Feature: LDES Workbench Conversions
 
-  @test-014 @ngsi @iow @broken
+  @test-014 @ngsi @iow
   Scenario Outline: 014: Can Convert NGSI-v2 to NGSI-LD Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/014.workbench-ngsi-v2-to-ngsi-ld' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     And I start the '<workbench>' workbench
 
     When I upload the data file 'device-model' to the workbench

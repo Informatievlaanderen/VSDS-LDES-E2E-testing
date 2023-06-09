@@ -2,6 +2,7 @@
 import N3 = require('n3');
 import { Member } from './member';
 import { mimeTypes, tree } from './rdf-common';
+import { isomorphic } from "rdf-isomorphic";
 
 export interface VisitOptions {
     mimeType: string,
@@ -38,6 +39,11 @@ export abstract class UrlResponse {
         const parser = new N3.Parser({ format: mimeType });
         const quads = parser.parse(content);
         return new N3.Store(quads);
+    }
+
+    private isIsomorphic(contentA: string, contentB: string, mimeType: string): boolean {
+        const parser = new N3.Parser({ format: mimeType });
+        return isomorphic(parser.parse(contentA), parser.parse(contentB))
     }
 
     private formatRdf(store: N3.Store, mimeType: string): string {
@@ -87,7 +93,7 @@ export abstract class UrlResponse {
         if (mimeType === mimeTypes.jsonld) {
             expect(this.roundTripJson(this.body)).to.equal(this.roundTripJson(content));
         } else {
-            expect(this.roundTripRdf(this.body, mimeType)).to.equal(this.roundTripRdf(content as string, mimeType));
+            expect(this.isIsomorphic(this.body, content as string, mimeType)).true
         }
     }
 

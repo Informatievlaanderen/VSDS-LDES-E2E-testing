@@ -9,8 +9,6 @@
 @base <http://localhost:8080> .
 
 </mobility-hindrances> a ldes:EventStream ;
-	ldes:timestampPath prov:generatedAtTime ;
-	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
 	tree:shape [ a sh:NodeShape ] ;
 	server:hasDefaultView "false"^^xsd:boolean .

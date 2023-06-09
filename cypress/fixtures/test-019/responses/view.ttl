@@ -8,3 +8,5 @@ mobility-hindrances:by-time
 <http://localhost:8080/mobility-hindrances>
         a          ldes:EventStream ;
         tree:view  mobility-hindrances:by-time .
+
+[ a  shacl:NodeShape ] .

@@ -1,5 +1,5 @@
 #!/bin/sh
-curl -X PUT 'http://localhost:8081/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./devices.ttl'
+curl -X POST 'http://localhost:8081/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./devices.ttl'
 if [ $? != 0 ] 
     then exit $? 
 fi

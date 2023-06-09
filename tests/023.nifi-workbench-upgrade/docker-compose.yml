@@ -57,9 +57,6 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
-#      - COLLECTIONS_0_VIEWS_0_NAME=by-time
-#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-#      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=100
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw

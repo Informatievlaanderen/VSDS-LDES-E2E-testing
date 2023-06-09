@@ -28,7 +28,7 @@ Feature: LDES Workbench Upgrading
       | workbench | test-number | test-name              |
       | NIFI      | 023         | nifi-workbench-upgrade |
   
-    @test-026 @ldio @upgrading
+    @test-026 @ldio
     Examples:
       | workbench | test-number | test-name              |
       | LDIO      | 026         | ldio-workbench-upgrade |

@@ -56,8 +56,12 @@ A schematic overview is given below:
     docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
     ```
     Press `CTRL-C` to stop following the log.
-    
-    > **Note**: it may take a minute for the LDES Server to start.
+
+   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+   ```bash
+   chmod +x ./config/seed.sh
+   sh -c "cd ./config && ./seed.sh"
+   ```
 
 2. Ingest the small data set:
     ```bash

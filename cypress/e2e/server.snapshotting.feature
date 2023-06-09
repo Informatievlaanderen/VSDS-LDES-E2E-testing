@@ -1,11 +1,11 @@
-@server @snapshotting @upgrading
+@server @snapshotting
 Feature: LDES Server Snapshot Functionality
 
   @test-025 @iow
   Scenario Outline: 025: Server Can Create Snapshot
     Given the members are stored in database 'test'
     And context 'tests/025.server-snapshot-ldes' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     And I ingest a '<dataset-size>' dataset with <initial-member-count> members
     And the LDES contains <initial-member-count> members
     And the 'mobility-hindrances' contains <initial-fragment-count> fragments

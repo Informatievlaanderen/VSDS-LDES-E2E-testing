@@ -13,20 +13,9 @@ services:
     container_name: ${USECASE_NAME:-ldes-server-snapshot}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MONGOCK_MIGRATIONSCANPACKAGE_1=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=test
-      - COLLECTIONS_0_HOSTNAME=http://localhost:${LDES_SERVER_PORT:-8080}
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_COLLECTIONNAME=mobility-hindrances
-      - COLLECTIONS_0_MEMBERTYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
-      - COLLECTIONS_0_DEFAULT_VIEW=true
     volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080
@@ -36,7 +25,7 @@ services:
       - ldes-mongodb
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-gtfs-multilevel-fragment-ldes}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-ldes-server-snapshot}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false

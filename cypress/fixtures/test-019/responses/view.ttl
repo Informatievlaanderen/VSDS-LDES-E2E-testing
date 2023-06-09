@@ -1,6 +1,7 @@
 @prefix ldes:                <https://w3id.org/ldes#> .
 @prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
 @prefix tree:                <https://w3id.org/tree#> .
+@prefix shacl:               <http://www.w3.org/ns/shacl#> .
 
 mobility-hindrances:by-time
         a       tree:Node .

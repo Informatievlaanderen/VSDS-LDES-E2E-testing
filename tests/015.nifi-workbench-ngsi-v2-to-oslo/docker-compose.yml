@@ -41,47 +41,12 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-server
+    container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=iow
-      - SPRING_WEB_RESOURCES_STATIC_LOCATIONS=file:/tmp/static
-
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_0_COLLECTIONNAME=devices
-      - COLLECTIONS_0_SHAPE=
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - COLLECTIONS_0_VIEWS_0_NAME=by-time
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${DEVICES_LDES_SERVER_MEMBERLIMIT:-10}
-
-      - COLLECTIONS_1_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_1_COLLECTIONNAME=device-models
-      - COLLECTIONS_1_SHAPE=
-      - COLLECTIONS_1_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_1_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_1_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
-      - COLLECTIONS_1_VIEWS_0_NAME=by-time
-      - COLLECTIONS_1_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_1_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${MODELS_LDES_SERVER_MEMBERLIMIT:-10}
-
-      - COLLECTIONS_2_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_2_COLLECTIONNAME=water-quality-observations
-      - COLLECTIONS_2_SHAPE=
-      - COLLECTIONS_2_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_2_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_2_MEMBERTYPE=http://www.w3.org/ns/sosa/ObservationCollection
-      - COLLECTIONS_2_VIEWS_0_NAME=by-time
-      - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - COLLECTIONS_2_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=${OBSERVATIONS_LDES_SERVER_MEMBERLIMIT:-25}
     volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080

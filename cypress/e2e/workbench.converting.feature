@@ -1,7 +1,7 @@
-@workbench @converting @broken
+@workbench @converting
 Feature: LDES Workbench Conversions
 
-  @test-014 @ngsi @iow
+  @test-014 @ngsi @iow @broken
   Scenario Outline: 014: Can Convert NGSI-v2 to NGSI-LD Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/014.workbench-ngsi-v2-to-ngsi-ld' is started
@@ -38,7 +38,7 @@ Feature: LDES Workbench Conversions
   Scenario Outline: <test-number>: Can Convert NGSI-v2 to OSLO Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/<test-number>.<test-name>' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     And the '<workbench>' workbench is available
     
     When I upload the data file 'device-model' to the workbench

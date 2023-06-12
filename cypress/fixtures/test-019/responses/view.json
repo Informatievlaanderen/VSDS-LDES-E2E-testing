@@ -1,0 +1,26 @@
+{
+  "@graph": [
+    {
+      "@id": "mobility-hindrances:by-time",
+      "@type": "tree:Node"
+    },
+    {
+      "@id": "http://localhost:8080/mobility-hindrances",
+      "tree:view": {
+        "@id": "mobility-hindrances:by-time"
+      },
+      "@type": "ldes:EventStream"
+    },
+    {
+      "@id": "_:b0",
+      "@type": "shacl:NodeShape"
+    }
+  ],
+  "@context": {
+    "shacl": "http://www.w3.org/ns/shacl#",
+    "tree": "https://w3id.org/tree#",
+    "ldes": "https://w3id.org/ldes#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
+  }
+}

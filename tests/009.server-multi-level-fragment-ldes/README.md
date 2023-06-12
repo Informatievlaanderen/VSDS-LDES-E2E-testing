@@ -14,11 +14,18 @@ Run all systems except the workflow by executing the following (bash) command:
 ```bash
 docker compose up -d
 ```
+
 Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
-    ```bash
-    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
-    ```
+```bash
+docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+```
 Press `CTRL-C` to stop following the log.
+
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+```
+chmod +x ./config/seed.sh
+sh -c "cd ./config && ./seed.sh"
+```
 
 ## Test Execution
 1. Ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):

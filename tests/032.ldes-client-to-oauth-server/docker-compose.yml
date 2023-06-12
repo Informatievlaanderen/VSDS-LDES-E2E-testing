@@ -31,25 +31,14 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_devices
-      - COLLECTIONS_0_HOSTNAME=http://localhost:8080
-      - COLLECTIONS_0_COLLECTIONNAME=devices
-      - COLLECTIONS_0_SHAPE=
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
-      - COLLECTIONS_0_VIEWS_0_NAME=by-page
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=1000
     volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     networks:
       - ldes
+    ports:
+      - 8081:8080 # needed for admin API
     depends_on:
       - ldes-mongodb
 

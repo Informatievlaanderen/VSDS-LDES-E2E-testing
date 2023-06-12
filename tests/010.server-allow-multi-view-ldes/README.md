@@ -27,6 +27,12 @@ Please ensure that the LDES Server is ready to ingest by following the container
     ```
 Press `CTRL-C` to stop following the log.
 
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+```
+chmod +x ./config/seed.sh
+sh -c "cd ./config && ./seed.sh"
+```
+
 ## Test Execution
 1. Ingest the data set ([single file containing six members](./data/six-members.jsonld)) and [alias it](./create-alias.json):
     ```bash
@@ -50,12 +56,11 @@ Press `CTRL-C` to stop following the log.
     ```bash
     curl http://localhost:9019/gipod/ldesmember
     ```
-    and the `ldesfragment` document collection contains 13 fragments (execute repeatedly):
+    and the `ldesfragment` document collection contains 9 fragments (execute repeatedly):
     * the real root/redirection fragment, 
     * view 1:
       * the geo-spatial root fragment 0/0/0, 
       * four tile fragments
-      * four timebased fragments because the fragment member count is configured to hold at most one hunderd members
     * view 2:
       * the time-based root,
       * two timebased fragments because the fragment member count is configured to hold at most one hunderd members 

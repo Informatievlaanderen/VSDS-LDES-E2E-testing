@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
 import { ensureRelationCount, server, workbenchNifi } from "./common_step_definitions";
 

@@ -4,7 +4,7 @@
   "description": "Automated E2E tests using cypress and cucumber",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run -e tags=\"not @broken\"",
+    "test": "cypress run -e tags=\"not (@broken)\"",
     "test:no-nifi": "cypress run -e tags=\"not (@nifi or @broken)\"",
     "test:no-ldio": "cypress run -e tags=\"not (@ldio or @broken)\"",
     "open": "cypress open"
@@ -33,7 +33,8 @@
     "cypress-wait-until": "^1.7.2",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.4",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "rdf-isomorphic": "1.3.1"
   },
   "dependencies": {
     "n3": "^1.16.4",

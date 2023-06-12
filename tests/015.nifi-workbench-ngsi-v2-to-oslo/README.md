@@ -16,6 +16,12 @@ The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done
     ```
     Press `CTRL-C` to stop following each log.
 
+   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+   ```bash
+   chmod +x ./config/seed.sh
+   sh -c "cd ./config && ./seed.sh"
+   ```
+
 2. Verify that the empty LDES views can be retrieved:
     ```bash
     curl http://localhost:8080/device-models/by-time

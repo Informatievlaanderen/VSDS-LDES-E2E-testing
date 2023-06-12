@@ -1,3 +1,4 @@
 <http://localhost:8080/mobility-hindrances/by-time> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 <http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-time> .
 <http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
+_:B269ce68e3b5ea112d5257eb435403264 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .

@@ -7,7 +7,7 @@ Feature: LDES Server Fragmentation
     And context 'tests/004.server-time-fragment-ldes' is started
     And I have uploaded the data files: 'alfa,beta,epsilon'
     And I have aliased the data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
     Then the first fragment is immutable
@@ -34,7 +34,7 @@ Feature: LDES Server Fragmentation
     And context 'tests/005.server-paginate-ldes' is started
     And I have uploaded the data files: 'alfa,beta,gamma'
     And I have aliased the data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
     Then the first fragment is immutable
@@ -58,7 +58,7 @@ Feature: LDES Server Fragmentation
   Scenario Outline: 006: Server Can Substring Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'grar'
     And context 'tests/006.server-substring-fragment-ldes' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 13 members
@@ -84,7 +84,7 @@ Feature: LDES Server Fragmentation
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'one-member'
     And I have aliased the data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 1 members
     And the LDES contains 6 fragments
@@ -112,7 +112,7 @@ Feature: LDES Server Fragmentation
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
     And the LDES contains 14 fragments
@@ -140,10 +140,10 @@ Feature: LDES Server Fragmentation
     And the LDES Server Simulator is available
     And I have uploaded the data files: 'six-members'
     And I have aliased the data set
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
-    And the LDES contains 13 fragments
+    And the LDES contains 9 fragments
     Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the time-based fragmentation exists
@@ -163,7 +163,7 @@ Feature: LDES Server Fragmentation
   Scenario Outline: 011: Server Can Geospatially Fragment a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/011.server-geo-fragment-large-ldes' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections

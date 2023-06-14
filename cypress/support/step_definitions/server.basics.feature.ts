@@ -80,33 +80,17 @@ Then('the view is available at {string}', (url: string) => {
 })
 
 When('I configure a LDES named {string}', (collectionName: string) => {
-    cy.fixture('test-019/templates/ldes.ttl').then((content: string) => {
-        const body = content.replace('{collectionName}', collectionName);
-        cy.request({
-            method: 'POST',
-            url: 'http://localhost:8080/admin/api/v1/eventstreams', 
-            headers: {'Content-Type': 'text/turtle'},
-            body: body, 
-        }).then(response => {expect(response.status).to.equal(201);});
-    });
+    cy.fixture('test-019/templates/ldes.ttl').then((content: string) => 
+        server.configureLdesFromTurtleContent(content.replace('{collectionName}', collectionName)));
 })
 
 When('I configure a view named {string} for LDES {string}', (viewName: string, collectionName: string) => {
-    cy.fixture('test-019/templates/view.ttl').then((content: string) => {
-        const body = content.replace('{collectionName}', collectionName).replace('{viewName}', viewName);
-        cy.request({
-            method: 'POST', 
-            url: `http://localhost:8080/admin/api/v1/eventstreams/${collectionName}/views`, 
-            headers: {'Content-Type': 'text/turtle'},
-            body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
-    });
+    cy.fixture('test-019/templates/view.ttl').then((content: string) => 
+        server.configureViewFromTurtleContent(content.replace('{collectionName}', collectionName).replace('{viewName}', viewName), collectionName));
 })
 
 Then('I receive a response similar to {string}', (fileName: string) => {
-    cy.fixture(`test-019/responses/${fileName}`).then((content: string | object) => {
-        view.expectContent(content);
-    });
+    cy.fixture(`test-019/responses/${fileName}`).then((content: string | object) => view.expectContent(content));
 })
 
 Then('the server returns the supported HTTP Verbs', () => {

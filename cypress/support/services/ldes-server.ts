@@ -56,12 +56,30 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     createSnapshot(collection: string) {
-        return cy.request({method: 'POST', url: `http://localhost:8080/admin/api/v1/${collection}/snapshots`});
+        return cy.request({method: 'POST', url: `${this.baseUrl}/admin/api/v1/${collection}/snapshots`});
     }
 
     sendConfiguration(testPartialPath: string): any {
         const cmd = `cd ${testPartialPath}/config && ./seed.sh`;
         cy.log(cmd).exec(cmd).its('code').should('eq', 0);
+    }
+
+    configureLdesFromTurtleContent(body: string) {
+        cy.request({
+            method: 'PUT', 
+            url: `${this.baseUrl}/admin/api/v1/eventstreams`, 
+            headers: {'Content-Type': 'text/turtle'},
+            body: body, 
+        }).then(response => {expect(response.status).to.equal(200);});
+    }
+
+    configureViewFromTurtleContent(body: string, collection: string) {
+        cy.request({
+            method: 'POST', 
+            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views`, 
+            headers: {'Content-Type': 'text/turtle'},
+            body: body, 
+        }).then(response => {expect(response.status).to.equal(200);});
     }
 
 }

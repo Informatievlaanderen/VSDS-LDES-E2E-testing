@@ -1,9 +1,17 @@
 /// <reference types="cypress" />
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment } from '../ldes';
-import { mongo, server } from "./common_step_definitions";
+import { server } from "./common_step_definitions";
 
 const fragments: { [key: string]: Fragment } = {};
+
+// Given
+
+Given('I configure the LDES server for the retention test-012', () => {
+    cy.fixture('test-012/mobility-hindrances.ttl').then((body: string) => server.configureLdesFromTurtleContent(body));
+    cy.fixture('test-012/mobility-hindrances.by-short-time.ttl').then((body: string) => server.configureViewFromTurtleContent(body, 'mobility-hindrances'));
+    cy.fixture('test-012/mobility-hindrances.by-longer-time.ttl').then((body: string) => server.configureViewFromTurtleContent(body, 'mobility-hindrances'));
+})
 
 // When
 

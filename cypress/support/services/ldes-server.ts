@@ -17,7 +17,7 @@ export class LdesServer implements CanCheckAvailability {
         return cy.exec(`docker logs ${containerId}`)
             .then(result => {
                 const regex = new RegExp(message || LdesServer.DatabaseUpgradeFinished, "g");
-                return (result.stdout.match(regex) || []).length === occurences;
+                return (result.stdout.match(regex) || []).length >= occurences;
             });
     }
 

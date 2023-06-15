@@ -1,0 +1,17 @@
+@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes: <https://w3id.org/ldes#> .
+@prefix example: <http://example.org/> .
+
+<timebased> a ldes:View ;
+  tree:viewDescription [
+    tree:fragmentationStrategy (
+      [
+        a ldes:PaginationFragmentation ;
+        example:memberLimit "100" ;
+      ]
+    ) ;
+    ldes:retentionPolicy [
+      a ldes:DurationAgoPolicy ;
+      tree:value "PT30S"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+    ] ;
+  ] .

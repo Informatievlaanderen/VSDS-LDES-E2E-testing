@@ -1,10 +1,10 @@
 @server @broken
 Feature: LDES Server Upgrading
 
-  @iow 
-  Scenario Outline: <test-number>: Upgrade LDES Server Using '<workbench>' workbench
+  @test-021 @iow
+  Scenario Outline: 021: Upgrade LDES Server Using '<workbench>' workbench
     Given the members are stored in database 'iow_devices'
-    And context 'tests/<test-number>.<test-name>' is started
+    And context 'tests/021.server-upgrade' is started
     And the old LDES server is available
     And the '<workbench>' workbench is available
     And I start the JSON Data Generator
@@ -24,12 +24,12 @@ Feature: LDES Server Upgrading
     Then the LDES member count increases
     And the last fragment member count increases
 
-    @test-021 @nifi
+    @nifi
     Examples:
-      | workbench | test-number | test-name                |
-      | NIFI      | 021         | server-upgrade-with-nifi |
-  
-    @test-022 @ldio
+      | workbench |
+      | NIFI      |
+
+    @ldio
     Examples:
-      | workbench | test-number | test-name                |
-      | LDIO      | 022         | server-upgrade-with-ldio |
+      | workbench |
+      | LDIO      |

@@ -1,0 +1,42 @@
+mongock:
+  migration-scan-package:
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset2
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset3
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset4
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset5
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset6
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset7
+springdoc:
+  swagger-ui:
+    path: /v1/swagger
+management:
+  tracing:
+    enabled: false
+ldes-server:
+  host-name: http://localhost:8080
+spring:
+  data:
+    mongodb:
+      database: iow_devices
+      host: ldes-mongodb
+      port: 27017
+  web:
+    resources:
+      static:
+        locations:
+          - file:/tmp/static
+
+# V0 config used for migration to V1 database centered config
+collections:
+  - host-name: "http://localhost:8080"
+    member-type: "https://uri.etsi.org/ngsi-ld/default-context/Device"
+    timestamp-path: "http://www.w3.org/ns/prov#generatedAtTime"
+    version-of: "http://purl.org/dc/terms/isVersionOf"
+    collection-name: "devices"
+    views:
+      - name: "devices-by-time"
+        fragmentations:
+          - name: "timebased"
+            config:
+              memberLimit: 25

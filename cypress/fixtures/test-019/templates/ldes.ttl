@@ -12,5 +12,5 @@
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType server:dummy ;
-	tree:shape [ a sh:NodeShape ] ;
+	tree:shape [ a <http://www.w3.org/ns/shacl#NodeShape> ] ;
 	server:hasDefaultView "false"^^xsd:boolean .

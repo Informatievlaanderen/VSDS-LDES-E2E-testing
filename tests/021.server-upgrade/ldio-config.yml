@@ -2,7 +2,7 @@ server:
   port: 8080
 orchestrator:
   pipelines:
-    - name: pipeline
+    - name: ngsi/device
       description: "Simple http in http out pipeline allowing to pause output."
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn

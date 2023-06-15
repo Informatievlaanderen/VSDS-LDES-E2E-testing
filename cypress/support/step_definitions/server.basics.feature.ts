@@ -161,7 +161,7 @@ Then('all {int} {string} have a unique sequence number', (count: number, collect
     });
 
     const expected = new Array(count).fill(1).map((_, i) => ({ collection: collection, sequence: i + 1 }));
-    const command = `curl -s "http://localhost:9019/test/ldesmember?includeDocuments=true" | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"`;
+    const command = `curl -s "http://localhost:9019/test/ldesmember?includeDocuments=true" | "./node_modules/node-jq/bin/jq" "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"`;
     cy.exec(command, { failOnNonZeroExit: false }).then(result => {
         const collectionSequences = JSON.parse(result.stdout) as CollectionSequence[];
         const actual = collectionSequences.filter(x => x.collection === collection);

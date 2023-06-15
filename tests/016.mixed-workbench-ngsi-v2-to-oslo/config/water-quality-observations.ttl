@@ -13,4 +13,4 @@
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType <http://www.w3.org/ns/sosa/ObservationCollection> ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	

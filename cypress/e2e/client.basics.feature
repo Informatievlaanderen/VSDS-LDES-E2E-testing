@@ -9,7 +9,7 @@ Feature: LDES Client Basic Functionality
     When I start the '<workbench>' workbench
     Then the sink contains 1016 members
 
-    @ldio
+    @ldio @focus
     Examples:
       | workbench |
       | LDIO      |

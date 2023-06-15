@@ -11,4 +11,4 @@
 </mobility-hindrances> a ldes:EventStream ;
 	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
 	tree:shape [ a sh:NodeShape ] ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	

@@ -13,4 +13,4 @@
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType <https://uri.etsi.org/ngsi-ld/default-context/DeviceModel> ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	

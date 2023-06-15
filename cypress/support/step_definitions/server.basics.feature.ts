@@ -123,7 +123,7 @@ Then('the server accepts this member file', () => {
 
 function obtainRootFragment(ldes: string) {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(ldes => new Fragment(ldes.viewUrl('paged')).visit())
         .then(view => new Fragment(view.relation.link).visit());
 }
 

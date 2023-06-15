@@ -1,5 +1,4 @@
 @prefix tree: <https://w3id.org/tree#>.
-@prefix server: <http://example.org/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 @base <http://localhost:8080> .
@@ -8,9 +7,8 @@
 
 </mobility-hindrances/by-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy ([
-		a server:Fragmentation ;
-		server:name "timebased" ;
-		server:memberLimit "5"^^xsd:integer ;
+    tree:fragmentationStrategy ([
+		a tree:TimebasedFragmentation ;
+		tree:memberLimit "5"^^xsd:integer ;
 	]) ;
 ] .

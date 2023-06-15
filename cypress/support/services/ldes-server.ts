@@ -66,11 +66,11 @@ export class LdesServer implements CanCheckAvailability {
 
     configureLdesFromTurtleContent(body: string) {
         cy.request({
-            method: 'PUT', 
+            method: 'POST', 
             url: `${this.baseUrl}/admin/api/v1/eventstreams`, 
             headers: {'Content-Type': 'text/turtle'},
             body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
+        }).then(response => {expect(response.status).to.equal(201);});
     }
 
     configureViewFromTurtleContent(body: string, collection: string) {

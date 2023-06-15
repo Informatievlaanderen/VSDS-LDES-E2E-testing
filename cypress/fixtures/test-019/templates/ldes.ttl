@@ -13,4 +13,3 @@
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType server:dummy ;
 	tree:shape [ a sh:NodeShape ] ;
-	server:hasDefaultView "false"^^xsd:boolean .

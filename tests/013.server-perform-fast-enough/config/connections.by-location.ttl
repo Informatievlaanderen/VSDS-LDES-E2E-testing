@@ -1,5 +1,4 @@
 @prefix tree:   <https://w3id.org/tree#>.
-@prefix server: <http://example.org/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 @prefix ldes:    <https://w3id.org/ldes#> .
 
@@ -7,12 +6,10 @@
 
 </connections/by-location> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy ([
-		a server:Fragmentation ;
-		server:name "geospatial" ;
-		server:projection "noop" ;
-		server:maxZoomLevel "13"^^xsd:integer ;
-		server:fragmenterProperty "http://www.opengis.net/ont/geosparql#asWKT" ;
+    tree:fragmentationStrategy ([
+		a tree:GeospatialFragmentation; ;
+		tree:maxZoom "13"^^xsd:integer ;
+		tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
 	]) ;
 	ldes:retentionPolicy [
     	a ldes:DurationAgoPolicy  ;

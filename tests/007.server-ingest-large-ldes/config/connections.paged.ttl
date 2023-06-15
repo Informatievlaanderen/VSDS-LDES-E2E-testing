@@ -3,10 +3,10 @@
 
 @base <http://localhost:8080> .
 
-</devices/paged> a tree:Node ; 
+</connections/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a tree:PaginationFragmentation ;
-		tree:memberLimit "1000"^^xsd:integer ;
+		tree:memberLimit "250"^^xsd:integer ;
 	]) ;
 ] .

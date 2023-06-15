@@ -1,15 +1,13 @@
 @prefix tree:   <https://w3id.org/tree#>.
-@prefix server: <http://example.org/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 @base <http://localhost:8080> .
 
 </addresses/by-name> a tree:Node ; 
 	tree:viewDescription [ a tree:ViewDescription ;
-		server:fragmentationStrategy ([
-			a server:Fragmentation ;
-			server:name "substring" ;
-			server:memberLimit "10"^^xsd:integer ;
-			server:fragmenterProperty "https://data.vlaanderen.be/ns/adres#volledigAdres" ;
+		tree:fragmentationStrategy ([
+			a tree:SubstringFragmentation ;
+			tree:memberLimit "10"^^xsd:integer ;
+			tree:fragmentationPath <https://data.vlaanderen.be/ns/adres#volledigAdres> ;
 		]) ;
 	] .

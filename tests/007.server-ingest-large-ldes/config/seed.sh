@@ -4,7 +4,7 @@ if [ $? != 0 ]
     then exit $? 
 fi
 
-curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams/connections/views' -H 'Content-Type: text/turtle' -d '@./connections.by-page.ttl'
+curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams/connections/views' -H 'Content-Type: text/turtle' -d '@./connections.paged.ttl'
 if [ $? != 0 ] 
     then exit $? 
 fi

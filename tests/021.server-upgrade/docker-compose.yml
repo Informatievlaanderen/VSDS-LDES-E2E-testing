@@ -66,7 +66,20 @@ services:
     #       20221107t0923 code base but adds a docker image for ARM64.
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_OLD_SERVER_TAG:-20230405T0843}
     environment:
+      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
+      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=iow_devices
+      - LDES_HOSTNAME=http://localhost:8080
+      - LDES_COLLECTIONNAME=devices
+      - LDES_SHAPE=
+      - LDES_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
+      - LDES_VERSIONOF=http://purl.org/dc/terms/isVersionOf
+      - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
+      - VIEWS_0_NAME=devices-by-time
+      - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
     ports:
       - 8080:8080
     networks:

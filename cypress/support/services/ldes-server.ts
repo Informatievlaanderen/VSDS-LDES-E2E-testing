@@ -79,7 +79,7 @@ export class LdesServer implements CanCheckAvailability {
             url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views`, 
             headers: {'Content-Type': 'text/turtle'},
             body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
+        }).then(response => {expect(response.status).to.equal(201);});
     }
 
 }

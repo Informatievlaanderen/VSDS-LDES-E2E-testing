@@ -9,5 +9,6 @@
     tree:fragmentationStrategy ([
 		a tree:TimebasedFragmentation ;
 		tree:memberLimit "10"^^xsd:integer ;
+		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 ] .

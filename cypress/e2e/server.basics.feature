@@ -20,7 +20,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-007 @ingestion @gtfs 
+  @test-007 @ingestion @gtfs
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/007.server-ingest-large-ldes' is started
@@ -67,9 +67,9 @@ Feature: LDES Server Basic Functionality
     Examples: 
       | collection-name     | view-name | collection-url                            | view-url                                          |
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
-      | cartoons            | by-page   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/by-page            |
+      | cartoons            | paged   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged           |
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @gipod @focus
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -107,7 +107,7 @@ Feature: LDES Server Basic Functionality
     When I request the view compressed
     Then I receive a zip file containing my view
 
-  @test-019 @consumption @caching @gipod
+  @test-019 @consumption @caching 
   Scenario: 019: Verify Nginx Caching Responses
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -119,7 +119,7 @@ Feature: LDES Server Basic Functionality
     And I request the LDES view
     Then the LDES is re-requested from the LDES server
 
-  @test-027 @ingestion @sequencing @iow @grar
+  @test-027 @ingestion @sequencing @iow @grar 
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
     Given context 'tests/027.server-generates-member-sequence' is started
     And the LDES server is available and configured
@@ -138,13 +138,13 @@ Feature: LDES Server Basic Functionality
     And I start the '<workbench>' workbench
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
-    Then the 'device-models' root fragment contains 1 members
+    Then the 'device-models' 'by-page' fragment contains 1 members
     When I upload the data file 'device' to the workbench
     And the LDES contains 2 members
-    Then the 'devices' root fragment contains 1 members
+    Then the 'devices' 'by-page' fragment contains 1 members
     When I start the JSON Data Generator
     And the LDES contains at least 3 members
-    Then the 'water-quality-observations' root fragment contains at least 3 members
+    Then the 'water-quality-observations' 'by-page' fragment contains at least 3 members
 
     @nifi
     Examples: 

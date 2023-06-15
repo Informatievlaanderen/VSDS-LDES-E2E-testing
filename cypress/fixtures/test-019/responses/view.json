@@ -5,15 +5,15 @@
       "@type": "tree:Node"
     },
     {
+      "@id": "_:b0",
+      "@type": "shacl:NodeShape"
+    },
+    {
       "@id": "http://localhost:8080/mobility-hindrances",
       "tree:view": {
         "@id": "mobility-hindrances:by-time"
       },
       "@type": "ldes:EventStream"
-    },
-    {
-      "@id": "_:b0",
-      "@type": "shacl:NodeShape"
     }
   ],
   "@context": {

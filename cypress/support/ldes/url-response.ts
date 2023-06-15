@@ -84,14 +84,14 @@ export abstract class UrlResponse {
     }
 
     private roundTripJson(content: string | object) {
-        if (content === 'string') content = JSON.parse(content);
-        return JSON.stringify(content, null, 0);
+        if (content === 'string') return JSON.parse(content);
+        return JSON.parse(JSON.stringify(content, null, 0));
     }
 
     expectContent(content: string | object) {
         const mimeType = this.mimeType;
         if (mimeType === mimeTypes.jsonld) {
-            expect(this.roundTripJson(this.body)).to.equal(this.roundTripJson(content));
+            expect(this.roundTripJson(this.body)).to.deep.equal(this.roundTripJson(content));
         } else {
             expect(this.isIsomorphic(this.body, content as string, mimeType)).true
         }

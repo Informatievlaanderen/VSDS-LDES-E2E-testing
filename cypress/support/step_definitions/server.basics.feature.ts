@@ -121,14 +121,22 @@ Then('the server accepts this member file', () => {
     expect(execResult).to.include('HTTP/1.1 200').and.to.include('Server: nginx');
 })
 
-function obtainRootFragment(ldes: string) {
+function obtainRootFragment(ldes: string, view="paged") {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl('paged')).visit())
+        .then(ldes => new Fragment(ldes.viewUrl(view)).visit())
         .then(view => new Fragment(view.relation.link).visit());
 }
 
+Then('the {string} {string} fragment contains {int} members', (ldes: string, view: string, count: number) => {
+    obtainRootFragment(ldes, view).then(fragment => fragment.memberCount === count);
+})
+
 Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
     obtainRootFragment(ldes).then(fragment => fragment.memberCount === count);
+})
+
+Then('the {string} {string} fragment contains at least {int} members', (ldes: string, view: string, count: number) => {
+    obtainRootFragment(ldes, view).then(fragment => fragment.memberCount >= count);
 })
 
 Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {

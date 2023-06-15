@@ -14,7 +14,7 @@ let connectionsLdes = 'connections';
 let byLocation = 'by-location';
 let byLocationAndTime = 'by-location-and-time';
 let byTime = 'by-time';
-let byPage = 'by-page';
+let byPage = 'paged';
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
 

@@ -28,6 +28,8 @@ spring:
           - file:/tmp/static
 
 # V0 config used for migration to V1 database centered config
+# This is only needed for be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset7
+# If this changeset has run or does not need to run, the below config can be removed.
 collections:
   - host-name: "http://localhost:8080"
     member-type: "https://uri.etsi.org/ngsi-ld/default-context/Device"
@@ -39,4 +41,4 @@ collections:
         fragmentations:
           - name: "timebased"
             config:
-              memberLimit: 25
+              memberLimit: 250

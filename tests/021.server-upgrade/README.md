@@ -169,7 +169,46 @@ The server upgrade will include changesets that alter the database schema. We wi
    ]
    ```
 
-7. Verify that members are available in LDES and check member count in the last fragment:
+7. Verify that the yaml config was successfully migrated to mongodb config
+   ```bash
+   curl -X 'GET' 'http://localhost:8080/admin/api/v1/eventstreams' -H 'accept: text/turtle'
+   ```
+   Should return
+   ```text
+   @prefix default-context: <https://uri.etsi.org/ngsi-ld/default-context/> .
+   @prefix devices:         <http://localhost:8080/devices/> .
+   @prefix devices-by-time: <http://localhost:8080/devices/devices-by-time/> .
+   @prefix ldes:            <https://w3id.org/ldes#> .
+   @prefix prov:            <http://www.w3.org/ns/prov#> .
+   @prefix rdf:             <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+   @prefix shacl:           <http://www.w3.org/ns/shacl#> .
+   @prefix terms:           <http://purl.org/dc/terms/> .
+   @prefix tree:            <https://w3id.org/tree#> .
+   
+   devices-by-time:description
+           rdf:type                    tree:ViewDescription ;
+           tree:fragmentationStrategy  ( [ rdf:type          tree:TimebasedFragmentation ;
+                                           tree:memberLimit  "25"
+                                         ]
+                                       ) .
+   
+   <http://localhost:8080/devices>
+           rdf:type            ldes:EventStream ;
+           <http://example.org/memberType>
+                   default-context:Device ;
+           ldes:timestampPath  prov:generatedAtTime ;
+           ldes:versionOfPath  terms:isVersionOf ;
+           tree:shape          [ rdf:type  shacl:NodeShape ] ;
+           tree:view           devices:devices-by-time .
+   
+   devices:devices-by-time
+           rdf:type              tree:Node ;
+           tree:viewDescription  devices-by-time:description .
+   ```
+
+   > **Note**: Changeset-7 will create three new collections for this: `eventstreams`, `view` and `shacl_shape`
+
+8. Verify that members are available in LDES and check member count in the last fragment:
    ```bash
    docker compose up ldes-list-fragments -d
    sleep 3 # ensure stream has been followed up to the last fragment
@@ -177,7 +216,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
    ```
 
-8. Pause the workbench output.
+9. Resume the workbench output.
 
     ```bash
     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"
@@ -186,12 +225,12 @@ The server upgrade will include changesets that alter the database schema. We wi
 
    Start http sender in workflow after redirecting the output to the new server.
 
-9. Verify last fragment member count increases:
-   ```bash
-   curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
-   ```
+10. Verify last fragment member count increases (max count in fragment is 250):
+    ```bash
+    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+    ```
 
-10. Verify data store member count increases (execute repeatedly):
+11. Verify data store member count increases (execute repeatedly):
     ```bash
     curl http://localhost:9019/iow_devices/ldesmember
     ```

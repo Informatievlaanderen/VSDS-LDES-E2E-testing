@@ -43,7 +43,7 @@
                     "client-authentication": "AUTO",
                     "Return Code": "200",
                     "record-reader": null,
-                    "Listening Port": "9012"
+                    "Listening Port": "8080"
                 },
                 "propertyDescriptors": {
                     "authorized-issuer-dn-pattern": {

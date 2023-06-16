@@ -3,10 +3,17 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
 import { server, testPartialPath, range, mongo, testDatabase } from "./common_step_definitions";
+import { data } from "cypress/types/jquery";
 
 let ldes: EventStream;
 let view: Fragment;
-let execResult: string;
+
+let sendMemberResponse: Cypress.Response<any>;
+let corsResponse: Cypress.Response<any>;
+let headResponse: Cypress.Response<any>;
+let ldesResponse: Cypress.Response<any>;
+let viewResponse: Cypress.Response<any>;
+let compressedViewResponse: Cypress.Response<any>;
 
 // When
 
@@ -18,36 +25,43 @@ When('I request the view formatted as {string}', (mimeType: string) => {
 })
 
 When('I request the view from a different url {string}', (url: string) => {
-    const command = `curl -i -X OPTIONS -H "Origin: ${url}" -H "Access-Control-Request-Method: GET" ${server.baseUrl}/mobility-hindrances/by-time`;
-    return cy.exec(command).then(result => execResult = result.stdout);
+    return cy.request({
+        method: 'OPTIONS',
+        headers: {
+            'Origin': url,
+            'Access-Control-Request-Method': 'GET',
+        },
+        url: `${server.baseUrl}/mobility-hindrances/by-time`,
+    }).then(response => corsResponse = response);
 })
 
 When('I only request the view headers', () => {
-    const command = `curl --head ${server.baseUrl}/mobility-hindrances/by-time`
-    return cy.exec(command).then(result => execResult = result.stdout);
+    return cy.request({
+        method: 'HEAD',
+        url: `${server.baseUrl}/mobility-hindrances/by-time`
+    }).then(response => headResponse = response);
 })
 
 When('I request the LDES', () => {
-    const command = `curl -i ${server.baseUrl}/mobility-hindrances`;
-    return cy.exec(command).then(result => execResult = result.stdout);
+    return cy.request(`${server.baseUrl}/mobility-hindrances`).then(response => ldesResponse = response);
 })
 
 When('I request the view compressed', () => {
-    const command = `curl -I -H "Accept-Encoding: gzip" ${server.baseUrl}/mobility-hindrances/by-time`;
-    return cy.exec(command).then(result => execResult = result.stdout);
+    return cy.request({
+        method: 'HEAD',
+        headers: {
+            'Accept-Encoding': 'gzip'
+        },
+        url: `${server.baseUrl}/mobility-hindrances/by-time`,
+    }).then(response => compressedViewResponse = response);
 })
 
 When('I request the LDES view', () => {
-    const command = `curl -i ${server.baseUrl}/mobility-hindrances/by-time`;
-    return cy.exec(command).then(result => execResult = result.stdout);
+    return cy.request(`${server.baseUrl}/mobility-hindrances/by-time`).then(response => viewResponse = response);
 })
 
 When('I send the member file {string} of type {string}', (fileName: string, mimeType: string) => {
-    return server.sendMemberFile('mobility-hindrances', `${testPartialPath()}/${fileName}`, mimeType)
-        .then(result => {
-            expect(result.code).to.equal(0);
-            execResult = result.stdout;
-        })
+    return server.sendMemberFile('mobility-hindrances', `${testPartialPath()}/${fileName}`, mimeType).then(response => sendMemberResponse = response);
 })
 
 When('I wait {int} seconds for the cache to expire', (timeout: number) => {
@@ -56,8 +70,14 @@ When('I wait {int} seconds for the cache to expire', (timeout: number) => {
 
 When('I ingest {int} {string}', (count:number, memberType: string) => {
     range(1, count).forEach(member => {
-        const command = `curl -i -X POST --url "${server.baseUrl}/${memberType}" -H "Content-Type: text/turtle" --data-binary "@${testPartialPath()}/data/${memberType}${member}.ttl"`;
-        cy.log(command).then(() => cy.exec(command));
+        cy.readFile(`${testPartialPath()}/data/${memberType}${member}.ttl`, 'utf8').then(data => 
+            cy.request({
+                method: 'POST',
+                url: `${server.baseUrl}/${memberType}`,
+                headers: { 'Content-Type': 'text/turtle' },
+                body: data,
+            }).then(response => expect(response.status).to.equal(200))
+        );
     });
 })
 
@@ -94,31 +114,43 @@ Then('I receive a response similar to {string}', (fileName: string) => {
 })
 
 Then('the server returns the supported HTTP Verbs', () => {
-    expect(execResult).to.include('Access-Control-Allow-Origin: *').and.to.include('Access-Control-Allow-Methods: GET').and.to.include('Allow: GET, HEAD');
+    const headers = corsResponse.headers;
+    expect(headers['access-control-allow-origin']).to.equal('*');
+    expect(headers['access-control-allow-methods']).to.equal('GET');
+    expect(headers.allow).to.contain('GET, HEAD');
 })
 
 Then('the headers include an Etag which is used for caching purposes', () => {
-    expect(execResult).to.include('ETag:');
+    expect(headResponse.headers.etag).to.not.be.undefined;
 })
 
 Then('the LDES is not yet cached', () => {
-    expect(execResult).to.include('X-Cache-Status: MISS');
+    expect(ldesResponse.headers['x-cache-status']).to.equal('MISS');
+})
+
+Then('the LDES view is not yet cached', () => {
+    expect(viewResponse.headers['x-cache-status']).to.equal('MISS');
 })
 
 Then('the LDES comes from the cache', () => {
-    expect(execResult).to.include('X-Cache-Status: HIT');
+    expect(ldesResponse.headers['x-cache-status']).to.equal('HIT');
+})
+
+Then('the LDES view comes from the cache', () => {
+    expect(viewResponse.headers['x-cache-status']).to.equal('HIT');
 })
 
 Then('I receive a zip file containing my view', () => {
-    expect(execResult).to.include('Content-Encoding: gzip');
+    expect(compressedViewResponse.headers['content-encoding']).to.equal('gzip');
 })
 
-Then('the LDES is re-requested from the LDES server', () => {
-    expect(execResult).to.include('X-Cache-Status: EXPIRED');
+Then('the LDES view is re-requested from the LDES server', () => {
+    expect(viewResponse.headers['x-cache-status']).to.equal('EXPIRED');
 })
 
 Then('the server accepts this member file', () => {
-    expect(execResult).to.include('HTTP/1.1 200').and.to.include('Server: nginx');
+    expect(sendMemberResponse.status).to.equal(200)
+    expect(sendMemberResponse.headers.server).to.contain('nginx');
 })
 
 function obtainRootFragment(ldes: string, view="paged") {

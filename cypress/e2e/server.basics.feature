@@ -107,17 +107,17 @@ Feature: LDES Server Basic Functionality
     When I request the view compressed
     Then I receive a zip file containing my view
 
-  @test-019 @consumption @caching 
+  @test-019 @consumption @caching
   Scenario: 019: Verify Nginx Caching Responses
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
     When I request the LDES view
-    Then the LDES is not yet cached
+    Then the LDES view is not yet cached
     When I request the LDES view
-    Then the LDES comes from the cache
+    Then the LDES view comes from the cache
     When I wait 10 seconds for the cache to expire
     And I request the LDES view
-    Then the LDES is re-requested from the LDES server
+    Then the LDES view is re-requested from the LDES server
 
   @test-027 @ingestion @sequencing @iow @grar 
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection

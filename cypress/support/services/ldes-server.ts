@@ -34,8 +34,13 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendMemberFile(collection: string, partialFilePath: string, mimeType: string) {
-        const command = `curl -i -X POST "${this.baseUrl}/${collection}" -H "Content-Type: ${mimeType}" -d "@${partialFilePath}"`;
-        return cy.log(command).then(() => cy.exec(command));
+        return cy.readFile(partialFilePath, 'utf8').then(data => 
+            cy.request({
+                method: 'POST', 
+                url: `${this.baseUrl}/${collection}`, 
+                headers: { 'Content-Type': mimeType}, 
+                body: data
+            }));
     }
 
     checkRootFragmentMutable(ldes: string, view: string) {

@@ -6,9 +6,12 @@ import { testPartialPath, server } from "./common_step_definitions";
 // When
 
 When('I upload the data file {string} to the workbench', (baseName: string) => {
-    const endpoint = `${baseName}s-pipeline`
-    const command = `curl -s -X POST "http://localhost:8081/${endpoint}" -H "Content-Type: application/json" -d "@${testPartialPath()}/data/${baseName}.json"`;
-    cy.waitUntil(() => cy.log(command).then(() => cy.exec(command, {failOnNonZeroExit: false}).then(response => response.code === 0)), {timeout: 5000, interval: 1000});
+    cy.waitUntil(() => cy.readFile(`${testPartialPath()}/data/${baseName}.json`, 'utf8').then(data => cy.request({ 
+        method: 'POST', 
+        url: `http://localhost:8081/${baseName}s-pipeline`, 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: data,
+     }).then(response => response.status === 200)), {timeout: 5000, interval: 1000});
 })
 
 let rootFragment: Fragment;

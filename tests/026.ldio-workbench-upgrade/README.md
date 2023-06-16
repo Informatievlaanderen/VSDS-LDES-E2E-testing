@@ -28,7 +28,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 3. Verify that members are available in the LDES:
     ```bash
-    curl http://localhost:8080/devices/by-page
+    curl http://localhost:8080/devices/paged
     ```
     and that the data store member count increases (execute repeatedly):
     ```bash
@@ -63,7 +63,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 4. Verify that members are available in LDES and find last fragment (i.e. mutable):
     ```bash
-    curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
+    curl "http://localhost:8080/devices/paged?pageNumber=1" -s | grep "isVersionOf" | wc -l
     ```
 
 5. Resume new LDI-output
@@ -73,7 +73,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 6. Verify last fragment member count increases:
     ```bash
-    curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
+    curl "http://localhost:8080/devices/paged?pageNumber=1" -s | grep "isVersionOf" | wc -l
     ```
 
 7. Verify data store member count increases (execute repeatedly):

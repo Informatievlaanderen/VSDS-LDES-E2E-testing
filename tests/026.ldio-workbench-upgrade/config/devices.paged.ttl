@@ -1,15 +1,13 @@
-@prefix tree: <https://w3id.org/tree#>.
+@prefix tree:   <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 @base <http://localhost:8080> .
 
-# ALTERNATIVE STRATEGY: only timebased
-
-</mobility-hindrances/by-time> a tree:Node ; 
+</devices/paged> a tree:Node ;
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a tree:TimebasedFragmentation ;
-		tree:memberLimit "5"^^xsd:integer ;
+		tree:memberLimit "100"^^xsd:integer ;
 		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 ] .

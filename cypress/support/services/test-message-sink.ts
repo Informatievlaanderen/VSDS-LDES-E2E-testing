@@ -25,6 +25,6 @@ export class TestMessageSink {
     }
 
     public deleteMember() {
-        return cy.exec(`curl -X DELETE ${this.baseUrl}/member`).then(exec => expect(exec.code).to.equals(0));
+        return cy.request({ method: 'DELETE', url: `${this.baseUrl}/member` }).then(response => expect(response.status).to.equal(200));
     }
 }

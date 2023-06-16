@@ -1,4 +1,4 @@
-@server @broken
+@server
 Feature: LDES Server Upgrading
 
   @iow @broken

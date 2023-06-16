@@ -9,11 +9,9 @@ Feature: LDES Server Snapshot Functionality
     And I ingest a '<dataset-size>' dataset with <initial-member-count> members
     And the LDES contains <initial-member-count> members
     And the 'mobility-hindrances' contains <initial-fragment-count> fragments
-    
     When I create a snapshot for 'mobility-hindrances'
     Then a snapshot is created having a name starting with 'mobility-hindrances/snapshot'
     And additional <snapshot-fragment-count> fragments are created for the snapshot
-    
     When I ingest a '<dataset-size>' dataset with remaining <remaining-member-count> members
     And I create a snapshot for 'mobility-hindrances'
     Then another snapshot is created having a name starting with 'mobility-hindrances/snapshot'

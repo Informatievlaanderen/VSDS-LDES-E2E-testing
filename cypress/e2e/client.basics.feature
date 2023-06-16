@@ -1,7 +1,7 @@
-@client 
+@client
 Feature: LDES Client Basic Functionality
 
-@test-001 @replicate @gipod 
+  @test-001 @replicate @gipod
   Scenario Outline: 001: Client Can Replicate an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/001.client-replicate-ldes' is started
@@ -10,16 +10,16 @@ Feature: LDES Client Basic Functionality
     Then the sink contains 1016 members
 
     @ldio
-    Examples:
+    Examples: 
       | workbench |
       | LDIO      |
 
     @nifi
-    Examples:
+    Examples: 
       | workbench |
       | NIFI      |
 
-@test-003 @synchronize @gipod 
+  @test-003 @synchronize @gipod
   Scenario Outline: 003: Client Can Synchronize an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/003.client-synchronize-ldes' is started
@@ -34,17 +34,16 @@ Feature: LDES Client Basic Functionality
     Then the sink contains 617 members
 
     @ldio
-    Examples:
+    Examples: 
       | workbench |
       | LDIO      |
 
     @nifi
-    Examples:
+    Examples: 
       | workbench |
       | NIFI      |
 
-# Replicate and Synchronize an LDES with Client CLI
-@test-018 @cli @ldio @gipod
+  @test-018 @cli @ldio @gipod
   Scenario: 018: Client Can Output LDES members to the Console
     Given the members are stored in database 'gipod'
     And context 'tests/018.client-output-to-console' is started

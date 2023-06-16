@@ -24,7 +24,7 @@ So, the total data set contains 617 items. The LDES server is configured to crea
     > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
     ```
     chmod +x ./config/seed.sh
-    sh -c "cd ./config && ./seed.sh"
+    sh ./config/seed.sh
     ```
 
 2. Seed the data set to the [simulator](http://localhost:9011/) and [alias it](./create-alias.json):

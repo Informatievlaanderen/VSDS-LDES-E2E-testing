@@ -60,7 +60,7 @@ A schematic overview is given below:
    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
    ```bash
    chmod +x ./config/seed.sh
-   sh -c "cd ./config && ./seed.sh"
+   sh ./config/seed.sh
    ```
 
 2. Ingest the small data set:

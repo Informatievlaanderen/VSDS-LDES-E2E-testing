@@ -21,7 +21,7 @@ In this test we recreate the same scenario but host all three LDES collections o
     > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
     ```
     chmod +x ./config/seed.sh
-    sh -c "cd ./config && ./seed.sh"
+    sh ./config/seed.sh
     ```
 
 2. Start the workbench:

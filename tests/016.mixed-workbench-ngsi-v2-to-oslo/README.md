@@ -25,7 +25,7 @@ Currently, the IoW use case is solely based on a set of similar Apache NiFi work
    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
    ```bash
    chmod +x ./config/seed.sh
-   sh -c "cd ./config && ./seed.sh"
+   sh ./config/seed.sh
    ```
 
 2. Verify that the empty LDES views can be retrieved:

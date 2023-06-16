@@ -224,7 +224,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
    Start http sender in workflow after redirecting the output to the new server.
 
-10. Verify last fragment member count increases (max count in fragment is 250):
+10. Verify last fragment member count increases (max count in fragment is 25):
     ```bash
     curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
     ```

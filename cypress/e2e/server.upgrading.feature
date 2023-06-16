@@ -1,4 +1,4 @@
-@server @broken
+@server
 Feature: LDES Server Upgrading
 
   @test-021 @iow
@@ -6,7 +6,7 @@ Feature: LDES Server Upgrading
     Given the members are stored in database 'iow_devices'
     And context 'tests/021.server-upgrade' is started
     And the old LDES server is available
-    And the '<workbench>' workbench is available
+    And I start the '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 26 members
     And the ldesfragment collection is structured as expected

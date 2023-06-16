@@ -17,7 +17,7 @@ export class LdesServer implements CanCheckAvailability {
         return cy.exec(`docker logs ${containerId}`)
             .then(result => {
                 const regex = new RegExp(message || LdesServer.DatabaseUpgradeFinished, "g");
-                return (result.stdout.match(regex) || []).length === occurences;
+                return (result.stdout.match(regex) || []).length >= occurences;
             });
     }
 
@@ -60,8 +60,8 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendConfiguration(testPartialPath: string): any {
-        const cmd = `sh -c "cd ${testPartialPath}/config && ./seed.sh"`;
-        cy.log(cmd).exec(cmd).its('code').should('eq', 0);
+        const cmd = `bash ${testPartialPath}/config/seed.sh`;
+        cy.log(cmd).exec(cmd).then(response => expect(response.code).to.equal(0));
     }
 
     configureLdesFromTurtleContent(body: string) {

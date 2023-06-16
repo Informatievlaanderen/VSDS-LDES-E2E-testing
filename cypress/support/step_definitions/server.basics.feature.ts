@@ -2,7 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { server, testPartialPath, range } from "./common_step_definitions";
+import { server, testPartialPath, range, mongo, testDatabase } from "./common_step_definitions";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -18,27 +18,27 @@ When('I request the view formatted as {string}', (mimeType: string) => {
 })
 
 When('I request the view from a different url {string}', (url: string) => {
-    const command = `curl -i -X OPTIONS -H "Origin: ${url}" -H "Access-Control-Request-Method: GET" http://localhost:8080/mobility-hindrances/by-time`;
+    const command = `curl -i -X OPTIONS -H "Origin: ${url}" -H "Access-Control-Request-Method: GET" ${server.baseUrl}/mobility-hindrances/by-time`;
     return cy.exec(command).then(result => execResult = result.stdout);
 })
 
 When('I only request the view headers', () => {
-    const command = `curl --head http://localhost:8080/mobility-hindrances/by-time`
+    const command = `curl --head ${server.baseUrl}/mobility-hindrances/by-time`
     return cy.exec(command).then(result => execResult = result.stdout);
 })
 
 When('I request the LDES', () => {
-    const command = `curl -i http://localhost:8080/mobility-hindrances`;
+    const command = `curl -i ${server.baseUrl}/mobility-hindrances`;
     return cy.exec(command).then(result => execResult = result.stdout);
 })
 
 When('I request the view compressed', () => {
-    const command = `curl -I -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-time`;
+    const command = `curl -I -H "Accept-Encoding: gzip" ${server.baseUrl}/mobility-hindrances/by-time`;
     return cy.exec(command).then(result => execResult = result.stdout);
 })
 
 When('I request the LDES view', () => {
-    const command = `curl -i http://localhost:8080/mobility-hindrances/by-time`;
+    const command = `curl -i ${server.baseUrl}/mobility-hindrances/by-time`;
     return cy.exec(command).then(result => execResult = result.stdout);
 })
 
@@ -56,7 +56,7 @@ When('I wait {int} seconds for the cache to expire', (timeout: number) => {
 
 When('I ingest {int} {string}', (count:number, memberType: string) => {
     range(1, count).forEach(member => {
-        const command = `curl -i -X POST --url "http://localhost:8080/${memberType}" -H "Content-Type: text/turtle" --data-binary "@${testPartialPath()}/data/${memberType}${member}.ttl"`;
+        const command = `curl -i -X POST --url "${server.baseUrl}/${memberType}" -H "Content-Type: text/turtle" --data-binary "@${testPartialPath()}/data/${memberType}${member}.ttl"`;
         cy.log(command).then(() => cy.exec(command));
     });
 })
@@ -144,7 +144,7 @@ Then('the {string} root fragment contains at least {int} members', (ldes: string
 })
 
 Then('the {string} LDES contains {int} members', (collection: string, count: number) => {
-    new Fragment(`http://localhost:8080/${collection}/by-page?pageNumber=1`).visit()
+    new Fragment(`${server.baseUrl}/${collection}/by-page?pageNumber=1`).visit()
         .then(fragment => expect(fragment.memberCount).to.equal(count));
 })
 
@@ -154,16 +154,16 @@ interface CollectionSequence {
 };
 
 Then('all {int} {string} have a unique sequence number', (count: number, collection: string) => {
-    cy.request("http://localhost:9019/test/member_sequence?includeDocuments=true").then(response => {
+    cy.request(`${mongo.baseUrl}/${testDatabase()}/member_sequence?includeDocuments=true`).then(response => {
         const result = response.body;
         expect(result.count).to.be.equal(2);
         expect(result.documents).to.deep.include({ _id: collection, seq: count });
     });
 
     const expected = new Array(count).fill(1).map((_, i) => ({ collection: collection, sequence: i + 1 }));
-    const command = `curl -s "http://localhost:9019/test/ldesmember?includeDocuments=true" | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"`;
-    cy.exec(command, { failOnNonZeroExit: false }).then(result => {
-        const collectionSequences = JSON.parse(result.stdout) as CollectionSequence[];
+    cy.request(`${mongo.baseUrl}/${testDatabase()}/ldesmember?includeDocuments=true`).then(response => {
+        const result = response.body;
+        const collectionSequences = result.documents.map(x => ({ collection: x.collectionName, sequence: x.sequenceNr })) as CollectionSequence[];
         const actual = collectionSequences.filter(x => x.collection === collection);
         expect(actual).to.eql(expected);
     });

@@ -121,7 +121,8 @@ Feature: LDES Server Basic Functionality
 
   @test-027 @ingestion @sequencing @iow @grar 
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
-    Given context 'tests/027.server-generates-member-sequence' is started
+    Given the members are stored in database 'test'
+    And context 'tests/027.server-generates-member-sequence' is started
     And the LDES server is available and configured
     When I ingest 10 'mobility-hindrances'
     And I ingest 5 'addresses'

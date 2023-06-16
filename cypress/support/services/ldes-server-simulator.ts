@@ -24,7 +24,7 @@ export class LdesServerSimulator implements CanCheckAvailability {
     }
 
     private isReady() {
-        return cy.exec(`curl ${this.baseUrl}`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+        return cy.request({failOnStatusCode:false, url: this.baseUrl}).then(response => response.status === 200);
     }
 
     public seed(files: string[]) {
@@ -33,17 +33,27 @@ export class LdesServerSimulator implements CanCheckAvailability {
 
     public postFragment(partialFilePath: string, maxAge?: number) {
         const query = maxAge ? `?max-age=${maxAge}` : '';
-        return cy.exec(`curl -X POST "${this.baseUrl}/ldes${query}" -H "Content-Type: application/ld+json" -d "@${partialFilePath}"`)
-            .then(exec => expect(exec.code).to.equals(0));
+        return cy.readFile(partialFilePath, 'utf8').then(data => 
+            cy.request({
+                method: 'POST', 
+                url: `${this.baseUrl}/ldes${query}`, 
+                headers: { 'Content-Type': 'application/ld+json'}, 
+                body: data,
+            }).then(response => expect(response.status).to.equal(201)));
     }
 
     public postAlias(partialFilePath: string) {
-        return cy.exec(`curl -X POST "${this.baseUrl}/alias" -H "Content-Type: application/json" -d "@${partialFilePath}"`)
-            .then(exec => expect(exec.code).to.equals(0));
+        return cy.readFile(partialFilePath, 'utf8').then(data => 
+            cy.request({
+                method: 'POST', 
+                url: `${this.baseUrl}/alias`, 
+                headers: { 'Content-Type': 'application/json'}, 
+                body: data
+            }).then(response => expect(response.status).to.equal(201)));
     }
 
     public deleteFragments() {
-        return cy.exec(`curl -X DELETE "${this.baseUrl}/ldes"`).then(exec => expect(exec.code).to.equals(0));
+        return cy.request({url: `${this.baseUrl}/ldes`, method: 'DELETE', failOnStatusCode: false}).then(response => expect(response.status).to.equals(200));
     }
 
     public getResponses() {

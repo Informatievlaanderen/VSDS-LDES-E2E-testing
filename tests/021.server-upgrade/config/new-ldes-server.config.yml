@@ -41,4 +41,4 @@ collections:
         fragmentations:
           - name: "timebased"
             config:
-              memberLimit: 250
+              memberLimit: 25

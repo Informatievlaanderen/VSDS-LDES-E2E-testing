@@ -7,8 +7,8 @@ services:
     environment:
       - TARGETURL=http://ingest-workbench:8080/ngsi/device
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
-      - CRON=${JSON_DATA_GENERATOR_SILENT:-* * * * * *}
-      - TEMPLATEFILE=${JSON_DATA_GENERATOR_SILENT:-/tmp/data/device.template.json}
+      - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
+      - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/device.template.json}
       - MIMETYPE=application/ld+json
     volumes:
       - ./data/device.template.json:/tmp/data/device.template.json:ro
@@ -79,7 +79,7 @@ services:
       - LDES_MEMBERTYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
       - VIEWS_0_NAME=devices-by-time
       - VIEWS_0_FRAGMENTATIONS_0_NAME=timebased
-      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=250
+      - VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
     ports:
       - 8080:8080
     networks:

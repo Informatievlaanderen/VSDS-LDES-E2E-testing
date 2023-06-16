@@ -13,4 +13,4 @@
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType <https://data.vlaanderen.be/ns/adres#Adres> ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	

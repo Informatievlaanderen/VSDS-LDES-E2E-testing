@@ -6,9 +6,9 @@
 
 </mobility-hindrances/by-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy ([
-		a server:Fragmentation ;
-		server:name "timebased" ;
-		server:memberLimit "1500"^^xsd:integer ;
+    tree:fragmentationStrategy ([
+		a server:TimebasedFragmentation ;
+		tree:memberLimit "1500"^^xsd:integer ;
+		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 ] .

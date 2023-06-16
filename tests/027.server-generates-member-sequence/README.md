@@ -18,6 +18,7 @@ Scenario: Server imposes an order on ingested members
 ## Test Setup
 Launch all systems:
 ```bash
+alias jq=./node_modules/node-jq/bin/jq
 docker compose up -d
 ```
 Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
@@ -29,7 +30,7 @@ Press `CTRL-C` to stop following the log.
 > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
 ```bash
 chmod +x ./config/seed.sh
-sh -c "cd ./config && ./seed.sh"
+sh ./config/seed.sh
 ```
 
 ## Test execution
@@ -83,7 +84,7 @@ sh -c "cd ./config && ./seed.sh"
 
    ```
 
-4. Verify that each ingested member has a sequence number (please download and install [jq](https://stedolan.github.io/jq/download/) in needed):
+4. Verify that each ingested member has a sequence number:
    ```bash
    curl -s http://localhost:9019/test/ldesmember?includeDocuments=true | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"
    ```

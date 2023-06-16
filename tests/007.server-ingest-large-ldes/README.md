@@ -21,7 +21,7 @@ Press `CTRL-C` to stop following the log.
 > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
 ```bash
 chmod +x ./config/seed.sh
-sh -c "cd ./config && ./seed.sh"
+sh ./config/seed.sh
 ```
 
 ## Test Execution
@@ -53,7 +53,7 @@ sh -c "cd ./config && ./seed.sh"
     ```
     or request the collection:
     ```bash
-    curl http://localhost:8080/connections/by-page
+    curl http://localhost:8080/connections/paged
     ```
 
 ## Test Teardown

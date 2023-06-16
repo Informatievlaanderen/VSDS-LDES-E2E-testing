@@ -6,9 +6,9 @@
 
 </water-quality-observations/by-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    server:fragmentationStrategy ([
-		a server:Fragmentation ;
-		server:name "timebased" ;
-		server:memberLimit "25"^^xsd:integer ;
+    tree:fragmentationStrategy ([
+		a tree:TimebasedFragmentation ;
+		tree:memberLimit "25"^^xsd:integer ;
+		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 ] .

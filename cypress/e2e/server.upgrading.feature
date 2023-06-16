@@ -1,7 +1,7 @@
-@server @broken
+@server
 Feature: LDES Server Upgrading
 
-  @iow 
+  @iow @broken
   Scenario Outline: <test-number>: Upgrade LDES Server Using '<workbench>' workbench
     Given the members are stored in database 'iow_devices'
     And context 'tests/<test-number>.<test-name>' is started

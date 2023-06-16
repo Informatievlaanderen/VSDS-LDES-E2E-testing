@@ -1,10 +1,15 @@
-#!/bin/sh
-curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./mobility-hindrances.ttl'
-if [ $? != 0 ] 
-    then exit $? 
+#!/bin/bash
+export SCRIPT_PATH=$(dirname -- "$( readlink -f -- "${BASH_SOURCE:-$0}"; )")
+echo ${SCRIPT_PATH}
+
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/mobility-hindrances.ttl"
+code=$?
+if [ $code != 0 ] 
+    then exit $code
 fi
 
-curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views' -H 'Content-Type: text/turtle' -d '@./mobility-hindrances.by-time.ttl'
-if [ $? != 0 ] 
-    then exit $? 
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/mobility-hindrances.by-time.ttl"
+code=$?
+if [ $code != 0 ] 
+    then exit $code
 fi

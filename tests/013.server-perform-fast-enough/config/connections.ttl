@@ -13,4 +13,4 @@
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
 	server:memberType <http://semweb.mmlab.be/ns/linkedconnections#Connection> ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	

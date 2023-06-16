@@ -12,5 +12,5 @@
 	tree:shape [ a sh:NodeShape ] ;
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
-	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
-	server:hasDefaultView "false"^^xsd:boolean .
+	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> .
+	

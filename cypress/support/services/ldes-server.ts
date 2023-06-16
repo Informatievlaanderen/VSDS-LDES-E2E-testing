@@ -17,7 +17,7 @@ export class LdesServer implements CanCheckAvailability {
         return cy.exec(`docker logs ${containerId}`)
             .then(result => {
                 const regex = new RegExp(message || LdesServer.DatabaseUpgradeFinished, "g");
-                return (result.stdout.match(regex) || []).length === occurences;
+                return (result.stdout.match(regex) || []).length >= occurences;
             });
     }
 
@@ -34,8 +34,13 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendMemberFile(collection: string, partialFilePath: string, mimeType: string) {
-        const command = `curl -i -X POST "${this.baseUrl}/${collection}" -H "Content-Type: ${mimeType}" -d "@${partialFilePath}"`;
-        return cy.log(command).then(() => cy.exec(command));
+        return cy.readFile(partialFilePath, 'utf8').then(data => 
+            cy.request({
+                method: 'POST', 
+                url: `${this.baseUrl}/${collection}`, 
+                headers: { 'Content-Type': mimeType}, 
+                body: data
+            }));
     }
 
     checkRootFragmentMutable(ldes: string, view: string) {
@@ -60,17 +65,17 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendConfiguration(testPartialPath: string): any {
-        const cmd = `sh -c "cd ${testPartialPath}/config && ./seed.sh"`;
-        cy.log(cmd).exec(cmd).its('code').should('eq', 0);
+        const cmd = `sh ${testPartialPath}/config/seed.sh`;
+        cy.log(cmd).exec(cmd).then(response => expect(response.code).to.equal(0));
     }
 
     configureLdesFromTurtleContent(body: string) {
         cy.request({
-            method: 'PUT', 
+            method: 'POST', 
             url: `${this.baseUrl}/admin/api/v1/eventstreams`, 
             headers: {'Content-Type': 'text/turtle'},
             body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
+        }).then(response => {expect(response.status).to.equal(201);});
     }
 
     configureViewFromTurtleContent(body: string, collection: string) {
@@ -79,7 +84,7 @@ export class LdesServer implements CanCheckAvailability {
             url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views`, 
             headers: {'Content-Type': 'text/turtle'},
             body: body, 
-        }).then(response => {expect(response.status).to.equal(200);});
+        }).then(response => {expect(response.status).to.equal(201);});
     }
 
 }

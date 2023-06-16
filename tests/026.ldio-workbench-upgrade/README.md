@@ -17,7 +17,7 @@ This test uses a docker environment a data generator simulating the system pushi
    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
    ```bash
    chmod +x ./config/seed.sh
-   sh -c "cd ./config && ./seed.sh"
+   sh ./config/seed.sh
    ```
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
@@ -28,7 +28,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 3. Verify that members are available in the LDES:
     ```bash
-    curl http://localhost:8080/devices/by-page
+    curl http://localhost:8080/devices/paged
     ```
     and that the data store member count increases (execute repeatedly):
     ```bash
@@ -63,7 +63,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 4. Verify that members are available in LDES and find last fragment (i.e. mutable):
     ```bash
-    curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
+    curl "http://localhost:8080/devices/paged?pageNumber=1" -s | grep "isVersionOf" | wc -l
     ```
 
 5. Resume new LDI-output
@@ -73,7 +73,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 6. Verify last fragment member count increases:
     ```bash
-    curl "http://localhost:8080/devices/by-page?pageNumber=1" -s | grep "isVersionOf" | wc -l
+    curl "http://localhost:8080/devices/paged?pageNumber=1" -s | grep "isVersionOf" | wc -l
     ```
 
 7. Verify data store member count increases (execute repeatedly):

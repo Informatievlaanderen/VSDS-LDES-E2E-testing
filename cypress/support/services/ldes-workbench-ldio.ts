@@ -23,12 +23,10 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     }
 
     pause() {
-        return cy.exec(`curl -X POST "${this.baseUrl}/admin/api/v1/pipeline/halt"`)
-            .then(exec => expect(exec.code).to.equals(0));
+        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/halt` }).then(response => expect(response.status).to.equal(200));
     }
 
     resume() {
-        return cy.exec(`curl -X POST "${this.baseUrl}/admin/api/v1/pipeline/resume"`)
-            .then(exec => expect(exec.code).to.equals(0));
+        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/resume` }).then(response => expect(response.status).to.equal(200));
     }
 }

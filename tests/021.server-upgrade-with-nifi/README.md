@@ -10,6 +10,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 ## Test setup
 1. Launch all systems except for the new LDES server:
    ```bash
+   alias jq=./node_modules/node-jq/bin/jq
    docker compose up -d
    ```
    Please ensure that the NiFi Workbench is started by executing the following command until it returns `HTTP/1.1 200 OK`:

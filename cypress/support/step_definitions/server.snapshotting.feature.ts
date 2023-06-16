@@ -7,7 +7,7 @@ function ingestDataSet(size: string, start: number, end: number, memberType: str
     range(start, end).forEach(member => {
         cy.readFile(`${testPartialPath()}/data/${size}/member${member}.ttl`, 'utf8').then(content => cy.request({
             method: 'POST',
-            url: `http://localhost:8080/${memberType}`,
+            url: `${server.baseUrl}/${memberType}`,
             headers: { 'Content-Type': 'text/turtle' },
             body: content
         }));

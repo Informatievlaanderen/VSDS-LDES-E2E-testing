@@ -10,7 +10,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
-    Then the first fragment is immutable
+    Then the first "by-time" fragment is immutable
     And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'LessThanOrEqualToRelation' to the first fragment
@@ -37,7 +37,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
-    Then the first fragment is immutable
+    Then the first "paged" fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'Relation' to the first and last fragments
@@ -87,7 +87,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 1 members
-    And the LDES contains 6 fragments
+    And the LDES contains 8 fragments
     Then the geo-spatial root fragment is not immutable
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the geo-spatial fragment '15/16743/11009' contains the member
@@ -115,7 +115,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
-    And the LDES contains 14 fragments
+    And the LDES contains 16 fragments
     Then the multi-level root fragment is not immutable
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the geo-spatial fragment '15/16743/11009' has a second level timebased fragmentation which contains the members
@@ -143,7 +143,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
-    And the LDES contains 9 fragments
+    And the LDES contains 11 fragments
     Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the time-based fragmentation exists

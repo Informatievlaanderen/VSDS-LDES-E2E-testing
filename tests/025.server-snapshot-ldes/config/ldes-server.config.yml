@@ -14,8 +14,4 @@ spring:
       database: test
       host: ldes-mongodb
       port: 27017
-  web:
-    resources:
-      static:
-        locations:
-          - ile:/tmp/static
+

@@ -3,11 +3,10 @@
 
 @base <http://localhost:8080> .
 
-</water-quality-observations/by-time> a tree:Node ; 
+</connections/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
-		a tree:TimebasedFragmentation ;
-		tree:memberLimit "25"^^xsd:integer ;
-		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
+		a tree:PaginationFragmentation ;
+		tree:memberLimit "250"^^xsd:integer ;
 	]) ;
 ] .

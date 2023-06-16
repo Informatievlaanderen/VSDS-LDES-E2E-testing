@@ -60,7 +60,7 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendConfiguration(testPartialPath: string): any {
-        const cmd = `bash ${testPartialPath}/config/seed.sh`;
+        const cmd = `sh ${testPartialPath}/config/seed.sh`;
         cy.log(cmd).exec(cmd).then(response => expect(response.code).to.equal(0));
     }
 

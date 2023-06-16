@@ -7,7 +7,7 @@ if [ $code != 0 ]
     then exit $code
 fi
 
-curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/mobility-hindrances.by-page.ttl"
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/mobility-hindrances.paged.ttl"
 code=$?
 if [ $code != 0 ] 
     then exit $code

@@ -6,7 +6,7 @@
 </mobility-hindrances/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
-		a server:PaginationFragmentation ;
+		a tree:PaginationFragmentation ;
 		tree:memberLimit "300"^^xsd:integer ;
 	]) ;
 ] .

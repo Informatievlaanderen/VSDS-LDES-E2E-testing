@@ -7,8 +7,8 @@
 	tree:viewDescription [ a tree:ViewDescription ;
 		tree:fragmentationStrategy (
 		[
-			a server:GeospatialFragmentation ;
-			tree:fragmentationPath "http://www.opengis.net/ont/geosparql#asGML" ;
+			a tree:GeospatialFragmentation ;
+			tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asGML> ;
 			tree:maxZoom "13"^^xsd:integer ;
 		]
 		[

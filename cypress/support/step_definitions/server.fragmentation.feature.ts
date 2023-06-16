@@ -18,9 +18,9 @@ let byPage = 'paged';
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
 
-Then('the first fragment is immutable', () => {
+Then('the first {string} fragment is immutable', (view: string) => {
     server.getLdes('mobility-hindrances')
-        .then(ldes => new Fragment(ldes.viewUrl()).visit())
+        .then(ldes => new Fragment(ldes.viewUrl(view)).visit())
         .then(view => new Fragment(view.relation.link).visit())
         .then(fragment => firstFragment = fragment.expectImmutable())
 })

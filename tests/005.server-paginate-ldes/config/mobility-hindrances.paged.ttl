@@ -3,7 +3,7 @@
 
 @base <http://localhost:8080> .
 
-</mobility-hindrances/by-page> a tree:Node ; 
+</mobility-hindrances/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a server:PaginationFragmentation ;

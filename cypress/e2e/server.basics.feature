@@ -69,7 +69,7 @@ Feature: LDES Server Basic Functionality
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | paged   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged           |
 
-  @test-019 @consumption @gipod @broken
+  @test-019 @consumption @gipod
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -131,7 +131,7 @@ Feature: LDES Server Basic Functionality
     And all 10 'mobility-hindrances' have a unique sequence number
     And all 5 'addresses' have a unique sequence number
 
-  @test-030 @multi-collection @iow
+  @test-030 @multi-collection @iow @focus
   Scenario Outline: 030: Server Supports Multi LDES Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/030.server-allow-multi-collection' is started

@@ -10,7 +10,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
-    Then the first fragment is immutable
+    Then the first "by-time" fragment is immutable
     And the first fragment only has a 'GreaterThanOrEqualToRelation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'LessThanOrEqualToRelation' to the first fragment
@@ -37,7 +37,7 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
-    Then the first fragment is immutable
+    Then the first "paged" fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment
     And the middle fragment is immutable
     And the middle fragment only has a 'Relation' to the first and last fragments

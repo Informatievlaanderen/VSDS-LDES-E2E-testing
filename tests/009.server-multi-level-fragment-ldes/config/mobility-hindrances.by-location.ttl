@@ -8,6 +8,6 @@
     tree:fragmentationStrategy ([
 		a tree:GeospatialFragmentation; ;
 		tree:maxZoom "15"^^xsd:integer ;
-		tree:fragmentationPath "http://www.opengis.net/ont/geosparql#asWKT" ;
+		tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
 	]) ;
 ] .

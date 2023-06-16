@@ -40,7 +40,7 @@ Then('the ldesfragment collection is upgraded as expected', () => {
 
 Then('the ldesmember collection is upgraded as expected', () => {
     checkDatabaseStructure(memberCollectionUrl, 
-        [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'treeNodeReferences']);
+        [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
 })
 
 When('the old server is done processing', waitUntilMemberCountStable);

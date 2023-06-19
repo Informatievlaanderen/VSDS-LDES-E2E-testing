@@ -34,7 +34,7 @@ To stop the test, we stop sending data, remove the view and tear down the docker
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-Run all systems except the workflow by executing the following (bash) command:
+Run all systems except the message generators by executing the following (bash) command:
 ```bash
 docker compose up -d
 ```

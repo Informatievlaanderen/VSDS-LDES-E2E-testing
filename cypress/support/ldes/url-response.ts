@@ -3,6 +3,8 @@ import N3 = require('n3');
 import { Member } from './member';
 import { mimeTypes, tree } from './rdf-common';
 import { isomorphic } from "rdf-isomorphic";
+import * as jsonld from 'jsonld';
+import * as RDF from "@rdfjs/types";
 
 export interface VisitOptions {
     mimeType: string,
@@ -17,33 +19,40 @@ export abstract class UrlResponse {
     visit(options?: Partial<VisitOptions>) {
         let request: { [key: string]: any } = { url: this.url };
         if (options?.mimeType) request = { ...request, headers: { accept: options.mimeType } };
-        return cy.request(request).then(response => this._response = response).then(() => this);
+        return cy.request(request)
+            .then(response => this.parseResponse(response).then(quads => this._store = new N3.Store(quads)))
+            .then(() => this);
     }
 
     refresh() {
         this._response = undefined;
         this._store = undefined;
-        return cy.request(this.url).then(response => this._response = response).then(() => this);
+        return cy.request(this.url)
+            .then(response => this.parseResponse(response).then(quads => this._store = new N3.Store(quads)))
+            .then(() => this);
     }
 
-    protected get store(): N3.Store | undefined {
-        const mimeType = this.mimeType;
+    private parseResponse(response: Cypress.Response<any>): Promise<RDF.Quad[]> {
+        this._response = response;
+        return this.parseContent(response.body, this.mimeType);
+    }
+
+    private parseContent(content: string | object, mimeType: string): Promise<RDF.Quad[]> {
         if (mimeType === mimeTypes.jsonld) {
-            return undefined;
+            return jsonld.toRDF(content as jsonld.NodeObject) as Promise<RDF.Quad[]>;
         } else {
-            return this._store ? this._store : (this._store = this.parseRdf(this.body, mimeType));
+            const parser = new N3.Parser({ format: mimeType });
+            const quads = parser.parse(content as string);
+            return Promise.resolve(quads);
         }
     }
 
-    private parseRdf(content: string, mimeType: string): N3.Store {
-        const parser = new N3.Parser({ format: mimeType });
-        const quads = parser.parse(content);
-        return new N3.Store(quads);
+    protected get store(): N3.Store | undefined {
+        return this._store;
     }
 
-    private isIsomorphic(contentA: string, contentB: string, mimeType: string): boolean {
-        const parser = new N3.Parser({ format: mimeType });
-        return isomorphic(parser.parse(contentA), parser.parse(contentB))
+    protected get quads(): RDF.Quad[] {
+        return this._store.getQuads(null, null, null, null);
     }
 
     public get immutable(): boolean {
@@ -54,10 +63,6 @@ export abstract class UrlResponse {
 
     public get success(): boolean {
         return this._response.isOkStatusCode;
-    }
-
-    public get body(): string {
-        return this._response.body;
     }
 
     public get mimeType(): string {
@@ -74,18 +79,8 @@ export abstract class UrlResponse {
         return this;
     }
 
-    private roundTripJson(content: string | object) {
-        if (content === 'string') return JSON.stringify(JSON.parse(content), null, 0);
-        return JSON.stringify(content, null, 0);
-    }
-
     expectContent(content: string | object) {
-        const mimeType = this.mimeType;
-        if (mimeType === mimeTypes.jsonld) {
-            expect(this.roundTripJson(this.body)).to.equal(this.roundTripJson(content));
-        } else {
-            expect(this.isIsomorphic(this.body, content as string, mimeType)).true
-        }
+        this.parseContent(content, this.mimeType).then(quads => expect(isomorphic(quads, this.quads)).true);
     }
 
     get members(): Member[] {

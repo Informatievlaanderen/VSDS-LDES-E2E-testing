@@ -1,9 +1,12 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { createAndStartService, dockerCompose, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesServer } from "../services";
+import {EventStream} from "../ldes";
 
 const oldServer = new LdesServer('http://localhost:8080', 'old-ldes-server');
 const newServer = new LdesServer('http://localhost:8080', 'new-ldes-server');
+
+const eventstreamsUrl = 'http://localhost:8080/admin/api/v1/eventstreams';
 
 const commonMongoProperties = ['_id', '_class']
 const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
@@ -63,6 +66,13 @@ Then('the shacl_shape collection is upgraded as expected', () => {
 Then('the id of ldesmember has the collectionName {string} as prefix', (collectionName: string) => {
     cy.request(`${memberCollectionUrl}?includeDocuments=true`).then(response => {
         expect(response.body.documents[0]._id).to.have.string(collectionName + "/");
+    });
+})
+
+Then('the migrated config matches the expected config {string}', (filePath: string) => {
+    new EventStream(eventstreamsUrl).visit().then(page => {
+        expect(page.success).to.be.true;
+        cy.fixture(`${filePath}`).then((content: string | object) => page.expectContent(content));
     });
 })
 

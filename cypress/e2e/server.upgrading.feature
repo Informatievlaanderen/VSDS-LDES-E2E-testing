@@ -22,6 +22,7 @@ Feature: LDES Server Upgrading
     And the eventstreams collection is upgraded as expected
     And the view collection is upgraded as expected
     And the shacl_shape collection is upgraded as expected
+    And the migrated config matches the expected config 'test-021/expected_config.ttl'
     When I resume the '<workbench>' workbench output
     Then the LDES member count increases
     And the last fragment member count increases

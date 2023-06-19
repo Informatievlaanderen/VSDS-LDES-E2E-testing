@@ -1,0 +1,29 @@
+@prefix default-context: <https://uri.etsi.org/ngsi-ld/default-context/> .
+@prefix devices:         <http://localhost:8080/devices/> .
+@prefix devices-by-time: <http://localhost:8080/devices/devices-by-time/> .
+@prefix ldes:            <https://w3id.org/ldes#> .
+@prefix prov:            <http://www.w3.org/ns/prov#> .
+@prefix rdf:             <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix shacl:           <http://www.w3.org/ns/shacl#> .
+@prefix terms:           <http://purl.org/dc/terms/> .
+@prefix tree:            <https://w3id.org/tree#> .
+
+devices-by-time:description
+       rdf:type                    tree:ViewDescription ;
+       tree:fragmentationStrategy  ( [ rdf:type          tree:TimebasedFragmentation ;
+                                       tree:memberLimit  "25"
+                                     ]
+                                   ) .
+
+<http://localhost:8080/devices>
+       rdf:type            ldes:EventStream ;
+       <http://example.org/memberType>
+               default-context:Device ;
+       ldes:timestampPath  prov:generatedAtTime ;
+       ldes:versionOfPath  terms:isVersionOf ;
+       tree:shape          [ rdf:type  shacl:NodeShape ] ;
+       tree:view           devices:devices-by-time .
+
+devices:devices-by-time
+       rdf:type              tree:Node ;
+       tree:viewDescription  devices-by-time:description .

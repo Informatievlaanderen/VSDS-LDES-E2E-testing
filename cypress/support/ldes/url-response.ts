@@ -46,11 +46,6 @@ export abstract class UrlResponse {
         return isomorphic(parser.parse(contentA), parser.parse(contentB))
     }
 
-    private formatRdf(store: N3.Store, mimeType: string): string {
-        const writer = new N3.Writer({ format: mimeType });
-        return writer.quadsToString(store.getQuads(null, null, null, null));
-    }
-
     public get immutable(): boolean {
         const value = this._response.headers['cache-control'];
         const cacheControl = typeof value === 'string' ? value : value[0];

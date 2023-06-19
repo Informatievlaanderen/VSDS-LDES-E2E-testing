@@ -98,6 +98,10 @@ export class DockerCompose {
         return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), { timeout: 60000, interval: 5000 })
     }
 
+    private waitServiceStopped(serviceName: string) {
+        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes(serviceName)), { timeout: 60000, interval: 5000 })
+    }
+
     public down() {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
@@ -114,6 +118,7 @@ export class DockerCompose {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} rm --stop --force --volumes ${serviceName}`;
         return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0));
+            .then(result => expect(result.code).to.equal(0))
+            .then(() => this.waitServiceStopped(serviceName));
     }
 }

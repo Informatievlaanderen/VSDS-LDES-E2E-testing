@@ -105,6 +105,8 @@ export class DockerCompose {
             return cy.log(command).exec(command, { log: true, env: this._environment, timeout: 60000 })
                 .then(exec => expect(exec.code).to.equals(0))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
+        } else {
+            return cy.log('No docker containers running.');
         }
     }
 

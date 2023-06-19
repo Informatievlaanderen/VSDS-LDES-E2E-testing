@@ -182,11 +182,12 @@ Then('the first timebased second level fragment contains {int} relation of type 
     new Fragment(relations[0].link).visit().then(fragment => {
         const relation = fragment.relation;
         expect(relation).not.to.be.undefined;
-        return new Fragment(relation.link).visit().then(fragment => {
-            timebasedFragment = fragment;
-            expect(fragment.relations.length).to.equal(count);
-            expect(fragment.expectNoOtherRelationThan(type));
-        });
+        cy.waitUntil(() => new Fragment(relation.link).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
+            .then(() => new Fragment(relation.link).visit().then(fragment => {
+                timebasedFragment = fragment;
+                expect(fragment.relations.length).to.equal(count);
+                expect(fragment.expectNoOtherRelationThan(type));
+            }))
     });
 })
 

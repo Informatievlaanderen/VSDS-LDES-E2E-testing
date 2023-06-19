@@ -42,6 +42,12 @@ Then('the ldesmember collection is upgraded as expected', () => {
         [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
 })
 
+Then('the id of ldesmember has the collectionName {string} as prefix', (collectionName: string) => {
+    cy.request(`${memberCollectionUrl}?includeDocuments=true`).then(response => {
+        expect(response.body.documents[0]._id).to.have.string(collectionName + "/");
+    });
+})
+
 When('the old server is done processing', waitUntilMemberCountStable);
 
 When('I bring the old server down', () => {

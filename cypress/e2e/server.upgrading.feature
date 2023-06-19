@@ -18,6 +18,7 @@ Feature: LDES Server Upgrading
     And I start the new LDES Server
     Then the ldesfragment collection is upgraded as expected
     And the ldesmember collection is upgraded as expected
+    And the id of ldesmember has the collectionName 'devices' as prefix
     When I resume the '<workbench>' workbench output
     Then the LDES member count increases
     And the last fragment member count increases

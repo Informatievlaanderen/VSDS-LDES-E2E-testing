@@ -2,13 +2,13 @@ version: '3.3'
 services:
 
   test-message-generator:
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_test-message-generator
+    container_name: ${USECASE_NAME:-upgrade-server}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ldio-workbench:8080/pipeline
-      - SILENT=false
-      - CRON=* * * * * *
-      - TEMPLATEFILE=/tmp/data/device.template.json
+      - TARGETURL=http://ingest-workbench:8080/ngsi/device
+      - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
+      - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
+      - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/device.template.json}
       - MIMETYPE=application/ld+json
     volumes:
       - ./data/device.template.json:/tmp/data/device.template.json:ro
@@ -17,21 +17,42 @@ services:
     profiles:
       - delay-started
 
+  nifi-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-upgrade-server}_nifi-workbench
+    environment:
+      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+    ports:
+      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+      - 8081:8080
+    networks:
+      ldes:
+        aliases:
+          - ingest-workbench
+    profiles:
+      - delay-started
+
   ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldio-workbench
+    container_name: ${USECASE_NAME:-upgrade-server}_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
     volumes:
       - ./ldio-config.yml:/config/application.yml:ro
-    networks:
-      - ldes
     ports:
       - 8081:8080
+    networks:
+      ldes:
+        aliases:
+          - ingest-workbench
+    profiles:
+      - delay-started
 
   ldes-mongodb:
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldes-mongodb
+    container_name: ${USECASE_NAME:-upgrade-server}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
@@ -39,7 +60,7 @@ services:
       - ldes
 
   old-ldes-server:
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_old-ldes-server
+    container_name: ${USECASE_NAME:-upgrade-server}_old-ldes-server
     # NOTE: because the old server 20221107t0923 did not yet support MacOS,
     #       we need to use the version 20230405T0843 which is based on the
     #       20221107t0923 code base but adds a docker image for ARM64.
@@ -70,6 +91,7 @@ services:
 
   new-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_new-ldes-server
+#    image: dev/migration-server:1.0
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
@@ -88,7 +110,7 @@ services:
       - delay-started
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-upgrade-server}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
@@ -99,10 +121,9 @@ services:
       - ldes
 
   ldes-list-fragments:
-    container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_ldes-list-fragments
+    container_name: ${USECASE_NAME:-upgrade-server}_ldes-list-fragments
     image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
     environment:
-      - SILENT=false
       - FOLLOW=http://localhost:8080/devices/devices-by-time
     # use the network stack of the new-ldes-server service so that 
     # localhost refers to new-ldes-server and we can follow the LDES stream
@@ -112,4 +133,4 @@ services:
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-upgrade-server-using-ldio}_network
+    name: ${USECASE_NAME:-upgrade-server}_network

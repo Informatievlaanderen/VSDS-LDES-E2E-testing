@@ -67,7 +67,7 @@ Feature: LDES Server Basic Functionality
     Examples: 
       | collection-name     | view-name | collection-url                            | view-url                                          |
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
-      | cartoons            | paged   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged           |
+      | cartoons            | paged     | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged              |
 
   @test-019 @consumption @gipod
   Scenario: 019: Verify Acceptable Fragment Formats
@@ -119,7 +119,7 @@ Feature: LDES Server Basic Functionality
     And I request the LDES view
     Then the LDES view is re-requested from the LDES server
 
-  @test-027 @ingestion @sequencing @iow @grar 
+  @test-027 @ingestion @sequencing @iow @grar
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
     Given the members are stored in database 'test'
     And context 'tests/027.server-generates-member-sequence' is started

@@ -15,11 +15,11 @@ Feature: LDES Client Persistence
     Then all but the first fragment have been requested once
 
     @ldio
-    Examples:
+    Examples: 
       | workbench |
       | LDIO      |
 
     @nifi
-    Examples:
+    Examples: 
       | workbench |
       | NIFI      |

@@ -7,16 +7,13 @@ Feature: LDES Workbench Upgrading
     And context 'tests/<test-number>.<test-name>' is started
     And the LDES server is available and configured
     And the old '<workbench>' workbench is available
-    
     When I set the TARGETURL to the old '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
-    
     When I start the new '<workbench>' workbench
     And I pause the new '<workbench>' workbench output
     And I set the TARGETURL to the new '<workbench>' workbench
     Then the member count does not change
-    
     When I bring the old '<workbench>' workbench down
     And I remember the last fragment member count
     And I resume the new '<workbench>' workbench output
@@ -24,11 +21,11 @@ Feature: LDES Workbench Upgrading
     And the last fragment member count increases
 
     @test-023 @nifi
-    Examples:
+    Examples: 
       | workbench | test-number | test-name              |
-      | NIFI      | 023         | nifi-workbench-upgrade |
-  
+      | NIFI      |         023 | nifi-workbench-upgrade |
+
     @test-026 @ldio
-    Examples:
+    Examples: 
       | workbench | test-number | test-name              |
-      | LDIO      | 026         | ldio-workbench-upgrade |
+      | LDIO      |         026 | ldio-workbench-upgrade |

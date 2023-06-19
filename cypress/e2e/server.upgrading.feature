@@ -1,7 +1,7 @@
 @server
 Feature: LDES Server Upgrading
 
-  @test-021 @iow @broken
+  @test-021 @iow
   Scenario Outline: 021: Upgrade LDES Server Using '<workbench>' workbench
     Given the members are stored in database 'iow_devices'
     And context 'tests/021.server-upgrade' is started
@@ -18,6 +18,11 @@ Feature: LDES Server Upgrading
     And I start the new LDES Server
     Then the ldesfragment collection is upgraded as expected
     And the ldesmember collection is upgraded as expected
+    And the id of ldesmember has the collectionName 'devices' as prefix
+    And the eventstreams collection is upgraded as expected
+    And the view collection is upgraded as expected
+    And the shacl_shape collection is upgraded as expected
+    And the migrated config matches the expected config 'test-021/expected_config.ttl'
     When I resume the '<workbench>' workbench output
     Then the LDES member count increases
     And the last fragment member count increases

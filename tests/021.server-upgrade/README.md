@@ -12,6 +12,8 @@ The server upgrade will include changesets that alter the database schema. We wi
 1. Launch all systems except for the new LDES server:
    ```bash
    alias jq=./node_modules/node-jq/bin/jq
+   ```
+   ```bash
    docker compose up -d
    ```
    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Started Application in`:

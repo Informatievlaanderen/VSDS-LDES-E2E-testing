@@ -5,10 +5,13 @@ import { LdesServer } from "../services";
 const oldServer = new LdesServer('http://localhost:8080', 'old-ldes-server');
 const newServer = new LdesServer('http://localhost:8080', 'new-ldes-server');
 
-const commonFragmentProperties = ['_id', '_class', 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
-const commonMemberProperties = ['_id', '_class'];
+const commonMongoProperties = ['_id', '_class']
+const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
 const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
 const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
+const evenstreamsCollectionUrl = 'http://localhost:9019/iow_devices/eventstreams';
+const viewCollectionUrl = 'http://localhost:9019/iow_devices/view';
+const shaclShapeCollectionUrl = 'http://localhost:9019/iow_devices/shacl_shape';
 
 function checkDatabaseStructure(collectionUrl: string, expected: string[],) {
     cy.request(`${collectionUrl}?includeDocuments=true`).then(response => {
@@ -25,7 +28,7 @@ Given('the ldesfragment collection is structured as expected', () => {
 })
 
 Given('the ldesmember collection is structured as expected', () => {
-    checkDatabaseStructure(memberCollectionUrl, [...commonMemberProperties, 'ldesMember']);
+    checkDatabaseStructure(memberCollectionUrl, [...commonMongoProperties, 'ldesMember']);
 })
 
 Given('the old LDES server is available', () => {
@@ -39,7 +42,22 @@ Then('the ldesfragment collection is upgraded as expected', () => {
 
 Then('the ldesmember collection is upgraded as expected', () => {
     checkDatabaseStructure(memberCollectionUrl, 
-        [...commonMemberProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
+        [...commonMongoProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
+})
+
+Then('the eventstreams collection is upgraded as expected', () => {
+    checkDatabaseStructure(evenstreamsCollectionUrl,
+        [...commonMongoProperties, 'memberType', 'timestampPath', 'versionOfPath']);
+})
+
+Then('the view collection is upgraded as expected', () => {
+    checkDatabaseStructure(viewCollectionUrl,
+        [...commonMongoProperties, 'fragmentations', 'retentionPolicies']);
+})
+
+Then('the shacl_shape collection is upgraded as expected', () => {
+    checkDatabaseStructure(shaclShapeCollectionUrl,
+        [...commonMongoProperties, 'model']);
 })
 
 Then('the id of ldesmember has the collectionName {string} as prefix', (collectionName: string) => {

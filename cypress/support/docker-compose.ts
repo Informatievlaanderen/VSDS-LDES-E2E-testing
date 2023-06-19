@@ -15,7 +15,8 @@ export interface DockerComposeOptions {
 export class DockerCompose {
     private _isUp: boolean;
     private _environmentFile: string;
-    private _environment: object
+    private _environment: object;
+    private _delayedServices = [];
 
     constructor(private userEnvironment: EnvironmentSettings) { }
 
@@ -23,6 +24,7 @@ export class DockerCompose {
         this._environment = this.userEnvironment || {};
         this._environmentFile = '';
         this._isUp = false;
+        this._delayedServices = [];
     }
 
     public up(options: Partial<DockerComposeOptions>) {
@@ -47,6 +49,12 @@ export class DockerCompose {
             this._isUp = result.code === 0;
             return result;
         });
+    }
+
+    public cleanup() {
+        this._delayedServices.forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
+        this._delayedServices = [];
+        this.down().then(() => this.waitNoContainersRunning());
     }
 
     public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
@@ -75,7 +83,8 @@ export class DockerCompose {
         //NOTE: we cannot use docker compose start because this doesn't work on Mac
         const command = `docker compose ${environmentFile} up ${serviceName} -d`;
         return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0));
+            .then(result => expect(result.code).to.equal(0))
+            .then(() => this._delayedServices.push(serviceName));
     }
 
     public stop(serviceName: string) {
@@ -89,15 +98,15 @@ export class DockerCompose {
         return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), { timeout: 60000, interval: 5000 })
     }
 
-    public down(profile?: string) {
+    public down() {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-            const command = profile
-                ? `docker compose ${environmentFile} --profile ${profile} down`
-                : `docker compose ${environmentFile} down`;
+            const command = `docker compose ${environmentFile} down`;
             return cy.log(command).exec(command, { log: true, env: this._environment, timeout: 60000 })
                 .then(exec => expect(exec.code).to.equals(0))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
+        } else {
+            return cy.log('No docker containers running.');
         }
     }
 

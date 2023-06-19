@@ -21,9 +21,7 @@ export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
 
 Before(() => {
-    testContext?.delayedServices.forEach((x: string) => dockerCompose.stop(x));
-    dockerCompose.down(testContext?.delayedServices?.length ? 'delay-started' : '');
-    if (testContext?.delayedServices) testContext.delayedServices = [];
+    dockerCompose.cleanup(); // cleanup if previous test failed (After is not run in this case!)
 
     dockerCompose.initialize();
     testContext = {
@@ -31,13 +29,11 @@ Before(() => {
         additionalEnvironmentSetting: {},
         database: '',
         collection: '',
-        delayedServices: [],
     }
 });
 
 After(() => {
-    testContext.delayedServices.forEach((x: string) => dockerCompose.stop(x));
-    dockerCompose.down(testContext.delayedServices.length ? 'delay-started' : '');
+    dockerCompose.cleanup();
 });
 
 export function testPartialPath() {
@@ -239,8 +235,7 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
 
 export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
-        .then(() => dockerCompose.start(service, additionalEnvironmentSettings))
-        .then(() => testContext.delayedServices.push(service));
+        .then(() => dockerCompose.start(service, additionalEnvironmentSettings));
 }
 
 When('I start the JSON Data Generator', () => {

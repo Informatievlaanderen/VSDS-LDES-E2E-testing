@@ -5,8 +5,8 @@ import { LdesServer } from "../services";
 const oldServer = new LdesServer('http://localhost:8080', 'old-ldes-server');
 const newServer = new LdesServer('http://localhost:8080', 'new-ldes-server');
 
-const commonFragmentProperties = ['_class', 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
-const commonMemberProperties = ['_class'];
+const commonFragmentProperties = ['_id', '_class', 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
+const commonMemberProperties = ['_id', '_class'];
 const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
 const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
 
@@ -15,8 +15,7 @@ function checkDatabaseStructure(collectionUrl: string, expected: string[],) {
         const actual = response.body.documents
             .map(x => Object.keys(x))
             .flat()
-            .filter((x, i, a) => a.indexOf(x) === i)
-            .filter(x => x !== '_id');
+            .filter((x, i, a) => a.indexOf(x) === i);
         expect(actual).to.have.same.members(expected);
     });
 }
@@ -35,7 +34,7 @@ Given('the old LDES server is available', () => {
 
 Then('the ldesfragment collection is upgraded as expected', () => {
     checkDatabaseStructure(fragmentCollectionUrl, 
-        [...commonFragmentProperties, 'collectionName', 'immutableTimestamp', 'numberOfMembers', 'parentId', 'softDeleted']);
+        [...commonFragmentProperties, 'collectionName', 'numberOfMembers', 'parentId']);
 })
 
 Then('the ldesmember collection is upgraded as expected', () => {

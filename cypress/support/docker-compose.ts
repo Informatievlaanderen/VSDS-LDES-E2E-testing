@@ -54,7 +54,7 @@ export class DockerCompose {
     public cleanup() {
         this._delayedServices.forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
         this._delayedServices = [];
-        this.down().then(() => this.waitNoContainersRunning());
+        this.down();
     }
 
     public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {

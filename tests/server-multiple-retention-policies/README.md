@@ -84,7 +84,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
     ```bash
-    docker compose stop ldes-message-generator
+    docker stop basic-retention_member-generator
     ```
 
 5. Repeatedly check the number of members in the database again:
@@ -119,7 +119,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker compose stop ldes-message-generator
+    docker stop basic-retention_member-generator
    ```
 
 5. Wait 10 seconds and check the number of members in the database again:
@@ -155,7 +155,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker compose stop ldes-message-generator
+    docker stop basic-retention_member-generator
     ```
 
 5. Wait 10 seconds and check the number of members in the database again:
@@ -191,7 +191,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data and start sending members with another version to the LDES server:
     ```bash
-    docker compose stop ldes-message-generator
+    docker stop basic-retention_member-generator
     docker compose up ldes-message-generator-2
     ```
    
@@ -204,7 +204,7 @@ To execute this test scenario, run the following steps:
 
 6. Stop sending data:
    ```bash
-    docker compose stop ldes-message-generator-2
+    docker stop basic-retention_member-generator-2
     ```
 
 7. Wait 10 seconds and check the number of members in the database again:

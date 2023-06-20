@@ -4,7 +4,7 @@ Feature: LDES Server Retention
 @test-012
   Scenario: 012: Server provides timebased retention
     Given the members are stored in database 'gipod'
-    And context 'tests/server-multiple-retention-policies' is started
+    And context 'tests/012.server-multiple-retention-policies' is started
     And the LDES server is available
     And I seed the LDES server with a collection
     And I start the message generator
@@ -19,7 +19,7 @@ Feature: LDES Server Retention
   @test-012
   Scenario: 012: Server provides version retention
     Given the members are stored in database 'gipod'
-    And context 'tests/server-multiple-retention-policies' is started
+    And context 'tests/012.server-multiple-retention-policies' is started
     And the LDES server is available
     And I seed the LDES server with a collection
     And I start the message generator
@@ -34,7 +34,7 @@ Feature: LDES Server Retention
   @test-012
   Scenario: 012: Server provides point in time retention
     Given the members are stored in database 'gipod'
-    And context 'tests/server-multiple-retention-policies' is started
+    And context 'tests/012.server-multiple-retention-policies' is started
     And the LDES server is available
     And I seed the LDES server with a collection
     And I start the message generator
@@ -51,7 +51,7 @@ Feature: LDES Server Retention
   @test-012
   Scenario: 012: Server combines multiple retention policies
     Given the members are stored in database 'gipod'
-    And context 'tests/server-multiple-retention-policies' is started
+    And context 'tests/012.server-multiple-retention-policies' is started
     And the LDES server is available
     And I seed the LDES server with a collection
     And I start the message generator

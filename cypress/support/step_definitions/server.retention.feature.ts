@@ -1,11 +1,7 @@
 /// <reference types="cypress" />
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { Fragment } from '../ldes';
-import { createAndStartService, currentMemberCount, dockerCompose, jsonDataGenerator, mongo, server } from "./common_step_definitions";
-import { MongoRestApi, TestMessageGenerator } from "../services";
-import { MemberGenerator } from "../services/member-generator";
-
-const fragments: { [key: string]: Fragment } = {};
+import { createAndStartService, currentMemberCount, server } from "./common_step_definitions";
+import { MemberGenerator } from "../services";
 
 export const memberGenerator1 = new MemberGenerator('basic-retention_member-generator');
 export const memberGenerator2 = new MemberGenerator('basic-retention_member-generator-2');

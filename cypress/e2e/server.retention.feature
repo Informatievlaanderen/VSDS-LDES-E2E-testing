@@ -1,16 +1,7 @@
 @server @retention
 Feature: LDES Server Retention
 
-
-@test-012
-  Scenario Outline: 012: Server provides timebased retention
-    Given the LDES server is available
-    And
-
-
-
-
-@gtfs @broken
+  @test-012 @gtfs @broken
   Scenario Outline: 012: Server Provides a Basic Retention Mechanism Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'

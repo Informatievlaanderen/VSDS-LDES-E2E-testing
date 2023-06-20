@@ -13,6 +13,8 @@ It also tests that the LDES server can combine multiple retention policies and r
 
 For each retention policy, we create a view with this retention.
 We then send some test members to the LDES server and check if the desired number of members remain in the database.
+Because the server checks every 10 seconds if members comply with the retention policies, the amount of members in the database can change in these 10 seconds.
+This is noted in the test as a range between which the members stagnate.
 
 ### Start Systems
 
@@ -53,6 +55,8 @@ Remove the default view.
 ```bash
 curl -X DELETE 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views/by-page'
 ```
+This step is necessary so that only the view with the desired retentionpolicy remains.
+This way members will be removed from the database and the number of members can be easily queried.
 
 Verify the initial collection is created:
 ```bash
@@ -69,7 +73,7 @@ To execute this test scenario, run the following steps:
 
 2. Start sending data to the LDES server:
     ```bash
-    docker compose up ldes-message-generator
+    docker compose up -d ldes-message-generator
     ```
 
 3. Repeatedly check the number of members in the database:
@@ -80,7 +84,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
     ```bash
-    docker stop basic-retention_member-generator
+    docker compose stop ldes-message-generator
     ```
 
 5. Repeatedly check the number of members in the database again:
@@ -104,7 +108,7 @@ To execute this test scenario, run the following steps:
 
 2. Start sending data to the LDES server:
     ```bash
-    docker compose up ldes-message-generator
+    docker compose up -d ldes-message-generator
     ```
 
 3. Repeatedly check the number of members in the database:
@@ -115,8 +119,8 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker stop basic-retention_member-generator
-    ```
+    docker compose rm -s -f -v ldes-message-generator
+   ```
 
 5. Wait 10 seconds and check the number of members in the database again:
    ```bash
@@ -139,7 +143,7 @@ To execute this test scenario, run the following steps:
 
 2. Start sending data to the LDES server:
     ```bash
-    docker compose up ldes-message-generator
+    docker compose up -d ldes-message-generator
     ```
 
 3. Repeatedly check the number of members in the database:
@@ -151,7 +155,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker stop basic-retention_member-generator
+    docker compose rm -s -f -v ldes-message-generator
     ```
 
 5. Wait 10 seconds and check the number of members in the database again:
@@ -166,6 +170,7 @@ To execute this test scenario, run the following steps:
    ```
 
 ## Test Combined Retention
+In this test we will combine all 3 retention policies: timebased, versionbased and point in time.
 To execute this test scenario, run the following steps:
 
 1. Add the combined view:
@@ -175,7 +180,7 @@ To execute this test scenario, run the following steps:
 
 2. Start sending data to the LDES server:
     ```bash
-    docker compose up ldes-message-generator
+    docker compose up -d ldes-message-generator
     ```
 
 3. Repeatedly check the number of members in the database:
@@ -184,8 +189,9 @@ To execute this test scenario, run the following steps:
    ```
    The amount of members should stagnate between 5 and 15 members.
 
-4. Start sending members with another version to the LDES server:
+4. Stop sending data and start sending members with another version to the LDES server:
     ```bash
+    docker compose rm -s -f -v test-message-generator
     docker compose up ldes-message-generator-2
     ```
    
@@ -198,8 +204,7 @@ To execute this test scenario, run the following steps:
 
 6. Stop sending data:
    ```bash
-    docker stop basic-retention_member-generator
-    docker stop basic-retention_member-generator-2
+    docker compose rm -s -f -v ldes-message-generator-2
     ```
 
 7. Wait 10 seconds and check the number of members in the database again:
@@ -216,7 +221,7 @@ To execute this test scenario, run the following steps:
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v basic-retention_member-generator
-docker compose rm -s -f -v basic-retention_member-generator-2
+docker compose rm -s -f -v ldes-message-generator
+docker compose rm -s -f -v ldes-message-generator-2
 docker compose down
 ```

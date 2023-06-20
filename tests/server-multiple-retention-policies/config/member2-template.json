@@ -1,0 +1,1 @@
+{"@id":"http://example.org/id{{index}}","@type":["http://example.org/id"],"http://example.org/modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"http://example.org/isVersionOf":[{"@value":"other-version"}]}

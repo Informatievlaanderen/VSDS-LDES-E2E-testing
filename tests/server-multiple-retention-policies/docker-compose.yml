@@ -3,7 +3,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-basic-retention}-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER:-latest}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER:-20230619105057}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False
@@ -25,25 +25,29 @@ services:
     container_name: ${USECASE_NAME:-basic-retention}_member-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${MEMBER_GENERATOR_TAG:-latest}
     environment:
-      - TEMPLATE=[{"@id":"http://example.org/id{{index}}","@type":["http://example.org/id"],"http://example.org/modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"http://example.org/isVersionOf":[{"@value":"version"}]}]
+      - TEMPLATEFILE=/tmp/data/member-template.json
       - TARGETURL=http://basic-retention-ldes-server:${LDES_SERVER_PORT:-8080}/mobility-hindrances
       - MIMETYPE=application/json-ld
+    volumes:
+      - ./config/member-template.json:/tmp/data/member-template.json:ro
     networks:
       - ldes
     profiles:
-      - delayed-started
+      - delay-started
 
   ldes-message-generator-2:
     container_name: ${USECASE_NAME:-basic-retention}_member-generator-2
     image: ghcr.io/informatievlaanderen/test-message-generator:${MEMBER_GENERATOR_TAG:-latest}
     environment:
-      - TEMPLATE=[{"@id":"http://example.org/id{{index}}","@type":["http://example.org/id"],"http://example.org/modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"http://example.org/isVersionOf":[{"@value":"other-version"}]}]
+      - TEMPLATEFILE=/tmp/data/member2-template.json
       - TARGETURL=http://basic-retention-ldes-server:${LDES_SERVER_PORT:-8080}/mobility-hindrances
       - MIMETYPE=application/json-ld
+    volumes:
+      - ./config/member2-template.json:/tmp/data/member-template2.json:ro
     networks:
       - ldes
     profiles:
-      - delayed-started
+      - delay-started
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-basic-retention}_ldes-mongodb

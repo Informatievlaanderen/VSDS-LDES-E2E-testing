@@ -43,7 +43,7 @@ services:
       - TARGETURL=http://basic-retention-ldes-server:${LDES_SERVER_PORT:-8080}/mobility-hindrances
       - MIMETYPE=application/json-ld
     volumes:
-      - ./config/member2-template.json:/tmp/data/member-template2.json:ro
+      - ./config/member2-template.json:/tmp/data/member2-template.json:ro
     networks:
       - ldes
     profiles:

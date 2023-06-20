@@ -3,7 +3,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-basic-retention}-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER:-latest}
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER:-20230619105057}
     environment:
       - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
       - MANAGEMENT_TRACING_ENABLED=False

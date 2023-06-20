@@ -119,7 +119,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker compose rm -s -f -v ldes-message-generator
+    docker compose stop ldes-message-generator
    ```
 
 5. Wait 10 seconds and check the number of members in the database again:
@@ -155,7 +155,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data:
    ```bash
-    docker compose rm -s -f -v ldes-message-generator
+    docker compose stop ldes-message-generator
     ```
 
 5. Wait 10 seconds and check the number of members in the database again:
@@ -191,7 +191,7 @@ To execute this test scenario, run the following steps:
 
 4. Stop sending data and start sending members with another version to the LDES server:
     ```bash
-    docker compose rm -s -f -v test-message-generator
+    docker compose stop ldes-message-generator
     docker compose up ldes-message-generator-2
     ```
    
@@ -199,12 +199,12 @@ To execute this test scenario, run the following steps:
    ```bash
    bash ./config/poll-members.sh
    ```
-   The amount of members should now increase and stagnate between 10 and 30 members.
-   After 1 minute since creating the view, the number of members should steadily keep increasing and exceed the 30 members.
+   The amount of members should now increase and stagnate between 10 and 20 members.
+   After 1 minute since creating the view, the number of members should steadily keep increasing and exceed the 20 members.
 
 6. Stop sending data:
    ```bash
-    docker compose rm -s -f -v ldes-message-generator-2
+    docker compose stop ldes-message-generator-2
     ```
 
 7. Wait 10 seconds and check the number of members in the database again:

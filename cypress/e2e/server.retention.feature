@@ -10,11 +10,10 @@ Feature: LDES Server Retention
     And I start the message generator
     And I remove the 'by-page' view from the 'mobility-hindrances' collection
     When I add a view with timebased retention to the LDES server
-    And I wait for 30 seconds
-    Then The member count remains between 30 and 40
+    And I wait until there are 30 members in the database
+    Then The member count remains around 30
     When I stop the message generator
-    And I wait for 40 seconds
-    Then the LDES should contain 0 members
+    And I wait until there are 0 members in the database
 
   @test-012
   Scenario: 012: Server provides version retention
@@ -25,11 +24,10 @@ Feature: LDES Server Retention
     And I start the message generator
     And I remove the 'by-page' view from the 'mobility-hindrances' collection
     When I add a view with versionbased retention to the LDES server
-    And I wait for 30 seconds
-    Then The member count remains between 10 and 20
+    And I wait until there are 10 members in the database
+    Then The member count remains around 10
     When I stop the message generator
-    And I wait for 40 seconds
-    Then The member count is between 10 and 20
+    Then The member count remains constant
 
   @test-012
   Scenario: 012: Server provides point in time retention
@@ -40,13 +38,11 @@ Feature: LDES Server Retention
     And I start the message generator
     And I remove the 'by-page' view from the 'mobility-hindrances' collection
     When I add a view with point in time retention to the LDES server
-    And I wait for 5 seconds
-    Then The member count remains between 0 and 10
-    When I wait for 30 seconds
+    Then The member count remains around 0
+    When I wait until there are 15 members in the database
     Then The member count is increasing
     When I stop the message generator
-    And I wait for 30 seconds
-    Then The member count is higher than 0
+    Then The member count remains constant
 
   @test-012
   Scenario: 012: Server combines multiple retention policies
@@ -57,15 +53,14 @@ Feature: LDES Server Retention
     And I start the message generator
     And I remove the 'by-page' view from the 'mobility-hindrances' collection
     When I add a view with multiple retention policies to the LDES server
-    And I wait for 10 seconds
-    Then The member count remains between 5 and 15
+    And I wait until there are 5 members in the database
+    Then The member count remains around 5
     When I stop the message generator
     And I start the second message generator
-    And I wait for 10 seconds
-    Then The member count remains between 10 and 20
-    When I wait for 40 seconds
+    And I wait until there are 10 members in the database
+    Then The member count remains around 10
+    When I wait until there are 25 members in the database
     Then The member count is increasing
     When I stop the second message generator
-    And I wait for 10 seconds
-    Then The member count is higher than 0
+    Then The member count remains constant
 

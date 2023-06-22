@@ -6,6 +6,8 @@ import { MemberGenerator } from "../services";
 export const memberGenerator1 = new MemberGenerator('basic-retention_member-generator');
 export const memberGenerator2 = new MemberGenerator('basic-retention_member-generator-2');
 
+const membersReceivedBetweenCleanup:number = 10
+
 Given('I remove the {string} view from the {string} collection', (view: string, collection: string) => {
     server.removeView(collection, view);
 })
@@ -51,10 +53,6 @@ When('I add a view with multiple retention policies to the LDES server', () => {
     .then((body: string) => server.configureViewFromTurtleContent(body, 'mobility-hindrances'));
 })
 
-When('I wait for {int} seconds', (seconds: number) => {
-    cy.wait((seconds + 1) * 1000);
-})
-
 When('I stop the message generator', () => {
     const command = `docker stop ${memberGenerator1.serviceName}`;
     cy.log(command).exec(command)
@@ -75,10 +73,15 @@ When('I stop the second message generator', () => {
 
 })
 
-Then('The member count is between {int} and {int}', (lower: number, upper: number) => {
+When('I wait until there are {int} members in the database', (expected: number) => {
+    cy.waitUntil(() => currentMemberCount().then(count => count === expected),
+    {timeout: 45000, interval: 700});
+})
+
+Then('The member count is around {int}', (expected: number) => {
     currentMemberCount().then(count => {
         cy.log(count.toString());
-        expect(lower <= count && count <= upper).to.be.true;
+        expect(expected -1 <= count && count <= expected + membersReceivedBetweenCleanup +1).to.be.true;
     });
 })
 
@@ -89,13 +92,13 @@ Then('The member count is higher than {int}', (lower: number) => {
     });
 })
 
-Then('The member count remains between {int} and {int}', (lower: number, upper: number) => {
+Then('The member count remains around {int}', (expected: number) => {
     var n:number = 0 
     while(n <= 15) {
         currentMemberCount().then(count => {
             cy.log(count.toString());
-            expect(lower <= count && count <= upper).to.be.true;
-        });
+            expect(expected -1 <= count && count <= expected + membersReceivedBetweenCleanup +1).to.be.true;
+    });
         n++;
         cy.wait(1000);
     } 
@@ -111,6 +114,19 @@ Then('The member count is increasing', () => {
     currentMemberCount().then(count => {
         cy.log(count.toString());
         expect(firstCount + 9 < count).to.be.true;
+    });
+})
+
+Then('The member count remains constant', () => {
+    var firstCount;
+    currentMemberCount().then(count => {
+        cy.log(count.toString());
+        firstCount = count;
+    });
+    cy.wait(1500)
+    currentMemberCount().then(count => {
+        cy.log(count.toString());
+        expect(firstCount == count).to.be.true;
     });
 })
 

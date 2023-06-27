@@ -87,4 +87,11 @@ export class LdesServer implements CanCheckAvailability {
         }).then(response => {expect(response.status).to.equal(201);});
     }
 
+    removeView(collection: string, view: string) {
+        cy.request({
+            method: 'DELETE', 
+            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views/${view}`, 
+        }).then(response => {expect(response.status).to.equal(200);});
+    }
+
 }

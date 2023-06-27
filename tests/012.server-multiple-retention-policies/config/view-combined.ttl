@@ -1,0 +1,25 @@
+@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes: <https://w3id.org/ldes#> .
+@prefix example: <http://example.org/> .
+
+<combined> a ldes:View ;
+  tree:viewDescription [
+    tree:fragmentationStrategy (
+      [
+        a ldes:PaginationFragmentation ;
+        example:memberLimit "100" ;
+      ]
+    ) ;
+    ldes:retentionPolicy [
+      a ldes:LatestVersionSubset ;
+      ldes:amount 5 ;
+    ] ;
+    ldes:retentionPolicy [
+          a ldes:DurationAgoPolicy ;
+          tree:value "PT5S"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+        ] ;
+    ldes:retentionPolicy [
+          a ldes:PointInTimePolicy ;
+          ldes:pointInTime "CURRENTTIME"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        ] ;
+  ] .

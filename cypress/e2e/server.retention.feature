@@ -1,67 +1,66 @@
 @server @retention
 Feature: LDES Server Retention
 
-  @test-012 @gtfs @broken
-  Scenario Outline: 012: Server Provides a Basic Retention Mechanism Using '<workbench>' Workbench
+@test-012
+  Scenario: 012: Server provides timebased retention
     Given the members are stored in database 'gipod'
-    And I have configured the 'VIEWS_0_RETENTION_PERIOD' as 'PT15S'
-    And I have configured the 'VIEWS_1_RETENTION_PERIOD' as 'PT30S'
-    And I have configured the 'VIEWS_0_MEMBERLIMIT' as '150'
-    And I have configured the 'VIEWS_1_MEMBERLIMIT' as '300'
-    And context 'tests/012.server-provide-basic-retention' is started
-    And I have uploaded the data files: 'alfa,beta'
-    And I have uploaded the data files: 'gamma' with a duration of 10 seconds
-    And I have aliased the data set
+    And context 'tests/012.server-multiple-retention-policies' is started
     And the LDES server is available
-    Then the LDES contains 0 members
-    And the LDES has a view 'V' named 'by-short-time'
-    And the LDES has a view 'W' named 'by-longer-time'
-    When I start the '<workbench>' workbench
-    And the LDES contains 501 members
-    And I refresh view 'V'
-    And I refresh view 'W'
-    Then view 'V' links to 'immutable' fragment 'A' containing 150 members
-    And fragment 'A' links to 'immutable' fragment 'B' containing 150 members
-    And fragment 'B' links to 'immutable' fragment 'C' containing 150 members
-    And fragment 'C' links to 'mutable' fragment 'D' containing 51 members
-    And view 'W' links to 'immutable' fragment 'F' containing 300 members
-    And fragment 'F' links to 'mutable' fragment 'G' containing 201 members
-    When fragment 'A' is deleted and returns HTTP code 410
-    And fragment 'B' is deleted and returns HTTP code 410
-    And fragment 'C' is deleted and returns HTTP code 410
-    And I refresh view 'V'
-    And I refresh view 'W'
-    Then the LDES should contain 501 members
-    And view 'V' links to 'mutable' fragment 'D' containing 51 members
-    And view 'W' links to 'immutable' fragment 'F' containing 300 members
-    When fragment 'F' is deleted and returns HTTP code 410
-    And the LDES contains 201 members
-    And I refresh view 'V'
-    And I refresh view 'W'
-    Then view 'V' links to 'mutable' fragment 'D' containing 51 members
-    And view 'W' links to 'mutable' fragment 'G' containing 201 members
-    When I have uploaded the data files: 'delta,epsilon' with a duration of 10 seconds
-    And the LDES contains 317 members
-    And I refresh view 'V'
-    And I refresh view 'W'
-    Then view 'V' links to 'immutable' fragment 'D' containing 150 members
-    And fragment 'D' links to 'mutable' fragment 'E' containing 17 members
-    And view 'W' links to 'immutable' fragment 'G' containing 300 members
-    And fragment 'G' links to 'mutable' fragment 'H' containing 17 members
-    When fragment 'D' is deleted and returns HTTP code 410
-    And fragment 'G' is deleted and returns HTTP code 410
-    Then the LDES contains 17 members
-    And I refresh view 'V'
-    And I refresh view 'W'
-    And view 'V' links to 'mutable' fragment 'H' containing 17 members
-    And view 'W' links to 'mutable' fragment 'E' containing 17 members
+    And I seed the LDES server with a collection
+    And I start the message generator
+    And I remove the 'by-page' view from the 'mobility-hindrances' collection
+    When I add a view with timebased retention to the LDES server
+    And I wait until there are 30 members in the database
+    Then The member count remains around 30
+    When I stop the message generator
+    And I wait until there are 0 members in the database
 
-    @ldio
-    Examples: 
-      | workbench |
-      | LDIO      |
+  @test-012
+  Scenario: 012: Server provides version retention
+    Given the members are stored in database 'gipod'
+    And context 'tests/012.server-multiple-retention-policies' is started
+    And the LDES server is available
+    And I seed the LDES server with a collection
+    And I start the message generator
+    And I remove the 'by-page' view from the 'mobility-hindrances' collection
+    When I add a view with versionbased retention to the LDES server
+    And I wait until there are 10 members in the database
+    Then The member count remains around 10
+    When I stop the message generator
+    Then The member count remains constant
 
-    @nifi
-    Examples: 
-      | workbench |
-      | NIFI      |
+  @test-012
+  Scenario: 012: Server provides point in time retention
+    Given the members are stored in database 'gipod'
+    And context 'tests/012.server-multiple-retention-policies' is started
+    And the LDES server is available
+    And I seed the LDES server with a collection
+    And I start the message generator
+    And I remove the 'by-page' view from the 'mobility-hindrances' collection
+    When I add a view with point in time retention to the LDES server
+    Then The member count remains around 0
+    When I wait until there are 15 members in the database
+    Then The member count is increasing
+    When I stop the message generator
+    Then The member count remains constant
+
+  @test-012
+  Scenario: 012: Server combines multiple retention policies
+    Given the members are stored in database 'gipod'
+    And context 'tests/012.server-multiple-retention-policies' is started
+    And the LDES server is available
+    And I seed the LDES server with a collection
+    And I start the message generator
+    And I remove the 'by-page' view from the 'mobility-hindrances' collection
+    When I add a view with multiple retention policies to the LDES server
+    And I wait until there are 5 members in the database
+    Then The member count remains around 5
+    When I stop the message generator
+    And I start the second message generator
+    And I wait until there are 10 members in the database
+    Then The member count remains around 10
+    When I wait until there are 25 members in the database
+    Then The member count is increasing
+    When I stop the second message generator
+    Then The member count remains constant
+

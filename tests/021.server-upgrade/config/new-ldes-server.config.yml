@@ -21,6 +21,7 @@ spring:
       database: iow_devices
       host: ldes-mongodb
       port: 27017
+      auto-index-creation: true
   web:
     resources:
       static:

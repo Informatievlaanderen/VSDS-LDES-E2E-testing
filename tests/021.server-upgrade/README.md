@@ -78,7 +78,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ]
    ```
 
-6. Verify that the _id has no prefix
+7. Verify that the _id has no prefix
    ```bash
    curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
    ```
@@ -88,6 +88,19 @@ The server upgrade will include changesets that alter the database schema. We wi
     "urn:ngsi-v2:cot-imec-be:Device:imec-iow-UR5gEycRuaafxnhvjd9jnU:{index}/{current-timestamp}"
    ]
    ```
+
+8. Verify that the fields contain no indices except for the _id.
+   ```bash
+   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   ```
+   The result should match the below pattern:
+   ```json
+   [
+    "_id_"
+   ]
+   ```
+   We do not pass the `auto-index-creation: true` property to the old server.
+   For this reason, we do not expect any indices to be created, which allows manual management of the indices.
 
 ## Test execution
 1. Pause the workbench output.
@@ -210,29 +223,65 @@ The server upgrade will include changesets that alter the database schema. We wi
 
    > **Note**: Changeset-7 will create three new collections for this: `eventstreams`, `view` and `shacl_shape`
 
-8. Verify that members are available in LDES and check member count in the last fragment:
+8. Verify that the fields contain the correct indices.
+   The new server contains the property `auto-index-creation: true` which allows mongock to also create
+   indices when adding new fields.
+
    ```bash
-   docker compose up ldes-list-fragments -d
-   sleep 3 # ensure stream has been followed up to the last fragment
-   export LAST_FRAGMENT=$(docker logs --tail 1 $(docker ps -q --filter "name=ldes-list-fragments$"))
-   curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   ```
+   The result should match the below pattern:
+   ```json
+   [
+     "_id_",
+     "root",
+     "viewName",
+     "immutable",
+     "parentId",
+     "collectionName",
+     "index_view_fragmentPairs",
+     "fragmentPairs"
+   ]
    ```
 
-9. Resume the workbench output.
+   ```bash
+   curl -s http://localhost:9019/iow_devices/ldesmember?includeIndices=true | jq '[.indices[]]'
+   ```
+   The result should match the below pattern:
+   ```json
+   [
+     "_id_",
+     "collectionName",
+     "sequenceNr",
+     "versionOf",
+     "timestamp",
+     "treeNodeReferences"
+   ]
+   ```
 
+10. Verify that members are available in LDES and check member count in the last fragment:
     ```bash
-    curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"
+    docker compose up ldes-list-fragments -d
+    sleep 3 # ensure stream has been followed up to the last fragment
+    export LAST_FRAGMENT=$(docker logs --tail 1 $(docker ps -q --filter "name=ldes-list-fragments$"))
+    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
     ```
-   or for nifi
 
-   Start http sender in workflow after redirecting the output to the new server.
+11. Resume the workbench output.
 
-10. Verify last fragment member count increases (max count in fragment is 25):
+     ```bash
+     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"
+     ```
+    or for nifi
+
+    Start http sender in workflow after redirecting the output to the new server.
+
+12. Verify last fragment member count increases (max count in fragment is 25):
     ```bash
     curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
     ```
 
-11. Verify data store member count increases (execute repeatedly):
+13. Verify data store member count increases (execute repeatedly):
     ```bash
     curl http://localhost:9019/iow_devices/ldesmember
     ```

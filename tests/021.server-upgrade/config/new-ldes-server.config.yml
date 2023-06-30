@@ -7,6 +7,7 @@ mongock:
     - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset5
     - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset6
     - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset7
+    - be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset8
 springdoc:
   swagger-ui:
     path: /v1/swagger

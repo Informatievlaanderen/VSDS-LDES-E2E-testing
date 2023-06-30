@@ -238,9 +238,7 @@ The server upgrade will include changesets that alter the database schema. We wi
      "viewName",
      "immutable",
      "parentId",
-     "collectionName",
-     "index_view_fragmentPairs",
-     "fragmentPairs"
+     "collectionName"
    ]
    ```
 

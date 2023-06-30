@@ -26,6 +26,12 @@ function checkDatabaseStructure(collectionUrl: string, expected: string[],) {
     });
 }
 
+function checkIndices(collectionUrl: string, expected: string[],) {
+    cy.request(`${collectionUrl}?includeIndices=true`).then(response => {
+        expect(response.body.indices).to.have.same.members(expected);
+    });
+}
+
 Given('the ldesfragment collection is structured as expected', () => {
     checkDatabaseStructure(fragmentCollectionUrl, [...commonFragmentProperties, 'members']);
 })
@@ -41,11 +47,15 @@ Given('the old LDES server is available', () => {
 Then('the ldesfragment collection is upgraded as expected', () => {
     checkDatabaseStructure(fragmentCollectionUrl, 
         [...commonFragmentProperties, 'collectionName', 'numberOfMembers', 'parentId']);
+    checkIndices(fragmentCollectionUrl,
+        ['_id_', 'root', 'viewName', 'immutable', 'parentId', 'collectionName']);
 })
 
 Then('the ldesmember collection is upgraded as expected', () => {
     checkDatabaseStructure(memberCollectionUrl, 
         [...commonMongoProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
+    checkIndices(memberCollectionUrl,
+        ['_id_', 'collectionName', 'sequenceNr', 'versionOf', 'timestamp', 'treeNodeReferences']);
 })
 
 Then('the eventstreams collection is upgraded as expected', () => {

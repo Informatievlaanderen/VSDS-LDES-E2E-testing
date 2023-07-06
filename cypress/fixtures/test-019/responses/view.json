@@ -2,7 +2,10 @@
   "@graph": [
     {
       "@id": "mobility-hindrances:by-time",
-      "@type": "tree:Node"
+      "@type": "tree:Node",
+      "terms:isPartOf": {
+        "@id": "http://localhost:8080/mobility-hindrances"
+      }
     },
     {
       "@id": "http://localhost:8080/mobility-hindrances",
@@ -21,6 +24,7 @@
     "tree": "https://w3id.org/tree#",
     "ldes": "https://w3id.org/ldes#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
+    "mobility-hindrances": "http://localhost:8080/mobility-hindrances/",
+    "terms": "http://purl.org/dc/terms/"
   }
 }

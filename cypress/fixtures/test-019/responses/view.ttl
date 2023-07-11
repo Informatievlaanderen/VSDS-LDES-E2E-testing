@@ -2,9 +2,11 @@
 @prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
 @prefix tree:                <https://w3id.org/tree#> .
 @prefix shacl:               <http://www.w3.org/ns/shacl#> .
+@prefix terms:               <http://purl.org/dc/terms/> .
 
 mobility-hindrances:by-time
-        a       tree:Node .
+        a       tree:Node ;
+        terms:isPartOf  <http://localhost:8080/mobility-hindrances> .
 
 <http://localhost:8080/mobility-hindrances>
         a          ldes:EventStream ;

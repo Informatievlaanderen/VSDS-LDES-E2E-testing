@@ -6,8 +6,7 @@ This test verifies:
 
 ![img](artwork/test-33.drawio.png)
 
-The message generator creates messages and sends these to an LDIO server seeder workflow.
-This workflow creates version objects and seeds the LDES server.
+The Ldes server simulator serves an LDES based on a small subset of the GIPOD data set.
 The 'create-archive-workbench' has an LDES Client that consumes the LDES server and uses the archive file out component to write the members to a file archive.
 The 'read-archive-workbench' has an archive file in component to consume the archive and post the members to the server using the Http out component.
 
@@ -18,60 +17,65 @@ Run all systems except the workflow by executing the following (bash) command:
 ```bash
 docker compose up -d
 ```
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
-```bash
-docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
-```
-Press `CTRL-C` to stop following the log.
-
-> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
-```bash
-chmod +x ./config/seed.sh
-sh ./config/seed.sh
-```
 
 ## Test Execution
 
-1. Seed the LDES Server by starting the message generator:
-   ```bash
-   docker compose up test-message-generator -d
-   ```
+1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
+    ```bash
+    for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+    curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
+    ```
+   To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command:
+    ```bash
+    curl http://localhost:9011/
+    ```
 
-2. Start the workflow with the LDES client:
-   ```bash
-   docker compose up ldio-workbench -d
-   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-   ```
-   or:
-   ```bash
-   docker compose up nifi-workbench -d
-   while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
-   ```
-   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
-
-3. Verify LDES members are correctly ingested by the server
-   ```bash
-   curl http://localhost:9019/iow/ldesmember
-   ```
-4. Stop the message generator
-   ```bash
-   docker compose rm -s -f -v test-message-generator
-   ```
-5. Archive the members on the server by starting the archiving workflow
+2. Archive the members from the simulator by starting the archiving workflow
    ```bash
    docker compose up create-archive-workbench -d
-   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
+   while ! `docker logs $(docker ps -q -f "name=create-archive")` | grep 'Started Application in' ; do sleep 1; done
    ```
-6. Verify the archive
-7. Remove the eventstream from the server
-8. Create the new empty eventstream on the server
-9. Restore the archive
-10. Verify server
+3. Verify the archive in directory 'archive'
+   You should see a new directory structure:
+      - 2022
+        - 4
+          - 19
+          - 20
+          - ...
+        - 5
+          - 2
+          - 3
+          - ...
+
+    These directories represent year/month/day. The days contain the actual members that have been archived in the 
+    following format: `2022-04-29-09-32-30-080000000.nq`
+    
+    These timestamps are extracted from the members by the time-stamp-path that we provide to the archive component.
+    Duplicate timestamps are resolved by adding a sequence suffix: `2022-04-29-09-32-30-080000000-1.nq`
+
+4. Start a new LDES Server
+   ```bash
+   docker compose up ldes-server -d
+   ```
+   Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
+   ```bash
+   docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
+   ```
+   Press `CTRL-C` to stop following the log.
+   
+   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+   ```bash
+   chmod +x ./config/seed.sh
+   sh ./config/seed.sh
+   ```
+5. Restore the archive
+6. Verify server
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldio-workbench
+docker compose rm -s -f -v create-archive-workbench
+docker compose rm -s -f -v ldes-server
 docker compose down
 ```
 or:
@@ -80,5 +84,10 @@ docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```
 
-## Notes
-To verify the member count, alternatively use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `gipod.ldesmember` document collection contains all the LDES members (check the document count).
+And clean up the archive directory:
+   Linux and Mac
+   ```bash
+   sudo rm -rf ./archive/2022
+   ```
+   Windows
+      You will have to delete this directory manually

@@ -1,43 +1,29 @@
 version: '3.3'
 services:
 
-  test-message-generator:
-    container_name: ${USECASE_NAME:-ldes-archiving}_test-message-generator
-    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
+  ldes-server-simulator:
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldes-server-simulator
     environment:
-      - TARGETURL=http://ldio-server-seeder:8080/seed-server
-      - SILENT=false
-      - CRON=* * * * * *
-      - TEMPLATEFILE=/tmp/data/device.template.json
-      - MIMETYPE=application/ld+json
-    volumes:
-      - ./data/device.template.json:/tmp/data/device.template.json:ro
+      - BASEURL=http://ldes-server-simulator
+    ports:
+      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
     networks:
       - ldes
-    profiles:
-      - delay-started
-
-  ldio-server-seeder:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-ldes-archiving}_ldio-server-seeder
-    volumes:
-      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
-    networks:
-      - ldes
-    depends_on:
-      - ldes-server
-    profiles:
-      - delay-started
 
   create-archive-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: local/ldio-archive:latest
+#    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
     volumes:
-      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
+      - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
+      - ./archive:/tmp/archive:rw
     networks:
       - ldes
     depends_on:
       - ldes-server
+    profiles:
+      - delay-started
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldes-server
@@ -53,6 +39,8 @@ services:
       - 8081:8080 # needed for admin API
     depends_on:
       - ldes-mongodb
+    profiles:
+      - delay-started
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldes-mongodb
@@ -72,7 +60,6 @@ services:
       - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
-
 
 networks:
   ldes:

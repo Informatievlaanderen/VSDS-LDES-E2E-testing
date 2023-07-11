@@ -1,0 +1,79 @@
+version: '3.3'
+services:
+
+  test-message-generator:
+    container_name: ${USECASE_NAME:-ldes-archiving}_test-message-generator
+    image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
+    environment:
+      - TARGETURL=http://ldio-server-seeder:8080/seed-server
+      - SILENT=false
+      - CRON=* * * * * *
+      - TEMPLATEFILE=/tmp/data/device.template.json
+      - MIMETYPE=application/ld+json
+    volumes:
+      - ./data/device.template.json:/tmp/data/device.template.json:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  ldio-server-seeder:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldio-server-seeder
+    volumes:
+      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
+    networks:
+      - ldes
+    depends_on:
+      - ldes-server
+    profiles:
+      - delay-started
+
+  create-archive-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
+    volumes:
+      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
+    networks:
+      - ldes
+    depends_on:
+      - ldes-server
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    environment:
+      - SIS_DATA=/tmp
+    volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
+      - ../../data/epsg:/tmp/Databases:rw
+    networks:
+      - ldes
+    ports:
+      - 8081:8080 # needed for admin API
+    depends_on:
+      - ldes-mongodb
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-ldes-archiving}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
+    networks:
+      - ldes
+
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-ldes-archiving}_network

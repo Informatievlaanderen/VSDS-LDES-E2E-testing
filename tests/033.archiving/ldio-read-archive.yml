@@ -1,0 +1,15 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: create-archive
+      description: "This pipeline uses an Ldio Archive In component read members from an archive and sends them to the server."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioArchiveFileIn
+        config:
+          archive-root-dir: /tmp/archive
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://ldes-server:8080/mobility-hindrances
+            content-type: application/n-quads

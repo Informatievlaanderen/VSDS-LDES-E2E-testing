@@ -11,9 +11,20 @@ services:
     networks:
       - ldes
 
-  create-archive-workbench:
+  ldio-create-archive:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
+    volumes:
+      - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
+      - ./archive:/tmp/archive:rw
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  ldio-read-archive:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-ldes-archiving}_ldio-read-archive
     volumes:
       - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
       - ./archive:/tmp/archive:rw

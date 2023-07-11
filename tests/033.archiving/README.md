@@ -1,5 +1,10 @@
 # The LDES workbench can be used to archive the LDES Server
 
+TODOS:
+    Test with windows
+    Implement NIFI
+    Complete implementation of read archive when it exists
+
 This test verifies:
 - A file archive can be created from an LDES on the server using the workbench.
 - A server can be seeded from a file archive using the workbench.
@@ -32,8 +37,8 @@ docker compose up -d
 
 2. Archive the members from the simulator by starting the archiving workflow
    ```bash
-   docker compose up create-archive-workbench -d
-   while ! docker logs $(docker ps -q -f "name=create-archive$") | grep 'Started Application in' ; do sleep 1; done
+   docker compose up ldio-create-archive -d
+   while ! docker logs $(docker ps -q -f "name=ldio-create-archive$") | grep 'Started Application in' ; do sleep 1; done
    ```
 3. Verify the archive in directory 'archive'
    You should see a new directory structure:
@@ -69,18 +74,27 @@ docker compose up -d
    sh ./config/seed.sh
    ```
 5. Restore the archive
+   ```bash
+   docker compose up ldio-read-archive -d
+   while ! docker logs $(docker ps -q -f "name=read-archive$") | grep 'Started Application in' ; do sleep 1; done
+   ```
+
 6. Verify server
+TODO
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v create-archive-workbench
+docker compose rm -s -f -v ldio-create-archive
+docker compose rm -s -f -v ldio-read-archive
 docker compose rm -s -f -v ldes-server
 docker compose down
 ```
 or:
 ```bash
-docker compose rm -s -f -v nifi-workbench
+docker compose rm -s -f -v nifi-create-archive
+docker compose rm -s -f -v nifi-read-archive
+docker compose rm -s -f -v ldes-server
 docker compose down
 ```
 

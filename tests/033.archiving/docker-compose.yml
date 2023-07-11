@@ -12,16 +12,13 @@ services:
       - ldes
 
   create-archive-workbench:
-    image: local/ldio-archive:latest
-#    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
     volumes:
       - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
       - ./archive:/tmp/archive:rw
     networks:
       - ldes
-    depends_on:
-      - ldes-server
     profiles:
       - delay-started
 

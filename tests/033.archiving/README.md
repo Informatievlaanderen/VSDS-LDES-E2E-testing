@@ -33,7 +33,7 @@ docker compose up -d
 2. Archive the members from the simulator by starting the archiving workflow
    ```bash
    docker compose up create-archive-workbench -d
-   while ! `docker logs $(docker ps -q -f "name=create-archive")` | grep 'Started Application in' ; do sleep 1; done
+   while ! docker logs $(docker ps -q -f "name=create-archive$") | grep 'Started Application in' ; do sleep 1; done
    ```
 3. Verify the archive in directory 'archive'
    You should see a new directory structure:

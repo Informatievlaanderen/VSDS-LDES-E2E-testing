@@ -40,6 +40,13 @@ docker compose up -d
    docker compose up ldio-create-archive -d
    while ! docker logs $(docker ps -q -f "name=ldio-create-archive$") | grep 'Started Application in' ; do sleep 1; done
    ```
+   or:
+   ```bash
+   docker compose up nifi-workbench -d
+   while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+   ```
+   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-create-archive-workflow.json) and start it
+
 3. Verify the archive in directory 'archive'
    You should see a new directory structure:
       - 2022
@@ -92,8 +99,7 @@ docker compose down
 ```
 or:
 ```bash
-docker compose rm -s -f -v nifi-create-archive
-docker compose rm -s -f -v nifi-read-archive
+docker compose rm -s -f -v nifi-workbench
 docker compose rm -s -f -v ldes-server
 docker compose down
 ```

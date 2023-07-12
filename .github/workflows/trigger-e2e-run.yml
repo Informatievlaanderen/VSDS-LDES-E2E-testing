@@ -1,8 +1,9 @@
 name: Cypress Tests
 
 on:
-  branches:
-    - 'feat/gh-action-automation'
+  push:
+    branches:
+      - 'feat/gh-action-automation'
   workflow_dispatch:
     inputs:
       tags:

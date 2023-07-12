@@ -1,13 +1,15 @@
 @prefix ldes:                <https://w3id.org/ldes#> .
 @prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
-@prefix tree:                <https://w3id.org/tree#> .
+@prefix rdf:                 <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix shacl:               <http://www.w3.org/ns/shacl#> .
+@prefix terms:               <http://purl.org/dc/terms/> .
+@prefix tree:                <https://w3id.org/tree#> .
 
 mobility-hindrances:by-time
-        a       tree:Node .
+        rdf:type        tree:Node .
 
 <http://localhost:8080/mobility-hindrances>
-        a          ldes:EventStream ;
+        rdf:type   ldes:EventStream ;
         tree:view  mobility-hindrances:by-time .
 
-[ a  shacl:NodeShape ] .
+[ rdf:type  shacl:NodeShape ] .

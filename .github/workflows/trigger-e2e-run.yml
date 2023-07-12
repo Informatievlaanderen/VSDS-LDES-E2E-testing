@@ -23,6 +23,8 @@ jobs:
 
       - name: Build
         uses: cypress-io/github-action@v5
+        with:
+          runTests: false
 
       - name: Parse test files for parallelization
         id: parse

@@ -25,15 +25,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           runTests: false
-          build: npm run build
-          
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
-          retention-days: 1
+          build: npm install
 
       - name: Parse test files for parallelization
         id: parse

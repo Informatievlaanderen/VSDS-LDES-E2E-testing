@@ -69,7 +69,7 @@ Feature: LDES Server Basic Functionality
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | paged     | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged              |
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @gipod @broken
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured

@@ -2,7 +2,6 @@
 
 TODOS:
     Test with windows
-    Implement NIFI
     Complete implementation of read archive when it exists
 
 This test verifies:

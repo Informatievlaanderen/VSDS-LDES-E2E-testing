@@ -10,3 +10,4 @@ results
 user.env
 .vscode
 /.idea/
+.DS_Store

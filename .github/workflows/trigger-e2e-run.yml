@@ -21,20 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Build
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          build: npm install
-          
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
-          retention-days: 1
-
       - name: Parse test files for parallelization
         id: parse
         uses: tgamauf/cypress-parallel@2.0.0
@@ -60,8 +46,6 @@ jobs:
       - name: Execute tests
         uses: cypress-io/github-action@v5
         with:
-          # We have already installed all dependencies above
-          install: false
           # Use the spec provided to this worker to execute the test 
           spec: ${{ matrix.spec }}
 
@@ -85,7 +69,6 @@ jobs:
       - name: Execute tests
         uses: cypress-io/github-action@v5
         with:
-          install: false
           # To run component tests we need to use "cypress run-ct"
           command: npx cypress run-ct
           spec: ${{ matrix.spec }}

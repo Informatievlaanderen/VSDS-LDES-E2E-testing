@@ -44,7 +44,7 @@ docker compose up -d
    docker compose up nifi-workbench -d
    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
    ```
-   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-create-archive-workflow.json) and start it
+   With nifi you also need to upload the [workflow](./nifi-create-archive-workflow.json) and start it
 
 3. Verify the archive in directory 'archive'
    You should see a new directory structure:
@@ -109,4 +109,7 @@ And clean up the archive directory:
    sudo rm -rf ./archive/2022
    ```
    Windows
-      You will have to delete this directory manually
+   ```bash
+   rm -rf ./archive/2022
+   mkdir ./archive
+   ```

@@ -21,9 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Build
+        run: npm install
+
       - name: Parse test files for parallelization
         id: parse
         uses: tgamauf/cypress-parallel@2.0.0
+
 
   test-integration:
     runs-on: ubuntu-latest

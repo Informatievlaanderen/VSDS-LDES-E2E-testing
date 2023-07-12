@@ -23,6 +23,8 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           build: |
-            ./get-previous-docker-images.sh
+            ls
+            ls ..
+            get-previous-docker-images.sh
             npm install
           start: npm test

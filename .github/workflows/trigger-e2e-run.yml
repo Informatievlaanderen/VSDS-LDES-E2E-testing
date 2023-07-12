@@ -24,6 +24,8 @@ jobs:
       - name: Parse test files for parallelization
         id: parse
         uses: tgamauf/cypress-parallel@2.0.0
+        with:
+          working-directory: ./cypress
   
   test-integration:
     runs-on: ubuntu-latest

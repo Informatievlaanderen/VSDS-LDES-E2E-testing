@@ -22,9 +22,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
+        run: npm install cypress --save-dev
 
       - name: Parse test files for parallelization
         id: parse

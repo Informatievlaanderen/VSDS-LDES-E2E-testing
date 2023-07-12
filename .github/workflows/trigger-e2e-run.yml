@@ -12,20 +12,63 @@ on:
         type: boolean
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
-    strategy:
-      # don't fail the entire matrix on failure
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      integration-tests: ${{ steps.parse.outputs.integration-tests }}
+      component-tests: ${{ steps.parse.outputs.component-tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
+
+      - name: Parse test files for parallelization
+        id: parse
+        uses: tgamauf/cypress-parallel@2.0.0
+
+  test-integration:
+    runs-on: ubuntu-latest
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        # Run the tests in parallel, each with one of the prepared test specs
+        spec: ${{ fromJson(needs.prepare.outputs.integration-tests) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+          
+      - name: Execute tests
         uses: cypress-io/github-action@v5
         with:
-          command: cypress run -e tags=\"not (@broken)\" --parallel
+          # Use the spec provided to this worker to execute the test 
+          spec: ${{ matrix.spec }}
+
+  test-component:
+    runs-on: ubuntu-latest
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: ${{ fromJson(needs.prepare.outputs.component-tests) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+          
+      - name: Execute tests
+        uses: cypress-io/github-action@v5
+        with:
+          # To run component tests we need to use "cypress run-ct"
+          command: npx cypress run-ct
+          spec: ${{ matrix.spec }}

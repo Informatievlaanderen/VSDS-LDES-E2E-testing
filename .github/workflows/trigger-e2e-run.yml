@@ -23,3 +23,10 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           command: npm run test
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-execution-report
+          path: cypress/reports/html
+          retention-days: 30

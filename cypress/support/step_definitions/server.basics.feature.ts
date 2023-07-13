@@ -3,7 +3,6 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
 import { server, testPartialPath, range, mongo, testDatabase } from "./common_step_definitions";
-import { data } from "cypress/types/jquery";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -21,7 +20,7 @@ When('I request the view formatted as {string}', (mimeType: string) => {
     return new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit({ mimeType: mimeType }).then(page => {
         expect(page.success).to.be.true;
         view = page;
-    })
+    });
 })
 
 When('I request the view from a different url {string}', (url: string) => {

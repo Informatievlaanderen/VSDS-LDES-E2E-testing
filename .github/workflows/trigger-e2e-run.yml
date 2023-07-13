@@ -18,3 +18,4 @@ jobs:
 
       - name: Build
         uses: cypress-io/github-action@v5
+        start: npm run test

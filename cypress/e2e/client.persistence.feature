@@ -1,8 +1,8 @@
 @client @persistence
 Feature: LDES Client Persistence
 
-  @test-020 @gipod @broken
-  Scenario Outline: 020: Client Can Pause And Resume Replication/Synchronization
+  @test-020 @gipod
+  Scenario Outline: 020: Client Can Pause And Resume Replication/Synchronization Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/020.client-pause-and-resume' is started
     And I have aliased the pre-seeded simulator data set
@@ -19,7 +19,9 @@ Feature: LDES Client Persistence
       | workbench |
       | LDIO      |
 
-    @nifi
+
+    @nifi @broken
+    # java.lang.NoClassDefFoundError: Could not initialize class org.hibernate.cfg.Environment
     Examples: 
       | workbench |
       | NIFI      |

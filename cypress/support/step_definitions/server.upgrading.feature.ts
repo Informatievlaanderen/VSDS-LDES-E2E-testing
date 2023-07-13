@@ -10,8 +10,8 @@ const eventstreamsUrl = 'http://localhost:8080/admin/api/v1/eventstreams';
 
 const commonMongoProperties = ['_id', '_class']
 const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
-const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
-const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
+const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/fragmentation_fragment';
+const memberCollectionUrl = 'http://localhost:9019/iow_devices/inges_ldesmember';
 const evenstreamsCollectionUrl = 'http://localhost:9019/iow_devices/eventstreams';
 const viewCollectionUrl = 'http://localhost:9019/iow_devices/view';
 const shaclShapeCollectionUrl = 'http://localhost:9019/iow_devices/shacl_shape';

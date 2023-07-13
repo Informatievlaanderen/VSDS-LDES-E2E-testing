@@ -28,7 +28,7 @@ export class MongoRestApi {
     }
 
     fragmentIds(database: string) {
-        return this.documentIds(database, 'ldesfragment');
+        return this.documentIds(database, 'fragmentation_fragment');
     }
 
     snapshotIds(database: string) {

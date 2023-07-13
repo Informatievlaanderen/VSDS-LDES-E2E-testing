@@ -1,0 +1,25 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches:
+      - 'feat/gh-action-automation'
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      integration-tests: ${{ steps.parse.outputs.integration-tests }}
+      component-tests: ${{ steps.parse.outputs.component-tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build
+        uses: cypress-io/github-action@v5

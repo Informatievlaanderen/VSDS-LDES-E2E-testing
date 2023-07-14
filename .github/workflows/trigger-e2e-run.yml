@@ -19,4 +19,4 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          tags: not (@broken)
+          CYPRESS_TAGS: not (@broken)

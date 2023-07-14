@@ -81,7 +81,7 @@ export abstract class UrlResponse {
 
     expectContent(content: string | object) {
         return this.parseContent(content, this.mimeType).then(quads => {
-            expect(quads.length).to.equal(this.quads.length);
+            expect(this.quads.length).to.equal(quads.length);
             expect(isomorphic(quads, this.quads)).true;
         });
     }

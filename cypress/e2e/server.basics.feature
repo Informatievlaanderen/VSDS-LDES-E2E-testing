@@ -55,7 +55,7 @@ Feature: LDES Server Basic Functionality
     When I send the member file 'data/member.nt' of type 'application/n-triples'
     Then the server accepts this member file
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @naming-strategy @gipod
   Scenario Outline: 019: Verify URL Naming Strategy For Collection '<collection-name>' And View '<view-name>'
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available
@@ -69,7 +69,7 @@ Feature: LDES Server Basic Functionality
       | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
       | cartoons            | paged     | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged              |
 
-  @test-019 @consumption @gipod @broken
+  @test-019 @consumption @formats @gipod @broken
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -81,8 +81,11 @@ Feature: LDES Server Basic Functionality
     Then I receive a response similar to 'view.json'
     When I request the view formatted as 'application/n-triples'
     Then I receive a response similar to 'view.nt'
+    When I send the member file 'data/member.ttl' of type 'text/turtle'
+    And I request the view formatted as 'application/n-triples'
+    Then the first page is a subset of the collection
 
-  @test-019 @consumption @gipod
+  @test-019 @consumption @cors @gipod
   Scenario: 019: Verify CORS and Supported HTTP Verbs
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured

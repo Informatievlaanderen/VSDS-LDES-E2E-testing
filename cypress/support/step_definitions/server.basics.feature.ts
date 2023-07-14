@@ -112,6 +112,11 @@ Then('I receive a response similar to {string}', (fileName: string) => {
     cy.fixture(`test-019/responses/${fileName}`).then((content: string | object) => view.expectContent(content));
 })
 
+Then('the first page is a subset of the collection', () => {
+    new Fragment(view.relation.link).visit()
+        .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/mobility-hindrances`)).true);
+})
+
 Then('the server returns the supported HTTP Verbs', () => {
     const headers = corsResponse.headers;
     expect(headers['access-control-allow-origin']).to.equal('*');

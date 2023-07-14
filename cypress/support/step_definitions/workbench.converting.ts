@@ -17,7 +17,7 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
 let rootFragment: Fragment;
 When('the root fragment of {string} is obtained', (ldes: string) => {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(ldes => new Fragment(ldes.viewUrl('by-page')).visit())
         .then(view => new Fragment(view.relation.link).visit())
         .then(fragment => rootFragment = fragment);
 })

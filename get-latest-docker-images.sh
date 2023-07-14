@@ -5,8 +5,10 @@ docker pull ghcr.io/informatievlaanderen/ldi-workbench-nifi:latest
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:latest
 docker pull ghcr.io/informatievlaanderen/ldes-server:latest
 
-# historical deliverables
-docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:latest
+# historical deliverables (for upgrade tests)
+docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
+docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:20230324T175226
+docker pull ghcr.io/informatievlaanderen/ldes-server:20230405T0843
 
 # support
 docker pull ghcr.io/informatievlaanderen/ldes-list-fragments:latest

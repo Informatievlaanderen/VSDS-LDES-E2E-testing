@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { rdf, tree } from './rdf-common';
+import { rdf, terms, tree } from './rdf-common';
 import { UrlResponse } from "./url-response";
 import { Relation } from "./relation";
 
@@ -19,6 +19,10 @@ export class Fragment extends UrlResponse {
 
     get isNode(): boolean {
         return this.store.getQuads(this.url, rdf.type, tree.Node, null).length === 1;
+    }
+
+    isPartOf(collectionUrl: string): boolean {
+        return this.store.getQuads(null, terms.isPartOf, collectionUrl, null).length === 1;
     }
 
     getLatestFragment(nextType: string): Cypress.Chainable<Fragment> {

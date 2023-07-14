@@ -11,13 +11,13 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
         url: `http://localhost:8081/${baseName}s-pipeline`, 
         headers: { 'Content-Type': 'application/json' }, 
         body: data,
-     }).then(response => response.status === 202)), {timeout: 5000, interval: 1000});
+     }).then(response => 200 <= response.status && response.status < 300)), {timeout: 5000, interval: 1000});
 })
 
 let rootFragment: Fragment;
 When('the root fragment of {string} is obtained', (ldes: string) => {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl('by-time')).visit())
+        .then(ldes => new Fragment(ldes.viewUrl('by-page')).visit())
         .then(view => new Fragment(view.relation.link).visit())
         .then(fragment => rootFragment = fragment);
 })

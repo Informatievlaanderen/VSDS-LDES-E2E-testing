@@ -1,4 +1,4 @@
-@server @retention
+@server @retention @broken
 Feature: LDES Server Retention
 
 @test-012

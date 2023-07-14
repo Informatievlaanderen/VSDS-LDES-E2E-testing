@@ -112,6 +112,11 @@ Then('I receive a response similar to {string}', (fileName: string) => {
     cy.fixture(`test-019/responses/${fileName}`).then((content: string | object) => view.expectContent(content));
 })
 
+Then('the first page is a subset of the collection', () => {
+    new Fragment(view.relation.link).visit()
+        .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/mobility-hindrances`)).true);
+})
+
 Then('the server returns the supported HTTP Verbs', () => {
     const headers = corsResponse.headers;
     expect(headers['access-control-allow-origin']).to.equal('*');
@@ -185,14 +190,14 @@ interface CollectionSequence {
 };
 
 Then('all {int} {string} have a unique sequence number', (count: number, collection: string) => {
-    cy.request(`${mongo.baseUrl}/${testDatabase()}/member_sequence?includeDocuments=true`).then(response => {
+    cy.request(`${mongo.baseUrl}/${testDatabase()}/ingest_member_sequence?includeDocuments=true`).then(response => {
         const result = response.body;
         expect(result.count).to.be.equal(2);
         expect(result.documents).to.deep.include({ _id: collection, seq: count });
     });
 
     const expected = new Array(count).fill(1).map((_, i) => ({ collection: collection, sequence: i + 1 }));
-    cy.request(`${mongo.baseUrl}/${testDatabase()}/ldesmember?includeDocuments=true`).then(response => {
+    cy.request(`${mongo.baseUrl}/${testDatabase()}/ingest_ldesmember?includeDocuments=true`).then(response => {
         const result = response.body;
         const collectionSequences = result.documents.map(x => ({ collection: x.collectionName, sequence: x.sequenceNr })) as CollectionSequence[];
         const actual = collectionSequences.filter(x => x.collection === collection);

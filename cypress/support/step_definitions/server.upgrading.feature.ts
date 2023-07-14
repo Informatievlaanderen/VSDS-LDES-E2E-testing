@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, dockerCompose, waitUntilMemberCountStable } from "./common_step_definitions";
+import { createAndStartService, dockerCompose, mongo, testDatabase, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesServer } from "../services";
 import {EventStream} from "../ldes";
 
@@ -10,8 +10,10 @@ const eventstreamsUrl = 'http://localhost:8080/admin/api/v1/eventstreams';
 
 const commonMongoProperties = ['_id', '_class']
 const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
-const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
-const memberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
+const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/fragmentation_fragment';
+const memberCollectionUrl = 'http://localhost:9019/iow_devices/ingest_ldesmember';
+const oldFragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
+const oldMemberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
 const evenstreamsCollectionUrl = 'http://localhost:9019/iow_devices/eventstreams';
 const viewCollectionUrl = 'http://localhost:9019/iow_devices/view';
 const shaclShapeCollectionUrl = 'http://localhost:9019/iow_devices/shacl_shape';
@@ -32,12 +34,16 @@ function checkIndices(collectionUrl: string, expected: string[],) {
     });
 }
 
-Given('the ldesfragment collection is structured as expected', () => {
-    checkDatabaseStructure(fragmentCollectionUrl, [...commonFragmentProperties, 'members']);
+Given('the old ldesfragment collection is structured as expected', () => {
+    checkDatabaseStructure(oldFragmentCollectionUrl, [...commonFragmentProperties, 'members']);
 })
 
-Given('the ldesmember collection is structured as expected', () => {
-    checkDatabaseStructure(memberCollectionUrl, [...commonMongoProperties, 'ldesMember']);
+Given('the old ldesmember collection is structured as expected', () => {
+    checkDatabaseStructure(oldMemberCollectionUrl, [...commonMongoProperties, 'ldesMember']);
+})
+
+When('the LDES contains at least {int} members in the old database', (count: number) => {
+    mongo.checkCount(testDatabase(), 'ldesmember', count, (x, y) => x >= y);
 })
 
 Given('the old LDES server is available', () => {

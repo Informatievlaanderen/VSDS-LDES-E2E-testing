@@ -8,7 +8,8 @@ import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { Fragment } from "../ldes";
 
 let testContext: any;
-const ldesMemberCollection = 'ldesmember';
+const ldesMemberCollection = 'ingest_ldesmember';
+const ldesFragmentCollection = 'fragmentation_fragment'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
@@ -248,7 +249,7 @@ When('the LDES contains {int} members', (count: number) => {
 })
 
 When('the LDES contains {int} fragments', (count: number) => {
-    mongo.checkCount(testContext.database, 'ldesfragment', count);
+    mongo.checkCount(testContext.database, ldesFragmentCollection, count);
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
@@ -256,7 +257,7 @@ When('the LDES contains at least {int} members', (count: number) => {
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {
-    mongo.checkCount(testContext.database, 'ldesfragment', count, (x, y) => x >= y);
+    mongo.checkCount(testContext.database, ldesFragmentCollection, count, (x, y) => x >= y);
 })
 
 export function waitUntilMemberCountStable() {

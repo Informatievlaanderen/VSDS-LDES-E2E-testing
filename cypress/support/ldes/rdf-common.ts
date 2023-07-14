@@ -25,6 +25,7 @@ export const ldes = {
 const termsPrefix = 'http://purl.org/dc/terms/'
 export const terms = {
     isVersionOf: termsPrefix + 'isVersionOf',
+    isPartOf: termsPrefix + 'isPartOf',
     prefix: (term: string) => termsPrefix + term,
 }
 

@@ -92,7 +92,7 @@ docker compose up -d
 
 7. Verify server
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```    
 
    Should eventually return `{"count":1016}`

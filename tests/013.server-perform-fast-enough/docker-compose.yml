@@ -5,7 +5,7 @@ services:
 
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306t2329}
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-latest}
     environment:
       - NODE_OPTIONS=--max-old-space-size=768 # NOTE: in MB, set this a bit lower than the memory limit
       - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
@@ -57,7 +57,7 @@ services:
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     deploy:

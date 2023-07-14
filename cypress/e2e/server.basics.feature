@@ -20,7 +20,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-007 @ingestion @gtfs @broken
+  @test-007 @ingestion @gtfs
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/007.server-ingest-large-ldes' is started

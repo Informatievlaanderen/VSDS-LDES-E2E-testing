@@ -34,7 +34,7 @@ services:
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-6.0.4}
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
       - ${MONGODB_PORT:-27017}:27017
     networks:

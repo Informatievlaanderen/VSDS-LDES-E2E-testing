@@ -1,9 +1,5 @@
 # The LDES workbench can be used to archive the LDES Server
 
-TODOS:
-    Test with windows
-    Complete implementation of read archive when it exists
-
 This test verifies:
 - A file archive can be created from an LDES on the server using the workbench.
 - A server can be seeded from a file archive using the workbench.
@@ -79,14 +75,27 @@ docker compose up -d
    chmod +x ./config/seed.sh
    sh ./config/seed.sh
    ```
-5. Restore the archive
+5. Verify LDES Server is empty
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```    
+
+    Should return `{"count":0}`
+
+6. Restore the archive
    ```bash
    docker compose up ldio-read-archive -d
    while ! docker logs $(docker ps -q -f "name=read-archive$") | grep 'Started Application in' ; do sleep 1; done
    ```
+   or:
+   Upload the [workflow](./nifi-read-archive-workflow.json) and start it.
 
-6. Verify server
-TODO
+7. Verify server
+    ```bash
+    curl http://localhost:9019/gipod/ldesmember
+    ```    
+
+   Should eventually return `{"count":1016}`
 
 ## Test Teardown
 To stop all systems use:

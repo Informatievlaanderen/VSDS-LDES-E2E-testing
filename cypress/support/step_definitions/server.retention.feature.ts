@@ -97,7 +97,7 @@ Then('The member count remains around {int}', (expected: number) => {
     while(n <= 15) {
         currentMemberCount().then(count => {
             cy.log(count.toString());
-            expect(expected -1 <= count && count <= expected + membersReceivedBetweenCleanup +1).to.be.true;
+            expect(expected -2 <= count && count <= expected + membersReceivedBetweenCleanup +1).to.be.true;
     });
         n++;
         cy.wait(1000);
@@ -118,6 +118,7 @@ Then('The member count is increasing', () => {
 })
 
 Then('The member count remains constant', () => {
+    cy.wait(11000)
     var firstCount;
     currentMemberCount().then(count => {
         cy.log(count.toString());

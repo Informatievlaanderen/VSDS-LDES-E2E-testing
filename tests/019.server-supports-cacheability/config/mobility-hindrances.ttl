@@ -10,5 +10,7 @@
 
 </mobility-hindrances> a ldes:EventStream ;
 	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
+	ldes:timestampPath prov:generatedAtTime ;
+	ldes:versionOfPath dcterms:isVersionOf ;
 	tree:shape [ a sh:NodeShape ] ;
 	

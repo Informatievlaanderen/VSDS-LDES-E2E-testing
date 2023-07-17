@@ -275,7 +275,7 @@ When('I start the GTFS2LDES service', () => {
 })
 
 When('the GTFS to LDES service starts sending linked connections', () => {
-    gtfs2ldes.isSendingLinkedConnections();
+    gtfs2ldes.waitSendingLinkedConnections();
 })
 
 let lastMemberCount: number;

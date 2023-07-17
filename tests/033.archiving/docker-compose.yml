@@ -47,8 +47,6 @@ services:
       - 8080:8080 # needed for admin API
     depends_on:
       - ldes-mongodb
-    profiles:
-      - delay-started
 
   ldes-mongodb:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldes-mongodb

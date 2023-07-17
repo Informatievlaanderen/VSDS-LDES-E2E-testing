@@ -60,10 +60,7 @@ docker compose up -d
     These timestamps are extracted from the members by the time-stamp-path that we provide to the archive component.
     Duplicate timestamps are resolved by adding a sequence suffix: `2022-04-29-09-32-30-080000000-1.nq`
 
-4. Start a new LDES Server
-   ```bash
-   docker compose up ldes-server -d
-   ```
+4. Prepare the LDES Server
    Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
    ```bash
    docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")

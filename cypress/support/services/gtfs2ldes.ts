@@ -11,19 +11,27 @@ export class Gtfs2Ldes implements CanCheckAvailability {
     }
 
     private isReady(containerId: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Connection updates so far"));
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Starting processing of GTFS source"));
     }
 
     waitAvailable() {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: 60000, interval: 5000 });
+                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: 15000, interval: 3000 });
             });
     }
 
-    isSendingLinkedConnections() {
+    private isPostingConnections() {
         return cy.exec(`docker logs -n 1 ${this._containerId}`).then(result => result.stdout.startsWith('Posted'));
+    }
+
+    waitSendingLinkedConnections() {
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => {
+                this._containerId = result.stdout;
+                return cy.waitUntil(() => this.isPostingConnections(), { timeout: 600000, interval: 5000 });
+            });
     }
 
     sendLinkedConnectionCount(): Cypress.Chainable<number> {

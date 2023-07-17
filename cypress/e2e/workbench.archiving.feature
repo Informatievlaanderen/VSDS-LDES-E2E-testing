@@ -7,18 +7,17 @@ Feature: LDES Workbench Archiving
     And context 'tests/033.archiving' is started
     And I have aliased the pre-seeded simulator data set
     When I start the create archive '<workbench>' workbench
-    And I wait until the archiving is finished
+    And I wait until the '<workbench>' workbench finished archiving
     And the LDES server is available and configured
     Then the LDES contains 0 members
     When I start the read archive '<workbench>' workbench
     Then the LDES contains 1016 members
 #    And I cleanup the created archive
 
-
-#    @nifi
-#    Examples:
-#      | workbench |
-#      | NIFI      |
+    @nifi
+    Examples:
+      | workbench |
+      | NIFI      |
 
     @ldio
     Examples:

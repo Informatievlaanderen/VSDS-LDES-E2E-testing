@@ -25,6 +25,18 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
     }
 
+    private containerLogIncludes(containerId: string, includeString: string) {
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes(includeString));
+    }
+
+    waitForDockerLog(includeString: string) {
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => {
+                const containerId = result.stdout;
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: 30000, interval: 5000 });
+            });
+    }
+
     waitIngestEndpointAvailable(ingestUrl: string) {
         return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: 60000, interval: 5000 });
     }

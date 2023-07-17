@@ -1,21 +1,17 @@
 import {LdesWorkbenchLdio, LdesWorkbenchNiFi} from "../services";
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import {credentials} from "../credentials";
-import {createAndStartService, testPartialPath} from "./common_step_definitions";
-
-const createNifiWorkbench = new LdesWorkbenchNiFi('https://localhost:8000', 'nifi-create-archive')
-const readNifiWorkbench = new LdesWorkbenchNiFi('http://localhost:8000', 'nifi-read-archive')
+import {createAndStartService, testPartialPath, workbenchNifi} from "./common_step_definitions";
 
 const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archive');
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
 
-When('I start the create archive {string} workbench', (workbench) => {
+When('I start the create archive {string} workbench', (workbench: string) => {
     switch(workbench) {
         case 'NIFI': {
-            createNifiWorkbench.waitAvailable();
-            createNifiWorkbench.login(credentials);
-            createNifiWorkbench.uploadWorkflow(`${testPartialPath()}/nifi-create-archive-workflow.json`);
-            createNifiWorkbench.pushStart();
+            createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-create-archive-workflow.json`);
+            workbenchNifi.pushStart();
             break;
         }
         case 'LDIO': {
@@ -26,13 +22,11 @@ When('I start the create archive {string} workbench', (workbench) => {
     }
 })
 
-When('I start the read archive {string} workbench', (workbench) => {
+When('I start the read archive {string} workbench', (workbench: string) => {
     switch(workbench) {
         case 'NIFI': {
-            createNifiWorkbench.logout();
-            createAndStartService(readNifiWorkbench.serviceName).then(() => readNifiWorkbench.waitAvailable());
-            readNifiWorkbench.uploadWorkflow(`${testPartialPath()}/nifi-read-archive-workflow.json`);
-            readNifiWorkbench.pushStart();
+            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-read-archive-workflow.json`);
+            workbenchNifi.pushStart();
             break;
         }
         case 'LDIO': {
@@ -43,6 +37,16 @@ When('I start the read archive {string} workbench', (workbench) => {
     }
 })
 
-Then('I wait until the archiving is finished', () => {
-    createLdioWorkbench.waitForDockerLog('No fragments to mutable or new fragments to process');
+Then('I wait until the {string} workbench finished archiving', (workbench: string) => {
+    switch(workbench) {
+        case 'NIFI': {
+            workbenchNifi.waitForDockerLog('No fragments to mutable or new fragments to process');
+            break;
+        }
+        case 'LDIO': {
+            createLdioWorkbench.waitForDockerLog('No fragments to mutable or new fragments to process');
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })

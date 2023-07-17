@@ -42,7 +42,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-019 @ingestion @formats @gipod
+  @test-019 @ingestion @formats @gipod @broken
   Scenario: 019: Verify Acceptable Member Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured

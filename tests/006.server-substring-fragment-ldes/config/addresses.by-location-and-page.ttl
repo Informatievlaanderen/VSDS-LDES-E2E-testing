@@ -1,7 +1,9 @@
 @prefix tree: <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-</addresses/by-location-and-time> a tree:Node ; 
+@base <http://localhost:8080> .
+
+</addresses/by-location-and-page> a tree:Node ; 
 	tree:viewDescription [ a tree:ViewDescription ;
 		tree:fragmentationStrategy (
 		[
@@ -10,8 +12,7 @@
 			tree:maxZoom "13"^^xsd:integer ;
 		]
 		[
-            a tree:TimebasedFragmentation ;
+            a tree:PaginationFragmentation ;
 		    tree:memberLimit "10"^^xsd:integer ;
-			tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 		]) ;
 	] .

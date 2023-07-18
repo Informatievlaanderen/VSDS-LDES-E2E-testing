@@ -51,7 +51,7 @@ sh ./config/seed.sh
 
 3. Verify LDES Members are being ingested (execute repeatedly until at least one member):
     ```bash
-    curl http://localhost:9019/bustang/ldesmember
+    curl http://localhost:9019/bustang/ingest_ldesmember
     ```
     and fragments are being created (execute repeatedly until more than three fragments exists):
     ```bash

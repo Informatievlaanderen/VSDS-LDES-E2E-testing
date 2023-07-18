@@ -49,7 +49,7 @@ sh ./config/seed.sh
 
 3. Verify LDES Members are being ingested (execute repeatedly):
     ```bash
-    curl http://localhost:9019/bustang/ldesmember
+    curl http://localhost:9019/bustang/ingest_ldesmember
     ```
     or request the collection:
     ```bash

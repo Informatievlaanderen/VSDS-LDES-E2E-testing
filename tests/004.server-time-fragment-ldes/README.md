@@ -50,7 +50,7 @@ So, the total data set contains 617 items. The LDES server is configured to crea
 
 2. Verify all (617) LDES members are ingested (execute repeatedly):
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```
 
 3. Request the collection 

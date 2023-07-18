@@ -54,7 +54,7 @@ sh ./config/seed.sh
 
 3. Verify the LDES members are ingested (execute repeatedly until the `ldesmember` document collection contains 6 members):
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```
     and the `ldesfragment` document collection contains 9 fragments (execute repeatedly):
     * the real root/redirection fragment, 

@@ -15,7 +15,7 @@ services:
     container_name: ${USECASE_NAME:-gipod-ingest-ldes}_ldio-workbench
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
-      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+      - ./config/ldio-workflow.config.yml:/ldio/application.yml:ro
     networks:
       - ldes
     profiles:

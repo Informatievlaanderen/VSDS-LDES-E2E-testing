@@ -4,11 +4,10 @@
 
 @base <http://localhost:8080> .
 
-</mobility-hindrances/by-time> a tree:Node ; 
+</mobility-hindrances/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
-		a server:TimebasedFragmentation ;
+		a tree:PaginationFragmentation ;
 		tree:memberLimit "1500"^^xsd:integer ;
-		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 ] .

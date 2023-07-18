@@ -9,6 +9,8 @@ Feature: LDES Server Basic Functionality
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     Then the LDES contains 1016 members
+    And the mobility-hindrances LDES is paginated
+    And the first page contains 1016 members
 
     @ldio
     Examples: 

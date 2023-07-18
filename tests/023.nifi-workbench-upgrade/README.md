@@ -39,7 +39,7 @@ This test uses a docker environment a data generator simulating the system pushi
     ```
     and that the data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test execution
@@ -75,7 +75,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 7. Verify data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test teardown

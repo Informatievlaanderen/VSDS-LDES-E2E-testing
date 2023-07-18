@@ -62,7 +62,7 @@ sh ./config/seed.sh
 
 3. Verify that the LDES members are ingested (execute repeatedly):
    ```bash
-   curl http://localhost:9019/grar/ldesmember
+   curl http://localhost:9019/grar/ingest_ldesmember
    ```
 
 4. Request the collections:

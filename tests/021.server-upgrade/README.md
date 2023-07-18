@@ -45,7 +45,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```
    and data store member count increases (execute repeatedly until at least 11 members - will produce more than one fragment):
    ```bash
-   curl http://localhost:9019/iow_devices/ldesmember
+   curl http://localhost:9019/iow_devices/ingest_ldesmember
    ```
 
 5. Verify that the ldesfragment collection is structured as expected:
@@ -67,7 +67,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 6. Verify that the ldesmember collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
@@ -80,7 +80,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 7. Verify that the _id has no prefix
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
    ```
    The result should match the below pattern:
    ```json
@@ -114,7 +114,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
    ```bash
-   curl http://localhost:9019/iow_devices/ldesmember
+   curl http://localhost:9019/iow_devices/ingest_ldesmember
    ```
    ```bash
    docker compose rm --stop --force --volumes old-ldes-server
@@ -153,7 +153,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 5. Verify that the ldesmember collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
@@ -175,7 +175,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 6. Verify that the _id has the collectionName as a prefix
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
    ```
    The result should match the below pattern:
    ```json
@@ -243,7 +243,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```
 
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json
@@ -281,7 +281,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 13. Verify data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test teardown

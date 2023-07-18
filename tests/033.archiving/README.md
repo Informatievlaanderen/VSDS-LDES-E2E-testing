@@ -77,7 +77,7 @@ docker compose up -d
    ```
 5. Verify LDES Server is empty
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```    
 
     Should return `{"count":0}`

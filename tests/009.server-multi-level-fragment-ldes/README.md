@@ -48,7 +48,7 @@ sh ./config/seed.sh
 
 3. Verify the LDES members are ingested (execute repeatedly until the `ldesmember` document collection contains 6 members):
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```
     and the `ldesfragment` document collection contains the real root/redirection fragment, the geo-spatial root fragment 0/0/0, four tile fragments and eight timebased fragments because the fragment member count is configured to hold at most five members (i.e. expected total is 14 fragments):
     ```bash

@@ -59,7 +59,7 @@ services:
       - ldes
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-gtfs-multilevel-fragment-ldes}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-gtfs-multilevel-ldes}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false
@@ -71,4 +71,4 @@ services:
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-gtfs-multiview-ldes}_network
+    name: ${USECASE_NAME:-gtfs-multilevel-ldes}_network

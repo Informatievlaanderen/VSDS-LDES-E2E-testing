@@ -1,10 +1,20 @@
-import {LdesWorkbenchLdio, LdesWorkbenchNiFi} from "../services";
-import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {credentials} from "../credentials";
-import {createAndStartService, testPartialPath, workbenchNifi} from "./common_step_definitions";
+import {LdesWorkbenchLdio} from "../services";
+import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import {
+    createAndStartService,
+    setAdditionalEnvironmentSetting,
+    testPartialPath,
+    workbenchNifi
+} from "./common_step_definitions";
 
 const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archive');
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
+
+Given('I have configured the archive directory', () => {
+    cy.exec('id -u').then(uid => setAdditionalEnvironmentSetting('MY_UID', uid.stdout));
+    cy.exec('id -g').then(uid => setAdditionalEnvironmentSetting('MY_GID', uid.stdout));
+    setAdditionalEnvironmentSetting('ARCHIVE_DIR', Cypress.config('downloadsFolder'));
+})
 
 When('I start the create archive {string} workbench', (workbench: string) => {
     switch(workbench) {
@@ -49,4 +59,8 @@ Then('I wait until the {string} workbench finished archiving', (workbench: strin
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);
     }
+})
+
+Then('I cleanup the created archive', () => {
+    cy.exec(`rm -rf ${Cypress.config('downloadsFolder')}/2022`);
 })

@@ -16,7 +16,8 @@ services:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
     volumes:
       - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
-      - ./archive:/tmp/archive:rw
+      - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
+    user: ${MY_UID-}:${MY_GID-}
     networks:
       - ldes
     profiles:
@@ -27,7 +28,7 @@ services:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-read-archive
     volumes:
       - ./ldio-read-archive.yml:/ldio/config/application.yml:ro
-      - ./archive:/tmp/archive:rw
+      - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
     networks:
       - ldes
     profiles:
@@ -74,7 +75,8 @@ services:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-      - ./archive:/tmp/archive:rw
+      - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
+    user: ${MY_UID-}:${MY_GID-}
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:

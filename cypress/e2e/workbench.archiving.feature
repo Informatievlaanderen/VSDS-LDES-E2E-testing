@@ -12,7 +12,6 @@ Feature: LDES Workbench Archiving
     Then the LDES contains 0 members
     When I start the read archive '<workbench>' workbench
     Then the LDES contains 1016 members
-#    And I cleanup the created archive
 
     @nifi
     Examples:

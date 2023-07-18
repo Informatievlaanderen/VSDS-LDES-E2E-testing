@@ -89,7 +89,7 @@ services:
       - delayed-started
 
   mongodb-rest-api:
-    container_name: ${USECASE_NAME:-gipod-geospatial-fragment-ldes}_mongodb-rest-api
+    container_name: ${USECASE_NAME:-gtfs-direct-connect}_mongodb-rest-api
     image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
     environment:
       - SILENT=false

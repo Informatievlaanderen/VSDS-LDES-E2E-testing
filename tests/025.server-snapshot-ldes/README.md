@@ -93,7 +93,7 @@ A schematic overview is given below:
     
 4. Verify the fragment count:
    ```bash
-   curl http://localhost:9019/test/ldesfragment?includeIds=true
+   curl http://localhost:9019/test/fragmentation_fragment?includeIds=true
    ```
    this returns:
    ```json
@@ -127,7 +127,7 @@ A schematic overview is given below:
 
 3. Verify the fragment count has increased:
    ```bash
-   curl http://localhost:9019/test/ldesfragment?includeIds=true
+   curl http://localhost:9019/test/fragmentation_fragment?includeIds=true
    ```
    The collection `ldesfragment` now contains additional fragments which are part of the snapshot view, E.g. (for the medium-sized data set):
    ```json
@@ -182,7 +182,7 @@ A schematic overview is given below:
 
 7. Verify the fragment count has increased like in step 3:
    ```bash
-   curl http://localhost:9019/test/ldesfragment?includeIds=true
+   curl http://localhost:9019/test/fragmentation_fragment?includeIds=true
    ```
    For the medium dataset:
    Note that even though only a couple of members were added, atleast 2 non-root fragments were created to contain the latest versions of the 204 resources.

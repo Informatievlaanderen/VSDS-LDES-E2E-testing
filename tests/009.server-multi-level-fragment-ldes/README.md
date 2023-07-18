@@ -52,7 +52,7 @@ sh ./config/seed.sh
     ```
     and the `ldesfragment` document collection contains the real root/redirection fragment, the geo-spatial root fragment 0/0/0, four tile fragments and eight timebased fragments because the fragment member count is configured to hold at most five members (i.e. expected total is 14 fragments):
     ```bash
-    curl http://localhost:9019/gipod/ldesfragment
+    curl http://localhost:9019/gipod/fragmentation_fragment
     ```
 
 4. Verify the fragments:

@@ -50,7 +50,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 5. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
@@ -91,7 +91,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 8. Verify that the fields contain no indices except for the _id.
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json
@@ -129,7 +129,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 4. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
@@ -228,7 +228,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    indices when adding new fields.
 
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json

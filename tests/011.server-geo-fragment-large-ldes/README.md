@@ -55,7 +55,7 @@ sh ./config/seed.sh
     ```
     and fragments are being created (execute repeatedly until more than three fragments exists):
     ```bash
-    curl http://localhost:9019/bustang/ldesfragment
+    curl http://localhost:9019/bustang/fragmentation_fragment
     ```
 
 4. Verify the geo-spatial fragmentation by requesting the view's root fragment:

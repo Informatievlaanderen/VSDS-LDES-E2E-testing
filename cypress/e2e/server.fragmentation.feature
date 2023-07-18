@@ -118,10 +118,10 @@ Feature: LDES Server Fragmentation
     And the LDES contains 16 fragments
     Then the multi-level root fragment is not immutable
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
-    And the geo-spatial fragment '15/16743/11009' has a second level timebased fragmentation which contains the members
-    And the geo-spatial fragment '15/16744/11009' has a second level timebased fragmentation which contains the members
-    And the geo-spatial fragment '15/16742/11010' has a second level timebased fragmentation which contains the members
-    And the geo-spatial fragment '15/16743/11010' has a second level timebased fragmentation which contains the members
+    And the geo-spatial fragment '15/16743/11009' is sub-fragmented using pagination which contains the members
+    And the geo-spatial fragment '15/16744/11009' is sub-fragmented using pagination which contains the members
+    And the geo-spatial fragment '15/16742/11010' is sub-fragmented using pagination which contains the members
+    And the geo-spatial fragment '15/16743/11010' is sub-fragmented using pagination which contains the members
 
     @ldio
     Examples: 

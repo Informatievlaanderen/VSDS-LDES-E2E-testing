@@ -1,5 +1,5 @@
 # LDES Server Can Fragment an LDES Using Geospatial Fragmentation
-The test verifies that the LDES Server can fragment an LDES using multiple levels (e.g. first geospatially and then time-based). It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
+The test verifies that the LDES Server can fragment an LDES using multiple levels (e.g. first geospatially and then paginated). It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
 
 The test data set consists of a single file containing [six member](./data/six-members.jsonld). This data set is used:
 * to demonstrate the geospatial bucketizer's ability to correctly create (multiple) buckets for a given member based on the configured property,
@@ -57,78 +57,46 @@ sh ./config/seed.sh
 
 4. Verify the fragments:
     ```bash
-    curl 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=0/0/0'
+    curl 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=0/0/0'
     ```
     We have configured the zoom level to 15, so that the geospatial fragmentation creates four tile fragments (15 / x / y)
     ```bash
-    curl -s  'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=0/0/0' | grep "tile=15/"
+    curl -s  'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=0/0/0' | grep "tile=15/"
     ```
     returns:
     ```
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11010> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11009> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16744/11009> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16742/11010> ;
+    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11010> ;
+    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11009> ;
+    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16744/11009> ;
+    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16742/11010> ;
     ```
     Each of these four tile fragments has one relation pointing to the first timebased fragment:
     ```bash
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11010' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16744/11009' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11009' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16742/11010' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11010' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16744/11009' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11009' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16742/11010' | grep tree:node
     ```
-    returns (something similar to):
+    returns:
     ```
-    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11010&generatedAtTime=2023-04-03T11:13:07.088Z>
-    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16744/11009&generatedAtTime=2023-04-03T11:13:07.059Z>
-    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11009&generatedAtTime=2023-04-03T11:13:07.060Z>
-    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16742/11010&generatedAtTime=2023-04-03T11:13:07.059Z>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11010&pageNumber=1>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16744/11009&pageNumber=1>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11009&pageNumber=1>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16742/11010&pageNumber=1>
     ```
     Each of these four timebased fragments has one relation pointing to the second timebased fragment:
     ```bash
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11010&generatedAtTime=2023-04-03T11:13:07.088Z' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16744/11009&generatedAtTime=2023-04-03T11:13:07.059Z' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11009&generatedAtTime=2023-04-03T11:13:07.060Z' | grep tree:node
-    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16742/11010&generatedAtTime=2023-04-03T11:13:07.059Z' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11010&pageNumber=1' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16744/11009&pageNumber=1' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11009&pageNumber=1' | grep tree:node
+    curl -s 'http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16742/11010&pageNumber=1' | grep tree:node
     ```
-    returns (something similar to):
+    returns:
     ```
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11010&generatedAtTime=2023-04-03T11:13:07.414Z> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16744/11009&generatedAtTime=2023-04-03T11:13:07.392Z> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16743/11009&generatedAtTime=2023-04-03T11:13:07.395Z> ;
-    tree:node   <http://localhost:8080/mobility-hindrances/by-location-and-time?tile=15/16742/11010&generatedAtTime=2023-04-03T11:13:07.401Z> ;
-    ```
-
-## Try-out Different Fragmentation Strategies.
-To try out a different fragmentation strategy you need to tune the [Docker Compose](./docker-compose.yml) file and follow these steps:
-1. Change the strategy, e.g.:
-   * Disable the current strategy (comment) and enable (uncomment) the `ALTERNATIVE STRATEGY: only timebased`
-   * Disable the current strategy (comment) and enable (uncomment) the `ALTERNATIVE STRATEGY: only geospatial`
-2. Delete the MongoDB database (e.g. using [Mongo Compass](https://www.mongodb.com/products/compass)):
-    ```bash
-    docker compose stop ldes-mongodb
-    docker compose rm -v -f ldes-mongodb
-    docker compose up ldes-mongodb -d   
-    ``` 
-3. Recreate the ldes-server:
-    ```bash
-    docker compose stop ldes-server
-    docker compose rm -v -f ldes-server
-    docker compose up ldes-server -d   
-    ``` 
-4. Re-create the workflow:
-    ```bash
-    docker compose stop ldio-workbench
-    docker compose rm -v -f ldio-workbench
-    docker compose up ldio-workbench -d   
-    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-    ```
-    or:
-    ```bash
-    docker compose stop nifi-workbench
-    docker compose rm -v -f nifi-workbench
-    docker compose up nifi-workbench -d   
-    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11010&pageNumber=2>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16744/11009&pageNumber=2>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16743/11009&pageNumber=2>
+    tree:node  <http://localhost:8080/mobility-hindrances/by-location-and-page?tile=15/16742/11010&pageNumber=2>
     ```
 
 ## Test Teardown

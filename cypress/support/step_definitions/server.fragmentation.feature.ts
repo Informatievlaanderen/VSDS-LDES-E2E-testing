@@ -140,6 +140,10 @@ Then('the time-based fragmentation exists', () => {
     server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byTime).then(fragment => rootFragment = fragment);
 })
 
+Then('the mobility-hindrances LDES is paginated', () => {
+    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
+})
+
 Then('the geo-spatial fragment {string} has a second level timebased fragmentation which contains the members', (tile: string) => {
     const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndTime}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);

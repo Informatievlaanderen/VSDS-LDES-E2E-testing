@@ -65,7 +65,7 @@ sh ./config/seed.sh
       * the time-based root,
       * two timebased fragments because the fragment member count is configured to hold at most one hunderd members 
     ```bash
-    curl http://localhost:9019/gipod/ldesfragment
+    curl http://localhost:9019/gipod/fragmentation_fragment
     ```
 
 ## Try-out Different Fragmentation Strategies.

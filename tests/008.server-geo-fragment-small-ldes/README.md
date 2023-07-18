@@ -91,7 +91,7 @@ sh ./config/seed.sh
     ```
     and the `ldesfragment` document collection contains four LDES fragments, in addition to the geo-spatial root fragment 0/0/0 and the real root/redirection fragment (i.e. expected total is 6 fragments):
     ```bash
-    curl http://localhost:9019/gipod/ldesfragment
+    curl http://localhost:9019/gipod/fragmentation_fragment
     ```
 
 4. Verify the fragments:

@@ -12,7 +12,7 @@ let timebasedFragment: Fragment;
 let mobilityHindrancesLdes = 'mobility-hindrances';
 let connectionsLdes = 'connections';
 let byLocation = 'by-location';
-let byLocationAndTime = 'by-location-and-time';
+let byLocationAndPage = 'by-location-and-page';
 let byTime = 'by-time';
 let byPage = 'paged';
 let relations: Relation[];
@@ -106,7 +106,7 @@ Then('the geo-spatial root fragment is not immutable', () => {
 })
 
 Then('the multi-level root fragment is not immutable', () => {
-    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the multi-view root fragment is not immutable', () => {
@@ -129,11 +129,11 @@ Then('the multi-view root fragment contains multiple relations of type {string}'
 })
 
 Then('the geo-spatial fragmentation exists in the connections LDES', () => {
-    server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+    server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the geo-spatial fragmentation exists in the mobility-hindrances LDES', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the time-based fragmentation exists', () => {
@@ -144,8 +144,8 @@ Then('the mobility-hindrances LDES is paginated', () => {
     server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
 })
 
-Then('the geo-spatial fragment {string} has a second level timebased fragmentation which contains the members', (tile: string) => {
-    const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndTime}?tile=${tile}`;
+Then('the geo-spatial fragment {string} is sub-fragmented using pagination which contains the members', (tile: string) => {
+    const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndPage}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);
     expect(relation).not.to.be.undefined;
     new Fragment(relationUrl).visit().then(fragment => {

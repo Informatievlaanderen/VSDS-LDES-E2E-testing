@@ -20,8 +20,7 @@ Feature: LDES Client Persistence
       | LDIO      |
 
 
-    @nifi @broken
-    # java.lang.NoClassDefFoundError: Could not initialize class org.hibernate.cfg.Environment
+    @nifi
     Examples: 
       | workbench |
       | NIFI      |

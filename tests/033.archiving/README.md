@@ -117,5 +117,4 @@ And clean up the archive directory:
    Windows
    ```bash
    rm -rf ./archive/2022
-   mkdir ./archive
    ```

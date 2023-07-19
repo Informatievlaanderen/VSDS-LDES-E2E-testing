@@ -17,7 +17,7 @@ services:
     volumes:
       - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
       - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
-    user: ${MY_UID-}:${MY_GID-}
+    user: ${MY_USER-}
     networks:
       - ldes
     profiles:
@@ -76,7 +76,7 @@ services:
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
       - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
-    user: ${MY_UID-}:${MY_GID-}
+    user: ${MY_USER-}
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:

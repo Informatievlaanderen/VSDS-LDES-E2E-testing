@@ -11,8 +11,11 @@ const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archiv
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
 
 Given('I have configured the archive directory', () => {
-    cy.exec('id -u').then(uid => setAdditionalEnvironmentSetting('MY_UID', uid.stdout));
-    cy.exec('id -g').then(uid => setAdditionalEnvironmentSetting('MY_GID', uid.stdout));
+    if (Cypress.platform !== 'win32') {
+        const uid = cy.exec('id -u').then(result => result.stdout);
+        const gid = cy.exec('id -g').then(result => result.stdout);
+        setAdditionalEnvironmentSetting('MY_USER', uid + ':' + gid);
+    }
     setAdditionalEnvironmentSetting('ARCHIVE_DIR', Cypress.config('downloadsFolder'));
 })
 

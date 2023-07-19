@@ -10,16 +10,20 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         return this._serviceName || 'ldio-workbench';
     }
 
-    private isReady(containerId: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Started Application in"));
+    private containerLogIncludes(containerId: string, includeString: string) {
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes(includeString));
     }
 
-    waitAvailable() {
+    waitForDockerLog(includeString: string) {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId), { timeout: 30000, interval: 5000 });
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: 30000, interval: 5000 });
             });
+    }
+
+    waitAvailable() {
+        this.waitForDockerLog("Started Application in")
     }
 
     pause() {

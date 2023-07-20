@@ -2,15 +2,9 @@
 @prefix tree:    <https://w3id.org/tree#>.
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
-@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
-@prefix server:  <http://example.org/> .
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
 
-@base <http://localhost:8080> .
-
 </mobility-hindrances> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape ] ;
+	tree:shape [ a sh:NodeShape ; sh:targetClass <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ] ;
 	ldes:timestampPath prov:generatedAtTime ;
-	ldes:versionOfPath dcterms:isVersionOf ;
-	server:memberType <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
-	
+	ldes:versionOfPath dcterms:isVersionOf .	

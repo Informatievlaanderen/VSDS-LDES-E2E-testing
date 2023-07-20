@@ -1,8 +1,5 @@
 @prefix tree:   <https://w3id.org/tree#>.
-@prefix server: <http://example.org/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
-
-@base <http://localhost:8080> .
 
 </water-quality-observations/by-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;

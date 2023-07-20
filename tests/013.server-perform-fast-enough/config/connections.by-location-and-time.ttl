@@ -2,8 +2,6 @@
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix ldes:    <https://w3id.org/ldes#> .
 
-@base <http://localhost:8080> .
-
 </connections/by-location-and-time> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([

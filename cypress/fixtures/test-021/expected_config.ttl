@@ -17,11 +17,12 @@ devices-by-time:description
 
 <http://localhost:8080/devices>
        rdf:type            ldes:EventStream ;
-       <http://example.org/memberType>
-               default-context:Device ;
        ldes:timestampPath  prov:generatedAtTime ;
        ldes:versionOfPath  terms:isVersionOf ;
-       tree:shape          [ rdf:type  shacl:NodeShape ] ;
+       tree:shape          [ 
+              rdf:type shacl:NodeShape ;
+              shacl:targetClass default-context:Device ;
+       ] ;
        tree:view           devices:devices-by-time .
 
 devices:devices-by-time

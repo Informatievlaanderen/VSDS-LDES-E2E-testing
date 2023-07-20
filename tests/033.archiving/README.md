@@ -18,6 +18,17 @@ Run all systems except the workflow by executing the following (bash) command:
 docker compose up -d
 ```
 
+Prepare the archive location:
+```bash
+mkdir ./data/archive
+chmod 0777 ./data/archive
+```
+
+On linux, also set the user to run the archive creation LDIO:
+```bash
+export LDIO_USER=$(id -u):$(id -g)
+```
+
 ## Test Execution
 
 1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
@@ -72,11 +83,11 @@ docker compose up -d
    chmod +x ./config/seed.sh
    sh ./config/seed.sh
    ```
+
 5. Verify LDES Server is empty
     ```bash
-    curl http://localhost:9019/gipod/ldesmember
+    curl http://localhost:9019/gipod/ingest_ldesmember
     ```    
-
     Should return `{"count":0}`
 
 6. Restore the archive
@@ -89,10 +100,9 @@ docker compose up -d
 
 7. Verify server
     ```bash
-    curl http://localhost:9019/gipod/ingest_ldesmember
+    while : ; do curl http://localhost:9019/gipod/ingest_ldesmember ; echo '' ; sleep 1 ; done
     ```    
-
-   Should eventually return `{"count":1016}`
+   Should eventually return `{"count":1016}`. Press `CTRL-C` to stop following the count.
 
 ## Test Teardown
 To stop all systems use:
@@ -110,11 +120,6 @@ docker compose down
 ```
 
 And clean up the archive directory:
-   Linux and Mac
    ```bash
-   sudo rm -rf ./archive/2022
-   ```
-   Windows
-   ```bash
-   rm -rf ./archive/2022
+   rm -rf ./data/archive
    ```

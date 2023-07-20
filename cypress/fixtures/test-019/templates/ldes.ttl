@@ -7,4 +7,4 @@
 </{collectionName}> a ldes:EventStream ;
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf ;
-	tree:shape [ a sh:NodeShape ; sh:targteClass <http://example.org/dummy> ] .
+	tree:shape [ a sh:NodeShape ; sh:targetClass <http://example.org/dummy> ] .

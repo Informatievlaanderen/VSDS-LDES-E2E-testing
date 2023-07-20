@@ -76,7 +76,7 @@ services:
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
       - ${ARCHIVE_DIR:-./archive}:/tmp/archive:rw
-    user: ${MY_USER-}
+    user: ${MY_USER:-}
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:

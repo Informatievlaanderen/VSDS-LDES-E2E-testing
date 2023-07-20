@@ -1,7 +1,9 @@
 @prefix tree: <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-</mobility-hindrances/by-location-and-time> a tree:Node ; 
+@base <http://localhost:8080> .
+
+</mobility-hindrances/by-location> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a tree:GeospatialFragmentation; ;

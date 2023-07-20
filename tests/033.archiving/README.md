@@ -120,6 +120,6 @@ docker compose down
 ```
 
 And clean up the archive directory:
-   ```bash
-   rm -rf ./data/archive
-   ```
+```bash
+rm -rf ./data/archive
+```

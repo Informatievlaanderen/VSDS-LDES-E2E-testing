@@ -132,12 +132,8 @@ Then('the geo-spatial fragmentation exists in the connections LDES', () => {
     server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
-Then('the geo-spatial fragmentation exists in the mobility-hindrances LDES', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
-})
-
-Then('the time-based fragmentation exists', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byTime).then(fragment => rootFragment = fragment);
+Then('the mobility-hindrances LDES is geo-spatially fragmented', () => {
+    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
 })
 
 Then('the mobility-hindrances LDES is paginated', () => {
@@ -164,7 +160,7 @@ Then('the geo-spatial root fragment contains {int} relations of type {string}', 
     });
 })
 
-Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
+Then('the pagination root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
     ensureRelationCount(rootFragment, amount).then(() => {
         relations = rootFragment.expectMultipleRelationOf(relationType, amount);
     });

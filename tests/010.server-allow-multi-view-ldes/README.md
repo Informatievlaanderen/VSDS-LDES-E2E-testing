@@ -1,5 +1,5 @@
 # LDES Server Offers Multiple Views
-The test verifies that the LDES Server can fragment an LDES using multiple views (e.g. geospatially & time-based + time-based only, etc.). It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
+The test verifies that the LDES Server can fragment an LDES using multiple views (e.g. geospatially fragmented, pagination only, etc.). It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and the LDES Server backed by a data store (mongodb).
 
 The test data set consists of a single file containing [six member](./data/six-members.jsonld). This data set is used:
 * to demonstrate the geospatial bucketizer's ability to correctly create (multiple) buckets for a given member based on the configured property,
@@ -10,7 +10,7 @@ The test data set consists of a single file containing [six member](./data/six-m
 >
 > The **LDES Server** provides some configuration to cover the following acceptance criteria:
 > * can configure LDES server to with multiple views
-> * each view of the LDES server consists of a name and a list of fragmentations. Each fragmentation consists of the name of that fragmentation (timebased/geospatial) and a set of configuration parameters
+> * each view of the LDES server consists of a name and a list of fragmentations. Each fragmentation consists of the name of that fragmentation (pagination/geospatial) and a set of configuration parameters
 > * members are ingested via endpoint '/{collectionname}' and saved once in the storage provider
 > * views are consulted via the endpoint '/{collectionname}/{viewname}'
 
@@ -62,8 +62,8 @@ sh ./config/seed.sh
       * the geo-spatial root fragment 0/0/0, 
       * four tile fragments
     * view 2:
-      * the time-based root,
-      * two timebased fragments because the fragment member count is configured to hold at most one hunderd members 
+      * the pagination root,
+      * two paged fragments because the fragment member count is configured to hold at most 5 members 
     ```bash
     curl http://localhost:9019/gipod/fragmentation_fragment
     ```

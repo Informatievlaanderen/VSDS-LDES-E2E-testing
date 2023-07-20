@@ -3,7 +3,7 @@
 
 @base <http://localhost:8080> .
 
-</mobility-hindrances/by-location-and-time> a tree:Node ; 
+</mobility-hindrances/by-location> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a tree:GeospatialFragmentation; ;

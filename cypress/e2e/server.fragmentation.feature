@@ -144,10 +144,10 @@ Feature: LDES Server Fragmentation
     When I start the '<workbench>' workbench
     And the LDES contains 6 members
     And the LDES contains 11 fragments
-    Then the geo-spatial fragmentation exists in the mobility-hindrances LDES
+    Then the mobility-hindrances LDES is geo-spatially fragmented
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
-    And the time-based fragmentation exists
-    And the timebased root fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
+    And the mobility-hindrances LDES is paginated
+    And the pagination root fragment contains 1 relation of type 'Relation'
 
     @ldio
     Examples: 

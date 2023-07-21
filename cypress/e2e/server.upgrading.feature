@@ -16,7 +16,6 @@ Feature: LDES Server Upgrading
     And I remember the last fragment member count
     And I bring the old server down
     And I start the new LDES Server
-# TODO: verify these expectations below
     Then the fragmentation_fragment collection is upgraded as expected
     And the fragmentation_allocation collection is upgraded as expected
     And the ingest_ldesmember collection is upgraded as expected
@@ -30,10 +29,10 @@ Feature: LDES Server Upgrading
     Then the LDES member count increases
     And the last fragment member count increases
 
-    # @nifi
-    # Examples: 
-    #   | workbench |
-    #   | NIFI      |
+    @nifi
+    Examples: 
+      | workbench |
+      | NIFI      |
 
     @ldio
     Examples: 

@@ -2,15 +2,9 @@
 @prefix tree:    <https://w3id.org/tree#>.
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
-@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
-@prefix server:  <http://example.org/> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-
-@base <http://localhost:8080> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
 
 </water-quality-observations> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape ] ;
+	tree:shape [ a sh:NodeShape ; sh:targetClass <http://www.w3.org/ns/sosa/ObservationCollection> ] ;
 	ldes:timestampPath prov:generatedAtTime ;
-	ldes:versionOfPath dcterms:isVersionOf ;
-	server:memberType <http://www.w3.org/ns/sosa/ObservationCollection> ;
-	
+	ldes:versionOfPath dcterms:isVersionOf .	

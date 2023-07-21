@@ -1,8 +1,6 @@
 @prefix tree: <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-@base <http://localhost:8080> .
-
 </addresses/by-location-and-time> a tree:Node ; 
 	tree:viewDescription [ a tree:ViewDescription ;
 		tree:fragmentationStrategy (

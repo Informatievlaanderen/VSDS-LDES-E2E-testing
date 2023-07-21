@@ -5,6 +5,6 @@
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
 
 </devices> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape :sh:targetClass <https://uri.etsi.org/ngsi-ld/default-context/Device> ] ;
+	tree:shape [ a sh:NodeShape ; sh:targetClass <https://uri.etsi.org/ngsi-ld/default-context/Device> ] ;
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf .

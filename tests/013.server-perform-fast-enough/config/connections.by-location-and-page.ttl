@@ -2,7 +2,7 @@
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix ldes:    <https://w3id.org/ldes#> .
 
-</connections/by-location-and-time> a tree:Node ; 
+</connections/by-location-and-page> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy ([
 		a tree:GeospatialFragmentation; ;
@@ -10,9 +10,8 @@
 		tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
 	]
 	[
-		a tree:TimebasedFragmentation ;
+		a tree:PaginationFragmentation ;
 		tree:memberLimit "100"^^xsd:integer ;
-		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]) ;
 	ldes:retentionPolicy [
     	a ldes:DurationAgoPolicy  ;

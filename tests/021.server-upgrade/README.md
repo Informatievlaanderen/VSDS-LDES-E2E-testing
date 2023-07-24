@@ -41,7 +41,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 4. Verify that members are available in LDES by following the link in the `tree:node`:
    ```bash
-   curl -s http://localhost:8080/devices-by-time | grep "tree:node"
+   curl -s http://localhost:8080/devices-paged | grep "tree:node"
    ```
    and data store member count increases (execute repeatedly until at least 11 members - will produce more than one fragment):
    ```bash
@@ -192,7 +192,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```text
    @prefix default-context: <https://uri.etsi.org/ngsi-ld/default-context/> .
    @prefix devices:         <http://localhost:8080/devices/> .
-   @prefix devices-by-time: <http://localhost:8080/devices/devices-by-time/> .
+   @prefix devices-paged: <http://localhost:8080/devices/devices-paged/> .
    @prefix ldes:            <https://w3id.org/ldes#> .
    @prefix prov:            <http://www.w3.org/ns/prov#> .
    @prefix rdf:             <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -200,7 +200,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    @prefix terms:           <http://purl.org/dc/terms/> .
    @prefix tree:            <https://w3id.org/tree#> .
    
-   devices-by-time:description
+   devices-paged:description
            rdf:type                    tree:ViewDescription ;
            tree:fragmentationStrategy  ( [ rdf:type          tree:TimebasedFragmentation ;
                                            tree:memberLimit  "25"
@@ -214,11 +214,11 @@ The server upgrade will include changesets that alter the database schema. We wi
            ldes:timestampPath  prov:generatedAtTime ;
            ldes:versionOfPath  terms:isVersionOf ;
            tree:shape          [ rdf:type  shacl:NodeShape ] ;
-           tree:view           devices:devices-by-time .
+           tree:view           devices:devices-paged .
    
-   devices:devices-by-time
+   devices:devices-paged
            rdf:type              tree:Node ;
-           tree:viewDescription  devices-by-time:description .
+           tree:viewDescription  devices-paged:description .
    ```
 
    > **Note**: Changeset-7 will create three new collections for this: `eventstreams`, `view` and `shacl_shape`

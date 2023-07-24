@@ -171,8 +171,9 @@ Feature: LDES Server Fragmentation
     And the LDES contains at least 6 fragments
     Then the geo-spatial fragmentation exists in the connections LDES
     And the geo-spatial root fragment contains only relations of type 'GeospatiallyContainsRelation'
-    And the first timebased second level fragment contains 1 relation of type 'GreaterThanOrEqualToRelation'
-    And the first timebased second level fragment contains arrival and departure stops
+    When I follow the first relation to the second level pagination root fragment
+    Then the pagination fragment contains 1 relation of type 'Relation'
+    And all members contains arrival and departure stops
 
     @ldio
     Examples: 

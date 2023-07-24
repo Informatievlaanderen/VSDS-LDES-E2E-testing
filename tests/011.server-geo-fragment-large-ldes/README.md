@@ -1,7 +1,7 @@
 # LDES Server Offers a Geospatial View on GTFS/RT (e.g. De Lijn)
 This scenario verifies that the LDES server can geo-spatially fragment GTFS. It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
 
-Because the LDES server is configured to fragment the members geospatially and then by time, the structure created is a geospatial (search) tree with three levels: the root tile node, the tile nodes at the specified level (e.g. level 15) and the linked list of timebased fragments below these non-root tile nodes. The tile nodes only contain relations, while the timebased fragments each contain a maximum number (e.g. 100) of members and a link to the next (newer) fragment.
+Because the LDES server is configured to fragment the members geospatially and then paged, the structure created is a geospatial (search) tree with three levels: the root tile node, the tile nodes at the specified level (e.g. level 15) and the linked list of timebased fragments below these non-root tile nodes. The tile nodes only contain relations, while the timebased fragments each contain a maximum number (e.g. 100) of members and a link to the next (newer) fragment.
 
 ## Test Setup
 1. Run all systems except the GTFS to LDES convertor by executing the following (bash) command:
@@ -60,7 +60,7 @@ sh ./config/seed.sh
 
 4. Verify the geo-spatial fragmentation by requesting the view's root fragment:
     ```bash
-    curl 'http://localhost:8080/connections/by-location-and-time?tile=0/0/0'
+    curl 'http://localhost:8080/connections/by-location-and-page?tile=0/0/0'
     ```
 
 ## Test Teardown

@@ -1,7 +1,7 @@
 @prefix tree:   <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-</connections/by-location-and-time> a tree:Node ; 
+</connections/by-location-and-page> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
     tree:fragmentationStrategy (
     [
@@ -10,9 +10,8 @@
 		tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
 	]
 	[
-        a tree:TimebasedFragmentation ;
+        a tree:PaginationFragmentation ;
         tree:memberLimit "100"^^xsd:integer ;
-		tree:fragmentationPath <http://www.w3.org/ns/prov#generatedAtTime> ;
 	]
 	) ;
 ] .

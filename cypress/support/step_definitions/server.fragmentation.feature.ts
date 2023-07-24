@@ -1,14 +1,15 @@
 /// <reference types="cypress" />
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { ensureRelationCount, server, workbenchNifi } from "./common_step_definitions";
+import { ensureRelationCount, server } from "./common_step_definitions";
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
 let lastFragment: Fragment;
 
 let rootFragment: Fragment;
-let timebasedFragment: Fragment;
+let paginationRootFragment: Fragment;
+let paginationFragment: Fragment;
 let mobilityHindrancesLdes = 'mobility-hindrances';
 let connectionsLdes = 'connections';
 let byLocation = 'by-location';
@@ -178,21 +179,26 @@ Then('the geo-spatial root fragment contains only relations of type {string}', (
     relations = rootFragment.expectMultipleRelationsOfType(relationType);
 })
 
-Then('the first timebased second level fragment contains {int} relation of type {string}', (count: number, type: string) => {
-    new Fragment(relations[0].link).visit().then(fragment => {
-        const relation = fragment.relation;
-        expect(relation).not.to.be.undefined;
-        cy.waitUntil(() => new Fragment(relation.link).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
-            .then(() => new Fragment(relation.link).visit().then(fragment => {
-                timebasedFragment = fragment;
-                expect(fragment.relations.length).to.equal(count);
-                expect(fragment.expectNoOtherRelationThan(type));
-            }))
-    });
+When('I follow the first relation to the second level pagination root fragment', () => {
+    new Fragment(relations[0].link).visit().then(fragment => paginationRootFragment = fragment);
 })
 
-Then('the first timebased second level fragment contains arrival and departure stops', () => {
-    const members = timebasedFragment.members;
+Then('the pagination fragment contains {int} relation of type {string}', (count: number, type: string) => {
+    const relation = paginationRootFragment.relation;
+    expect(relation).not.to.be.undefined;
+    const url = relation.link;
+    expect(url).not.to.be.undefined;
+
+    cy.waitUntil(() => new Fragment(url).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
+        .then(() => new Fragment(url).visit().then(fragment => {
+            paginationFragment = fragment;
+            expect(fragment.relations.length).to.equal(count);
+            expect(fragment.expectNoOtherRelationThan(type));
+        }))
+})
+
+Then('all members contains arrival and departure stops', () => {
+    const members = paginationFragment.members;
     members.forEach(member => {
         expect(member.arrivalStop).not.to.be.undefined;
         expect(member.departureStop).not.to.be.undefined;

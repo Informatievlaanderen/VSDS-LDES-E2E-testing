@@ -68,8 +68,8 @@ Feature: LDES Server Basic Functionality
 
     Examples: 
       | collection-name     | view-name | collection-url                            | view-url                                          |
-      | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
-      | cartoons            | paged     | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged              |
+      | mobility-hindrances | paged     | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/paged   |
+      | cartoons            | my-view   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/my-view            |
 
   @test-019 @consumption @formats @gipod @broken
   Scenario: 019: Verify Acceptable Fragment Formats

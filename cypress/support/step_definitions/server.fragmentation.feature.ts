@@ -10,12 +10,14 @@ let lastFragment: Fragment;
 let rootFragment: Fragment;
 let paginationRootFragment: Fragment;
 let paginationFragment: Fragment;
-let mobilityHindrancesLdes = 'mobility-hindrances';
-let connectionsLdes = 'connections';
-let byLocation = 'by-location';
-let byLocationAndPage = 'by-location-and-page';
-let byTime = 'by-time';
-let byPage = 'paged';
+
+const mobilityHindrancesLdes = 'mobility-hindrances';
+const connectionsLdes = 'connections';
+const byLocation = 'by-location';
+const byLocationAndPage = 'by-location-and-page';
+const byTime = 'by-time';
+const byPage = 'paged';
+
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
 

@@ -22,3 +22,4 @@ docker pull ghcr.io/julianrojas87/gtfs2ldes-js:20230306T2329
 docker pull mongo:6.0.5
 docker pull nginx:1.24.0
 docker pull apache/nifi:1.21.0
+docker pull khaller/graphdb-free:10.2.2

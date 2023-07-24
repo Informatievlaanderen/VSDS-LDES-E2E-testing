@@ -1,5 +1,4 @@
 # NiFi Workbench Components Work As Expected
-
 We verify the functionality of all the core components using LDIO workbench instead of with the NiFi workbench. In order to ensure that the NiFi components still work one or two E2E tests are needed which demonstrates the usage of the core components in a NiFi workflow and ensures the NiFi wrappers for these core components are correctly implemented and that these remain functional.
 
 Create an E2E test combining all the NiFi components used for data publishing (NGSI v2 to LD adaptor, sparql construct, create version object, version materialization & RDF4J materialization).
@@ -26,7 +25,7 @@ Optionally, combine both tests in one E2E test.
 ## Test Setup
 1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
-    export LDES_SERVER=host.docker.internal
+    export HOSTNAME=$(hostname)
     docker compose up -d
     ```
     Please ensure that the LDES Server is ready to ingest by following the container logs until you see the following message `Cancelled mongock lock daemon`:
@@ -35,10 +34,17 @@ Optionally, combine both tests in one E2E test.
     ```
     Press `CTRL-C` to stop following the log.
 
+    > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+    ```bash
+    chmod +x ./config/seed.sh
+    sh ./config/seed.sh
+    ```
+
     Please ensure that the Nifi Workbench is available by repeatedly execution this command until the response is HTTP 200:
     ```bash
-    curl -I http://localhost:8000/nifi/
+    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
     ```
+
 2. Verify GraphDB server with collection is available
 
     To verify the server is up and the collection is available, execute the following command. If it returns a HTTP code 200, everything is up and running. 
@@ -47,7 +53,7 @@ Optionally, combine both tests in one E2E test.
     curl -I --header 'Accept: text/plain' http://localhost:7200/repositories/observations/size
     ```    
 
-3. [Logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./data/NiFi_Workbench_Components.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
+3. Open the NiFi user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
 
     Verify that the NiFi HTTP listener is ready (it should answer `OK`):
     ```bash
@@ -62,7 +68,7 @@ Optionally, combine both tests in one E2E test.
 
 2. Verify if observations are being inserted on the sink (the number of members should increase over time)
     ```bash
-    curl http://localhost:9003
+    while :; do curl http://localhost:9003; echo ''; sleep 5; done
     ```
 
 3. Request an observation from the message sink and validate the OSLO state model - note the device reference and observation date
@@ -95,15 +101,9 @@ Optionally, combine both tests in one E2E test.
 
 
 ## Test Teardown
-
-1. stop message generation
-    ```bash
-    docker compose stop test-message-generator
-    ```
-
-2. stop and destroy all remaining systems
-    ```bash
-    docker compose rm -s -f -v test-message-generator
-    docker compose down
-    rm -f ./data/graphdb/init.lock
-    ```
+Stop and destroy all systems
+```bash
+docker compose rm -s -f -v test-message-generator
+docker compose down
+rm -f ./data/graphdb/init.lock
+```

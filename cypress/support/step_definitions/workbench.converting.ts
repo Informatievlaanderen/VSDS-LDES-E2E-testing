@@ -3,6 +3,8 @@ import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Member, sosa } from '../ldes';
 import { testPartialPath, server } from "./common_step_definitions";
 
+const byPage = 'paged';
+
 // When
 
 When('I upload the data file {string} to the workbench', (baseName: string) => {
@@ -17,7 +19,7 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
 let rootFragment: Fragment;
 When('the root fragment of {string} is obtained', (ldes: string) => {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl('by-page')).visit())
+        .then(ldes => new Fragment(ldes.viewUrl(byPage)).visit())
         .then(view => new Fragment(view.relation.link).visit())
         .then(fragment => rootFragment = fragment);
 })

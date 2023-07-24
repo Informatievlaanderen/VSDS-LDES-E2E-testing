@@ -37,9 +37,9 @@ The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages for
 
 3. Verify that the empty LDES can be retrieved:
     ```bash
-    curl http://localhost:8080/device-models/by-time
-    curl http://localhost:8080/devices/by-time
-    curl http://localhost:8080/water-quality-observations/by-time
+    curl http://localhost:8080/device-models/paged
+    curl http://localhost:8080/devices/paged
+    curl http://localhost:8080/water-quality-observations/paged
     ```
 
 ## Test Execution
@@ -56,11 +56,11 @@ The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages for
 
 3. Verify all LDES streams 
 
-    The [models LDES server](http://localhost:8072/models/by-time)) and the [devices LDES server](http://localhost:8071/devices/by-time) should contain one member. The [observations LDES server](http://localhost:8073/observations/by-time) continues to grow as `WaterQualityObserved` LDES members are ingested and form an ever growing, time-based fragmented LDES stream:
+    The [models LDES server](http://localhost:8072/models/paged)) and the [devices LDES server](http://localhost:8071/devices/paged) should contain one member. The [observations LDES server](http://localhost:8073/observations/paged) continues to grow as `WaterQualityObserved` LDES members are ingested and form an ever growing, paged LDES stream:
     ```bash
-     curl http://localhost:8080/device-models/by-time
-     curl http://localhost:8080/devices/by-time
-     curl http://localhost:8080/water-quality-observations/by-time
+     curl http://localhost:8080/device-models/paged
+     curl http://localhost:8080/devices/paged
+     curl http://localhost:8080/water-quality-observations/paged
     ```
 
     > **Note**: The model type should be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel`, the device type should be `https://uri.etsi.org/ngsi-ld/default-context/Device` and the observation type should be `https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved`.

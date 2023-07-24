@@ -20,7 +20,7 @@ const byPage = 'paged';
 // When
 
 When('I request the view formatted as {string}', (mimeType: string) => {
-    return new Fragment(`${server.baseUrl}/${mobilityHindrancesLdes}${byPage}`).visit({ mimeType: mimeType }).then(page => {
+    return new Fragment(`${server.baseUrl}/${mobilityHindrancesLdes}/${byPage}`).visit({ mimeType: mimeType }).then(page => {
         expect(page.success).to.be.true;
         view = page;
     });

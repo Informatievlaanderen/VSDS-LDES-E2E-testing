@@ -1,7 +1,7 @@
 @server
 Feature: LDES Server Upgrading
 
-  @test-021 @iow @broken
+  @test-021 @iow
   Scenario Outline: 021: Upgrade LDES Server Using '<workbench>' workbench
     Given the members are stored in database 'iow_devices'
     And context 'tests/021.server-upgrade' is started
@@ -16,9 +16,10 @@ Feature: LDES Server Upgrading
     And I remember the last fragment member count
     And I bring the old server down
     And I start the new LDES Server
-# TODO: verify these expectations below
-    Then the ldesfragment collection is upgraded as expected
-    And the ldesmember collection is upgraded as expected
+    Then the fragmentation_fragment collection is upgraded as expected
+    And the fragmentation_allocation collection is upgraded as expected
+    And the ingest_ldesmember collection is upgraded as expected
+    And the retention_member_properties collection is upgraded as expected
     And the id of ldesmember has the collectionName 'devices' as prefix
     And the eventstreams collection is upgraded as expected
     And the view collection is upgraded as expected

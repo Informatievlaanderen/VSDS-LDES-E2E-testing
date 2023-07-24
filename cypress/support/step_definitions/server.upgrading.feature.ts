@@ -10,7 +10,20 @@ const eventstreamsUrl = 'http://localhost:8080/admin/api/v1/eventstreams';
 
 const commonMongoProperties = ['_id', '_class']
 const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
-const fragmentCollectionUrl = 'http://localhost:9019/iow_devices/fragmentation_fragment';
+
+const fragmentationFragmentProperties = [...commonFragmentProperties, 'collectionName', 'numberOfMembers', 'parentId'];
+const fragmentationFragmentIndices = ['_id_', 'root', 'viewName', 'immutable', 'parentId', 'collectionName'];
+const fragmentationAllocationProperties = [...commonMongoProperties, 'viewName'];
+
+const retentionMemberProperties = [...commonMongoProperties, 'collectionName', 'timestamp', 'versionOf', 'views']
+const retentionMemberIndices = ['_id_', 'collectionName', 'timestamp', 'versionOf', 'views']
+
+const ingestLdesMemberProperties = [...commonMongoProperties, 'collectionName', 'sequenceNr', 'model'];
+
+
+const fragmentationFragmentCollectionUrl = 'http://localhost:9019/iow_devices/fragmentation_fragment';
+const fragmentationAllocationCollectionUrl = 'http://localhost:9019/iow_devices/fragmentation_allocation';
+const retentionMemberPropertiesCollectionUrl = 'http://localhost:9019/iow_devices/retention_member_properties';
 const memberCollectionUrl = 'http://localhost:9019/iow_devices/ingest_ldesmember';
 const oldFragmentCollectionUrl = 'http://localhost:9019/iow_devices/ldesfragment';
 const oldMemberCollectionUrl = 'http://localhost:9019/iow_devices/ldesmember';
@@ -50,18 +63,24 @@ Given('the old LDES server is available', () => {
     return oldServer.waitAvailable(LdesServer.ApplicationStarted, 1);
 })
 
-Then('the ldesfragment collection is upgraded as expected', () => {
-    checkDatabaseStructure(fragmentCollectionUrl, 
-        [...commonFragmentProperties, 'collectionName', 'numberOfMembers', 'parentId']);
-    checkIndices(fragmentCollectionUrl,
-        ['_id_', 'root', 'viewName', 'immutable', 'parentId', 'collectionName']);
+Then('the fragmentation_fragment collection is upgraded as expected', () => {
+    checkDatabaseStructure(fragmentationFragmentCollectionUrl, fragmentationFragmentProperties);
+    checkIndices(fragmentationFragmentCollectionUrl, fragmentationFragmentIndices);
 })
 
-Then('the ldesmember collection is upgraded as expected', () => {
-    checkDatabaseStructure(memberCollectionUrl, 
-        [...commonMongoProperties, 'collectionName', 'model', 'sequenceNr', 'timestamp', 'treeNodeReferences', 'versionOf']);
-    checkIndices(memberCollectionUrl,
-        ['_id_', 'collectionName', 'sequenceNr', 'versionOf', 'timestamp', 'treeNodeReferences']);
+Then('the fragmentation_allocation collection is upgraded as expected', () => {
+    checkDatabaseStructure(fragmentationAllocationCollectionUrl, fragmentationAllocationProperties);
+    checkIndices(fragmentationAllocationCollectionUrl, ['_id_', 'viewName']);
+})
+
+Then('the ingest_ldesmember collection is upgraded as expected', () => {
+    checkDatabaseStructure(memberCollectionUrl, ingestLdesMemberProperties);
+    checkIndices(memberCollectionUrl, ['_id_', 'collectionName', 'sequenceNr']);
+})
+
+Then('the retention_member_properties collection is upgraded as expected', () => {
+    checkDatabaseStructure(retentionMemberPropertiesCollectionUrl, retentionMemberProperties);
+    checkIndices(retentionMemberPropertiesCollectionUrl, retentionMemberIndices);
 })
 
 Then('the eventstreams collection is upgraded as expected', () => {

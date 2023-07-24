@@ -23,4 +23,4 @@ docker pull mongo:latest
 docker pull nginx:latest
 docker pull apache/nifi:latest
 docker pull ghcr.io/navikt/mock-oauth2-server:1.0.0
-
+docker pull khaller/graphdb-free:latest

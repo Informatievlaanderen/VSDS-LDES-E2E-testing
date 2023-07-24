@@ -9,6 +9,8 @@ Feature: LDES Server Basic Functionality
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     Then the LDES contains 1016 members
+    And the mobility-hindrances LDES is paginated
+    And the first page contains 1016 members
 
     @ldio
     Examples: 
@@ -66,8 +68,8 @@ Feature: LDES Server Basic Functionality
 
     Examples: 
       | collection-name     | view-name | collection-url                            | view-url                                          |
-      | mobility-hindrances | by-time   | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/by-time |
-      | cartoons            | paged     | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/paged              |
+      | mobility-hindrances | paged     | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/paged   |
+      | cartoons            | my-view   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/my-view            |
 
   @test-019 @consumption @formats @gipod @broken
   Scenario: 019: Verify Acceptable Fragment Formats
@@ -142,13 +144,13 @@ Feature: LDES Server Basic Functionality
     And I start the '<workbench>' workbench
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
-    Then the 'device-models' 'by-page' fragment contains 1 members
+    Then the 'device-models' 'paged' fragment contains 1 members
     When I upload the data file 'device' to the workbench
     And the LDES contains 2 members
-    Then the 'devices' 'by-page' fragment contains 1 members
+    Then the 'devices' 'paged' fragment contains 1 members
     When I start the JSON Data Generator
     And the LDES contains at least 3 members
-    Then the 'water-quality-observations' 'by-page' fragment contains at least 3 members
+    Then the 'water-quality-observations' 'paged' fragment contains at least 3 members
 
     @nifi
     Examples: 

@@ -35,11 +35,11 @@ This test uses a docker environment a data generator simulating the system pushi
 
 4. Verify that members are available in the LDES:
     ```bash
-    curl http://localhost:8080/devices/by-time
+    curl http://localhost:8080/devices/by-page
     ```
     and that the data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test execution
@@ -75,7 +75,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 7. Verify data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test teardown

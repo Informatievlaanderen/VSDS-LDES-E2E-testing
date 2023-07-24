@@ -41,16 +41,16 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 4. Verify that members are available in LDES by following the link in the `tree:node`:
    ```bash
-   curl -s http://localhost:8080/devices-by-time | grep "tree:node"
+   curl -s http://localhost:8080/devices-paged | grep "tree:node"
    ```
    and data store member count increases (execute repeatedly until at least 11 members - will produce more than one fragment):
    ```bash
-   curl http://localhost:9019/iow_devices/ldesmember
+   curl http://localhost:9019/iow_devices/ingest_ldesmember
    ```
 
 5. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(. != "_id"))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
@@ -67,7 +67,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 6. Verify that the ldesmember collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
@@ -80,7 +80,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 7. Verify that the _id has no prefix
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
    ```
    The result should match the below pattern:
    ```json
@@ -91,7 +91,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 8. Verify that the fields contain no indices except for the _id.
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json
@@ -114,7 +114,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
    ```bash
-   curl http://localhost:9019/iow_devices/ldesmember
+   curl http://localhost:9019/iow_devices/ingest_ldesmember
    ```
    ```bash
    docker compose rm --stop --force --volumes old-ldes-server
@@ -129,7 +129,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 4. Verify that the ldesfragment collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesfragment collection:
    ```json
@@ -153,7 +153,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 5. Verify that the ldesmember collection is structured as expected:
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[] | keys] | flatten | unique | map(select(.))'
    ```
    This should return the following list of keys for the ldesmember collection:
    ```json
@@ -175,7 +175,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 6. Verify that the _id has the collectionName as a prefix
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeDocuments=true | jq '[.documents[1]._id | values]'
    ```
    The result should match the below pattern:
    ```json
@@ -192,7 +192,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```text
    @prefix default-context: <https://uri.etsi.org/ngsi-ld/default-context/> .
    @prefix devices:         <http://localhost:8080/devices/> .
-   @prefix devices-by-time: <http://localhost:8080/devices/devices-by-time/> .
+   @prefix devices-paged: <http://localhost:8080/devices/devices-paged/> .
    @prefix ldes:            <https://w3id.org/ldes#> .
    @prefix prov:            <http://www.w3.org/ns/prov#> .
    @prefix rdf:             <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -200,7 +200,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    @prefix terms:           <http://purl.org/dc/terms/> .
    @prefix tree:            <https://w3id.org/tree#> .
    
-   devices-by-time:description
+   devices-paged:description
            rdf:type                    tree:ViewDescription ;
            tree:fragmentationStrategy  ( [ rdf:type          tree:TimebasedFragmentation ;
                                            tree:memberLimit  "25"
@@ -214,11 +214,11 @@ The server upgrade will include changesets that alter the database schema. We wi
            ldes:timestampPath  prov:generatedAtTime ;
            ldes:versionOfPath  terms:isVersionOf ;
            tree:shape          [ rdf:type  shacl:NodeShape ] ;
-           tree:view           devices:devices-by-time .
+           tree:view           devices:devices-paged .
    
-   devices:devices-by-time
+   devices:devices-paged
            rdf:type              tree:Node ;
-           tree:viewDescription  devices-by-time:description .
+           tree:viewDescription  devices-paged:description .
    ```
 
    > **Note**: Changeset-7 will create three new collections for this: `eventstreams`, `view` and `shacl_shape`
@@ -228,7 +228,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    indices when adding new fields.
 
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesfragment?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/fragmentation_fragment?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json
@@ -243,7 +243,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ```
 
    ```bash
-   curl -s http://localhost:9019/iow_devices/ldesmember?includeIndices=true | jq '[.indices[]]'
+   curl -s http://localhost:9019/iow_devices/ingest_ldesmember?includeIndices=true | jq '[.indices[]]'
    ```
    The result should match the below pattern:
    ```json
@@ -281,7 +281,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
 13. Verify data store member count increases (execute repeatedly):
     ```bash
-    curl http://localhost:9019/iow_devices/ldesmember
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 ## Test teardown

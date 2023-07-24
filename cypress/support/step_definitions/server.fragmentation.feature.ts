@@ -1,20 +1,23 @@
 /// <reference types="cypress" />
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { ensureRelationCount, server, workbenchNifi } from "./common_step_definitions";
+import { ensureRelationCount, server } from "./common_step_definitions";
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
 let lastFragment: Fragment;
 
 let rootFragment: Fragment;
-let timebasedFragment: Fragment;
-let mobilityHindrancesLdes = 'mobility-hindrances';
-let connectionsLdes = 'connections';
-let byLocation = 'by-location';
-let byLocationAndTime = 'by-location-and-time';
-let byTime = 'by-time';
-let byPage = 'paged';
+let paginationRootFragment: Fragment;
+let paginationFragment: Fragment;
+
+const mobilityHindrancesLdes = 'mobility-hindrances';
+const connectionsLdes = 'connections';
+const byLocation = 'by-location';
+const byLocationAndPage = 'by-location-and-page';
+const byTime = 'by-time';
+const byPage = 'paged';
+
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
 
@@ -106,7 +109,7 @@ Then('the geo-spatial root fragment is not immutable', () => {
 })
 
 Then('the multi-level root fragment is not immutable', () => {
-    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the multi-view root fragment is not immutable', () => {
@@ -129,19 +132,19 @@ Then('the multi-view root fragment contains multiple relations of type {string}'
 })
 
 Then('the geo-spatial fragmentation exists in the connections LDES', () => {
-    server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+    server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
-Then('the geo-spatial fragmentation exists in the mobility-hindrances LDES', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocationAndTime).then(fragment => rootFragment = fragment);
+Then('the mobility-hindrances LDES is geo-spatially fragmented', () => {
+    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
 })
 
-Then('the time-based fragmentation exists', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byTime).then(fragment => rootFragment = fragment);
+Then('the mobility-hindrances LDES is paginated', () => {
+    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
 })
 
-Then('the geo-spatial fragment {string} has a second level timebased fragmentation which contains the members', (tile: string) => {
-    const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndTime}?tile=${tile}`;
+Then('the geo-spatial fragment {string} is sub-fragmented using pagination which contains the members', (tile: string) => {
+    const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndPage}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);
     expect(relation).not.to.be.undefined;
     new Fragment(relationUrl).visit().then(fragment => {
@@ -160,7 +163,7 @@ Then('the geo-spatial root fragment contains {int} relations of type {string}', 
     });
 })
 
-Then('the timebased root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
+Then('the pagination root fragment contains {int} relation of type {string}', (amount: number, relationType: string) => {
     ensureRelationCount(rootFragment, amount).then(() => {
         relations = rootFragment.expectMultipleRelationOf(relationType, amount);
     });
@@ -178,21 +181,26 @@ Then('the geo-spatial root fragment contains only relations of type {string}', (
     relations = rootFragment.expectMultipleRelationsOfType(relationType);
 })
 
-Then('the first timebased second level fragment contains {int} relation of type {string}', (count: number, type: string) => {
-    new Fragment(relations[0].link).visit().then(fragment => {
-        const relation = fragment.relation;
-        expect(relation).not.to.be.undefined;
-        cy.waitUntil(() => new Fragment(relation.link).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
-            .then(() => new Fragment(relation.link).visit().then(fragment => {
-                timebasedFragment = fragment;
-                expect(fragment.relations.length).to.equal(count);
-                expect(fragment.expectNoOtherRelationThan(type));
-            }))
-    });
+When('I follow the first relation to the second level pagination root fragment', () => {
+    new Fragment(relations[0].link).visit().then(fragment => paginationRootFragment = fragment);
 })
 
-Then('the first timebased second level fragment contains arrival and departure stops', () => {
-    const members = timebasedFragment.members;
+Then('the pagination fragment contains {int} relation of type {string}', (count: number, type: string) => {
+    const relation = paginationRootFragment.relation;
+    expect(relation).not.to.be.undefined;
+    const url = relation.link;
+    expect(url).not.to.be.undefined;
+
+    cy.waitUntil(() => new Fragment(url).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
+        .then(() => new Fragment(url).visit().then(fragment => {
+            paginationFragment = fragment;
+            expect(fragment.relations.length).to.equal(count);
+            expect(fragment.expectNoOtherRelationThan(type));
+        }))
+})
+
+Then('all members contains arrival and departure stops', () => {
+    const members = paginationFragment.members;
     members.forEach(member => {
         expect(member.arrivalStop).not.to.be.undefined;
         expect(member.departureStop).not.to.be.undefined;

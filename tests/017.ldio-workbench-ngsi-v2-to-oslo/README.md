@@ -26,9 +26,9 @@ This second step towards a NiFi-less approach executes the complete transformati
 
 2. Verify that the empty LDES views can be retrieved:
     ```bash
-    curl http://localhost:8080/device-models/by-time
-    curl http://localhost:8080/devices/by-time
-    curl http://localhost:8080/water-quality-observations/by-time
+    curl http://localhost:8080/device-models/paged
+    curl http://localhost:8080/devices/paged
+    curl http://localhost:8080/water-quality-observations/paged
     ```
 
 ## Test Execution
@@ -46,9 +46,9 @@ This second step towards a NiFi-less approach executes the complete transformati
 
    To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
-     curl http://localhost:8080/device-models/by-time
-     curl http://localhost:8080/devices/by-time
-     curl http://localhost:8080/water-quality-observations/by-time
+     curl http://localhost:8080/device-models/paged
+     curl http://localhost:8080/devices/paged
+     curl http://localhost:8080/water-quality-observations/paged
      ```
 
    > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.

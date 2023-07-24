@@ -14,10 +14,13 @@ let ldesResponse: Cypress.Response<any>;
 let viewResponse: Cypress.Response<any>;
 let compressedViewResponse: Cypress.Response<any>;
 
+const mobilityHindrancesLdes = 'mobility-hindrances';
+const byPage = 'paged';
+
 // When
 
 When('I request the view formatted as {string}', (mimeType: string) => {
-    return new Fragment(`${server.baseUrl}/mobility-hindrances/by-time`).visit({ mimeType: mimeType }).then(page => {
+    return new Fragment(`${server.baseUrl}/${mobilityHindrancesLdes}${byPage}`).visit({ mimeType: mimeType }).then(page => {
         expect(page.success).to.be.true;
         view = page;
     });
@@ -30,19 +33,19 @@ When('I request the view from a different url {string}', (url: string) => {
             'Origin': url,
             'Access-Control-Request-Method': 'GET',
         },
-        url: `${server.baseUrl}/mobility-hindrances/by-time`,
+        url: `${server.baseUrl}/${mobilityHindrancesLdes}/${byPage}`,
     }).then(response => corsResponse = response);
 })
 
 When('I only request the view headers', () => {
     return cy.request({
         method: 'HEAD',
-        url: `${server.baseUrl}/mobility-hindrances/by-time`
+        url: `${server.baseUrl}/${mobilityHindrancesLdes}/${byPage}`
     }).then(response => headResponse = response);
 })
 
 When('I request the LDES', () => {
-    return cy.request(`${server.baseUrl}/mobility-hindrances`).then(response => ldesResponse = response);
+    return cy.request(`${server.baseUrl}/${mobilityHindrancesLdes}`).then(response => ldesResponse = response);
 })
 
 When('I request the view compressed', () => {
@@ -51,12 +54,12 @@ When('I request the view compressed', () => {
         headers: {
             'Accept-Encoding': 'gzip'
         },
-        url: `${server.baseUrl}/mobility-hindrances/by-time`,
+        url: `${server.baseUrl}/${mobilityHindrancesLdes}/${byPage}`,
     }).then(response => compressedViewResponse = response);
 })
 
 When('I request the LDES view', () => {
-    return cy.request(`${server.baseUrl}/mobility-hindrances/by-time`).then(response => viewResponse = response);
+    return cy.request(`${server.baseUrl}/${mobilityHindrancesLdes}/${byPage}`).then(response => viewResponse = response);
 })
 
 When('I send the member file {string} of type {string}', (fileName: string, mimeType: string) => {
@@ -114,7 +117,7 @@ Then('I receive a response similar to {string}', (fileName: string) => {
 
 Then('the first page is a subset of the collection', () => {
     new Fragment(view.relation.link).visit()
-        .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/mobility-hindrances`)).true);
+        .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/${mobilityHindrancesLdes}`)).true);
 })
 
 Then('the server returns the supported HTTP Verbs', () => {

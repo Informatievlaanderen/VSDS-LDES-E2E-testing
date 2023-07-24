@@ -41,11 +41,11 @@ sh ./config/seed.sh
 
 2. Verify LDES members are being ingested (execute in new terminal - infinite loop):
     ```bash
-    while :; do curl http://localhost:9019/bustang/ldesmember; echo ''; sleep 0.5; done
+    while :; do curl http://localhost:9019/bustang/ingest_ldesmember; echo ''; sleep 0.5; done
     ```
     and fragments are being created (execute in new terminal - infinite loop):
     ```bash
-    while :; do curl http://localhost:9019/bustang/ldesfragment; echo ''; sleep 0.5; done
+    while :; do curl http://localhost:9019/bustang/fragmentation_fragment; echo ''; sleep 0.5; done
     ```
 
 3. Optionally, verify which fragments are being created using the [LDES list fragments](/ldes-list-fragments/README.md) tool:

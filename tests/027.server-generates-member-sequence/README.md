@@ -86,7 +86,7 @@ sh ./config/seed.sh
 
 4. Verify that each ingested member has a sequence number:
    ```bash
-   curl -s http://localhost:9019/test/ldesmember?includeDocuments=true | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"
+   curl -s http://localhost:9019/test/ingest_ldesmember?includeDocuments=true | jq "[.documents[] | {collection: .collectionName, sequence: .sequenceNr}]"
    ```
    this returns something similar to:
    ```json

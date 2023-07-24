@@ -1,5 +1,5 @@
 # Process GRAR Data to a Substring Fragmented LDES
-The test verifies that the LDES Server can fragment an LDES using sub-sting fragmentation. It uses a context containing a [JSON Data Generator](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator/README.md) which produces a continues stream of addresses (as a controlled alternative to the GRAR system over which we have no control), a pre-processor workflow to split messages from this generator and to fix a few GRAR data issues (set correct mime type, fix CRS uri scheme to http and change the message `@context` to a corrected context definition), a workflow containing a HTTP listener, a object version creator and a HTTP sender, and finally, the LDES Server backed by a data store (mongodb) and configured to capture the LDES members and do substring fragmentation in addition to time-based fragmentation.
+The test verifies that the LDES Server can fragment an LDES using sub-sting fragmentation. It uses a context containing a [JSON Data Generator](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator/README.md) which produces a continues stream of addresses (as a controlled alternative to the GRAR system over which we have no control), a pre-processor workflow to split messages from this generator and to fix a few GRAR data issues (set correct mime type, fix CRS uri scheme to http and change the message `@context` to a corrected context definition), a workflow containing a HTTP listener, a object version creator and a HTTP sender, and finally, the LDES Server backed by a data store (mongodb) and configured to capture the LDES members and do substring fragmentation in addition to pagination.
 
 The actual architecture for the GRAR use case includes a Kafka system where addresses are published on a specific topic containing messages representing new address states. This implies that some GRAR system writes these messages to the address topic and we need to read these messages (pull) into our workflow which transforms these address states into address version objects and pushes these to an LDES server configured to do substring fragmentation on some address property. 
 
@@ -61,14 +61,16 @@ sh ./config/seed.sh
    ```
 
 3. Verify that the LDES members are ingested (execute repeatedly):
-   ```bash
-   curl http://localhost:9019/grar/ldesmember
-   ```
+    ```bash
+    while :; do curl http://localhost:9019/grar/ingest_ldesmember; echo ''; sleep 5; done
+    ```
+    Press `CTRL-C` to stop the loop.
 
 4. Request the collections:
    ```bash
    curl http://localhost:8080/addresses/by-name
-   curl http://localhost:8080/addresses/by-time
+   curl http://localhost:8080/addresses/paged
+   curl http://localhost:8080/addresses/by-location-and-page
    ```
 
 5. Verify that the LDES is substring fragmented: SubstringRelation

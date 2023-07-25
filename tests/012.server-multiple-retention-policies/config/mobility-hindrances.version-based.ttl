@@ -2,7 +2,7 @@
 @prefix ldes: <https://w3id.org/ldes#> .
 @prefix example: <http://example.org/> .
 
-<latestVersion> a ldes:View ;
+</mobility-hindrances/latestVersion> a ldes:View ;
   tree:viewDescription [
     tree:fragmentationStrategy (
       [

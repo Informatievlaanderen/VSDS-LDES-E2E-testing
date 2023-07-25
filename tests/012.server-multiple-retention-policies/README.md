@@ -44,14 +44,11 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```
 Press `CTRL-C` to stop following the log.
 
-Seed the server with a collection.
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
 ```bash
-curl -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d '@./config/mobility-hindrance.ttl'
-```
-
-Remove the default view.
-```bash
-curl -X DELETE 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views/by-page'
+chmod +x ./config/seed.*.sh
+chmod +x ./config/seed.sh
+sh ./config/seed.sh
 ```
 
 Verify the initial collection is created:

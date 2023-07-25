@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings, FragmentResponse } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
@@ -111,10 +111,6 @@ export function setAdditionalEnvironmentSetting(property: string, value: string)
 // TODO: remove obsolete step
 Given('I have configured the {string} as {string}', (property: string, value: string) => {
     setAdditionalEnvironmentSetting(property, value);
-})
-
-Given('the LDES server is available', () => {
-    return server.waitAvailable();
 })
 
 Given('the LDES server is available and configured', () => {
@@ -237,6 +233,10 @@ When('I upload the data files: {string} with a duration of {int} seconds', (data
 export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
         .then(() => dockerCompose.start(service, additionalEnvironmentSettings));
+}
+
+export function stopAndRemoveService(service: string) {
+    return dockerCompose.stopContainerAndRemoveVolumesAndImage(service);
 }
 
 When('I start the JSON Data Generator', () => {

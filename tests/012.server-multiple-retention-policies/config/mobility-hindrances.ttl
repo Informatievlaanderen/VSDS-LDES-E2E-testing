@@ -5,12 +5,10 @@
 @prefix prov:   <http://www.w3.org/ns/prov#> .
 @prefix ex:   <http://example.org/> .
 
-
-<mobility-hindrances> a ldes:EventStream ;
+</mobility-hindrances> a ldes:EventStream ;
     ldes:timestampPath ex:modifiedAt ;
     ldes:versionOfPath ex:isVersionOf ;
-    ex:memberType ex:id ;
-    ex:hasDefaultView "false"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
     tree:shape [
-        a sh:NodeShape ;
+        a sh:NodeShape ; 
+        sh:targetClass ex:id ;
     ] .

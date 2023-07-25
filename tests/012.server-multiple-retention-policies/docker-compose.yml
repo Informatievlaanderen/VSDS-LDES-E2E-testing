@@ -21,8 +21,8 @@ services:
     depends_on:
       - ldes-mongodb
 
-  ldes-message-generator:
-    container_name: ${USECASE_NAME:-basic-retention}_member-generator
+  first-test-message-generator:
+    container_name: ${USECASE_NAME:-basic-retention}_first-test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${MEMBER_GENERATOR_TAG:-latest}
     environment:
       - TEMPLATE=[{"@id":"http://example.org/id{{index}}","@type":["http://example.org/id"],"http://example.org/modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"http://example.org/isVersionOf":[{"@value":"version"}]}]
@@ -33,8 +33,8 @@ services:
     profiles:
       - delayed-started
 
-  ldes-message-generator-2:
-    container_name: ${USECASE_NAME:-basic-retention}_member-generator-2
+  second-test-message-generator:
+    container_name: ${USECASE_NAME:-basic-retention}_second-test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${MEMBER_GENERATOR_TAG:-latest}
     environment:
       - TEMPLATE=[{"@id":"http://example.org/id{{index}}","@type":["http://example.org/id"],"http://example.org/modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"http://example.org/isVersionOf":[{"@value":"other-version"}]}]

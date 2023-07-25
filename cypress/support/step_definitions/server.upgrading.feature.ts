@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, dockerCompose, mongo, testDatabase, waitUntilMemberCountStable } from "./common_step_definitions";
+import { createAndStartService, stopAndRemoveService, mongo, testDatabase, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesServer } from "../services";
 import {EventStream} from "../ldes";
 
@@ -114,7 +114,7 @@ Then('the migrated config matches the expected config {string}', (filePath: stri
 When('the old server is done processing', waitUntilMemberCountStable);
 
 When('I bring the old server down', () => {
-    dockerCompose.stopContainerAndRemoveVolumesAndImage(oldServer.serviceName);
+    stopAndRemoveService(oldServer.serviceName);
 })
 
 When('I start the new LDES Server', () => {

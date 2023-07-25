@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, dockerCompose, setTargetUrl, testPartialPath, waitUntilMemberCountStable } from "./common_step_definitions";
+import { createAndStartService, stopAndRemoveService, setTargetUrl, testPartialPath, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesWorkbenchLdio, LdesWorkbenchNiFi } from "../services";
 import { credentials } from "../credentials";
 
@@ -116,7 +116,7 @@ When('I bring the old {string} workbench down', (workbench) => {
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);
     }
-    dockerCompose.stopContainerAndRemoveVolumesAndImage(serviceName);
+    stopAndRemoveService(serviceName);
 })
 
 Then('the member count does not change', waitUntilMemberCountStable);

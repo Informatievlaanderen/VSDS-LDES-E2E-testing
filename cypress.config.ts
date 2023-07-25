@@ -13,10 +13,11 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
   await addCucumberPreprocessorPlugin(on, config);
   
   on('task', {
-    log (message) {
-      console.log(message);
-      return null;
-    }
+    log(message) { console.log(message);return null;},
+    // info(message) { console.info(message);return null;},
+    // warn(message) { console.warn(message);return null;},
+    error(message) { console.error(message);return null;},
+    resolve(result) { return result;},
   });
 
   on(

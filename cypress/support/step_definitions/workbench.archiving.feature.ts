@@ -6,14 +6,16 @@ import {
     testPartialPath,
     workbenchNifi
 } from "./common_step_definitions";
+import { checkSuccess } from "..";
 
 const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archive');
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
 
 Given('I have configured the archive directory', () => {
     if (Cypress.platform === 'linux') {
-        cy.exec('echo "$(id -u):$(id -g)"').then(user => {
-            setAdditionalEnvironmentSetting('WORKFLOW_USER', user.stdout);
+        cy.exec('echo "$(id -u):$(id -g)"').then(result => {
+            setAdditionalEnvironmentSetting('WORKFLOW_USER', result.stdout);
+            checkSuccess(result).then(success => expect(success).to.be.true);
         })
     }
     setAdditionalEnvironmentSetting('ARCHIVE_DIR', Cypress.config('downloadsFolder'));
@@ -65,5 +67,6 @@ Then('I wait until the {string} workbench finished archiving', (workbench: strin
 })
 
 Then('I cleanup the created archive', () => {
-    cy.exec(`rm -rf ${Cypress.config('downloadsFolder')}/2022`);
+    cy.exec(`rm -rf ${Cypress.config('downloadsFolder')}/2022`)
+        .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
 })

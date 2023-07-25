@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { checkSuccess } from '../common';
 import { EventStream, Fragment } from '../ldes';
 import { CanCheckAvailability } from './interfaces';
 
@@ -66,7 +67,8 @@ export class LdesServer implements CanCheckAvailability {
 
     sendConfiguration(testPartialPath: string, configFileName?: string): any {
         const cmd = `sh ${testPartialPath}/config/${configFileName || 'seed.sh'}`;
-        cy.log(cmd).exec(cmd).then(response => expect(response.code).to.equal(0));
+        cy.log(cmd).exec(cmd, { log: true, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
     }
 
     configureLdesFromTurtleContent(body: string) {

@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import 'cypress-wait-until';
+import { checkSuccess } from './common';
 
 export interface EnvironmentSettings {
     [key: string]: any
@@ -45,10 +46,9 @@ export class DockerCompose {
 
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} up -d`;
-        return cy.log(command).exec(command, { log: true, env: this._environment }).then(result => {
-            this._isUp = result.code === 0;
-            return result;
-        });
+        return cy.log(command)
+            .exec(command, { log: true, env: this._environment, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => this._isUp = success));
     }
 
     public cleanup() {
@@ -68,11 +68,11 @@ export class DockerCompose {
         const command = `docker compose ${environmentFile} create ${serviceName}`;
         return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : 'No user env.')
             .log(command)
-            .exec(command, { log: true, env: this._environment })
-            .then(result => {
+            .exec(command, { log: true, env: this._environment, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => {
                 this._delayedServices.push(serviceName);
-                expect(result.code).to.equal(0);
-            });
+                expect(success).to.be.true;
+            }));
     }
 
     public start(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
@@ -85,15 +85,15 @@ export class DockerCompose {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         //NOTE: we cannot use docker compose start because this doesn't work on Mac
         const command = `docker compose ${environmentFile} up ${serviceName} -d`;
-        return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0));
+        return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
     }
 
     public stop(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} stop ${serviceName}`;
-        return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0))
+        return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
             .then(() => this.waitServiceStopped(serviceName));
     }
 
@@ -109,8 +109,8 @@ export class DockerCompose {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
             const command = `docker compose ${environmentFile} down`;
-            return cy.log(command).exec(command, { log: true, env: this._environment, timeout: 60000 })
-                .then(exec => expect(exec.code).to.equals(0))
+            return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: 60000 })
+                .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
         } else {
             return cy.log('No docker containers running.');
@@ -120,8 +120,8 @@ export class DockerCompose {
     public stopContainerAndRemoveVolumesAndImage(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} rm --stop --force --volumes ${serviceName}`;
-        return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0))
+        return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false })
+            .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
             .then(() => this.waitServiceStopped(serviceName));
     }
 }

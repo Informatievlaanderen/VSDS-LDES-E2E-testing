@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings, checkSuccess } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
@@ -51,7 +51,9 @@ export function ensureRelationCount(fragment: Fragment, amount: number) {
 
 export function setTargetUrl(targeturl: string) {
     const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
-    return cy.log(command).exec(command, { log: true })
+    return cy.log(command)
+        .exec(command, { log: true, failOnNonZeroExit: false })
+        .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
 }
 
 export function range(start: number, end: number) {

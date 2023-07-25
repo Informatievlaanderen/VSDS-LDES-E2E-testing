@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get latest images
-        run: ../get-latest-docker-images.sh
+        run: ./get-latest-docker-images.sh
         shell: bash
 
       - name: Test

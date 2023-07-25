@@ -69,7 +69,10 @@ export class DockerCompose {
         return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : 'No user env.')
             .log(command)
             .exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0));
+            .then(result => {
+                this._delayedServices.push(serviceName);
+                expect(result.code).to.equal(0);
+            });
     }
 
     public start(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
@@ -83,15 +86,15 @@ export class DockerCompose {
         //NOTE: we cannot use docker compose start because this doesn't work on Mac
         const command = `docker compose ${environmentFile} up ${serviceName} -d`;
         return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0))
-            .then(() => this._delayedServices.push(serviceName));
+            .then(result => expect(result.code).to.equal(0));
     }
 
     public stop(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         const command = `docker compose ${environmentFile} stop ${serviceName}`;
         return cy.log(command).exec(command, { log: true, env: this._environment })
-            .then(result => expect(result.code).to.equal(0));
+            .then(result => expect(result.code).to.equal(0))
+            .then(() => this.waitServiceStopped(serviceName));
     }
 
     private waitNoContainersRunning() {
@@ -102,7 +105,7 @@ export class DockerCompose {
         return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes(serviceName)), { timeout: 60000, interval: 5000 })
     }
 
-    public down() {
+    private down() {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
             const command = `docker compose ${environmentFile} down`;

@@ -22,3 +22,5 @@ docker pull ghcr.io/julianrojas87/gtfs2ldes-js:latest
 docker pull mongo:latest
 docker pull nginx:latest
 docker pull apache/nifi:latest
+docker pull ghcr.io/navikt/mock-oauth2-server:1.0.0
+

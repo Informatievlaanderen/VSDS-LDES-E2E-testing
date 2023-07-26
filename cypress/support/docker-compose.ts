@@ -98,11 +98,11 @@ export class DockerCompose {
     }
 
     private waitNoContainersRunning() {
-        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), { timeout: timeouts.exec, interval: timeouts.check })
+        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes('\n')), { timeout: timeouts.exec, interval: timeouts.check, errorMsg: 'Timed out waiting for no containers running' })
     }
 
     private waitServiceStopped(serviceName: string) {
-        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes(serviceName)), { timeout: timeouts.exec, interval: timeouts.check })
+        return cy.waitUntil(() => cy.exec('docker ps').then(result => !result.stdout.includes(serviceName)), { timeout: timeouts.exec, interval: timeouts.check, errorMsg: `Timed out waiting for container '${serviceName}' to stop` })
     }
 
     private down() {

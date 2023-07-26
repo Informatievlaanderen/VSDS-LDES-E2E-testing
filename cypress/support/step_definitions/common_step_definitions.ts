@@ -46,7 +46,10 @@ export function testDatabase() {
 }
 
 export function ensureRelationCount(fragment: Fragment, amount: number) {
-    return cy.waitUntil(() => fragment.visit().then(x => x.relations.length >= amount));
+    return cy.waitUntil(() => 
+        fragment.visit().then(x => x.relations.length >= amount), 
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for fragment '${fragment.url}' to have ${amount} relations`}
+    );
 }
 
 export function setTargetUrl(targeturl: string) {
@@ -264,9 +267,9 @@ When('the LDES contains at least {int} fragments', (count: number) => {
 export function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
-    cy.waitUntil(() =>
+    return cy.waitUntil(() =>
         currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
-        { timeout: timeouts.fastAction, interval: timeouts.check }
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for database '${testContext.database}' ingest count to retain the same (last: ${previousCount})` }
     );
 }
 
@@ -291,8 +294,8 @@ When('I remember the last fragment member count', () => {
 Then('the last fragment member count increases', () => {
     cy.waitUntil(() => server.getLdes('devices')
         .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit()))
-        .then(fragment =>cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
-        { timeout: timeouts.fastAction, interval: timeouts.check }
+        .then(fragment => cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the last fragment count to increase (last: ${lastMemberCount}')` }
     );
 })
 

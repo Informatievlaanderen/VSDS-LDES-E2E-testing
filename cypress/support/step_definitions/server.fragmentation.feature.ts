@@ -192,7 +192,9 @@ Then('the pagination fragment contains {int} relation of type {string}', (count:
     const url = relation.link;
     expect(url).not.to.be.undefined;
 
-    cy.waitUntil(() => new Fragment(url).visit().then(fragment => fragment.relations.length === count), {timeout: timeouts.fastAction, interval: timeouts.check})
+    cy.waitUntil(
+            () => new Fragment(url).visit().then(fragment => fragment.relations.length === count), 
+            {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the pagination fragment '${url}' to have ${count} relations`})
         .then(() => new Fragment(url).visit().then(fragment => {
             paginationFragment = fragment;
             expect(fragment.relations.length).to.equal(count);

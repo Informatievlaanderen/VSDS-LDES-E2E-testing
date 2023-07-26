@@ -99,7 +99,7 @@ export abstract class UrlResponse {
     waitForResponseCode(httpCode: number) {
         return cy.waitUntil(
             () => cy.request({ url: this.url, failOnStatusCode: false }).then(response => response.status === httpCode),
-            { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for '${this.url}' to return HTTP code ${httpCode}` }
+            { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for '${this.url}' to return HTTP code ${httpCode}` }
         );
     }
 }

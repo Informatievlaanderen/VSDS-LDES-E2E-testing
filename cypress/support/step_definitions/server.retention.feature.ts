@@ -29,11 +29,11 @@ When('I stop the second message generator', () => {
 })
 
 When('eventually there are at least {int} members in the database', (expected: number) => {
-    cy.waitUntil(() => currentMemberCount().then(count => count >= expected), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be at least ${expected}` });
+    cy.waitUntil(() => currentMemberCount().then(count => count >= expected), { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be at least ${expected}` });
 })
 
 When('eventually there are {int} members in the database', (expected: number) => {
-    cy.waitUntil(() => currentMemberCount().then(count => count === expected), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be ${expected}` });
+    cy.waitUntil(() => currentMemberCount().then(count => count === expected), { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be ${expected}` });
 })
 
 Then('the member count remains around {int} for {int} seconds', (expected: number, seconds: number) => {
@@ -62,7 +62,7 @@ Then('eventually the member count remains constant for {int} seconds', (seconds:
                     lastCount = count;
                     return same && timer.end / 1000 > seconds;
                 })), 
-                { timeout: timeouts.ready, interval: timeouts.check });
+                { timeout: timeouts.ready, interval: timeouts.slowCheck });
         });
 })
 

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, stopAndRemoveService, currentMemberCount, server, testPartialPath } from "./common_step_definitions";
+import { createAndStartService, stopAndRemoveService, currentMemberCount, server, testPartialPath, testDatabase } from "./common_step_definitions";
 import { MemberGenerator } from "../services";
 import { PerformanceTimer } from "../performance-timer";
 import { timeouts } from "../common";
@@ -29,11 +29,11 @@ When('I stop the second message generator', () => {
 })
 
 When('eventually there are at least {int} members in the database', (expected: number) => {
-    cy.waitUntil(() => currentMemberCount().then(count => count >= expected), { timeout: timeouts.ready, interval: timeouts.slowCheck });
+    cy.waitUntil(() => currentMemberCount().then(count => count >= expected), { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be at least ${expected}` });
 })
 
 When('eventually there are {int} members in the database', (expected: number) => {
-    cy.waitUntil(() => currentMemberCount().then(count => count === expected), { timeout: timeouts.ready, interval: timeouts.slowCheck });
+    cy.waitUntil(() => currentMemberCount().then(count => count === expected), { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to be ${expected}` });
 })
 
 Then('the member count remains around {int} for {int} seconds', (expected: number, seconds: number) => {
@@ -54,7 +54,9 @@ Then('eventually the member count remains constant for {int} seconds', (seconds:
     let lastCount = 0;
     let previousCount = 0;
     cy.waitUntil(() => currentMemberCount().then(count => cy.log(`Stabilizing member count: ${count}`)
-        .then(() => (previousCount = lastCount, lastCount = count, count === previousCount))), { timeout: timeouts.ready, interval: timeouts.slowCheck })
+        .then(() => 
+            (previousCount = lastCount, lastCount = count, count === previousCount))), 
+            { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to stabilize (last: ${lastCount})` })
         .then(() => {
             const timer = new PerformanceTimer();
             cy.waitUntil(() => currentMemberCount().then(count => cy.log(`Current member count: ${count}`)

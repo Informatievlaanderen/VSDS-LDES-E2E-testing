@@ -21,8 +21,12 @@ interface RootResponse {
 export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
 
+    public get serviceName() {
+        return 'ldes-server-simulator'
+    }
+
     public waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check });
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
     }
 
     private isReady() {

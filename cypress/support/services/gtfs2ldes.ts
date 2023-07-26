@@ -19,7 +19,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: timeouts.ready, interval: timeouts.check });
+                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
             });
     }
 
@@ -31,7 +31,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isPostingConnections(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
+                return cy.waitUntil(() => this.isPostingConnections(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to start sending connections` });
             });
     }
 

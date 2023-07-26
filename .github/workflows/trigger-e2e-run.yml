@@ -23,6 +23,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.basics.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-client-persistence:
     runs-on: ubuntu-latest
@@ -37,6 +44,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.persistence.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-client-security:
     runs-on: ubuntu-latest
@@ -51,6 +65,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.security.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-basics:
     runs-on: ubuntu-latest
@@ -65,6 +86,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.basics.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-fragmentation:
     runs-on: ubuntu-latest
@@ -79,6 +107,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.fragmentation.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-performance:
     runs-on: ubuntu-latest
@@ -93,6 +128,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.performance.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-retention:
     runs-on: ubuntu-latest
@@ -107,6 +149,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.retention.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-snapshotting:
     runs-on: ubuntu-latest
@@ -121,6 +170,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.snapshotting.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-server-upgrading:
     runs-on: ubuntu-latest
@@ -135,6 +191,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.upgrading.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-workbench-archiving:
     runs-on: ubuntu-latest
@@ -149,6 +212,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.archiving.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-workbench-converting:
     runs-on: ubuntu-latest
@@ -163,6 +233,13 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.converting.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-workbench-upgrading:
     runs-on: ubuntu-latest
@@ -177,3 +254,10 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.upgrading.feature
+        id: test
+        continue-on-error: true
+      
+      - name: Log Running Container Logs
+        if: steps.test.outcome == 'failure'
+        run: ./log-running-containers.sh
+        shell: bash

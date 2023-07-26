@@ -16,6 +16,8 @@ Then('all but the first fragment have been requested once', () => {
     simulator.getResponses().then(responses => {
         expect(responses[firstFragmentUrl].count).to.greaterThan(1);
         delete responses[firstFragmentUrl];
-        Object.keys(responses).forEach(x => { expect(responses[x].count).to.be.equal(1); })
+        Object.keys(responses).forEach(x => { 
+            expect(responses[x].count).to.be.equal(1, `Fragment '${x}' should only be called once`); 
+        })
     })
 })

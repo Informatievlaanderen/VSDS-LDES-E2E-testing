@@ -45,4 +45,4 @@ collections:
         fragmentations:
           - name: "pagination"
             config:
-              memberLimit: 25
+              memberLimit: 250

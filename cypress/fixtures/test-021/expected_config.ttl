@@ -11,7 +11,7 @@
 devices-paged:description
        rdf:type                    tree:ViewDescription ;
        tree:fragmentationStrategy  ( [ rdf:type          tree:PaginationFragmentation ;
-                                       tree:memberLimit  "25"
+                                       tree:memberLimit  "250"
                                      ]
                                    ) .
 

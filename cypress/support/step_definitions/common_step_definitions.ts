@@ -285,17 +285,16 @@ let lastMemberCount: number;
 When('I remember the last fragment member count', () => {
     server.getLdes('devices')
         .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => fragment.getLatestFragment('GreaterThanOrEqualToRelation'))
         .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount)));
 })
 
 // Then stuff
 
-Then('the last fragment member count increases', () => {
+Then('the fragment member count increases', () => {
     cy.waitUntil(() => server.getLdes('devices')
         .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit()))
         .then(fragment => cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the last fragment count to increase (last: ${lastMemberCount}')` }
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the last fragment count to increase (last: ${lastMemberCount})` }
     );
 })
 

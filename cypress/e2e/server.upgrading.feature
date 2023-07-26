@@ -27,7 +27,7 @@ Feature: LDES Server Upgrading
     And the migrated config matches the expected config 'test-021/expected_config.ttl'
     When I resume the '<workbench>' workbench output
     Then the LDES member count increases
-    And the last fragment member count increases
+    And the fragment member count increases
 
     @nifi
     Examples: 

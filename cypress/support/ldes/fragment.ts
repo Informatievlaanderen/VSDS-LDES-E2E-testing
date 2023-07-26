@@ -25,13 +25,6 @@ export class Fragment extends UrlResponse {
         return this.store.getQuads(null, terms.isPartOf, collectionUrl, null).length === 1;
     }
 
-    getLatestFragment(nextType: string): Cypress.Chainable<Fragment> {
-        const relations = this.relations.filter(x => x.type === tree.prefix(nextType));
-        return relations.length === 1
-            ? new Fragment(relations[0].link).visit().then(fragment => fragment.getLatestFragment(nextType))
-            : cy.wrap(this);
-    }
-
     isViewOf(ldesUrl: string): boolean {
         return this.store.getQuads(ldesUrl, tree.view, this.url, null).length === 1;
     }

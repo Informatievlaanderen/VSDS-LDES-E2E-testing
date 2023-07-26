@@ -5,8 +5,6 @@ import { CanCheckAvailability } from "./interfaces";
 
 export class Gtfs2Ldes implements CanCheckAvailability {
 
-    private _containerId: string;
-
     public get serviceName() {
         return 'gtfs2ldes-js'
     }
@@ -16,31 +14,28 @@ export class Gtfs2Ldes implements CanCheckAvailability {
     }
 
     waitAvailable() {
-        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
-            .then(result => {
-                this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
-            });
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result => cy.waitUntil(
+            () => this.isReady(result.stdout), 
+            { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` }
+        ));
     }
 
-    private isPostingConnections() {
-        return cy.exec(`docker logs -n 1 ${this._containerId}`).then(result => result.stdout.startsWith('Posted'));
+    private isPostingConnections(containerId: string) {
+        return cy.exec(`docker logs -n 1 ${containerId}`).then(result => result.stdout.startsWith('Posted'));
     }
 
     waitSendingLinkedConnections() {
-        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
-            .then(result => {
-                this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isPostingConnections(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to start sending connections` });
-            });
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result => cy.waitUntil(
+            () => this.isPostingConnections(result.stdout), 
+            { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to start sending connections` }
+            ));
     }
 
     sendLinkedConnectionCount(): Cypress.Chainable<number> {
-        return cy.exec(`docker logs -n 1 ${this._containerId}`)
-            .then(result => result.stdout)
-            .then(lastLine => lastLine.startsWith('Posted')
-                ? Number.parseInt(lastLine.replace(/[^0-9]/g, ''))
-                : 0
-            );
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result =>
+            cy.exec(`docker logs -n 1 ${result.stdout}`)
+                .then(result => result.stdout)
+                .then(lastLine => lastLine.startsWith('Posted') ? Number.parseInt(lastLine.replace(/[^0-9]/g, '')): 0)
+        );
     }
 }

@@ -2,6 +2,7 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
 import { ensureRelationCount, server } from "./common_step_definitions";
+import { timeouts } from "../common";
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
@@ -191,7 +192,7 @@ Then('the pagination fragment contains {int} relation of type {string}', (count:
     const url = relation.link;
     expect(url).not.to.be.undefined;
 
-    cy.waitUntil(() => new Fragment(url).visit().then(fragment => fragment.relations.length === count), {timeout: 15000, interval: 1000})
+    cy.waitUntil(() => new Fragment(url).visit().then(fragment => fragment.relations.length === count), {timeout: timeouts.fastAction, interval: timeouts.check})
         .then(() => new Fragment(url).visit().then(fragment => {
             paginationFragment = fragment;
             expect(fragment.relations.length).to.equal(count);

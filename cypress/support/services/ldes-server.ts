@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { checkSuccess } from '../common';
+import { checkSuccess, timeouts } from '../common';
 import { EventStream, Fragment } from '../ldes';
 import { CanCheckAvailability } from './interfaces';
 
@@ -26,7 +26,7 @@ export class LdesServer implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message, minOccurences), { timeout: 120000, interval: 5000 }).then(() => this);
+                return cy.waitUntil(() => this.isReady(containerId, message, minOccurences), { timeout: timeouts.slowAction, interval: timeouts.slowCheck }).then(() => this);
             });
     }
 

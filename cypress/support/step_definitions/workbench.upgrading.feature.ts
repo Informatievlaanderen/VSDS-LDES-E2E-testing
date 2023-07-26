@@ -1,7 +1,11 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { createAndStartService, stopAndRemoveService, setTargetUrl, testPartialPath, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesWorkbenchLdio, LdesWorkbenchNiFi } from "../services";
-import { credentials } from "../credentials";
+
+const credentials = {
+    username:'e2etest',
+    password:'e2etest2022DEMO'
+}
 
 const oldNifiWorkbench = new LdesWorkbenchNiFi('https://localhost:8443', 'old-nifi-workbench')
 const newNifiWorkbench = new LdesWorkbenchNiFi('http://localhost:8000', 'new-nifi-workbench')

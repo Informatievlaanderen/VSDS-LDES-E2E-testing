@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
+
 type CountResult = { count: number, ids: string[] };
 
 export class MongoRestApi {
@@ -7,7 +9,7 @@ export class MongoRestApi {
     constructor(public baseUrl: string) { }
 
     checkCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
-        return cy.waitUntil(() => this.hasCount(database, collection, count, checkFn), { timeout: 120000, interval: 5000 });
+        return cy.waitUntil(() => this.hasCount(database, collection, count, checkFn), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
     }
 
     private hasCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean) {

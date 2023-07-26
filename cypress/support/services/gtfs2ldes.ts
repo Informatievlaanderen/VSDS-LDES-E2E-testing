@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
 export class Gtfs2Ldes implements CanCheckAvailability {
@@ -18,7 +19,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: 15000, interval: 3000 });
+                return cy.waitUntil(() => this.isReady(this._containerId), { timeout: timeouts.ready, interval: timeouts.check });
             });
     }
 
@@ -30,7 +31,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 this._containerId = result.stdout;
-                return cy.waitUntil(() => this.isPostingConnections(), { timeout: 600000, interval: 5000 });
+                return cy.waitUntil(() => this.isPostingConnections(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
             });
     }
 

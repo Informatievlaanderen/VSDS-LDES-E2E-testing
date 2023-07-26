@@ -7,29 +7,173 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate:
+  test-client-basics:
     runs-on: ubuntu-latest
-    outputs:
-      integration-tests: ${{ steps.parse.outputs.integration-tests }}
-      component-tests: ${{ steps.parse.outputs.component-tests }}
+    # outputs:
+    #   integration-tests: ${{ steps.parse.outputs.integration-tests }}
+    #   component-tests: ${{ steps.parse.outputs.component-tests }}
       
     steps:
-      - name: Free disk space
-        run:
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        shell: bash
-        
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Get latest images
-        run: ./get-latest-docker-images.sh
-        shell: bash
 
       - name: Test
         uses: cypress-io/github-action@v5
         env:
           CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/client.basics.feature
+
+  test-client-persistence:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/client.persistence.feature
+
+  test-client-security:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/client.security.feature
+
+  test-server-basics:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.basics.feature
+
+  test-server-fragmentation:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
+
+  test-server-performance:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.performance.feature
+
+  test-server-retention:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.retention.feature
+
+  test-server-snapshotting:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.snapshotting.feature
+
+  test-server-upgrading:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.upgrading.feature
+
+  test-workbench-archiving:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.archiving.feature
+
+  test-workbench-converting:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.converting.feature
+
+  test-workbench-upgrading:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.upgrading.feature

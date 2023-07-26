@@ -1,5 +1,5 @@
 import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings, checkSuccess } from "..";
+import { DockerCompose, DockerComposeOptions, EnvironmentSettings, checkSuccess, timeouts } from "..";
 import {
     LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
     MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
@@ -109,11 +109,6 @@ Given('I have aliased the data set', () => {
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
     testContext.additionalEnvironmentSetting[property] = value;
 }
-
-// TODO: remove obsolete step
-Given('I have configured the {string} as {string}', (property: string, value: string) => {
-    setAdditionalEnvironmentSetting(property, value);
-})
 
 Given('the LDES server is available', () => {
     return server.waitAvailable();
@@ -270,9 +265,8 @@ export function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     cy.waitUntil(() =>
-        currentMemberCount().then(count =>
-            cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
-        { timeout: 5000, interval: 1000 }
+        currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        { timeout: timeouts.fastAction, interval: timeouts.check }
     );
 }
 
@@ -298,7 +292,7 @@ Then('the last fragment member count increases', () => {
     cy.waitUntil(() => server.getLdes('devices')
         .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit()))
         .then(fragment =>cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
-        { timeout: 5000, interval: 1000 }
+        { timeout: timeouts.fastAction, interval: timeouts.check }
     );
 })
 

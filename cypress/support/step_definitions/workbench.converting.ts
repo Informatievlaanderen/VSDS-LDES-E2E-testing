@@ -2,6 +2,7 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Member, sosa } from '../ldes';
 import { testPartialPath, server } from "./common_step_definitions";
+import { timeouts } from "../common";
 
 const byPage = 'paged';
 
@@ -13,7 +14,7 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
         url: `http://localhost:8081/${baseName}s-pipeline`, 
         headers: { 'Content-Type': 'application/json' }, 
         body: data,
-     }).then(response => 200 <= response.status && response.status < 300)), {timeout: 5000, interval: 1000});
+     }).then(response => 200 <= response.status && response.status < 300)), {timeout: timeouts.fastAction, interval: timeouts.check});
 })
 
 let rootFragment: Fragment;
@@ -73,6 +74,6 @@ Then('the root fragment contains a correct OSLO observation version', () => {
     logMember(member);
     validateType(member, 'http://www.w3.org/ns/sosa/ObservationCollection');
     const timestampValue = validateVersionAndTime(member);
-    expect(member.property(sosa.phenomenonTime)).to.equal(timestampValue); // TODO: re-enable when NiFi workflow fixed
+    expect(member.property(sosa.phenomenonTime)).to.equal(timestampValue);
 });
 

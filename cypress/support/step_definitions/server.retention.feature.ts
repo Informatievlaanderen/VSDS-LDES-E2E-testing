@@ -51,17 +51,18 @@ Then('the member count remains around {int} for {int} seconds', (expected: numbe
 })
 
 Then('eventually the member count remains constant for {int} seconds', (seconds: number) => {
-    let lastCount = 0;
-    let previousCount = 0;
-    cy.waitUntil(() => currentMemberCount().then(count => cy.log(`Stabilizing member count: ${count}`)
-        .then(() => 
-            (previousCount = lastCount, lastCount = count, count === previousCount))), 
-            { timeout: timeouts.ready, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for database '${testDatabase()}' ingest count to stabilize (last: ${lastCount})` })
+    let lastCount: number;
+    currentMemberCount().then(count => cy.log(`Last member count: ${count}`).then(() => lastCount = count))
         .then(() => {
             const timer = new PerformanceTimer();
-            cy.waitUntil(() => currentMemberCount().then(count => cy.log(`Current member count: ${count}`)
-                .then(() => expect(count).to.equal(lastCount))
-                .then(() => timer.end / 1000 > seconds)), { timeout: seconds * 1000, interval: timeouts.check });
+            cy.waitUntil(
+                () => currentMemberCount().then(count => cy.log(`Current member count: ${count}`).then(() => {
+                    const same = count === lastCount;
+                    if (!same) timer.reset();
+                    lastCount = count;
+                    return same && timer.end / 1000 > seconds;
+                })), 
+                { timeout: timeouts.ready, interval: timeouts.slowCheck });
         });
 })
 

@@ -3,8 +3,7 @@ export class PerformanceTimer {
     private _checkPoint: Date;
 
     constructor() {
-        this._start = new Date();
-        this._checkPoint = this._start;
+        this.reset();
     }
 
     /** 
@@ -21,6 +20,14 @@ export class PerformanceTimer {
      */
     public get end(): number { 
         return new Date().valueOf() - this._start.valueOf();
+    }
+
+    /**
+     * Resets the counters
+     */
+    public reset() {
+        this._start = new Date();
+        this._checkPoint = this._start;
     }
 
 }

@@ -23,7 +23,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
     }
 
     private containerLogIncludes(containerId: string, includeString: string) {
@@ -34,12 +34,12 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.slowAction, interval: timeouts.slowCheck  });
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' log to include '${includeString}'` });
             });
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
-        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: timeouts.ready, interval: timeouts.check });
+        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for ingest endpoint '${ingestUrl}' to be available` });
     }
 
     private isIngestEndpointReady(ingestUrl: string): any {

@@ -19,7 +19,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.ready, interval: timeouts.check });
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' log to include '${includeString}'` });
             });
     }
 

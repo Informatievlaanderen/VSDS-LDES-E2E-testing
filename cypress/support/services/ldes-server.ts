@@ -26,7 +26,7 @@ export class LdesServer implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message, minOccurences), { timeout: timeouts.slowAction, interval: timeouts.slowCheck }).then(() => this);
+                return cy.waitUntil(() => this.isReady(containerId, message, minOccurences), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` }).then(() => this);
             });
     }
 

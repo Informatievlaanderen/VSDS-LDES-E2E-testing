@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
 export class TestMessageGenerator implements CanCheckAvailability {
@@ -16,7 +17,7 @@ export class TestMessageGenerator implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId), { timeout: 60000, interval: 5000 });
+                return cy.waitUntil(() => this.isReady(containerId), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
             });
     }
 

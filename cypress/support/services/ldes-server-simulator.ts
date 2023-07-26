@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
+
 export interface FragmentResponse {
     count: number;
     at: string[];
@@ -20,7 +22,7 @@ export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
 
     public waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: 30000, interval: 1000 });
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check });
     }
 
     private isReady() {

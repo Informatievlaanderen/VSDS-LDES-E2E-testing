@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
@@ -22,7 +23,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     }
 
     waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: 600000, interval: 5000 });
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck });
     }
 
     private containerLogIncludes(containerId: string, includeString: string) {
@@ -33,12 +34,12 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: 30000, interval: 5000 });
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.slowAction, interval: timeouts.slowCheck  });
             });
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
-        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: 60000, interval: 5000 });
+        return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: timeouts.ready, interval: timeouts.check });
     }
 
     private isIngestEndpointReady(ingestUrl: string): any {
@@ -49,8 +50,8 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
     uploadWorkflow(partialPath: string) {
         cy.intercept({url: '**/upload', times: 1}).as('uploaded');
         cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToUpload');
-        cy.origin(this.baseUrl, { args: {file: partialPath} } , ({file}) => {
-            cy.visit('/nifi/').wait('@readyToUpload', { timeout: 30000 });
+        cy.origin(this.baseUrl, { args: {file: partialPath, wait: timeouts} } , ({file, wait}) => {
+            cy.visit('/nifi/').wait('@readyToUpload', { timeout: wait.ready });
 
             cy.get("#group-component")
                 .trigger("mousedown", 1, 1, {

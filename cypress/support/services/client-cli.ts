@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { LdesWorkbenchLdio } from "./ldes-workbench-ldio";
 
 export class ClientCli extends LdesWorkbenchLdio {
@@ -20,7 +21,7 @@ export class ClientCli extends LdesWorkbenchLdio {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.hasCount(containerId, count), { timeout: 60000, interval: 5000 });
+                return cy.waitUntil(() => this.hasCount(containerId, count), { timeout: timeouts.ready, interval: timeouts.check });
             });
     }
 

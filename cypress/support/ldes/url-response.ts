@@ -5,6 +5,7 @@ import { mimeTypes, tree } from './rdf-common';
 import { isomorphic } from "rdf-isomorphic";
 import * as jsonld from 'jsonld';
 import * as RDF from "@rdfjs/types";
+import { timeouts } from '../common';
 
 export interface VisitOptions {
     mimeType: string,
@@ -98,7 +99,7 @@ export abstract class UrlResponse {
     waitForResponseCode(httpCode: number) {
         return cy.waitUntil(
             () => cy.request({ url: this.url, failOnStatusCode: false }).then(response => response.status === httpCode),
-            { timeout: 60000, interval: 5000 }
+            { timeout: timeouts.ready, interval: timeouts.slowCheck }
         );
     }
 }

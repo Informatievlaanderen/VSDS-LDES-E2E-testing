@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
 export class LdesWorkbenchLdio implements CanCheckAvailability {
@@ -18,7 +19,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: 30000, interval: 5000 });
+                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.ready, interval: timeouts.check });
             });
     }
 

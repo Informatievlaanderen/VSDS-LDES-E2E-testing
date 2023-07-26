@@ -1,6 +1,7 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { currentMemberCount, gtfs2ldes, setAdditionalEnvironmentSetting } from "./common_step_definitions";
 import { PerformanceTimer } from "../performance-timer";
+import { timeouts } from "../common";
 
 let throttleRate = 100;
 Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
@@ -30,7 +31,7 @@ Then('the LDES server ingests linked connections for {int} seconds without laggi
         cy.waitUntil(() => validateSentCount()
                 .then(sentCount => cy.log(`Last ingest rate : ${(sentCount-previousSentCount) * 1000/timer.lap} / second`).then(() => previousSentCount = sentCount))
                 .then(sentCount => cy.log(`Running average  : ${sentCount * 1000/timer.end} / second`))
-                .then(() => timer.end/1000 > seconds), { timeout: seconds * 1000, interval: 1000 })
+                .then(() => timer.end/1000 > seconds), { timeout: seconds * 1000, interval: timeouts.check })
             .then(() => averageIngestRate = previousSentCount * 1000/timer.end)
             .then(average => cy.task('log', `\tAverage ingest rate: ${average}`));
         });

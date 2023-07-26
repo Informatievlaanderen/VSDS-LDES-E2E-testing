@@ -18,7 +18,7 @@ Feature: LDES Workbench Upgrading
     And I remember the last fragment member count
     And I resume the new '<workbench>' workbench output
     Then the LDES member count increases
-    And the last fragment member count increases
+    And the fragment member count increases
 
     @test-023 @nifi
     Examples: 

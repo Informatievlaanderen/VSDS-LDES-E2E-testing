@@ -9,7 +9,7 @@ export class MongoRestApi {
     constructor(public baseUrl: string) { }
 
     checkCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
-        return cy.waitUntil(() => this.hasCount(database, collection, count, checkFn), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for document collection '${database}.${collection}' to correctly compare to ${count}` });
+        return cy.waitUntil(() => this.hasCount(database, collection, count, checkFn), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for document collection '${database}.${collection}' to correctly compare to ${count}` });
     }
 
     private hasCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean) {

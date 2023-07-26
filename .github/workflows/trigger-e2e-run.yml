@@ -23,11 +23,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.basics.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -44,11 +42,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.persistence.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -65,11 +61,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/client.security.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -86,11 +80,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.basics.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -107,11 +99,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.fragmentation.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -128,11 +118,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.performance.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -149,11 +137,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.retention.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -170,11 +156,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.snapshotting.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -191,11 +175,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/server.upgrading.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -212,11 +194,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.archiving.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -233,11 +213,9 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.converting.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash
 
@@ -254,10 +232,8 @@ jobs:
           CYPRESS_TAGS: not (@broken)
         with:
           spec: cypress/e2e/workbench.upgrading.feature
-        id: test
-        continue-on-error: true
       
       - name: Log Running Container Logs
-        if: steps.test.outcome == 'failure'
+        if: '!cancelled()'
         run: ./log-running-containers.sh
         shell: bash

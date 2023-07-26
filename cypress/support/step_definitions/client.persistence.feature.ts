@@ -5,9 +5,9 @@ import { simulator, sink } from "./common_step_definitions";
 
 // Then stuff
 
-Then('the sink contains around {int} members', (count: number) => {
+Then('eventually the sink contains about {int} members', (count: number) => {
     const delta = count * 0.20;
-    sink.checkCount('mobility-hindrances', count, (actual, expected) => expected - delta <= actual );
+    sink.checkCount('mobility-hindrances', count, (actual, expected) => expected - delta < actual && actual <= 2 * expected);
 })
 
 Then('all but the first fragment have been requested once', () => {

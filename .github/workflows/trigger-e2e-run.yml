@@ -12,7 +12,16 @@ jobs:
     outputs:
       integration-tests: ${{ steps.parse.outputs.integration-tests }}
       component-tests: ${{ steps.parse.outputs.component-tests }}
+      
     steps:
+      - name: Free disk space
+        run:
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        shell: bash
+        
       - name: Checkout
         uses: actions/checkout@v3
 

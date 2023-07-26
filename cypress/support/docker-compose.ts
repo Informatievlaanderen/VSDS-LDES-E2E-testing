@@ -51,10 +51,21 @@ export class DockerCompose {
             .then(result => checkSuccess(result).then(success => this._isUp = success));
     }
 
+    private get hasRunningContainers() {
+        return this._isUp || this._delayedServices.length;
+    }
+
+    public logRunningContainers() {
+        if (!this.hasRunningContainers) return cy.wrap(undefined);
+       
+        const cmd = './log-running-containers.sh';
+        return cy.log(cmd).exec(cmd).then(result => cy.task('log', result.stdout));
+    }
+
     public cleanup() {
         this._delayedServices.forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
         this._delayedServices = [];
-        this.down();
+        return this.down();
     }
 
     public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {

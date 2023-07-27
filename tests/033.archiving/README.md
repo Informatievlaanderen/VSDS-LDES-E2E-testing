@@ -21,7 +21,7 @@ docker compose up -d
 Prepare the archive location:
 ```bash
 mkdir ./data/archive
-chmod 0777 ./data/archive
+sudo chmod 0777 ./data/archive
 ```
 
 On linux, also set the user to run the archive creation LDIO:

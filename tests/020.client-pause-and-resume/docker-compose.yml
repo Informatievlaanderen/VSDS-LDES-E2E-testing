@@ -15,6 +15,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+      - ldes-client-state:/ldio/state:rw
     ports:
       - 8081:8080
     networks:
@@ -29,6 +30,7 @@ services:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+      - ldes-client-state:/opt/nifi/nifi-current/state:rw
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:
@@ -51,3 +53,7 @@ services:
 networks:
   ldes:
     name: ${USECASE_NAME:-persisted-state}_network
+
+volumes:
+  ldes-client-state:
+    external: true

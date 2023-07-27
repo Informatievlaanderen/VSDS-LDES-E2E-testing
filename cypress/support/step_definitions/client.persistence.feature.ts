@@ -1,7 +1,9 @@
 /// <reference types="cypress" />
 
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
-import { simulator, sink } from "./common_step_definitions";
+import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { simulator, sink, dockerCompose } from "./common_step_definitions";
+
+const volumeName = 'ldes-client-state';
 
 // Then stuff
 
@@ -20,4 +22,12 @@ Then('all but the first fragment have been requested once', () => {
             expect(responses[x].count).to.be.equal(1, `Fragment '${x}' should only be called once`); 
         })
     })
+})
+
+Given('I have created a persisted store for the LDES client state', () => {
+    dockerCompose.createVolume(volumeName);
+})
+
+Given('I have to cleanup the persisted store for the LDES client state', () => {
+    dockerCompose.removeVolume(volumeName);
 })

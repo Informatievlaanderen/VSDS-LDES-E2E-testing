@@ -67,7 +67,7 @@ Then('I wait until the {string} workbench finished archiving', (workbench: strin
     }
 })
 
-Then('I cleanup the created archive', () => {
-    cy.exec(`rm -rf ./${archiveFolder}/2022`)
-        .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
+Then('I clean up the {string} workbench archive', (workbench: string) => {
+    cy.exec(`rm -rf ./${archiveFolder}/${workbench}/2022`)
+        .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
 })

@@ -28,6 +28,6 @@ Given('I have created a persisted store for the LDES client state', () => {
     dockerCompose.createVolume(volumeName);
 })
 
-Given('I have to cleanup the persisted store for the LDES client state', () => {
+Then('I have to cleanup the persisted store for the LDES client state', () => {
     dockerCompose.removeVolume(volumeName);
 })

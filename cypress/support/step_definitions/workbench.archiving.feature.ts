@@ -10,7 +10,7 @@ import { checkSuccess } from "..";
 
 const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archive');
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
-let archiveFolder = 'data/archive';
+const archiveFolder = 'data/archive';
 
 Given('I have configured the archive directory', () => {
     if (Cypress.platform === 'linux') {

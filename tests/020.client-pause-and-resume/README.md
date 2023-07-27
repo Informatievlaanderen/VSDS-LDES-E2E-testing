@@ -8,6 +8,7 @@ The simulator is seeded by a subset of the GIPOD dataset containing five fragmen
 
 Run all systems except the workflow by executing the following (bash) command:
 ```bash
+docker volume create ldes-client-state
 docker compose up -d
 ```
 
@@ -80,4 +81,5 @@ To stop all systems use:
 ```bash
 docker compose rm -s -f -v ldio-workbench
 docker compose down
+docker volume rm ldes-client-state
 ```

@@ -135,4 +135,14 @@ export class DockerCompose {
             .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
             .then(() => this.waitServiceStopped(serviceName));
     }
+
+    createVolume(volumeName: string) {
+        const cmd = `docker volume create ${volumeName}`;
+        cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => checkSuccess(result));
+    }
+
+    removeVolume(volumeName: string) {
+        const cmd = `docker volume rm ${volumeName}`;
+        cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => checkSuccess(result));
+    }
 }

@@ -41,8 +41,8 @@ collections:
     version-of: "http://purl.org/dc/terms/isVersionOf"
     collection-name: "devices"
     views:
-      - name: "devices-paged"
+      - name: "devices-by-time"
         fragmentations:
-          - name: "pagination"
+          - name: "timebased"
             config:
               memberLimit: 250

@@ -136,7 +136,7 @@ Feature: LDES Server Basic Functionality
     And all 10 'mobility-hindrances' have a unique sequence number
     And all 5 'addresses' have a unique sequence number
 
-  @test-030 @multi-collection @iow
+  @test-030 @ingestion @multi-collection @iow
   Scenario Outline: 030: Server Supports Multi LDES Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/030.server-allow-multi-collection' is started

@@ -76,7 +76,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-basics:
+  test-server-basics-ingestion:
     runs-on: ubuntu-latest
       
     steps:
@@ -90,7 +90,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: not (@broken) and @ingestion
         with:
           spec: cypress/e2e/server.basics.feature
       
@@ -99,7 +99,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation:
+  test-server-basics-consumption:
     runs-on: ubuntu-latest
       
     steps:
@@ -113,7 +113,76 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: not (@broken) and @consumption
+        with:
+          spec: cypress/e2e/server.basics.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  test-server-fragmentation-geospatial:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @geospatial
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  test-server-fragmentation-multi-stuff:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and (@multi-level or @multi-view)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  test-server-fragmentation-timebased-pagination-substring:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and (@time or @partition or @substring)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       

@@ -43,7 +43,6 @@ services:
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
-    user: ${WORKFLOW_USER:-}
     networks:
       - ldes
     ports:
@@ -78,7 +77,7 @@ services:
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
       - ${ARCHIVE_DIR:-./data/archive}:/tmp/archive:rw
-    user: ${MY_USER:-}
+    user: ${WORKFLOW_USER:-}
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:

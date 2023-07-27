@@ -10,7 +10,7 @@ import { checkSuccess } from "..";
 
 const createLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-create-archive');
 const readLdioWorkbench = new LdesWorkbenchLdio(undefined, 'ldio-read-archive');
-let archiveFolder: string;
+let archiveFolder = 'data/archive';
 
 Given('I have configured the archive directory', () => {
     if (Cypress.platform === 'linux') {
@@ -19,10 +19,7 @@ Given('I have configured the archive directory', () => {
             checkSuccess(result).then(success => expect(success).to.be.true);
         })
     }
-    //setAdditionalEnvironmentSetting('ARCHIVE_DIR', `../../${archiveFolder}`);
-
-    // cy.exec('docker volume inspect --format {{.Mountpoints}} ldes-data-archive')
-    //     .then(result => archiveFolder = result.stdout);
+    setAdditionalEnvironmentSetting('ARCHIVE_DIR', `../../${archiveFolder}`);
 })
 
 When('I start the create archive {string} workbench', (workbench: string) => {
@@ -70,13 +67,7 @@ Then('I wait until the {string} workbench finished archiving', (workbench: strin
     }
 })
 
-Then('I cleanup the created archive', () => {
-    cy.exec(`rm -rf ./${archiveFolder}/2022`)
+Then('I clean up the {string} workbench archive', (workbench: string) => {
+    cy.exec(`rm -rf ./${archiveFolder}/${workbench}/2022`)
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
-
-    // // re-create data archive volume
-    // cy.exec('docker volume rm ldes-data-archive')
-    //     .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
-    //     .then(() => cy.exec('docker volume create ldes-data-archive')
-    //         .then(result => checkSuccess(result).then(success => expect(success).to.be.true)));
 })

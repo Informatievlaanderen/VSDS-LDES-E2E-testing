@@ -55,11 +55,11 @@ docker compose up -d
    docker compose stop ldio-workflow
    ```
 
-5. Verify which fragments have been requested by the workflow:
+5. Verify that the message sink log file does not contain any warnings:
     ```bash
-    curl http://localhost:9011/
+    docker logs $(docker ps -f "name=test-message-sink$" -q)
     ```
-    > **Note**: the response contains the `responses` which shows for each requested fragment how many times it was requested and at which moment(s) in time.
+    > **Note**: the log should not contain a line starting with "`[WARNING]`".
 
 6. Continue the workflow:
    ```bash
@@ -70,11 +70,11 @@ docker compose up -d
     curl http://localhost:9003
     ```
 
-7. Verify which fragments have been requested by the workflow:
+7. Verify that the message sink received all members only once:
     ```bash
-    curl http://localhost:9011/
+    docker logs $(docker ps -f "name=test-message-sink$" -q)
     ```
-    > **Note**: all except the first fragment should be requested exactly once. The frst fragment may be requested twice because of the internal workings of the LDEs client.
+    > **Note**: the log should not contain a line starting with "`[WARNING] overriding id`".
 
 ## Test Teardown
 To stop all systems use:

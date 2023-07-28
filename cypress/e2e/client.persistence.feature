@@ -19,7 +19,6 @@ Feature: LDES Client Persistence
       | workbench |
       | LDIO      |
 
-
     @nifi
     Examples: 
       | workbench |

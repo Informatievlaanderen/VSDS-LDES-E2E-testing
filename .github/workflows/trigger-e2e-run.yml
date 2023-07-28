@@ -7,28 +7,28 @@ on:
   workflow_dispatch:
 
 jobs:
-#   test-client-basics:
-#     runs-on: ubuntu-latest
+  test-client-basics:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/client.basics.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/client.basics.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
   test-client-persistence:
     runs-on: ubuntu-latest
@@ -53,301 +53,301 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-#   test-client-security:
-#     runs-on: ubuntu-latest
+  test-client-security:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/client.security.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/client.security.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-basics-ingestion:
-#     runs-on: ubuntu-latest
+  test-server-basics-ingestion:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken) and @ingestion
-#         with:
-#           spec: cypress/e2e/server.basics.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @ingestion
+        with:
+          spec: cypress/e2e/server.basics.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-basics-consumption:
-#     runs-on: ubuntu-latest
+  test-server-basics-consumption:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken) and @consumption
-#         with:
-#           spec: cypress/e2e/server.basics.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @consumption
+        with:
+          spec: cypress/e2e/server.basics.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-fragmentation-geospatial:
-#     runs-on: ubuntu-latest
+  test-server-fragmentation-geospatial:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken) and @geospatial
-#         with:
-#           spec: cypress/e2e/server.fragmentation.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @geospatial
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-fragmentation-multi-stuff:
-#     runs-on: ubuntu-latest
+  test-server-fragmentation-multi-stuff:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken) and (@multi-level or @multi-view)
-#         with:
-#           spec: cypress/e2e/server.fragmentation.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and (@multi-level or @multi-view)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-fragmentation-timebased-pagination-substring:
-#     runs-on: ubuntu-latest
+  test-server-fragmentation-timebased-pagination-substring:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken) and (@time or @partition or @substring)
-#         with:
-#           spec: cypress/e2e/server.fragmentation.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and (@time or @partition or @substring)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-performance:
-#     runs-on: ubuntu-latest
+  test-server-performance:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/server.performance.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.performance.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-retention:
-#     runs-on: ubuntu-latest
+  test-server-retention:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/server.retention.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.retention.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-snapshotting:
-#     runs-on: ubuntu-latest
+  test-server-snapshotting:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/server.snapshotting.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.snapshotting.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-server-upgrading:
-#     runs-on: ubuntu-latest
+  test-server-upgrading:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/server.upgrading.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/server.upgrading.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-workbench-archiving:
-#     runs-on: ubuntu-latest
+  test-workbench-archiving:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/workbench.archiving.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.archiving.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-workbench-converting:
-#     runs-on: ubuntu-latest
+  test-workbench-converting:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/workbench.converting.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.converting.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
 
-#   test-workbench-upgrading:
-#     runs-on: ubuntu-latest
+  test-workbench-upgrading:
+    runs-on: ubuntu-latest
       
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-#       - name: Initialize Test Context
-#         run: sudo ./init-test-context.sh
-#         shell: bash
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
 
-#       - name: Test
-#         uses: cypress-io/github-action@v5
-#         env:
-#           CYPRESS_TAGS: not (@broken)
-#         with:
-#           spec: cypress/e2e/workbench.upgrading.feature
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken)
+        with:
+          spec: cypress/e2e/workbench.upgrading.feature
       
-#       - name: Log Running Container Logs
-#         if: '!cancelled()'
-#         run: ./log-running-containers.sh
-#         shell: bash
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash

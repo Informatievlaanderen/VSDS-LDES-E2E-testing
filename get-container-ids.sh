@@ -1,2 +1,2 @@
 #!/bin/bash
-docker container ls -q
+docker container ls -q -a

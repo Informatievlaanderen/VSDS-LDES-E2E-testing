@@ -506,7 +506,7 @@
                 "selectedRelationships": [
                     "success"
                 ],
-                "backPressureObjectThreshold": 10000,
+                "backPressureObjectThreshold": 100000,
                 "backPressureDataSizeThreshold": "1 GB",
                 "flowFileExpiration": "0 sec",
                 "prioritizers": [],

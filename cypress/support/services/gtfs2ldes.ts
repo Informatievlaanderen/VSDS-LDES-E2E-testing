@@ -27,7 +27,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
     waitSendingLinkedConnections() {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result => cy.waitUntil(
             () => this.isPostingConnections(result.stdout), 
-            { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to start sending connections` }
+            { timeout: timeouts.slowAction, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to start sending connections` }
             ));
     }
 

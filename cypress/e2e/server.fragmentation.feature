@@ -28,7 +28,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-  @test-005 @partition @gipod
+  @test-005 @pagination @gipod
   Scenario Outline: 005: Server Can Paginate an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/005.server-paginate-ldes' is started

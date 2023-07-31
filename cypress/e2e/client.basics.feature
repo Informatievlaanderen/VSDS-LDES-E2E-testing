@@ -1,4 +1,4 @@
-@client
+@client @basics
 Feature: LDES Client Basic Functionality
 
   @test-001 @replicate @gipod

@@ -76,7 +76,30 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-basics-ingestion:
+  test-server-basics-ingestion-nifi:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @ingestion and @nifi
+        with:
+          spec: cypress/e2e/server.basics.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  test-server-basics-ingestion-not-nifi:
     runs-on: ubuntu-latest
       
     steps:
@@ -113,7 +136,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @consumption
+          CYPRESS_TAGS: not (@broken) and @consumption and not @nifi
         with:
           spec: cypress/e2e/server.basics.feature
       
@@ -168,7 +191,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation-timebased-pagination-substring:
+  test-server-fragmentation-other-with-nifi:
     runs-on: ubuntu-latest
       
     steps:
@@ -182,7 +205,30 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and (@time or @partition or @substring)
+          CYPRESS_TAGS: not (@broken) and @nifi and (@time or @partition or @substring)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  test-server-fragmentation-other-with-ldio:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: not (@broken) and @ldio and (@time or @partition or @substring)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       

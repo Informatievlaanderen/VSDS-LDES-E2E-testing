@@ -2,7 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { server, testPartialPath, range, mongo, testDatabase } from "./common_step_definitions";
+import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount } from "./common_step_definitions";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -116,8 +116,10 @@ Then('I receive a response similar to {string}', (fileName: string) => {
 })
 
 Then('the first page is a subset of the collection', () => {
-    new Fragment(view.relation.link).visit()
-        .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/${mobilityHindrancesLdes}`)).true);
+    ensureRelationCount(view, 1).then(() => {
+        new Fragment(view.relation.link).visit()
+            .then(fragment => expect(fragment.isPartOf(`${server.baseUrl}/${mobilityHindrancesLdes}`)).true);
+    });
 })
 
 Then('the server returns the supported HTTP Verbs', () => {

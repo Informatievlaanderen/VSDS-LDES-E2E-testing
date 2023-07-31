@@ -1,5 +1,5 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { currentMemberCount, gtfs2ldes, setAdditionalEnvironmentSetting } from "./common_step_definitions";
+import { currentFragmentedMemberCount, gtfs2ldes, setAdditionalEnvironmentSetting } from "./common_step_definitions";
 import { PerformanceTimer } from "../performance-timer";
 import { timeouts } from "../common";
 
@@ -11,11 +11,11 @@ Given('I have configured the GTFS trottle rate as {int}', (value: number) => {
 
 function validateSentCount() {
     return gtfs2ldes.sendLinkedConnectionCount().then(sentCount =>
-        currentMemberCount().then(receivedCount => {
-            const difference = sentCount  - receivedCount;
+        currentFragmentedMemberCount().then(fragmentedCount => {
+            const difference = sentCount  - fragmentedCount;
             return cy
-                .log(`Linked connections sent: ${sentCount}, received: ${receivedCount}, difference: ${difference}`)
-                .then(() => ({ difference: difference, sentCount: sentCount, receivedCount: receivedCount }));
+                .log(`Linked connections sent: ${sentCount}, fragmented: ${fragmentedCount}, difference: ${difference}`)
+                .then(() => ({ difference: difference, sentCount: sentCount, fragmentedCount: fragmentedCount }));
         }).then((counts) => {
             expect(counts.difference).not.to.be.greaterThan(throttleRate);
             return counts.sentCount;

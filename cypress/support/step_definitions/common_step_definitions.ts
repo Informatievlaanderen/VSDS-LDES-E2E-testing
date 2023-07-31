@@ -8,7 +8,8 @@ import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { Fragment } from "../ldes";
 
 let testContext: any;
-const ldesMemberCollection = 'ingest_ldesmember';
+const ldesIngestedMemberCollection = 'ingest_ldesmember';
+const ldesFragmentedMemberCollection = 'fragmentation_sequence';
 const ldesFragmentCollection = 'fragmentation_fragment'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
@@ -250,7 +251,7 @@ When('I start the JSON Data Generator', () => {
 })
 
 When('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, ldesMemberCollection, count);
+    mongo.checkCount(testContext.database, ldesIngestedMemberCollection, count);
 })
 
 When('the LDES contains {int} fragments', (count: number) => {
@@ -258,7 +259,7 @@ When('the LDES contains {int} fragments', (count: number) => {
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, ldesMemberCollection, count, (x, y) => x >= y);
+    mongo.checkCount(testContext.database, ldesIngestedMemberCollection, count, (x, y) => x >= y);
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {
@@ -267,9 +268,9 @@ When('the LDES contains at least {int} fragments', (count: number) => {
 
 export function waitUntilMemberCountStable() {
     let previousCount: number;
-    currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
+    currentIngestedMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     return cy.waitUntil(() =>
-        currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        currentIngestedMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
         { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for database '${testContext.database}' ingest count to retain the same (last: ${previousCount})` }
     );
 }
@@ -307,16 +308,20 @@ Then('the {string} sink contains at least {int} members', (collectionName: strin
     sink.checkCount(collectionName, count, (x, y) => x >= y);
 })
 
-export function currentMemberCount() {
-    return mongo.count(testContext.database, ldesMemberCollection);
+export function currentIngestedMemberCount() {
+    return mongo.count(testContext.database, ldesIngestedMemberCollection);
+}
+
+export function currentFragmentedMemberCount() {
+    return mongo.count(testContext.database, ldesFragmentedMemberCollection);
 }
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
-    currentMemberCount().then(count => expect(count).to.equal(memberCount));
+    currentIngestedMemberCount().then(count => expect(count).to.equal(memberCount));
 })
 
 Then('the LDES member count increases', () => {
-    currentMemberCount().then(currentCount =>
-        mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
+    currentIngestedMemberCount().then(currentCount =>
+        mongo.checkCount(testContext.database, ldesIngestedMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })

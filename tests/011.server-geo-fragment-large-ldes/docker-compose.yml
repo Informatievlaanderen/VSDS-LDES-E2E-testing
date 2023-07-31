@@ -3,7 +3,7 @@ services:
 
   gtfs2ldes-js:
     container_name: ${USECASE_NAME:-gtfs-geo-fragment}_gtfs2ldes-js
-    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-20230306T2329} # TODO: use latest when image fixed
+    image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-latest}
     environment:
       - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}

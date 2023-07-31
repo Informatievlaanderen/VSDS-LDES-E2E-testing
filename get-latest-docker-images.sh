@@ -18,7 +18,7 @@ docker pull ghcr.io/informatievlaanderen/test-message-generator:latest
 docker pull ghcr.io/informatievlaanderen/test-message-sink:latest
 
 # external
-docker pull ghcr.io/julianrojas87/gtfs2ldes-js:20230306T2329 # TODO: use latest when image fixed
+docker pull ghcr.io/julianrojas87/gtfs2ldes-js:latest
 docker pull mongo:latest
 docker pull nginx:latest
 docker pull apache/nifi:latest

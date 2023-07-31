@@ -1,7 +1,7 @@
 @server
 Feature: LDES Server Basic Functionality
 
-  @test-002 @ingestion @gipod
+  @test-002 @ingestion @smoke @small @gipod
   Scenario Outline: 002: Server Can Ingest a Small LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/002.server-ingest-small-ldes' is started
@@ -22,7 +22,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-007 @ingestion @gtfs
+  @test-007 @ingestion @smoke @large @gtfs
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
     Given the members are stored in database 'bustang'
     And context 'tests/007.server-ingest-large-ldes' is started
@@ -44,7 +44,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-019 @ingestion @formats @gipod @broken
+  @test-019 @ingestion @advanced @formats @gipod @broken
   Scenario: 019: Verify Acceptable Member Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -124,7 +124,7 @@ Feature: LDES Server Basic Functionality
     And I request the LDES view
     Then the LDES view is re-requested from the LDES server
 
-  @test-027 @ingestion @sequencing @iow @grar
+  @test-027 @ingestion @advanced @sequencing @iow @grar
   Scenario: 027: LDES Server Imposes An Ingest Order Per Collection
     Given the members are stored in database 'test'
     And context 'tests/027.server-generates-member-sequence' is started
@@ -136,7 +136,7 @@ Feature: LDES Server Basic Functionality
     And all 10 'mobility-hindrances' have a unique sequence number
     And all 5 'addresses' have a unique sequence number
 
-  @test-030 @ingestion @multi-collection @iow
+  @test-030 @ingestion @advanced @multi-collection @iow
   Scenario Outline: 030: Server Supports Multi LDES Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/030.server-allow-multi-collection' is started

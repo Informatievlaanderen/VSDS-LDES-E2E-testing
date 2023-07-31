@@ -1,4 +1,4 @@
-@workbench
+@workbench @upgrading
 Feature: LDES Workbench Upgrading
 
   @iow

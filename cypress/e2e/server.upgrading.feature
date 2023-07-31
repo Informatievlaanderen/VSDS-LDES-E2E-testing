@@ -1,4 +1,4 @@
-@server
+@server @upgrading
 Feature: LDES Server Upgrading
 
   @test-021 @iow

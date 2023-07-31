@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-client-basics:
+  client-basics-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -21,7 +21,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@client and @basics)
         with:
           spec: cypress/e2e/client.basics.feature
       
@@ -30,7 +30,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-client-persistence:
+  client-persistence-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -44,7 +44,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@client and @persistence)
         with:
           spec: cypress/e2e/client.persistence.feature
       
@@ -53,7 +53,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-client-security:
+  client-security-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -67,7 +67,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@client and @security)
         with:
           spec: cypress/e2e/client.security.feature
       
@@ -76,7 +76,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-basics-ingestion-nifi:
+  server-ingestion-smoke-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -90,7 +90,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @ingestion and @nifi
+          CYPRESS_TAGS: (@server and @ingestion and @smoke)
         with:
           spec: cypress/e2e/server.basics.feature
       
@@ -99,7 +99,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-basics-ingestion-not-nifi:
+  server-ingestion-advanced-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -113,7 +113,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @ingestion
+          CYPRESS_TAGS: (@server and @ingestion and @advanced)
         with:
           spec: cypress/e2e/server.basics.feature
       
@@ -122,7 +122,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-basics-consumption:
+  server-consumption-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -136,7 +136,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @consumption and not @nifi
+          CYPRESS_TAGS: (@server and @consumption)
         with:
           spec: cypress/e2e/server.basics.feature
       
@@ -145,7 +145,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation-geospatial:
+  server-time-fragmentation-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -159,7 +159,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @geospatial
+          CYPRESS_TAGS: (@server and @time and @fragmentation)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       
@@ -168,7 +168,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation-multi-stuff:
+  server-pagination-fragmentation-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -182,7 +182,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and (@multi-level or @multi-view)
+          CYPRESS_TAGS: (@server and @pagination and @fragmentation)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       
@@ -191,7 +191,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation-other-with-nifi:
+  server-substring-fragmentation-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -205,7 +205,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @nifi and (@time or @partition or @substring)
+          CYPRESS_TAGS: (@server and @substring and @fragmentation)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       
@@ -214,7 +214,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-fragmentation-other-with-ldio:
+  server-geospatial-fragmentation-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -228,7 +228,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken) and @ldio and (@time or @partition or @substring)
+          CYPRESS_TAGS: (@server and @geospatial and @fragmentation)
         with:
           spec: cypress/e2e/server.fragmentation.feature
       
@@ -237,7 +237,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-performance:
+  server-multi-stuff-fragmentation-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -251,7 +251,30 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@server and (@multi-level or @multi-view) and @fragmentation)
+        with:
+          spec: cypress/e2e/server.fragmentation.feature
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+
+  server-performance-tests:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: (@server and @performance)
         with:
           spec: cypress/e2e/server.performance.feature
       
@@ -260,7 +283,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-retention:
+  server-retention-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -274,7 +297,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@server and @retention)
         with:
           spec: cypress/e2e/server.retention.feature
       
@@ -283,7 +306,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-snapshotting:
+  server-snapshotting-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -297,7 +320,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@server and @snapshotting)
         with:
           spec: cypress/e2e/server.snapshotting.feature
       
@@ -306,7 +329,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-server-upgrading:
+  server-upgrading-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -320,7 +343,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@server and @upgrading)
         with:
           spec: cypress/e2e/server.upgrading.feature
       
@@ -329,7 +352,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-workbench-archiving:
+  workbench-archiving-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -343,7 +366,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@workbench and @archiving)
         with:
           spec: cypress/e2e/workbench.archiving.feature
       
@@ -352,7 +375,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-workbench-converting:
+  workbench-converting-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -366,7 +389,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@workbench and @converting)
         with:
           spec: cypress/e2e/workbench.converting.feature
       
@@ -375,7 +398,7 @@ jobs:
         run: ./log-running-containers.sh
         shell: bash
 
-  test-workbench-upgrading:
+  workbench-upgrading-tests:
     runs-on: ubuntu-latest
       
     steps:
@@ -389,7 +412,7 @@ jobs:
       - name: Test
         uses: cypress-io/github-action@v5
         env:
-          CYPRESS_TAGS: not (@broken)
+          CYPRESS_TAGS: (@workbench and @upgrading)
         with:
           spec: cypress/e2e/workbench.upgrading.feature
       

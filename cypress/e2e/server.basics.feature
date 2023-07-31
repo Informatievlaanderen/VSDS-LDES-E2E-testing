@@ -44,7 +44,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-019 @ingestion @advanced @formats @gipod @broken
+  @test-019 @ingestion @advanced @formats @gipod
   Scenario: 019: Verify Acceptable Member Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -71,7 +71,7 @@ Feature: LDES Server Basic Functionality
       | mobility-hindrances | paged     | http://localhost:8080/mobility-hindrances | http://localhost:8080/mobility-hindrances/paged   |
       | cartoons            | my-view   | http://localhost:8080/cartoons            | http://localhost:8080/cartoons/my-view            |
 
-  @test-019 @consumption @formats @gipod @broken
+  @test-019 @consumption @formats @gipod @broken @focus
   Scenario: 019: Verify Acceptable Fragment Formats
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured

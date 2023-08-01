@@ -1,0 +1,38 @@
+name: Run Cypress Tests
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  run-test:
+    strategy:
+      matrix:
+        tags: |
+        [ 
+          "(@test-001 and @ldio)",
+          "(@test-001 and @nifi)"
+        ]
+    
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize Test Context
+        run: sudo ./init-test-context.sh
+        shell: bash
+
+      - name: Test
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_TAGS: ${{ matrix.tags }}
+      
+      - name: Log Running Container Logs
+        if: '!cancelled()'
+        run: ./log-running-containers.sh
+        shell: bash
+

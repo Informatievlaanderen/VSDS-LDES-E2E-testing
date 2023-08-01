@@ -9,6 +9,7 @@ on:
 jobs:
   run-test:
     strategy:
+      fail-fast: false
       matrix:
         tags: [ 
           "(@test-001 and @ldio)",

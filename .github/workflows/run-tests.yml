@@ -12,8 +12,19 @@ jobs:
       fail-fast: false
       matrix:
         tags: [ 
-          "(@test-001 and @ldio)",
-          "(@test-001 and @nifi)"
+          "@test-001 and @ldio",
+          "@test-001 and @nifi",
+          "@test-003 and @ldio",
+          "@test-003 and @nifi",
+          "@test-018",
+          "@test-020 and @ldio",
+          "@test-020 and @nifi",
+          "@test-032 and @ldio",
+          "@test-032 and @nifi",
+          "@test-002 and @ldio",
+          "@test-002 and @nifi",
+          "@test-007 and @ldio",
+          "@test-007 and @nifi",
         ]
     
     runs-on: ubuntu-latest

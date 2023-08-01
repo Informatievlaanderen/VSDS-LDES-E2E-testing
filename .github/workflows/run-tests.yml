@@ -10,8 +10,7 @@ jobs:
   run-test:
     strategy:
       matrix:
-        tags: |
-        [ 
+        tags: [ 
           "(@test-001 and @ldio)",
           "(@test-001 and @nifi)"
         ]

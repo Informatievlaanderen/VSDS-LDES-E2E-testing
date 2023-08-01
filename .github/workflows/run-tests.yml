@@ -12,20 +12,75 @@ jobs:
       fail-fast: false
       matrix:
         tags: [ 
+          # NOTE: Client Basics
           "@test-001 and @ldio",
           "@test-001 and @nifi",
           "@test-003 and @ldio",
           "@test-003 and @nifi",
           "@test-018",
+          # NOTE: Client Persistence
           "@test-020 and @ldio",
           "@test-020 and @nifi",
+          # NOTE: Client Security
           "@test-032 and @ldio",
           "@test-032 and @nifi",
+          # NOTE: Server Basics
           "@test-002 and @ldio",
           "@test-002 and @nifi",
           "@test-007 and @ldio",
           "@test-007 and @nifi",
-        ]
+          "@test-019 and @ingestion and @formats",
+          "@test-019 and @consumption and @naming-strategy",
+          "@test-019 and @consumption and @formats",
+          "@test-019 and @consumption and @cors",
+          "@test-019 and @consumption and @cacheability",
+          "@test-019 and @consumption and @compression",
+          "@test-019 and @consumption and @caching",
+          "@test-027",
+          "@test-030 and @ldio",
+          "@test-030 and @nifi",
+          # NOTE: Server Fragmentation
+          "@test-004 and @ldio",
+          "@test-004 and @nifi",
+          "@test-005 and @ldio",
+          "@test-005 and @nifi",
+          "@test-006 and @ldio",
+          "@test-006 and @nifi",
+          "@test-008 and @ldio",
+          "@test-008 and @nifi",
+          "@test-009 and @ldio",
+          "@test-009 and @nifi",
+          "@test-010 and @ldio",
+          "@test-010 and @nifi",
+          "@test-011 and @ldio",
+          "@test-011 and @nifi",
+          # NOTE: Server Performance
+          "@test-013 and @ldio",
+          "@test-013 and @nifi",
+          # NOTE: Server Retention
+          "@test-012 and @time-based",
+          "@test-012 and @version-based",
+          "@test-012 and @point-in-time",
+          "@test-012 and @version-based-and-point-in-time",
+          # NOTE: Server Snapshotting
+          # "@test-025 and @fast", # broken
+          # "@test-025 and @slow", # broken
+          # NOTE: Server Upgrading
+          "@test-021 and @ldio",
+          "@test-021 and @nifi",
+          # NOTE: Workbench Archiving
+          "@test-033 and @ldio",
+          "@test-033 and @nifi",
+          # NOTE: Workbench Converting
+          "@test-014 and @ldio",
+          "@test-014 and @nifi",
+          "@test-015",
+          "@test-016",
+          "@test-017",
+          # NOTE: Workbench Upgrading
+          "@test-023",
+          "@test-026",
+      ]
     
     runs-on: ubuntu-latest
       

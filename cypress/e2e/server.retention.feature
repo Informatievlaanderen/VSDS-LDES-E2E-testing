@@ -38,7 +38,7 @@ Feature: LDES Server Retention
     When I stop the message generator
     Then eventually the member count remains constant for 15 seconds
 
-  @test-012 @combined @version-based @point-in-time
+  @test-012 @combined @version-based-and-point-in-time
   Scenario: 012: Server combines multiple retention policies
     Given the members are stored in database 'gipod'
     And context 'tests/012.server-multiple-retention-policies' is started

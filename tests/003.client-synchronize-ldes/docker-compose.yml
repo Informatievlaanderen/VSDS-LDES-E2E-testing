@@ -38,9 +38,9 @@ services:
     image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     container_name: ${USECASE_NAME:-gipod-synchronize-ldes}_test-message-sink
     environment:
+      - SILENT=false
       - MEMORY=false
       - CONNECTION_URI=mongodb://ldes-mongodb:27017
-      - SILENT=${TEST_MESSAGE_SINK_SILENT:-true}
       - DATABASE_NAME=gipod
       - COLLECTION_NAME=mobility-hindrances
       - MEMBER_TYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder

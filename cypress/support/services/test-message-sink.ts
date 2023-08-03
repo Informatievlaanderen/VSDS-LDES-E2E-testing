@@ -19,7 +19,7 @@ export class TestMessageSink {
     }
 
     checkCount(collectionName: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
-        return cy.waitUntil(() => this.hasCount(collectionName, count, checkFn), { timeout: timeouts.slowAction, interval: timeouts.check, errorMsg: `Timed out waiting for document collection '${collectionName}' to correctly compare to ${count}` });
+        return cy.waitUntil(() => this.hasCount(collectionName, count, checkFn), { timeout: timeouts.slowAction, interval: timeouts.check, errorMsg: `Timed out waiting for document collection '${collectionName}' in test sink to correctly compare to ${count}` });
     }
 
     private hasCount(collectionName: string, count: number, checkFn: (actual: number, expected: number) => boolean) {

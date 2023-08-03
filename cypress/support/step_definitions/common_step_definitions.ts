@@ -22,8 +22,9 @@ export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
 
 Before(() => {
-     // log and cleanup if previous test failed (After is not run in this case!)
-    dockerCompose.logRunningContainers().then(() => dockerCompose.cleanup().then(() => {
+    // log and cleanup if previous test failed (After is not run in this case!)
+    // dockerCompose.logRunningContainers().then(() => 
+        dockerCompose.cleanup().then(() => {
         dockerCompose.initialize();
         testContext = {
             testPartialPath: '',
@@ -31,7 +32,8 @@ Before(() => {
             database: '',
             collection: '',
         }            
-    }));
+    })
+    //);
 });
 
 After(() => {

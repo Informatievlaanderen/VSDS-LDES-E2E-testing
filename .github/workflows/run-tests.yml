@@ -55,8 +55,7 @@ jobs:
           "@test-011 and @ldio",
           "@test-011 and @nifi",
           # NOTE: Server Performance
-          "@test-013 and @ldio",
-          "@test-013 and @nifi",
+          "@test-013",
           # NOTE: Server Retention
           "@test-012 and @time-based",
           "@test-012 and @version-based",

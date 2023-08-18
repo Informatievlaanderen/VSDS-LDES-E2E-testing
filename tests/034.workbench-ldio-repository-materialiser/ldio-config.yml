@@ -1,0 +1,15 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: pipeline
+      description: "Simple http in, version creation, http out pipeline allowing to pause output."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.RepositoryMaterialiser
+          config:
+            sparql-host: http://localhost:8080/rdf4j-server
+            repository-id: test

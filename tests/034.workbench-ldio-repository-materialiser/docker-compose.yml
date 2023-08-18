@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  rdf4j-server:
+    container_name: ${USECASE_NAME:-rdf4j-repo}_server
+    image: eclipse/rdf4j-workbench:${eclipse_server_TAG:-latest}
+    ports:
+          - 8080:8080
+
+  ldio-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-rdf4j-repo}_ldio-workbench
+    environment:
+      - SPRING_CONFIG_NAME=application
+      - SPRING_CONFIG_LOCATION=/config/
+    volumes:
+      - ./ldio-config.yml:/config/application.yml:ro
+    networks:
+      - ldes
+    ports:
+      - 8082:8080
+    profiles:
+      - delay-started
+
+
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-ldio-repository-materialiser}_network

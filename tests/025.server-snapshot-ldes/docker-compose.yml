@@ -11,7 +11,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-server-snapshot}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:

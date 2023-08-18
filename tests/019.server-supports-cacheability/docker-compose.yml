@@ -3,7 +3,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-setup-caching}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -35,7 +35,7 @@ services:
       - ldes
     
   ldio-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-setup-caching}_ldio-workbench
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro

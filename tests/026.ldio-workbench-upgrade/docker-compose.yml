@@ -19,7 +19,7 @@ services:
       - delay-started
 
   old-ldio-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-20230324T175226}
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-20230324T175226}
     container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_old-ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
@@ -32,7 +32,7 @@ services:
       - 8081:8080
 
   new-ldio-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_new-ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
@@ -56,7 +56,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-upgrade-ldio-workbench}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:

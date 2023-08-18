@@ -13,7 +13,7 @@ services:
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-gtfs-multiview-ldes}_ldio-workbench
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
     networks:
@@ -23,7 +23,7 @@ services:
 
   nifi-workbench:
     container_name: ${USECASE_NAME:-gipod-multiview-ldes}_nifi-workbench
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     volumes:
@@ -37,7 +37,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-multiview-ldes}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:

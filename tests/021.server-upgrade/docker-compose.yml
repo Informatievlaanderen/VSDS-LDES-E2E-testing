@@ -18,7 +18,7 @@ services:
       - delay-started
 
   nifi-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-upgrade-server}_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -35,7 +35,7 @@ services:
       - delay-started
 
   ldio-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-upgrade-server}_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
@@ -91,7 +91,7 @@ services:
 
   new-ldes-server:
     container_name: ${USECASE_NAME:-upgrade-server-using-ldio}_new-ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-20230802075556}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-20230802075556}
     environment:
       - SIS_DATA=/tmp
     volumes:

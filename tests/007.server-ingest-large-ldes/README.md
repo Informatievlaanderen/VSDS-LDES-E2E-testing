@@ -53,7 +53,7 @@ sh ./config/seed.sh
     ```
     or request the collection:
     ```bash
-    curl http://localhost:8080/connections/paged
+    curl http://localhost:8080/connections/by-page
     ```
 
 ## Test Teardown

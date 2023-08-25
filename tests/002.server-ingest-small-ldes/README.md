@@ -48,7 +48,7 @@ sh ./config/seed.sh
 3. Verify LDES members are correctly received
    You can also verify that (after some time) the fragment contains 1016 members by capturing the response to a file and counting the number of occurrences of `<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>`. E.g.:
     ```
-    while :; do curl --silent http://localhost:8080/mobility-hindrances/paged?pageNumber=1 | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l; sleep 5; done
+    while :; do curl --silent http://localhost:8080/mobility-hindrances/by-page?pageNumber=1 | grep "<https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder>" | wc -l; sleep 5; done
     ```
     Press `CTRL-C` to stop the loop.
 

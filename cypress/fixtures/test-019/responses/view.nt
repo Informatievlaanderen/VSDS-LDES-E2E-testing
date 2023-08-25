@@ -1,5 +1,5 @@
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/paged> .
+<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-page> .
 <http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
-<http://localhost:8080/mobility-hindrances/paged> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
+<http://localhost:8080/mobility-hindrances/by-page> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 _:Bad6dc0fbac7fd074eaab336581ac8841 <http://www.w3.org/ns/shacl#targetClass> <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> .
 _:Bad6dc0fbac7fd074eaab336581ac8841 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .

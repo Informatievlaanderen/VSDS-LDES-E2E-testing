@@ -17,7 +17,7 @@ const connectionsLdes = 'connections';
 const byLocation = 'by-location';
 const byLocationAndPage = 'by-location-and-page';
 const byTime = 'by-time';
-const byPage = 'paged';
+const byPage = 'by-page';
 
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
@@ -129,7 +129,6 @@ Then('the multi-view root fragment contains multiple relations of type {string}'
     ensureRelationCount(rootFragment, expectedCount).then(() => {
         relations = rootFragment.expectMultipleRelationOf(relationType, expectedCount);
     });
-
 })
 
 Then('the geo-spatial fragmentation exists in the connections LDES', () => {
@@ -142,6 +141,10 @@ Then('the mobility-hindrances LDES is geo-spatially fragmented', () => {
 
 Then('the mobility-hindrances LDES is paginated', () => {
     server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
+})
+
+Then('the connections LDES is paginated', () => {
+    server.expectViewUrlNotToBeUndefined(connectionsLdes, byPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the geo-spatial fragment {string} is sub-fragmented using pagination which contains the members', (tile: string) => {
@@ -170,12 +173,11 @@ Then('the pagination root fragment contains {int} relation of type {string}', (a
     });
 })
 
-Then('the pagination fragmentation exists in the connections LDES', () => {
-    server.expectViewUrlNotToBeUndefined(connectionsLdes, byPage).then(fragment => rootFragment = fragment);
-})
-
 Then('the first page contains {int} members', (count: number) => {
-    expect(rootFragment.memberCount).to.equal(count);
+    cy.waitUntil(() => 
+        rootFragment.visit().then(x => x.memberCount === count), 
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for fragment '${rootFragment.url}' to have ${count} members`}
+    )    
 })
 
 Then('the geo-spatial root fragment contains only relations of type {string}', (relationType: string) => {

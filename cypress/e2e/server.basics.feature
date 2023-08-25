@@ -31,7 +31,7 @@ Feature: LDES Server Basic Functionality
     And I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 250 members
-    Then the pagination fragmentation exists in the connections LDES
+    Then the connections LDES is paginated
     And the first page contains 250 members
 
     @ldio
@@ -144,13 +144,13 @@ Feature: LDES Server Basic Functionality
     And I start the '<workbench>' workbench
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
-    Then the 'device-models' 'paged' fragment contains 1 members
+    Then the 'device-models' 'by-page' fragment contains 1 members
     When I upload the data file 'device' to the workbench
     And the LDES contains 2 members
-    Then the 'devices' 'paged' fragment contains 1 members
+    Then the 'devices' 'by-page' fragment contains 1 members
     When I start the JSON Data Generator
     And the LDES contains at least 3 members
-    Then the 'water-quality-observations' 'paged' fragment contains at least 3 members
+    Then the 'water-quality-observations' 'by-page' fragment contains at least 3 members
 
     @nifi
     Examples: 

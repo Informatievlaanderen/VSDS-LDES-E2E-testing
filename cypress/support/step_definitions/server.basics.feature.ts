@@ -3,6 +3,7 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
 import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount } from "./common_step_definitions";
+import { timeouts } from "../common";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -15,7 +16,7 @@ let viewResponse: Cypress.Response<any>;
 let compressedViewResponse: Cypress.Response<any>;
 
 const mobilityHindrancesLdes = 'mobility-hindrances';
-const byPage = 'paged';
+const byPage = 'by-page';
 
 // When
 
@@ -162,31 +163,34 @@ Then('the server accepts this member file', () => {
     expect(sendMemberResponse.headers.server).to.contain('nginx');
 })
 
-function obtainRootFragment(ldes: string, view="paged") {
+function obtainRootFragment(ldes: string, view = byPage) {
     return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl(view)).visit())
-        .then(view => new Fragment(view.relation.link).visit());
+        .then(ldes => new Fragment(ldes.viewUrl(view)))
+        .then(view => waitForFragment(view, x => x.relations.length === 1 && !!x.relation.link).then(() => new Fragment(view.relation.link)));
+}
+
+function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean) {
+    return cy.waitUntil(() => fragment.visit().then(fragment => condition(fragment)),  {timeout: timeouts.fastAction, interval: timeouts.check})
 }
 
 Then('the {string} {string} fragment contains {int} members', (ldes: string, view: string, count: number) => {
-    obtainRootFragment(ldes, view).then(fragment => fragment.memberCount === count);
+    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount === count));
 })
 
 Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => fragment.memberCount === count);
+    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount === count));
 })
 
 Then('the {string} {string} fragment contains at least {int} members', (ldes: string, view: string, count: number) => {
-    obtainRootFragment(ldes, view).then(fragment => fragment.memberCount >= count);
+    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount >= count));
 })
 
 Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => fragment.memberCount >= count);
+    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount >= count));
 })
 
 Then('the {string} LDES contains {int} members', (collection: string, count: number) => {
-    new Fragment(`${server.baseUrl}/${collection}/by-page?pageNumber=1`).visit()
-        .then(fragment => expect(fragment.memberCount).to.equal(count));
+    new Fragment(`${server.baseUrl}/${collection}/${byPage}?pageNumber=1`).visit().then(fragment => waitForFragment(fragment, x => x.memberCount === count));
 })
 
 interface CollectionSequence {

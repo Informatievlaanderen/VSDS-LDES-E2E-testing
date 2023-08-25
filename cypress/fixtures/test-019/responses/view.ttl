@@ -7,9 +7,9 @@
 
 <http://localhost:8080/mobility-hindrances>
         rdf:type   ldes:EventStream ;
-        tree:view  mobility-hindrances:paged .
+        tree:view  mobility-hindrances:by-page .
 
-mobility-hindrances:paged
+mobility-hindrances:by-page
         rdf:type  tree:Node .
 
 [ rdf:type           shacl:NodeShape ;

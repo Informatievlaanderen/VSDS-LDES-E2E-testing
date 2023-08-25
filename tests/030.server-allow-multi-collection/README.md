@@ -41,9 +41,9 @@ In this test we recreate the same scenario but host all three LDES collections o
 
 3. Verify that the empty LDES can be retrieved:
     ```bash
-    curl http://localhost:8080/device-models/paged
-    curl http://localhost:8080/devices/paged
-    curl http://localhost:8080/water-quality-observations/paged
+    curl http://localhost:8080/device-models/by-page
+    curl http://localhost:8080/devices/by-page
+    curl http://localhost:8080/water-quality-observations/by-page
     ```
 
 ## Test Execution
@@ -61,9 +61,9 @@ In this test we recreate the same scenario but host all three LDES collections o
 
     To validate that the LDES'es contain the correct OSLO models, you can retrieve the LDES views and follow the relations.
      ```bash
-     curl http://localhost:8080/device-models/paged
-     curl http://localhost:8080/devices/paged
-     curl http://localhost:8080/water-quality-observations/paged
+     curl http://localhost:8080/device-models/by-page
+     curl http://localhost:8080/devices/by-page
+     curl http://localhost:8080/water-quality-observations/by-page
      ```
 
      > **Note**: that only the observations are converted to an OSLO model. The object type should be `http://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.

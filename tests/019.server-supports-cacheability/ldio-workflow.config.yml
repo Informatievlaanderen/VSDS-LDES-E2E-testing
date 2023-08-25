@@ -7,7 +7,7 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-          url: http://localhost:8080/mobility-hindrances/paged
+          url: http://localhost:8080/mobility-hindrances/by-page
           source-format: text/turtle
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut

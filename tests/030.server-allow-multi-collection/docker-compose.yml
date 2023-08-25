@@ -41,7 +41,7 @@ services:
       - 8081:8080
     volumes:
       - ./ldio-workbench.config.yml:/ldio/application.yml:ro
-      - ./observations.rq:/ldio/observations.rq:ro
+      - ./config/sparql:/ldio/sparql:ro
     networks:
       ldes:
         aliases:

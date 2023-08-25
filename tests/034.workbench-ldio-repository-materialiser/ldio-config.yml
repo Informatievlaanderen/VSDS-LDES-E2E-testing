@@ -11,5 +11,5 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldi.RepositoryMaterialiser
           config:
-            sparql-host: http://localhost:8080/rdf4j-server
+            sparql-host: http://rdf4j-server:8080/rdf4j-server
             repository-id: test

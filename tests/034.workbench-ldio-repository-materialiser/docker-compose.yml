@@ -2,9 +2,11 @@ version: '3.3'
 services:
   rdf4j-server:
     container_name: ${USECASE_NAME:-rdf4j-repo}_server
-    image: eclipse/rdf4j-workbench:${eclipse_server_TAG:-latest}
+    image: eclipse/rdf4j-workbench:${eclipse_server_TAG:-4.3.4}
+    networks:
+      - ldes
     ports:
-          - 8080:8080
+      - 8080:8080
 
   ldio-workbench:
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
@@ -20,8 +22,6 @@ services:
       - 8082:8080
     profiles:
       - delay-started
-
-
 
 networks:
   ldes:

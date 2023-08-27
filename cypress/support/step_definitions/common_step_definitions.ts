@@ -21,6 +21,8 @@ export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
 
+export const byPage = 'by-page';
+
 Before(() => {
     // log and cleanup if previous test failed (After is not run in this case!)
     // dockerCompose.logRunningContainers().then(() => 
@@ -64,6 +66,16 @@ export function setTargetUrl(targeturl: string) {
 
 export function range(start: number, end: number) {
     return new Array(end - start + 1).fill(start).map((_, i) => i + 1);
+}
+
+export function obtainRootFragment(ldes: string, view = byPage) {
+    return server.getLdes(ldes)
+        .then(ldes => new Fragment(ldes.viewUrl(view)))
+        .then(view => waitForFragment(view, x => x.relations.length === 1 && !!x.relation.link).then(() => new Fragment(view.relation.link)));
+}
+
+export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean) {
+    return cy.waitUntil(() => fragment.visit().then(fragment => condition(fragment)),  {timeout: timeouts.fastAction, interval: timeouts.check})
 }
 
 // Given stuff
@@ -261,6 +273,10 @@ When('the LDES contains {int} fragments', (count: number) => {
 
 When('the LDES contains at least {int} members', (count: number) => {
     mongo.checkCount(testContext.database, ldesMemberCollection, count, (x, y) => x >= y);
+})
+
+When('the LDES fragment {string} contains at least {int} members', (fragmentId: string, count: number) => {
+    mongo.checkFragmentMemberCount(testContext.database, fragmentId, count, (x, y) => x >= y);
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {

@@ -3,12 +3,12 @@
         {
             "@id": "http://localhost:8080/mobility-hindrances",
             "tree:view": {
-                "@id": "mobility-hindrances:paged"
+                "@id": "mobility-hindrances:by-page"
             },
             "@type": "ldes:EventStream"
         },
         {
-            "@id": "mobility-hindrances:paged",
+            "@id": "mobility-hindrances:by-page",
             "@type": "tree:Node"
         },
         {

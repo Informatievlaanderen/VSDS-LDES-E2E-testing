@@ -1,9 +1,9 @@
 @prefix tree:   <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-</{collectionName}/{viewName}> a tree:Node ; 
+</device-models/by-page> a tree:Node ; 
   tree:viewDescription [ 
 		a tree:ViewDescription ;
-		tree:fragmentationStrategy () ;
-		tree:pageSize "2"^^xsd:integer ;
+    tree:fragmentationStrategy () ;
+		tree:pageSize "10"^^xsd:integer ;
   ] .

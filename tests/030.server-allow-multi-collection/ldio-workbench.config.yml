@@ -61,7 +61,7 @@ orchestrator:
       transformers:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldi.SparqlConstructTransformer
           config:
-            query: "observations.rq"
+            query: ./sparql/observations.rq
         - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
           config:
             member-type: http://www.w3.org/ns/sosa/ObservationCollection

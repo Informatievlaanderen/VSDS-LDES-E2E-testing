@@ -7,7 +7,7 @@ Feature: LDES Client Security
     And context 'tests/032.ldes-client-to-oauth-server' is started
     And the LDES server is available and configured
     And I start the JSON Data Generator
-    And the LDES contains at least 3 members
+    And the LDES fragment '/devices/by-page?pageNumber=1' contains at least 3 members
     When I start the '<workbench>' workbench
     Then the 'devices' sink contains at least 3 members
     And the collection at 'http://localhost:8080/devices' is forbidden

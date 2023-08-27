@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { ensureRelationCount, server } from "./common_step_definitions";
+import { byPage, ensureRelationCount, server } from "./common_step_definitions";
 import { timeouts } from "../common";
 
 let firstFragment: Fragment;
@@ -17,7 +17,6 @@ const connectionsLdes = 'connections';
 const byLocation = 'by-location';
 const byLocationAndPage = 'by-location-and-page';
 const byTime = 'by-time';
-const byPage = 'by-page';
 
 let relations: Relation[];
 let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];

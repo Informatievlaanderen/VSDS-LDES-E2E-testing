@@ -2,7 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount } from "./common_step_definitions";
+import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount, waitForFragment, obtainRootFragment } from "./common_step_definitions";
 import { timeouts } from "../common";
 
 let ldes: EventStream;
@@ -162,16 +162,6 @@ Then('the server accepts this member file', () => {
     expect(sendMemberResponse.status).to.equal(200)
     expect(sendMemberResponse.headers.server).to.contain('nginx');
 })
-
-function obtainRootFragment(ldes: string, view = byPage) {
-    return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl(view)))
-        .then(view => waitForFragment(view, x => x.relations.length === 1 && !!x.relation.link).then(() => new Fragment(view.relation.link)));
-}
-
-function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean) {
-    return cy.waitUntil(() => fragment.visit().then(fragment => condition(fragment)),  {timeout: timeouts.fastAction, interval: timeouts.check})
-}
 
 Then('the {string} {string} fragment contains {int} members', (ldes: string, view: string, count: number) => {
     obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount === count));

@@ -3,7 +3,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { testPartialPath, server, range } from "./common_step_definitions";
 import { timeouts } from "../common";
 
-Given('I create the repository', () => {
+Given('I create the rdf4j repository', () => {
     const url = `http://localhost:8080/rdf4j-workbench/repositories/NONE/create`;
     const data = 'type=memory&Repository+ID=test&Repository+title=Memory+store&Persist=true&Sync+delay=0&Query+Evaluation+Mode=STANDARD'
     cy.request({method: 'POST', url: url, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data,})
@@ -21,7 +21,7 @@ When('I upload {int} files from the {string} directory to the workbench', (amoun
     })
 })
 
-Then('I wait for the repository to contain {int} triples', (tripleCount: number) => {
+Then('I wait for the rdf4j repository to contain {int} triples', (tripleCount: number) => {
     getRepositorySize(tripleCount);
 })
 
@@ -34,10 +34,15 @@ function getRepositorySize(tripleCount: number) {
     );
 }
 
-Then('the repository still contains {int} triples', (tripleCount: number) => {
+Then('the rdf4j repository still contains {int} triples', (tripleCount: number) => {
     getRepositorySize(tripleCount);
 });
 
-Then('the repository contains the updated triple', () => {
-    // TODO Impl me
+Then('the rdf4j repository contains the updated triple', () => {
+    const url = `http://localhost:8080/rdf4j-server/repositories/test`;
+    const fileName = `${testPartialPath()}/data/query.rq`;
+    cy.readFile(fileName, 'utf8')
+        .then(data => cy.request({method: 'POST', url: url, headers: { 'Content-Type': 'application/sparql-query' }, body: data,})
+            .then(response => expect(response.body).to.contain('CHANGED'))
+        )
 });

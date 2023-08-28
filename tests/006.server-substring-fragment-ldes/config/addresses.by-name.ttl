@@ -5,7 +5,7 @@
 	tree:viewDescription [ a tree:ViewDescription ;
 		tree:fragmentationStrategy ([
 			a tree:SubstringFragmentation ;
-			tree:memberLimit "10"^^xsd:integer ;
 			tree:fragmentationPath <https://data.vlaanderen.be/ns/adres#volledigAdres> ;
 		]) ;
+		tree:pageSize "10"^^xsd:integer ;
 	] .

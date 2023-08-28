@@ -77,9 +77,9 @@ npm test -- -e tags="@test-001" -s "cypress/e2e/client.basics.feature"
 npm test -- -e tags="@server and not (@performance or @retention)" -s "cypress/e2e/server.*.feature"
 ```
 
-> **Note**: that because you can only specify one `--env` [setting](https://docs.cypress.io/guides/guides/environment-variables#Option-4---env) on the command line you need to repeat the `-e tags="not @broken"`, e.g.:
+> **Note**: that because you can only specify one `--env` [setting](https://docs.cypress.io/guides/guides/environment-variables#Option-4---env) on the command line you need to repeat the `-e tags="not @BROKEN"`, e.g.:
 > ```bash
-> npm test -- -e tags="@server and not (@performance or @retention) and not @broken" -s "cypress/e2e/server.*.feature"
+> npm test -- -e tags="@server and not (@performance or @retention) and not @BROKEN" -s "cypress/e2e/server.*.feature"
 > ```
 
 All the manual tests have their docker compose file configured to run with the latest available images. As mentioned [before](#get-docker-images), you need to manually get these images. Alternatively you can configure the automated tests to use a different set of images by passing a file similar to [this one](./previous-tags.env) and providing the `userEnv` environment variable.
@@ -88,7 +88,7 @@ All the manual tests have their docker compose file configured to run with the l
 
 If you want to run one feature file containing a few related tests with custom tags you can use the following syntax:
 ```bash
-npm test -- -e userEnv="./previous-tags.env",tags="not @broken"
+npm test -- -e userEnv="./previous-tags.env",tags="not @BROKEN"
 ```
 or
 ```bash

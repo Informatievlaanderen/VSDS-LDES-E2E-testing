@@ -1,7 +1,7 @@
 @server @snapshotting
 Feature: LDES Server Snapshot Functionality
 
-  @test-025 @iow @broken
+  @test-025 @iow @BROKEN
   Scenario Outline: 025: Server Can Create Snapshot
     Given the members are stored in database 'test'
     And context 'tests/025.server-snapshot-ldes' is started

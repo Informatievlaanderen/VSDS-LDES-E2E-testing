@@ -51,16 +51,6 @@ export class LdesServer implements CanCheckAvailability {
             .then(fragment => fragment.expectMutable());
     }
 
-    expectViewUrlNotToBeUndefined(ldes: string, viewName: string) {
-        return this.getLdes(ldes)
-            .then(ldes => new Fragment(ldes.getViews(viewName)).visit())
-            .then(view => view.relation.link)
-            .then(url => {
-                expect(url).not.to.be.undefined;
-                return new Fragment(url).visit();
-            });
-    }
-
     createSnapshot(collection: string) {
         return cy.request({method: 'POST', url: `${this.baseUrl}/admin/api/v1/${collection}/snapshots`});
     }

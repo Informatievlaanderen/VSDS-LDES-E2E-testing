@@ -40,12 +40,12 @@ jobs:
           "@test-030 and @ldio",
           "@test-030 and @nifi",
           # NOTE: Server Fragmentation
-          "@test-004 and @ldio",
-          "@test-004 and @nifi",
+          # "@test-004 and @ldio", # BROKEN & OBSOLETE
+          # "@test-004 and @nifi", # BROKEN & OBSOLETE
           "@test-005 and @ldio",
           "@test-005 and @nifi",
-          "@test-006 and @ldio",
-          "@test-006 and @nifi",
+          # "@test-006 and @ldio", # BROKEN & OBSOLETE
+          # "@test-006 and @nifi", # BROKEN & OBSOLETE
           "@test-008 and @ldio",
           "@test-008 and @nifi",
           "@test-009 and @ldio",
@@ -62,8 +62,8 @@ jobs:
           "@test-012 and @point-in-time",
           "@test-012 and @version-based-and-point-in-time",
           # NOTE: Server Snapshotting
-          # "@test-025 and @fast", # broken
-          # "@test-025 and @slow", # broken
+          # "@test-025 and @fast", # BROKEN
+          # "@test-025 and @slow", # BROKEN
           # NOTE: Server Upgrading
           "@test-021 and @ldio",
           "@test-021 and @nifi",

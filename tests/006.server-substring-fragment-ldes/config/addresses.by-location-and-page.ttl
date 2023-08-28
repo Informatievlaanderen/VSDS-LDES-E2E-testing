@@ -4,15 +4,13 @@
 @base <http://localhost:8080> .
 
 </addresses/by-location-and-page> a tree:Node ; 
-	tree:viewDescription [ a tree:ViewDescription ;
+	tree:viewDescription [ 
+		a tree:ViewDescription ;
 		tree:fragmentationStrategy (
 		[
 			a tree:GeospatialFragmentation ;
 			tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asGML> ;
 			tree:maxZoom "13"^^xsd:integer ;
-		]
-		[
-            a tree:PaginationFragmentation ;
-		    tree:memberLimit "10"^^xsd:integer ;
 		]) ;
+		tree:pageSize "10"^^xsd:integer ;
 	] .

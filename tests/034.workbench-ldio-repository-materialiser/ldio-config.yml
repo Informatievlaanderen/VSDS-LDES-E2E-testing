@@ -2,7 +2,7 @@ server:
   port: 8080
 orchestrator:
   pipelines:
-    - name: pipeline
+    - name: rdf4j-pipeline
       description: "Simple http in, version creation, http out pipeline allowing to pause output."
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn

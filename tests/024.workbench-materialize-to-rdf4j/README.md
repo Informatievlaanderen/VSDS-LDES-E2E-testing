@@ -20,7 +20,7 @@ correctly in the triplestore.
     docker compose up nifi-workbench -d
     while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
     ```
-   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
+   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](nifi-workflow.json) and start it
 
 3. Create the repository in the RDF4J server:
    ```bash

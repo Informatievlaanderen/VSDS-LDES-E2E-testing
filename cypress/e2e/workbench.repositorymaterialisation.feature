@@ -3,7 +3,7 @@ Feature: LDES Workbench Repository Materialisation
 
   @test-034
   Scenario Outline: 034: Can materialise ldes into RDF4J repository using '<workbench>' Workbench
-    Given context 'tests/034.workbench-ldio-repository-materialiser' is started
+    Given context 'tests/024.workbench-materialize-to-rdf4j' is started
     And I start the '<workbench>' workbench
     And I create the rdf4j repository
     When I upload 5 files from the 'add' directory to the workbench

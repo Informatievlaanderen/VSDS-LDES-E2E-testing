@@ -11,7 +11,7 @@ Given('I create the rdf4j repository', () => {
 })
 
 When('I upload {int} files from the {string} directory to the workbench', (amount: number, directory: string) => {
-    const url = `http://localhost:8082/pipeline`;
+    const url = `http://localhost:8082/rdf4j-pipeline`;
     range(1, amount).forEach(member => {
         const fileName = `${testPartialPath()}/data/${directory}/${member}.nq`;
         cy.readFile(fileName, 'utf8')

@@ -12,10 +12,10 @@ Feature: LDES Workbench Repository Materialisation
     Then the rdf4j repository still contains 21 triples
     And the rdf4j repository contains the updated triple
 
-#    @nifi
-#    Examples:
-#      | workbench |
-#      | NIFI      |
+    @nifi
+    Examples:
+      | workbench |
+      | NIFI      |
 
     @ldio
     Examples:

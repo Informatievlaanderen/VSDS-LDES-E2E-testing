@@ -17,6 +17,10 @@ export class Fragment extends UrlResponse {
         return relations[0];
     }
 
+    get hasSingleRelationLink(): boolean {
+        return this.relations.length === 1 && !!this.relations[0].link;
+    }
+
     get isNode(): boolean {
         return this.store.getQuads(this.url, rdf.type, tree.Node, null).length === 1;
     }

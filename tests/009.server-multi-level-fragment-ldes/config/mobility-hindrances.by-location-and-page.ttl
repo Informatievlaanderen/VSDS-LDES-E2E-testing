@@ -4,16 +4,13 @@
 @base <http://localhost:8080> .
 
 </mobility-hindrances/by-location-and-page> a tree:Node ; 
-  tree:viewDescription [ a tree:ViewDescription ;
+  tree:viewDescription [ 
+		a tree:ViewDescription ;
     tree:fragmentationStrategy (
     [
-		a tree:GeospatialFragmentation; ;
-		tree:maxZoom "15"^^xsd:integer ;
-		tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
-	]
-	[
-        a tree:PaginationFragmentation ;
-		tree:memberLimit "5"^^xsd:integer ;
-	]
-	) ;
+			a tree:GeospatialFragmentation; ;
+			tree:maxZoom "15"^^xsd:integer ;
+			tree:fragmentationPath <http://www.opengis.net/ont/geosparql#asWKT> ;
+		]) ;
+		tree:pageSize "5"^^xsd:integer ;
 ] .

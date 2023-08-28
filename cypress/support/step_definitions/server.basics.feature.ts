@@ -164,23 +164,23 @@ Then('the server accepts this member file', () => {
 })
 
 Then('the {string} {string} fragment contains {int} members', (ldes: string, view: string, count: number) => {
-    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount === count));
+    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
 })
 
 Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount === count));
+    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
 })
 
 Then('the {string} {string} fragment contains at least {int} members', (ldes: string, view: string, count: number) => {
-    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount >= count));
+    obtainRootFragment(ldes, view).then(fragment => waitForFragment(fragment, x => x.memberCount >= count, `have member count be at least ${count}`));
 })
 
 Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount >= count));
+    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount >= count, `have member count be at least ${count}`));
 })
 
 Then('the {string} LDES contains {int} members', (collection: string, count: number) => {
-    new Fragment(`${server.baseUrl}/${collection}/${byPage}?pageNumber=1`).visit().then(fragment => waitForFragment(fragment, x => x.memberCount === count));
+    new Fragment(`${server.baseUrl}/${collection}/${byPage}?pageNumber=1`).visit().then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
 })
 
 interface CollectionSequence {

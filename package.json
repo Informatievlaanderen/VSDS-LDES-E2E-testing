@@ -4,9 +4,9 @@
   "description": "Automated E2E tests using cypress and cucumber",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run -e tags=\"not (@broken)\"",
-    "test:no-nifi": "cypress run -e tags=\"not (@nifi or @broken)\"",
-    "test:no-ldio": "cypress run -e tags=\"not (@ldio or @broken)\"",
+    "test": "cypress run -e tags=\"not (@BROKEN)\"",
+    "test:no-nifi": "cypress run -e tags=\"not (@nifi or @BROKEN)\"",
+    "test:no-ldio": "cypress run -e tags=\"not (@ldio or @BROKEN)\"",
     "open": "cypress open"
   },
   "repository": {

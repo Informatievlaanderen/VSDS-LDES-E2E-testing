@@ -51,10 +51,7 @@ export function testDatabase() {
 }
 
 export function ensureRelationCount(fragment: Fragment, amount: number) {
-    return cy.waitUntil(() => 
-        fragment.visit().then(x => x.relations.length >= amount), 
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for fragment '${fragment.url}' to have ${amount} relations`}
-    );
+    return waitForFragment(fragment, x => x.relations.length >= amount, `have at least ${amount} relations`);
 }
 
 export function setTargetUrl(targeturl: string) {
@@ -71,11 +68,13 @@ export function range(start: number, end: number) {
 export function obtainRootFragment(ldes: string, view = byPage) {
     return server.getLdes(ldes)
         .then(ldes => new Fragment(ldes.viewUrl(view)))
-        .then(view => waitForFragment(view, x => x.relations.length === 1 && !!x.relation.link).then(() => new Fragment(view.relation.link)));
+        .then(view => waitForFragment(view, x => x.hasSingleRelationLink, 'have a single relation').then(() => new Fragment(view.relation.link)));
 }
 
-export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean) {
-    return cy.waitUntil(() => fragment.visit().then(fragment => condition(fragment)),  {timeout: timeouts.fastAction, interval: timeouts.check})
+export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean, message: string) {
+    return cy.waitUntil(() => 
+        fragment.visit().then(fragment => condition(fragment)), 
+        {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.`}).then(() => fragment);
 }
 
 // Given stuff

@@ -69,7 +69,7 @@ sh ./config/seed.sh
 4. Request the collections:
    ```bash
    curl http://localhost:8080/addresses/by-name
-   curl http://localhost:8080/addresses/paged
+   curl http://localhost:8080/addresses/by-page
    curl http://localhost:8080/addresses/by-location-and-page
    ```
 

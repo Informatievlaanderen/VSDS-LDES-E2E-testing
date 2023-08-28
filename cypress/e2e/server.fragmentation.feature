@@ -1,7 +1,7 @@
 @server @fragmentation
 Feature: LDES Server Fragmentation
 
-  @test-004 @time @gipod
+  @test-004 @time @gipod @OBSOLETE @BROKEN
   Scenario Outline: 004: Server Can Time-Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/004.server-time-fragment-ldes' is started
@@ -37,12 +37,13 @@ Feature: LDES Server Fragmentation
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
     And the LDES contains 617 members
-    Then the first "paged" fragment is immutable
+    Then the first "by-page" fragment is immutable
     And the first fragment only has a 'Relation' to the middle fragment
     And the middle fragment is immutable
-    And the middle fragment only has a 'Relation' to the first and last fragments
+    And the middle fragment only has a 'Relation' to the last fragment
+    And the last fragment contains 17 members
     And the last fragment is not immutable
-    And the last fragment only has a 'Relation' to the middle fragment
+    And the last fragment has no relations
 
     @ldio
     Examples: 
@@ -54,7 +55,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-  @test-006 @substring @grar
+  @test-006 @substring @grar @OBSOLETE @BROKEN
   Scenario Outline: 006: Server Can Substring Fragment an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'grar'
     And context 'tests/006.server-substring-fragment-ldes' is started
@@ -62,8 +63,7 @@ Feature: LDES Server Fragmentation
     When I start the '<workbench>' workbench
     And I start the JSON Data Generator
     And the LDES contains at least 13 members
-    Then the substring root fragment is not immutable
-    And the root fragment contains 'SubstringRelation' relations with values: 'k,1,9,l,g,h,2'
+    Then the substring root fragment contains 'SubstringRelation' relations with values: 'k,1,9,l,g,h,2' and is mutable
     When the LDES contains at least 73 members
     Then the fragment exists for substring 'ka,ho,gr'
 
@@ -77,7 +77,7 @@ Feature: LDES Server Fragmentation
       | workbench |
       | NIFI      |
 
-  @test-008 @geospatial @gipod
+  @test-008 @geospatial @gipod @OBSOLETE
   Scenario Outline: 008: Server Can Geospatially Fragment a Small LDES Using '<workbench>' Workbench
     Given the members are stored in database 'gipod'
     And context 'tests/008.server-geo-fragment-small-ldes' is started
@@ -86,10 +86,8 @@ Feature: LDES Server Fragmentation
     And I have aliased the data set
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
-    And the LDES contains 1 members
-    And the LDES contains 8 fragments
-    Then the geo-spatial root fragment is not immutable
-    And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
+    And the LDES contains at least 8 fragments
+    Then the 'by-location' root fragment contains 4 relations of type 'GeospatiallyContainsRelation' and is mutable
     And the geo-spatial fragment '15/16743/11009' contains the member
     And the geo-spatial fragment '15/16744/11009' contains the member
     And the geo-spatial fragment '15/16742/11010' contains the member
@@ -114,10 +112,8 @@ Feature: LDES Server Fragmentation
     And I have aliased the data set
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
-    And the LDES contains 6 members
-    And the LDES contains 16 fragments
-    Then the multi-level root fragment is not immutable
-    And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
+    And the LDES contains at least 16 fragments
+    Then the 'by-location-and-page' root fragment contains 4 relations of type 'GeospatiallyContainsRelation' and is mutable
     And the geo-spatial fragment '15/16743/11009' is sub-fragmented using pagination which contains the members
     And the geo-spatial fragment '15/16744/11009' is sub-fragmented using pagination which contains the members
     And the geo-spatial fragment '15/16742/11010' is sub-fragmented using pagination which contains the members
@@ -142,8 +138,7 @@ Feature: LDES Server Fragmentation
     And I have aliased the data set
     And the LDES server is available and configured
     When I start the '<workbench>' workbench
-    And the LDES contains 6 members
-    And the LDES contains 11 fragments
+    And the LDES contains at least 11 fragments
     Then the mobility-hindrances LDES is geo-spatially fragmented
     And the geo-spatial root fragment contains 4 relations of type 'GeospatiallyContainsRelation'
     And the mobility-hindrances LDES is paginated

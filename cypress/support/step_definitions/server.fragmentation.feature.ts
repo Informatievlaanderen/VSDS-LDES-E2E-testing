@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Relation } from "../ldes";
-import { byPage, ensureRelationCount, server } from "./common_step_definitions";
-import { timeouts } from "../common";
+import { byPage, ensureRelationCount, obtainRootFragment, server, waitForFragment } from "./common_step_definitions";
 
 let firstFragment: Fragment;
 let middleFragment: Fragment;
@@ -19,36 +18,32 @@ const byLocationAndPage = 'by-location-and-page';
 const byTime = 'by-time';
 
 let relations: Relation[];
-let members = ['https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116'];
 
 Then('the first {string} fragment is immutable', (view: string) => {
-    server.getLdes('mobility-hindrances')
-        .then(ldes => new Fragment(ldes.viewUrl(view)).visit())
-        .then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => firstFragment = fragment.expectImmutable())
+    obtainRootFragment('mobility-hindrances', view)
+        .then(fragment => waitForFragment(fragment, x => x.immutable, 'be immutable').then(() => firstFragment = fragment));
 })
 
 Then('the first fragment only has a {string} to the middle fragment', (type: string) => {
     firstFragment.expectNoOtherRelationThan(type);
-    const relation = firstFragment.expectSingleRelationOf(type);
-    new Fragment(relation.link).visit().then(fragment => middleFragment = fragment);
+    middleFragment = new Fragment(firstFragment.expectSingleRelationOf(type).link);
 })
 
 Then('the middle fragment is immutable', () => {
-    middleFragment.expectImmutable();
+    waitForFragment(middleFragment, x => x.immutable, 'be immutable')
 })
 
-Then('the middle fragment only has a {string} to the first and last fragments', (type: string) => {
+Then('the middle fragment only has a {string} to the last fragments', (type: string) => {
     middleFragment.expectNoOtherRelationThan(type);
 
     const expectedCount = 2;
     ensureRelationCount(middleFragment, expectedCount).then(() => {
         const urls = middleFragment.expectMultipleRelationOf(type, expectedCount).map(x => x.link);
         expect(urls).to.contain(firstFragment.url);
-    
+
         const other = urls.find(x => x !== firstFragment.url);
         expect(other).not.to.be.undefined;
-    
+
         // cast is safe as expect guards that other is not undefined
         new Fragment(other as string).visit().then(fragment => lastFragment = fragment);
     });
@@ -68,48 +63,32 @@ Then('the last fragment is not immutable', () => {
     lastFragment.expectMutable();
 })
 
-Then('the last fragment only has a {string} to the middle fragment', (type: string) => {
-    lastFragment.expectNoOtherRelationThan(type);
-
-    const relation = lastFragment.expectSingleRelationOf(type);
-    expect(relation.link).to.equals(middleFragment.url);
+Then('the last fragment has no relations', () => {
+    expect(lastFragment.relations.length).to.equal(0);
 })
 
+Then('the substring root fragment contains {string} relations with values: {string} and is mutable', (relationType: string, relationValues: string) => {
+    obtainRootFragment('addresses', 'by-name').then(fragment => {
+        const values = relationValues.split(',');
+        const expectedCount = values.length;
 
-Then('the substring root fragment is not immutable', () => {
-    server.checkRootFragmentMutable('addresses', 'by-name').then(fragment => rootFragment = fragment);
-})
-
-Then('the root fragment contains {string} relations with values: {string}', (relationType: string, relationValues: string) => {
-    rootFragment.expectMutable();
-
-    const values = relationValues.split(',');
-    const expectedCount = values.length;
-
-    ensureRelationCount(rootFragment, expectedCount).then(() => {
-        const relations = rootFragment.expectMultipleRelationOf(relationType, expectedCount);
-        values.forEach(value => {
-            const relation = relations.filter(x => x.value === value).shift();
-            expect(relation).not.to.be.undefined;
-            expect(relation?.path).to.equal('https://data.vlaanderen.be/ns/adres#volledigAdres');
-            expect(relation?.link).to.equal(`${rootFragment.url}${value}`);
-        });
-    });
+        ensureRelationCount(fragment, expectedCount).then(() => {
+            const relations = fragment.expectMultipleRelationOf(relationType, expectedCount);
+            values.forEach(value => {
+                const relation = relations.filter(x => x.value === value).shift();
+                expect(relation).not.to.be.undefined;
+                expect(relation?.path).to.equal('https://data.vlaanderen.be/ns/adres#volledigAdres');
+                expect(relation?.link).to.equal(`${rootFragment.url}${value}`);
+            });
+        }).then(() => fragment.expectMutable());
+    })
 });
 
 Then('the fragment exists for substring {string}', (fragmentValues: string) => {
     const values = fragmentValues.split(',');
     values.forEach(value => {
-        new Fragment(`${rootFragment.url}${value}`).visit().then(fragment => expect(fragment.success).to.be.true);
+        waitForFragment(new Fragment(`${rootFragment.url}${value}`), x => x.success, 'to exist');
     });
-})
-
-Then('the geo-spatial root fragment is not immutable', () => {
-    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
-})
-
-Then('the multi-level root fragment is not immutable', () => {
-    server.checkRootFragmentMutable(mobilityHindrancesLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the multi-view root fragment is not immutable', () => {
@@ -120,7 +99,10 @@ Then('the geo-spatial fragment {string} contains the member', (tile: string) => 
     const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocation}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);
     expect(relation).not.to.be.undefined;
-    new Fragment(relationUrl).visit().then(fragment => expect(fragment.members.map(x => x.id)).to.eql(members));
+    const memberId = 'https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10496796/1192116';
+
+    waitForFragment(new Fragment(relationUrl), x => x.hasSingleRelationLink, 'have a single relation link')
+        .then(fragment => waitForFragment(new Fragment(fragment.relation.link), x => x.members.map(m => m.id).includes(memberId), `include member '${memberId}'`));
 })
 
 Then('the multi-view root fragment contains multiple relations of type {string}', (relationType: string) => {
@@ -130,34 +112,48 @@ Then('the multi-view root fragment contains multiple relations of type {string}'
     });
 })
 
+
+function fragmentationRootExists(ldes: string, view: string) {
+    return obtainRootFragment(ldes, view)
+        .then(fragment => {
+            expect(fragment.url).not.to.be.undefined;
+            return waitForFragment(fragment, x => x.success, 'to exist');
+        });
+}
+
 Then('the geo-spatial fragmentation exists in the connections LDES', () => {
-    server.expectViewUrlNotToBeUndefined(connectionsLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
+    fragmentationRootExists(connectionsLdes, byLocationAndPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the mobility-hindrances LDES is geo-spatially fragmented', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
+    fragmentationRootExists(mobilityHindrancesLdes, byLocation).then(fragment => rootFragment = fragment);
 })
 
 Then('the mobility-hindrances LDES is paginated', () => {
-    server.expectViewUrlNotToBeUndefined(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
+    fragmentationRootExists(mobilityHindrancesLdes, byPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the connections LDES is paginated', () => {
-    server.expectViewUrlNotToBeUndefined(connectionsLdes, byPage).then(fragment => rootFragment = fragment);
+    fragmentationRootExists(connectionsLdes, byPage).then(fragment => rootFragment = fragment);
 })
 
 Then('the geo-spatial fragment {string} is sub-fragmented using pagination which contains the members', (tile: string) => {
     const relationUrl = `${server.baseUrl}/${mobilityHindrancesLdes}/${byLocationAndPage}?tile=${tile}`;
     const relation = relations.find(x => x.link === relationUrl);
     expect(relation).not.to.be.undefined;
-    new Fragment(relationUrl).visit().then(fragment => {
-        const relation = fragment.relation;
-        expect(relation).not.to.be.undefined;
-        return new Fragment(relation.link).visit().then(fragment => {
-            expect(fragment.members.length).to.equal(5);
-            return new Fragment(fragment.relation.link).visit().then(fragment => expect(fragment.members.length).to.equal(1));
+
+    waitForFragment(new Fragment(relationUrl), x => x.hasSingleRelationLink, 'have a single relation')
+        .then(fragment => waitForFragment(new Fragment(fragment.relation.link), x => x.memberCount === 5, 'have 5 members'))
+        .then(fragment => waitForFragment(new Fragment(fragment.relation.link), x => x.memberCount === 1, 'have 1 member'))
+})
+
+Then('the {string} root fragment contains {int} relations of type {string} and is mutable', (view: string, amount: number, relationType: string) => {
+    obtainRootFragment(mobilityHindrancesLdes, view).then(fragment => {
+        ensureRelationCount(fragment, amount).then(() => {
+            fragment.expectMutable();
+            relations = fragment.expectMultipleRelationOf(relationType, amount);
         });
-    });
+    })
 })
 
 Then('the geo-spatial root fragment contains {int} relations of type {string}', (amount: number, relationType: string) => {
@@ -173,10 +169,11 @@ Then('the pagination root fragment contains {int} relation of type {string}', (a
 })
 
 Then('the first page contains {int} members', (count: number) => {
-    cy.waitUntil(() => 
-        rootFragment.visit().then(x => x.memberCount === count), 
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for fragment '${rootFragment.url}' to have ${count} members`}
-    )    
+    waitForFragment(rootFragment, x => x.memberCount === count, `have member count equal ${count}`);
+})
+
+Then('the last fragment contains {int} members', (count: number) => {
+    waitForFragment(lastFragment, x => x.memberCount === count, `have member count equal ${count}`);
 })
 
 Then('the geo-spatial root fragment contains only relations of type {string}', (relationType: string) => {
@@ -193,14 +190,11 @@ Then('the pagination fragment contains {int} relation of type {string}', (count:
     const url = relation.link;
     expect(url).not.to.be.undefined;
 
-    cy.waitUntil(
-            () => new Fragment(url).visit().then(fragment => fragment.relations.length === count), 
-            {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the pagination fragment '${url}' to have ${count} relations`})
-        .then(() => new Fragment(url).visit().then(fragment => {
-            paginationFragment = fragment;
-            expect(fragment.relations.length).to.equal(count);
-            expect(fragment.expectNoOtherRelationThan(type));
-        }))
+    waitForFragment(new Fragment(url), x => x.relations.length === count, `have ${count} relations`).then(fragment => {
+        paginationFragment = fragment;
+        expect(fragment.relations.length).to.equal(count);
+        expect(fragment.expectNoOtherRelationThan(type));
+    })
 })
 
 Then('all members contains arrival and departure stops', () => {

@@ -79,6 +79,8 @@ jobs:
           # NOTE: Workbench Upgrading
           "@test-023",
           "@test-026",
+          # NOTE: Workbench RDF4J Materialization
+          "@test-024"
       ]
     
     runs-on: ubuntu-latest

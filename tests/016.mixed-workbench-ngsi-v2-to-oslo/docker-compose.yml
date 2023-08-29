@@ -59,7 +59,7 @@ services:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workbench
     image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
-      - ./ldio-workbench.config.yml:/ldio/application.yml:ro
+      - ./config/ldio-workbench.config.yml:/ldio/application.yml:ro
       - ./observations.rq:/ldio/observations.rq:ro
     networks:
       - ldes

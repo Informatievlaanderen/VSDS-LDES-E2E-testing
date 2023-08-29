@@ -1,4 +1,0 @@
-<http://somewhere/AndrewWiles/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Andrew Wiles" .
-<http://somewhere/AndrewWiles/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid7 .
-_:genid7 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Wiles" .
-_:genid7 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Andrew" .

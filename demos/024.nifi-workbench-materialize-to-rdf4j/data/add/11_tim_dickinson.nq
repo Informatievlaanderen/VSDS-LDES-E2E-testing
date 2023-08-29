@@ -1,4 +1,0 @@
-<http://somewhere/TimDickinson/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Tim Dickinson" .
-<http://somewhere/TimDickinson/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid11 .
-_:genid11 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Dickinson" .
-_:genid11 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Timothy" .

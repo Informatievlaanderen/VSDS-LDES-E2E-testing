@@ -1,4 +1,4 @@
-by-page@prefix tree:   <https://w3id.org/tree#>.
+@prefix tree:   <https://w3id.org/tree#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 </devices/by-page> a tree:Node ; 

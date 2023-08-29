@@ -38,7 +38,7 @@ services:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
     volumes:
-      - ./ldio-config.yml:/config/application.yml:ro
+      - ./config/ldio-config.yml:/config/application.yml:ro
     networks:
       - ldes
     ports:

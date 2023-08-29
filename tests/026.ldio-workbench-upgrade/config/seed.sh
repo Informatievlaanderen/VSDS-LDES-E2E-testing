@@ -7,13 +7,13 @@ if [ $code != 0 ]
     then exit $code
 fi
 
-curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/devices/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/devices.paged.ttl"
+curl -X DELETE 'http://localhost:8080/admin/api/v1/eventstreams/devices/views/by-page'
 code=$?
 if [ $code != 0 ] 
     then exit $code
 fi
 
-curl -X DELETE 'http://localhost:8080/admin/api/v1/eventstreams/devices/views/by-page'
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/devices/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/devices.by-page.ttl"
 code=$?
 if [ $code != 0 ] 
     then exit $code

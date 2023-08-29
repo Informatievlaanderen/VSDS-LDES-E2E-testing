@@ -2,8 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { EventStream, Fragment } from '../ldes';
-import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount, waitForFragment, obtainRootFragment } from "./common_step_definitions";
-import { timeouts } from "../common";
+import { server, testPartialPath, range, mongo, testDatabase, ensureRelationCount, waitForFragment, obtainRootFragment, byPage } from "./common_step_definitions";
 
 let ldes: EventStream;
 let view: Fragment;
@@ -16,7 +15,6 @@ let viewResponse: Cypress.Response<any>;
 let compressedViewResponse: Cypress.Response<any>;
 
 const mobilityHindrancesLdes = 'mobility-hindrances';
-const byPage = 'by-page';
 
 // When
 
@@ -168,7 +166,7 @@ Then('the {string} {string} fragment contains {int} members', (ldes: string, vie
 })
 
 Then('the {string} root fragment contains {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
+    obtainRootFragment(ldes, byPage).then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
 })
 
 Then('the {string} {string} fragment contains at least {int} members', (ldes: string, view: string, count: number) => {
@@ -176,7 +174,7 @@ Then('the {string} {string} fragment contains at least {int} members', (ldes: st
 })
 
 Then('the {string} root fragment contains at least {int} members', (ldes: string, count: number) => {
-    obtainRootFragment(ldes).then(fragment => waitForFragment(fragment, x => x.memberCount >= count, `have member count be at least ${count}`));
+    obtainRootFragment(ldes, byPage).then(fragment => waitForFragment(fragment, x => x.memberCount >= count, `have member count be at least ${count}`));
 })
 
 Then('the {string} LDES contains {int} members', (collection: string, count: number) => {

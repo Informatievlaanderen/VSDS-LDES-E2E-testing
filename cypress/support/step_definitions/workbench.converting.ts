@@ -1,10 +1,8 @@
 /// <reference types="cypress" />
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment, Member, sosa } from '../ldes';
-import { testPartialPath, server } from "./common_step_definitions";
+import { testPartialPath, obtainRootFragment, byPage, waitForFragment } from "./common_step_definitions";
 import { timeouts } from "../common";
-
-const byPage = 'paged';
 
 // When
 
@@ -21,10 +19,7 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
 
 let rootFragment: Fragment;
 When('the root fragment of {string} is obtained', (ldes: string) => {
-    return server.getLdes(ldes)
-        .then(ldes => new Fragment(ldes.viewUrl(byPage)).visit())
-        .then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => rootFragment = fragment);
+    obtainRootFragment(ldes, byPage).then(fragment => fragment.visit()).then(fragment => rootFragment = fragment);
 })
 
 // Then stuff
@@ -47,7 +42,7 @@ function validateVersionAndTime(member: Member) {
 }
 
 Then('the root fragment contains a correct NGSI-LD device model version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
+    waitForFragment(rootFragment, x => x.memberCount === 1, 'have one member');
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/DeviceModel');
@@ -55,7 +50,7 @@ Then('the root fragment contains a correct NGSI-LD device model version', () => 
 });
 
 Then('the root fragment contains a correct NGSI-LD device version', () => {
-    expect(rootFragment.memberCount).to.equal(1);
+    waitForFragment(rootFragment, x => x.memberCount === 1, 'have one member');
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/Device');
@@ -63,7 +58,7 @@ Then('the root fragment contains a correct NGSI-LD device version', () => {
 });
 
 Then('the root fragment contains a correct NGSI-LD observation version', () => {
-    expect(rootFragment.memberCount >= 1).to.be.true;
+    waitForFragment(rootFragment, x => x.memberCount >= 1, 'have at least one member');
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved');
@@ -71,7 +66,7 @@ Then('the root fragment contains a correct NGSI-LD observation version', () => {
 })
 
 Then('the root fragment contains a correct OSLO observation version', () => {
-    expect(rootFragment.memberCount >= 1).to.be.true;
+    waitForFragment(rootFragment, x => x.memberCount >= 1, 'have at least one member');
     const member = rootFragment.members[0];
     logMember(member);
     validateType(member, 'http://www.w3.org/ns/sosa/ObservationCollection');

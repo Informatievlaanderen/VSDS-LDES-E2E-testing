@@ -65,7 +65,7 @@ export function range(start: number, end: number) {
     return new Array(end - start + 1).fill(start).map((_, i) => i + 1);
 }
 
-export function obtainRootFragment(ldes: string, view = byPage) {
+export function obtainRootFragment(ldes: string, view: string) {
     return server.getLdes(ldes)
         .then(ldes => new Fragment(ldes.viewUrl(view)))
         .then(view => waitForFragment(view, x => x.hasSingleRelationLink, 'have a single relation').then(() => new Fragment(view.relation.link)));

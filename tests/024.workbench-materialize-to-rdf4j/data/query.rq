@@ -1,0 +1,7 @@
+PREFIX vcard: <http://www.w3.org/2001/vcard-rdf/3.0#>
+
+SELECT ?name where
+{
+    ?x vcard:Given ?name .
+    ?x vcard:Family 'Kennedy'
+}

@@ -1,4 +1,0 @@
-<http://somewhere/JohnSmith/> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "John Smith" .
-<http://somewhere/JohnSmith/> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:genid4 .
-_:genid4 <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Smith" .
-_:genid4 <http://www.w3.org/2001/vcard-rdf/3.0#Given> "John" .

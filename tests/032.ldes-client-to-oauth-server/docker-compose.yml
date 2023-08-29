@@ -95,7 +95,7 @@ services:
       - delay-started
 
   api-gateway:
-    image: nginx:${NGINX_TAG:-latest}
+    image: nginx:${NGINX_TAG:-stable}
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nginx
     ports:
       - ${NGINX_PORT:-8080}:8080

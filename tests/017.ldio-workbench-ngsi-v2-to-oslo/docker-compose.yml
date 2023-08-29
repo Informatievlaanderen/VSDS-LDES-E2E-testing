@@ -48,7 +48,7 @@ services:
     ports:
       - 8081:8080
     volumes:
-      - ./ldio-workbench.config.yml:/ldio/application.yml:ro
+      - ./config/ldio-workbench.config.yml:/ldio/application.yml:ro
       - ./observations.rq:/ldio/observations.rq:ro
     networks:
       - ldes

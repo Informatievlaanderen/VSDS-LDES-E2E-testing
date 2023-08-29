@@ -9,6 +9,7 @@ docker pull ghcr.io/informatievlaanderen/ldes-server:20230703153349
 docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:20230324T175226
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230405T0843
+docker pull ghcr.io/informatievlaanderen/ldes-server:20230802075556
 
 # support
 docker pull ghcr.io/informatievlaanderen/ldes-list-fragments:20230502T1216

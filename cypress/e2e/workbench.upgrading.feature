@@ -15,10 +15,10 @@ Feature: LDES Workbench Upgrading
     And I set the TARGETURL to the new '<workbench>' workbench
     Then the member count does not change
     When I bring the old '<workbench>' workbench down
-    And I remember the last fragment member count
+    And I remember the last fragment member count for view 'by-page'
     And I resume the new '<workbench>' workbench output
     Then the LDES member count increases
-    And the fragment member count increases
+    And the fragment member count increases for view 'by-page'
 
     @test-023 @nifi
     Examples: 

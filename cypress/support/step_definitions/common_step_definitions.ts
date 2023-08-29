@@ -300,16 +300,16 @@ When('the GTFS to LDES service starts sending linked connections', () => {
 })
 
 let lastMemberCount: number;
-When('I remember the last fragment member count', () => {
-    obtainRootFragment('devices', byPage)
+When('I remember the last fragment member count for view {string}', (view:string) => {
+    obtainRootFragment('devices', view)
         .then(fragment => waitForFragment(fragment, x => x.memberCount > 0, 'have members'))
         .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount));
 })
 
 // Then stuff
 
-Then('the fragment member count increases', () => {
-    obtainRootFragment('devices', byPage)
+Then('the fragment member count increases for view {string}', (view:string) => {
+    obtainRootFragment('devices', view)
         .then(fragment => waitForFragment(fragment, x => x.memberCount > lastMemberCount, 'increase member count'))
         .then(fragment => cy.log(`New member count: ${fragment.memberCount}`));
 })

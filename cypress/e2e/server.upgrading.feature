@@ -13,7 +13,7 @@ Feature: LDES Server Upgrading
     And the old ldesmember collection is structured as expected
     When I pause the '<workbench>' workbench output
     And the old server is done processing
-    And I remember the last fragment member count
+    And I remember the last fragment member count for view 'devices-by-time'
     And I bring the old server down
     And I start the new LDES Server
     Then the fragmentation_fragment collection is upgraded as expected
@@ -27,7 +27,7 @@ Feature: LDES Server Upgrading
     And the migrated config matches the expected config 'test-021/expected_config.ttl'
     When I resume the '<workbench>' workbench output
     Then the LDES member count increases
-    And the fragment member count increases
+    And the fragment member count increases for view 'devices-by-time'
 
     @nifi
     Examples: 

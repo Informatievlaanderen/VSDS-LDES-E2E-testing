@@ -1,8 +1,8 @@
-@workbench @repositorymaterialisation
+@workbench @materialisation
 Feature: LDES Workbench Repository Materialisation
 
-  @test-034
-  Scenario Outline: 034: Can materialise ldes into RDF4J repository using '<workbench>' Workbench
+  @test-024
+  Scenario Outline: 024: Can materialise ldes into RDF4J repository using '<workbench>' Workbench
     Given context 'tests/024.workbench-materialize-to-rdf4j' is started
     And I start the '<workbench>' workbench
     And I create the rdf4j repository

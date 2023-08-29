@@ -301,19 +301,17 @@ When('the GTFS to LDES service starts sending linked connections', () => {
 
 let lastMemberCount: number;
 When('I remember the last fragment member count', () => {
-    server.getLdes('devices')
-        .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit())
-        .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount)));
+    obtainRootFragment('devices', byPage)
+        .then(fragment => waitForFragment(fragment, x => x.memberCount > 0, 'have members'))
+        .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount));
 })
 
 // Then stuff
 
 Then('the fragment member count increases', () => {
-    cy.waitUntil(() => server.getLdes('devices')
-        .then(ldes => new Fragment(ldes.viewUrl()).visit().then(view => new Fragment(view.relation.link).visit()))
-        .then(fragment => cy.log(`New member count: ${fragment.memberCount}`).then(() => lastMemberCount < fragment.memberCount)),
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for the last fragment count to increase (last: ${lastMemberCount})` }
-    );
+    obtainRootFragment('devices', byPage)
+        .then(fragment => waitForFragment(fragment, x => x.memberCount > lastMemberCount, 'increase member count'))
+        .then(fragment => cy.log(`New member count: ${fragment.memberCount}`));
 })
 
 Then('the sink contains {int} members', (count: number) => {

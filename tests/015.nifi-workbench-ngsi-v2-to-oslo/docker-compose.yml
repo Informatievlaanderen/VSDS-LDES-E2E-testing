@@ -20,7 +20,7 @@ services:
       - nifi-workflow
 
   nifi-workflow:
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -42,7 +42,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:

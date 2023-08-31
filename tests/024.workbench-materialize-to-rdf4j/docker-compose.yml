@@ -26,8 +26,7 @@ services:
       - delay-started
 
   nifi-workbench:
-#    image: nifi-mat:latest
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-ldio-repository-materialiser}_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}

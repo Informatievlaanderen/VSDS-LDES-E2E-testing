@@ -33,7 +33,7 @@ orchestrator:
           config:
             member-type: https://uri.etsi.org/ngsi-ld/default-context/Device
             delimiter: "/"
-            date-observed-property: "[<https://uri.etsi.org/ngsi-ld/default-context/dateLastValueReported> <https://uri.etsi.org/ngsi-ld/hasValue>]"
+            date-observed-property: <https://uri.etsi.org/ngsi-ld/default-context/dateLastValueReported>/<https://uri.etsi.org/ngsi-ld/hasValue>
             generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
             versionOf-property: http://purl.org/dc/terms/isVersionOf
       outputs:

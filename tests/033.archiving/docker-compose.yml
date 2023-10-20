@@ -76,7 +76,7 @@ services:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-      - ${ARCHIVE_DIR:-./data/archive}/nifi:/tmp/archive:rw
+      - ${ARCHIVE_DIR:-./data/archive}:/tmp/archive:rw
     ports:
       - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
     networks:

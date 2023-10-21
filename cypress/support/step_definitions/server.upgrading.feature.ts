@@ -11,7 +11,7 @@ const eventstreamsUrl = 'http://localhost:8080/admin/api/v1/eventstreams';
 const commonMongoProperties = ['_id', '_class']
 const commonFragmentProperties = [...commonMongoProperties, 'fragmentPairs', 'immutable', 'relations', 'root', 'viewName'];
 
-const fragmentationFragmentProperties = [...commonFragmentProperties, 'collectionName', 'nrOfMembersAdded', 'parentId'];
+const fragmentationFragmentProperties = [...commonFragmentProperties, 'collectionName', 'numberOfMembers', 'parentId'];
 const fragmentationFragmentIndices = ['_id_', 'root', 'viewName', 'immutable', 'parentId', 'collectionName'];
 const fragmentationAllocationProperties = [...commonMongoProperties, 'viewName'];
 

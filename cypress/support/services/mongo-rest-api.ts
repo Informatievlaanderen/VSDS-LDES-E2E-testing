@@ -4,7 +4,7 @@ import { timeouts } from "../common";
 
 type CountResult = { count: number, ids: string[] };
 
-type FragmentInfo = { _id: string, numberOfMembers: number }
+type FragmentInfo = { _id: string, nrOfMembersAdded: number }
 type DocumentResult = { count: number, documents: FragmentInfo[] };
 
 export class MongoRestApi {
@@ -23,7 +23,7 @@ export class MongoRestApi {
         return cy.request(`${this.baseUrl}/${database}/fragmentation_fragment?includeDocuments=true`)
         .then(response => response.body)
         .then((body: DocumentResult) => body.documents.find(x => x._id === fragment))
-        .then((fragment: FragmentInfo) => cy.log('Actual fragment member count: ' + fragment.numberOfMembers).then(() => checkFn(fragment.numberOfMembers , count)));
+        .then((fragment: FragmentInfo) => cy.log('Actual fragment member count: ' + fragment.nrOfMembersAdded).then(() => checkFn(fragment.nrOfMembersAdded , count)));
     }
 
     private hasCount(database: string, collection: string, count: number, checkFn: (actual: number, expected: number) => boolean) {

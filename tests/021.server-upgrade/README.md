@@ -139,7 +139,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    "collectionName",
    "fragmentPairs",
    "immutable",
-   "numberOfMembers",
+   "nrOfMembersAdded",
    "parentId",
    "relations",
    "root",
@@ -147,7 +147,7 @@ The server upgrade will include changesets that alter the database schema. We wi
    ]
    ```
 
-   > **Note**: Changeset-1 will add the `softDeleted`, `parentId` and `immutableTimestamp` values to the model and will replace the `members` array with a value indicating the amount of members in the fragment in `numberOfMembers`
+   > **Note**: Changeset-1 will add the `softDeleted`, `parentId` and `immutableTimestamp` values to the model and will replace the `members` array with a value indicating the amount of members in the fragment in `nrOfMembersAdded`
    > **Note**: Changeset-3 will add the `collectionName`
    > **Note**: Changeset-6 will remove the `softDeleted` and `immutableTimestamp` values from the model
 

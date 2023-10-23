@@ -11,4 +11,5 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut
           config:
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads

@@ -24,7 +24,8 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/device-models
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads
 
     - name: devices-pipeline
       description: "Uses a HTTP listener accepting NGSI-v2 messages, converts them to NGSI-LD, and sends NGSI-LD version objects using HTTP to an LDES server."
@@ -47,7 +48,8 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/devices
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads
 
     - name: observations-pipeline
       description: "Uses a HTTP listener accepting NGSI-v2 messages, converts them to OSLO, and sends NGSI-LD version objects using HTTP to an LDES server."
@@ -70,4 +72,5 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/water-quality-observations
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads

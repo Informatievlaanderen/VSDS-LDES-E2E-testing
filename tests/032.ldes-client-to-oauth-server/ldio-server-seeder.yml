@@ -19,5 +19,6 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads
             endpoint: http://ldes-server:8080/devices

@@ -20,7 +20,8 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/device-models
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads
     
     - name: devices-pipeline
       description: "This pipeline uses a HTTP listener to read device state objects, create a version object and forward it as N-quads to a LDES Server"
@@ -40,7 +41,8 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/devices
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads
     
     - name: observations-pipeline
       description: "This pipeline uses a HTTP listener to read WQO state objects, create a version object and forward it as N-quads to a LDES Server"
@@ -60,4 +62,5 @@ orchestrator:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://ldes-server:8080/water-quality-observations
-            content-type: application/n-quads
+            rdf-writer:
+              content-type: application/n-quads

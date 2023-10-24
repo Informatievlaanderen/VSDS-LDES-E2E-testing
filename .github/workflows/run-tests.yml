@@ -45,7 +45,7 @@ jobs:
           "@test-032 and @nifi",
           "@test-033 and @ldio",
           "@test-033 and @nifi",
-      ]
+        ]
     
     runs-on: ubuntu-latest
       

@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tags: [ 
+        tags: [
           "@test-001 and @ldio",
           "@test-001 and @nifi",
           "@test-003 and @ldio",

@@ -39,6 +39,7 @@ jobs:
           - "@test-023"
           - "@test-024 and @ldio"
           - "@test-024 and @nifi"
+          # - "@test-025" # BROKEN
           - "@test-026"
           - "@test-032 and @ldio"
           - "@test-032 and @nifi"

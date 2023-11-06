@@ -25,7 +25,9 @@ This test uses a docker environment a data generator simulating the system pushi
     curl --insecure -I https://localhost:8443/nifi/
     ```
 
-2. Connect to the [old NiFi workbench](https://localhost:8443/nifi), log on using the default or your own credentials, upload and start the [old workflow](./old-nifi-workflow.json) (containing older versions of a http listener, a version creation component and a http sender).
+2. Connect to the [old NiFi workbench](https://localhost:8443/nifi), log on using the default or your own credentials, 
+upload and start the [old workflow](./old-nifi-workflow.json) (containing older versions of a http listener, 
+a version creation component and a http sender).
 
 3. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
@@ -43,7 +45,10 @@ This test uses a docker environment a data generator simulating the system pushi
     ```
 
 ## Test execution
-1. Launch the [new NiFi workbench](http://localhost:8000/nifi), connect to it in an incognito tab or a different browser (due to the different security) upload & start the [new workflow](./new-nifi-workflow.json) (containing a newer version of a http listener, a version creation processor and a http sender), and stop the new http sender.
+1. Launch the [new NiFi workbench](http://localhost:8000/nifi), connect to it in an incognito tab or a different browser (due to the different security) 
+upload & start the [new workflow](./new-nifi-workflow.json) (containing a newer version of a http listener, a version creation processor and a http sender), 
+and stop the new http sender.
+
     ```bash
     docker compose up new-nifi-workbench -d
     ```

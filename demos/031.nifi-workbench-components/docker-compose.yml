@@ -34,34 +34,20 @@ services:
       - "host.docker.internal:host-gateway"
 
   ldes-mongodb:
-    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-latest}
+    container_name: ldes-mongodb
+    image: mongo
     ports:
-      - ${MONGODB_PORT:-27017}:27017
+      - 27017:27017
     networks:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-workbench-components}_new-ldes-server
-    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    container_name: basic_ldes-server
+    image: ldes/ldes-server
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
-      - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_ldes
-      - COLLECTIONS_0_HOSTNAME=http://${LDES_SERVER}:8080
-      - COLLECTIONS_0_COLLECTIONNAME=observations
-      - COLLECTIONS_0_SHAPE=
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=http://www.w3.org/ns/sosa/ObservationCollection
-      - COLLECTIONS_0_VIEWS_0_NAME=by-page
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
+      - SPRING_CONFIG_LOCATION=/config/
     volumes:
-      - ../../data/epsg:/tmp/Databases:rw
+      - ./ldes-server.yml:/config/application.yml:ro
     ports:
       - 8080:8080
     networks:
@@ -104,7 +90,7 @@ services:
       - ${GRAPHDB_PORT:-7200}:7200
     networks:
       - ldes
-    
+
 networks:
   ldes:
-    name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network
+    name: quick_start_network

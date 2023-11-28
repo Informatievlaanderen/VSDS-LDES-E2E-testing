@@ -10,7 +10,7 @@ export class TestMessageGenerator implements CanCheckAvailability {
     }
 
     private isReady(containerId: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes("Runs at:"));
+        return cy.exec(`docker logs ${containerId}`).then(result => result.stderr.includes("Runs at:"));
     }
 
     waitAvailable() {

@@ -6,6 +6,7 @@ import {
 } from "../services";
 import { Gtfs2Ldes } from "../services/gtfs2ldes";
 import { Fragment } from "../ldes";
+import { LdesClientWorkbench } from "../services/ldes-client-workbench";
 
 let testContext: any;
 const ldesMemberCollection = 'ingest_ldesmember';
@@ -14,6 +15,7 @@ const ldesFragmentCollection = 'fragmentation_fragment'
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
+export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const mongo = new MongoRestApi('http://localhost:9019');
@@ -168,11 +170,29 @@ Given('the {string} workbench is available', (workbench) => {
 
 // When stuff
 
-export function startNifiWorkbench(){
+function startNifiWorkbench(){
     createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
     workbenchNifi.pushStart();
 }
+
+function startClientWorkbench(){
+    createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
+}
+
+When('I start the LDES Client {string} workbench', (workbench) => {
+    switch (workbench) {
+        case 'NIFI': {
+            startNifiWorkbench();
+            break;
+        }
+        case 'LDIO': {
+            startClientWorkbench();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
+})
 
 When('I start the {string} workbench', (workbench) => {
     switch (workbench) {
@@ -188,33 +208,6 @@ When('I start the {string} workbench', (workbench) => {
     }
 })
 
-When('I stop the {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            dockerCompose.stop(workbenchNifi.serviceName);
-            break;
-        }
-        case 'LDIO': {
-            dockerCompose.stop(workbenchLdio.serviceName);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
-})
-
-When('I restart the {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            dockerCompose.start(workbenchNifi.serviceName);
-            break;
-        }
-        case 'LDIO': {
-            dockerCompose.start(workbenchLdio.serviceName);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
-})
 When('I pause the {string} workbench output', (workbench) => {
     switch(workbench) {
         case 'NIFI': {

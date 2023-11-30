@@ -8,7 +8,7 @@ Feature: LDES Client Security
     And the LDES server is available and configured
     And I start the JSON Data Generator
     And the LDES fragment '/devices/by-page?pageNumber=1' contains at least 3 members
-    When I start the '<workbench>' workbench
+    When I start the LDES Client '<workbench>' workbench
     Then the 'devices' sink contains at least 3 members
     And the collection at 'http://localhost:8080/devices' is forbidden
 

@@ -176,10 +176,6 @@ function startNifiWorkbench(){
     workbenchNifi.pushStart();
 }
 
-function startClientWorkbench(){
-    createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
-}
-
 When('I start the LDES Client {string} workbench', (workbench) => {
     switch (workbench) {
         case 'NIFI': {
@@ -187,7 +183,7 @@ When('I start the LDES Client {string} workbench', (workbench) => {
             break;
         }
         case 'LDIO': {
-            startClientWorkbench();
+            createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);

@@ -11,6 +11,10 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         return this._serviceName || 'ldio-workbench';
     }
 
+    protected get availabilityMessage() {
+        return "Started Application in";
+    }
+
     private containerLogIncludes(containerId: string, includeString: string) {
         return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes(includeString));
     }
@@ -24,7 +28,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     }
 
     waitAvailable() {
-        this.waitForDockerLog("Started Application in")
+        this.waitForDockerLog(this.availabilityMessage);
     }
 
     pause() {

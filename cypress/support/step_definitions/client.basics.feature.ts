@@ -1,14 +1,29 @@
 /// <reference types="cypress" />
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { ClientCli } from "../services/client-cli";
-import { createAndStartService } from "./common_step_definitions";
+import { LdesClientWorkbench } from "../services/ldes-client-workbench";
+import { createAndStartService, startNifiWorkbench } from "./common_step_definitions";
 
-export const clientCli = new ClientCli('http://localhost:8081');
+export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 
-When('I launch the Client CLI', () => {
-    createAndStartService(clientCli.serviceName).then(() => clientCli.waitAvailable());
-})
+function startClientWorkbench(){
+    createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
+}
 
 Then('the Client CLI contains {int} members', (count: number) => {
-    clientCli.checkCount(count);
+    clientWorkbench.checkCount(count);
+})
+
+
+When('I start the LDES Client {string} workbench', (workbench) => {
+    switch (workbench) {
+        case 'NIFI': {
+            startNifiWorkbench();
+            break;
+        }
+        case 'LDIO': {
+            startClientWorkbench();
+            break;
+        }
+        default: throw new Error(`Unknown workbench '${workbench}'`);
+    }
 })

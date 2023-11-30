@@ -6,7 +6,7 @@ Feature: LDES Client Basic Functionality
     Given the members are stored in database 'gipod'
     And context 'tests/001.client-replicate-ldes' is started
     And I have aliased the pre-seeded simulator data set
-    When I start the '<workbench>' workbench
+    When I start the LDES Client '<workbench>' workbench
     Then the sink contains 1016 members
 
     @ldio
@@ -26,7 +26,7 @@ Feature: LDES Client Basic Functionality
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
-    When I start the '<workbench>' workbench
+    When I start the LDES Client '<workbench>' workbench
     And the sink contains 501 members
     When I upload the data files: 'delta' with a duration of 10 seconds
     Then the sink contains 550 members
@@ -49,7 +49,7 @@ Feature: LDES Client Basic Functionality
     And context 'tests/018.client-output-to-console' is started
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
-    When I launch the Client CLI
+    When I start the LDES Client 'LDIO' workbench
     Then the Client CLI contains 1 members
     When I have uploaded the data files: 'delta'
     Then the Client CLI contains 50 members

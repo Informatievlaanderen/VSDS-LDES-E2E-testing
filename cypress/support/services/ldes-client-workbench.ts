@@ -3,7 +3,7 @@
 import { timeouts } from "../common";
 import { LdesWorkbenchLdio } from "./ldes-workbench-ldio";
 
-export class ClientCli extends LdesWorkbenchLdio {
+export class LdesClientWorkbench extends LdesWorkbenchLdio {
 
     constructor(baseUrl: string, serviceName?: string) { 
         super(baseUrl, serviceName);
@@ -25,4 +25,7 @@ export class ClientCli extends LdesWorkbenchLdio {
             });
     }
 
+    protected get availabilityMessage(): string {
+        return "LdesClientRunner setup finished";
+    }
 }

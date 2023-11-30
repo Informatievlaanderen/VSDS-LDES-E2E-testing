@@ -168,12 +168,16 @@ Given('the {string} workbench is available', (workbench) => {
 
 // When stuff
 
+export function startNifiWorkbench(){
+    createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
+    workbenchNifi.pushStart();
+}
+
 When('I start the {string} workbench', (workbench) => {
     switch (workbench) {
         case 'NIFI': {
-            createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
-            workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
-            workbenchNifi.pushStart();
+            startNifiWorkbench();
             break;
         }
         case 'LDIO': {

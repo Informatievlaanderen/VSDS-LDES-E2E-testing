@@ -1,0 +1,10 @@
+@prefix ldes:    <https://w3id.org/ldes#> .
+@prefix tree:    <https://w3id.org/tree#>.
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+
+</connections> a ldes:EventStream ;
+	tree:shape [ a sh:NodeShape ; sh:targetClass <http://semweb.mmlab.be/ns/linkedconnections#Connection> ] ;
+	ldes:timestampPath prov:generatedAtTime ;
+	ldes:versionOfPath dcterms:isVersionOf .	

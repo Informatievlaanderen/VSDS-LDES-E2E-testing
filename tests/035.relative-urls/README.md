@@ -1,7 +1,7 @@
 # LDES Client Can Synchronize with an LDES with relative urls
-The test verifies that the LDES Client can synchronize a (small subset of the) GIPOD data set. It uses a context containing an LDES Server serving the fragments, a workflow containing the LDES Client and a http sender and a message sink backed by a data store (mongodb).
+The test verifies that the LDES Client can synchronize a data set using relative uri's. It uses a context containing an LDES Server serving the fragments, a workflow containing the LDES Client and a http sender and a message sink backed by a data store (mongodb).
 
-The server (http://localhost:9011) is seeded by a subset of the GIPOD dataset.
+The server (http://localhost:8080) is seeded by a subset of the mobility-hindrances dataset.
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -12,14 +12,14 @@ docker compose up -d
 ```
 
 ## Test Execution
-1. Seed the LDES Server with a part of the GIPOD data set:
+1. Seed the LDES Server with a collection and a view and i send 5 members:
     ```bash
    chmod +x ./config/seed.sh
    sh ./config/seed.sh
    ```
-    To verify that the [server](http://localhost:9011/) is correctly seeded you can run this command: 
+    To verify that the [server](http://localhost:8080) is correctly seeded you can run this command: 
     ```bash
-    curl http://localhost:9011/gipod
+    curl http://localhost:8080/mobility-hindrances
     ```
 
 2. Start the workflow containing the LDES Client using:

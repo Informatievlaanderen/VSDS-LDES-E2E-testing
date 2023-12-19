@@ -1,9 +1,11 @@
-@prefix tree:   <https://w3id.org/tree#>.
-@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes: <https://w3id.org/ldes#> .
+@prefix example: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-</connections/by-page> a tree:Node ; 
-  tree:viewDescription [ 
-		a tree:ViewDescription ;
+<test> a ldes:View ;
+  tree:viewDescription [
     tree:fragmentationStrategy () ;
-		tree:pageSize "250"^^xsd:integer ;
-	] .
+    tree:pageSize "2"^^<http://www.w3.org/2001/XMLSchema#int> ;
+  ] .

@@ -7,10 +7,15 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-          url: http://ldes-server/mobility-hindrances
+          url: http://host.docker.internal:8080/mobility-hindrances
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
             endpoint: http://test-message-sink/member
+            rdf-writer:
+              content-type: application/n-quads
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: https://webhook.site/dd9ede3a-76ce-44ba-8c3e-3bb1f66afab6
             rdf-writer:
               content-type: application/n-quads

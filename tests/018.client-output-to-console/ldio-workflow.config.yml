@@ -6,8 +6,10 @@ orchestrator:
       description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to the console output"
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        adapter:
+          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
         config:
-          url: http://ldes-server-simulator/api/v1/ldes/mobility-hindrances
+          url: http://ldes-server-simulator/ldes/occupancy
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut
           config:

@@ -68,6 +68,6 @@ Then('I wait until the {string} workbench finished archiving', (workbench: strin
 })
 
 Then('I clean up the {string} workbench archive', (workbench: string) => {
-    const cmd =`rm -rf ./${archiveFolder}/${workbench.toLowerCase()}/2022`;
+    const cmd =`rm -rf ./${archiveFolder}/${workbench.toLowerCase()}/2023`;
     cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => checkSuccess(result));
 })

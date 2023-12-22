@@ -1,12 +1,12 @@
 @workbench @archiving
 Feature: LDES Workbench Archiving
 
-  @test-033 @gipod @archiving
+  @test-033 @parkAndRide @archiving
   Scenario Outline: 033: Can create and read from a file archive from the server using the '<workbench>' Workbench
-    Given the members are stored in database 'gipod'
+    Given the members are stored in database 'Gent'
     And I have configured the archive directory
     And context 'tests/033.archiving' is started
-    And I have aliased the pre-seeded simulator data set
+    And I have aliased the 'parkAndRide' simulator data set
     When I start the create archive '<workbench>' workbench
     And I wait until the '<workbench>' workbench finished archiving
     And the LDES server is available and configured

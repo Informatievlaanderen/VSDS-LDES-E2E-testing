@@ -41,8 +41,8 @@ services:
     container_name: ${USECASE_NAME:-persisted-state}_test-message-sink
     environment:
       - MEMORY=true
-      - COLLECTION_NAME=${TEST_MESSAGE_SINK_COLLECTION_NAME:-mobility-hindrances}
-      - MEMBER_TYPE=${TEST_MESSAGE_SINK_MEMBER_TYPE:-https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder}
+      - COLLECTION_NAME=parkAndRide
+      - MEMBER_TYPE=http://schema.mobivoc.org/#ParkingLot
     ports:
       - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:

@@ -3,7 +3,7 @@ To ease the verification of the LDES Client's behavior we have created a CLI wra
 
 The test verifies that the LDES Client can replicate and synchronize an LDES. It uses a context containing a (LDES Server) simulator serving the fragments and a workflow containing the LDES Client and a console out, which effectively creates a LDES client wrapper.
 
-We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.jsonld` = 1 item) and then update the fragment (`delta.jsonld` = 50 items, i.e. adds 49 new members to `gamma.jsonld`) for the synchronization part.
+We do not seed the LDES Server Simulator because we need to upload a mutable fragment for the replication part (`gamma.ttl` = 1 item) and then update the fragment (`delta.ttl` = 50 items, i.e. adds 49 new members to `gamma.ttl`) for the synchronization part.
 
 The LDES Client CLI starts to follow the given data set url as soons as it starts. It requests the existing data set by getting the first fragment and following all relations contained in the fragment. All fragments marked as immutable are retrieved only once. All mutable fragments are re-requested based on the fragment expiration date.
 
@@ -15,22 +15,22 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
     docker compose up -d
     ```
 
-2. Ingest the [data set](./data/gamma.jsonld) and [alias it](./data/create-alias.json) - in a new terminal window (bash shell):
+2. Ingest the [data set](./data/gamma.ttl) and [alias it](./data/create-alias.json) - in a new terminal window (bash shell):
     ```bash
-    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: application/ld+json' -d '@data/gamma.jsonld'
+    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: text/turtle' -d '@data/gamma.ttl'
     curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
     > **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
 
-    You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/api/v1/ldes/mobility-hindrances):
+    You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/ldes/occupancy):
     ```bash
     curl http://localhost:9011/
     ```
     returns:
     ```json
     {
-        "aliases":["/api/v1/ldes/mobility-hindrances"],
-        "fragments":["/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-06-03T07:58:29.2Z"],
+        "aliases":["/ldes/occupancy"],
+        "fragments":["/ldes/occupancy/by-page?pageNumber=3"],
         "responses":{}
     }
     ```
@@ -54,9 +54,9 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
     ```
 
 
-3. Ingest the [data set update](./data/delta.jsonld) containing the additional members:
+3. Ingest the [data set update](./data/delta.ttl) containing the additional members:
     ```bash
-    curl -X POST http://localhost:9011/ldes -H 'Content-Type: application/ld+json' -d '@data/delta.jsonld'
+    curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d '@data/delta.ttl'
     ```
 
 4. Verify Synchronization

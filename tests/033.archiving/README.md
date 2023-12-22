@@ -6,7 +6,7 @@ This test verifies:
 
 ![img](artwork/test-33.drawio.png)
 
-The Ldes server simulator serves an LDES based on a small subset of the GIPOD data set.
+The Ldes server simulator serves an LDES based on a small subset of the Gent P+R data set.
 The 'create-archive-workbench' has an LDES Client that consumes the LDES server and uses the archive file out component to write the members to a file archive.
 The 'read-archive-workbench' has an archive file in component to consume the archive and post the members to the server using the Http out component.
 
@@ -21,7 +21,7 @@ docker compose up -d
 Prepare the archive location:
 ```bash
 mkdir ./data/archive
-sudo chmod 0777 ./data/archive
+sudo chmod 0777 -R ./data/archive
 ```
 
 On linux, also set the user to run the archive creation LDIO:
@@ -31,9 +31,9 @@ export LDIO_USER=$(id -u):$(id -g)
 
 ## Test Execution
 
-1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
+1. Seed the LDES Server Simulator with a part of the Gent P+R data set and [alias it](./create-alias.json):
     ```bash
-    for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+    for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
     curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
    To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command:
@@ -86,7 +86,7 @@ export LDIO_USER=$(id -u):$(id -g)
 
 5. Verify LDES Server is empty
     ```bash
-    curl http://localhost:9019/gipod/ingest_ldesmember
+    curl http://localhost:9019/Gent/ingest_ldesmember
     ```    
     Should return `{"count":0}`
 
@@ -100,7 +100,7 @@ export LDIO_USER=$(id -u):$(id -g)
 
 7. Verify server
     ```bash
-    while : ; do curl http://localhost:9019/gipod/ingest_ldesmember ; echo '' ; sleep 1 ; done
+    while : ; do curl http://localhost:9019/Gent/ingest_ldesmember ; echo '' ; sleep 1 ; done
     ```    
    Should eventually return `{"count":1016}`. Press `CTRL-C` to stop following the count.
 
@@ -121,5 +121,5 @@ docker compose down
 
 And clean up the archive directory:
 ```bash
-rm -rf ./data/archive
+sudo rm -rf ./data/archive
 ```

@@ -1,4 +1,4 @@
 {
-    "original": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z",
-    "alias": "http://ldes-server-simulator/api/v1/ldes/mobility-hindrances"
+    "original": "http://ldes-server-simulator/ldes/occupancy/by-page?pageNumber=1",
+    "alias": "http://ldes-server-simulator/ldes/occupancy"
 }

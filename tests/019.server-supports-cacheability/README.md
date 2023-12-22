@@ -38,120 +38,110 @@ sh ./config/seed.sh
 ```
 
 ### Verify URL Naming Strategy
-As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/mobility-hindrances and the view at http://localhost:8080/mobility-hindrances/by-page, or using bash commands:
+As shown in the [test setup](#test-setup) the LDES Server allows to specify the collection name and the view name. Based on these configurable settings, the LDES server will accept requests on the URL `http://localhost:8080/<ldes-name>/<view-name>`. E.g. if you keep the default settings, the collection is available at http://localhost:8080/occupancy and the view at http://localhost:8080/occupancy/by-page, or using bash commands:
 ```bash
-curl http://localhost:8080/mobility-hindrances/by-page
+curl http://localhost:8080/occupancy/by-page
 ```
 this results in:
 ```
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobiliteit:          <https://data.vlaanderen.be/ns/mobiliteit#> .
-@prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
-@prefix rdf:                 <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix shacl:               <http://www.w3.org/ns/shacl#> .
-@prefix terms:               <http://purl.org/dc/terms/> .
-@prefix tree:                <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances>
-        rdf:type   ldes:EventStream ;
-        tree:view  mobility-hindrances:by-page .
-
-mobility-hindrances:by-page
-        rdf:type        tree:Node ;
-        terms:isPartOf  <http://localhost:8080/mobility-hindrances> .
+@prefix ldes:      <https://w3id.org/ldes#> .
+@prefix occupancy: <http://localhost:8080/occupancy/> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix shacl:     <http://www.w3.org/ns/shacl#> .
+@prefix tree:      <https://w3id.org/tree#> .
 
 [ rdf:type           shacl:NodeShape ;
-  shacl:targetClass  mobiliteit:Mobiliteitshinder
+  shacl:targetClass  <http://schema.mobivoc.org/#ParkingLot>
 ] .
+
+<http://localhost:8080/occupancy>
+        rdf:type   ldes:EventStream ;
+        tree:view  occupancy:by-page .
+
+occupancy:by-page  rdf:type  tree:Node .
 ```
 
 ### Verify Acceptable Fragment Formats
 The LDES Server allows to request the collection (including the views and fragments) as the following formats: N-triples, N-quads, Turtle and JSON-LD.
 > **Note** that you can use `-H` or `--header` which is equivalent.
 ```
-curl -H "accept: text/turtle" http://localhost:8080/mobility-hindrances/by-page
-curl -H "accept: application/n-quads" http://localhost:8080/mobility-hindrances/by-page
-curl -H "accept: application/ld+json" http://localhost:8080/mobility-hindrances/by-page
-curl -H "accept: application/n-triples" http://localhost:8080/mobility-hindrances/by-page
+curl -H "accept: text/turtle" http://localhost:8080/occupancy/by-page
+curl -H "accept: application/n-quads" http://localhost:8080/occupancy/by-page
+curl -H "accept: application/ld+json" http://localhost:8080/occupancy/by-page
+curl -H "accept: application/n-triples" http://localhost:8080/occupancy/by-page
 ```
 this results in (something similar to):
-```
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobiliteit:          <https://data.vlaanderen.be/ns/mobiliteit#> .
-@prefix mobility-hindrances: <http://localhost:8080/mobility-hindrances/> .
-@prefix rdf:                 <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix shacl:               <http://www.w3.org/ns/shacl#> .
-@prefix terms:               <http://purl.org/dc/terms/> .
-@prefix tree:                <https://w3id.org/tree#> .
-
-<http://localhost:8080/mobility-hindrances>
-        rdf:type   ldes:EventStream ;
-        tree:view  mobility-hindrances:by-page .
-
-mobility-hindrances:by-page
-        rdf:type        tree:Node .
+```turtle
+@prefix ldes:      <https://w3id.org/ldes#> .
+@prefix occupancy: <http://localhost:8080/occupancy/> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix shacl:     <http://www.w3.org/ns/shacl#> .
+@prefix tree:      <https://w3id.org/tree#> .
 
 [ rdf:type           shacl:NodeShape ;
-  shacl:targetClass  mobiliteit:Mobiliteitshinder
+  shacl:targetClass  <http://schema.mobivoc.org/#ParkingLot>
 ] .
+
+<http://localhost:8080/occupancy>
+        rdf:type   ldes:EventStream ;
+        tree:view  occupancy:by-page .
+
+occupancy:by-page  rdf:type  tree:Node .
 ```
+```n-quads
+_:B7cbe89ea87ddc05e5be88f2817e86bb6 <http://www.w3.org/ns/shacl#targetClass> <http://schema.mobivoc.org/#ParkingLot> .
+_:B7cbe89ea87ddc05e5be88f2817e86bb6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .
+<http://localhost:8080/occupancy> <https://w3id.org/tree#view> <http://localhost:8080/occupancy/by-page> .
+<http://localhost:8080/occupancy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
+<http://localhost:8080/occupancy/by-page> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 ```
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-page> .
-<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
-<http://localhost:8080/mobility-hindrances/by-page> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
-_:B1d7dccbd21e326e2d2085e9de38ada5e <http://www.w3.org/ns/shacl#targetClass> <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> .
-_:B1d7dccbd21e326e2d2085e9de38ada5e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .
-```
-```
+```json
 {
     "@graph": [
         {
-            "@id": "http://localhost:8080/mobility-hindrances",
+            "@id": "_:b0",
+            "shacl:targetClass": {
+                "@id": "http://schema.mobivoc.org/#ParkingLot"
+            },
+            "@type": "shacl:NodeShape"
+        },
+        {
+            "@id": "http://localhost:8080/occupancy",
             "tree:view": {
-                "@id": "mobility-hindrances:by-page"
+                "@id": "occupancy:by-page"
             },
             "@type": "ldes:EventStream"
         },
         {
-            "@id": "mobility-hindrances:by-page",
+            "@id": "occupancy:by-page",
             "@type": "tree:Node"
-        },
-        {
-            "@id": "_:b0",
-            "shacl:targetClass": {
-                "@id": "mobiliteit:Mobiliteitshinder"
-            },
-            "@type": "shacl:NodeShape"
         }
     ],
     "@context": {
         "shacl": "http://www.w3.org/ns/shacl#",
+        "tree": "https://w3id.org/tree#",
         "ldes": "https://w3id.org/ldes#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "terms": "http://purl.org/dc/terms/",
-        "tree": "https://w3id.org/tree#",
-        "mobiliteit": "https://data.vlaanderen.be/ns/mobiliteit#",
-        "mobility-hindrances": "http://localhost:8080/mobility-hindrances/"
+        "occupancy": "http://localhost:8080/occupancy/"
     }
 }
 ```
+```n-triples
+_:B7cbe89ea87ddc05e5be88f2817e86bb6 <http://www.w3.org/ns/shacl#targetClass> <http://schema.mobivoc.org/#ParkingLot> .
+_:B7cbe89ea87ddc05e5be88f2817e86bb6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .
+<http://localhost:8080/occupancy> <https://w3id.org/tree#view> <http://localhost:8080/occupancy/by-page> .
+<http://localhost:8080/occupancy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
+<http://localhost:8080/occupancy/by-page> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
 ```
-<http://localhost:8080/mobility-hindrances> <https://w3id.org/tree#view> <http://localhost:8080/mobility-hindrances/by-page> .
-<http://localhost:8080/mobility-hindrances> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ldes#EventStream> .
-<http://localhost:8080/mobility-hindrances/by-page> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/tree#Node> .
-_:B1d7dccbd21e326e2d2085e9de38ada5e <http://www.w3.org/ns/shacl#targetClass> <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> .
-_:B1d7dccbd21e326e2d2085e9de38ada5e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .
-```
-> **Note** that `application/n-triples` and `application/n-quads` return the same result as the ingested members are all in the default graph.
+> **Note** that `application/n-triples` and `application/n-quads` return the same result.
 
 ### Verify Acceptable Member Formats
-The LDES Server allows to ingest the following RDF formats: N-triples, N-quads, Turtle and JSON-LD.
+The LDES Server allows to ingest the following RDF formats: N-triples, Turtle and JSON-LD.
 > **Note** that you can use `-i` or `--include`, `-X` or `--request`, `-d` or `--data` which are pairwise equivalent.
 ```
-curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: text/turtle' -d '@data/member.ttl'
-curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/n-quads' -d '@data/member.nq'
-curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/ld+json' -d '@data/member.jsonld'
-curl -i -X POST http://localhost:8080/mobility-hindrances -H 'Content-Type: application/n-triples' -d '@data/member.nt'
+curl -i -X POST http://localhost:8080/occupancy -H 'Content-Type: text/turtle' -d '@data/member.ttl'
+curl -i -X POST http://localhost:8080/occupancy -H 'Content-Type: application/ld+json' -d '@data/member.jsonld'
+curl -i -X POST http://localhost:8080/occupancy -H 'Content-Type: application/n-triples' -d '@data/member.nt'
 ```
 these commands all results in (something similar to):
 ```
@@ -165,7 +155,7 @@ Connection: keep-alive
 ### Verify CORS and Supported HTTP Verbs
 The LDES Server is setup to accept requests from anywhere and, if needed, access should be restricted in another way. You can easily verify CORS using:
 ```bash
-curl -i -X OPTIONS -H "Origin: http://www.example.com" -H "Access-Control-Request-Method: GET" http://localhost:8080/mobility-hindrances
+curl -i -X OPTIONS -H "Origin: http://www.example.com" -H "Access-Control-Request-Method: GET" http://localhost:8080/occupancy
 ```
 this results in:
 ```
@@ -186,7 +176,7 @@ Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
 
 You can verify this using:
 ```bash
-curl -I http://localhost:8080/mobility-hindrances/by-page
+curl -I http://localhost:8080/occupancy/by-page
 ```
 > **Note** that you can use `-I` or `--head` which are equivalent.
 
@@ -210,7 +200,7 @@ X-Cache-Status: MISS
 ### Verify Caching Features
 To verify which caching features the LDES Server provides you can again use:
 ```bash
-curl -I http://localhost:8080/mobility-hindrances/by-page
+curl -I http://localhost:8080/occupancy/by-page
 ```
 this results in:
 ```
@@ -242,74 +232,118 @@ A requested resource is considered expired if it has been in the cache for more 
 * if you re-request a mutable resource after 60 seconds, nginx requests the resource from the LDES server, replaces the version in the cache with the response and returns `X-Cache-Status: Expired`
 * if you re-request an immutable resource after 60 minutes, nginx requests the resource from the LDES server, replaces the version in the cache with the response and returns `X-Cache-Status: Expired`
 
-> **Note**: to test the expiration behavior you need to use the [LDES view](http://localhost:8080/mobility-hindrances/by-page) becuse the [LDES itself](http://localhost:8080/mobility-hindrances) is immutable:
+> **Note**: to test the expiration behavior you need to use the [LDES view](http://localhost:8080/occupancy/by-page) becuse the [LDES itself](http://localhost:8080/occupancy) is immutable:
 
 The nginx server is configured to listen to http://localhost:8080 by default, configurable in your `user.env`. The nginx server will forward any request to the LDES server and forward its response to the requester. However, because it is setup for caching, it will first verify if it does not have a response cached for the incoming request and, if so, return the response from cache. 
 
 You can verify this by requesting a fragment twice:
 ```bash
-curl -i http://localhost:8080/mobility-hindrances
+curl -i http://localhost:8080/occupancy
 ```
 initially results in:
 ```
 HTTP/1.1 200 
-Server: nginx/1.23.3
-Date: Fri, 13 Jan 2023 18:59:34 GMT
+Server: nginx/1.24.0
+Date: Fri, 22 Dec 2023 14:26:43 GMT
 Content-Type: text/turtle
 Transfer-Encoding: chunked
 Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+ETag: "fd2f8e5c7c062ae81ad561022a34d5489348347730d2f231a8b142bda0b1479d"
 Cache-Control: public,max-age=604800,immutable
 Content-Disposition: inline
-ETag: "d8cd93fb6df91f6d19a6a87c3e645ebe32982a36cee85a75aa084a8ed90f789b"
 X-Cache-Status: MISS
 
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
-@prefix tree:                <https://w3id.org/tree#> .
+@prefix by-page:   <http://localhost:8080/occupancy/by-page/> .
+@prefix dcat:      <http://www.w3.org/ns/dcat#> .
+@prefix ldes:      <https://w3id.org/ldes#> .
+@prefix occupancy: <http://localhost:8080/occupancy/> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix shacl:     <http://www.w3.org/ns/shacl#> .
+@prefix terms:     <http://purl.org/dc/terms/> .
+@prefix tree:      <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-page> .
+<http://localhost:8080/occupancy>
+        rdf:type          dcat:Dataset , ldes:EventStream ;
+        terms:conformsTo  <https://w3id.org/tree/specification> , <https://w3id.org/ldes/specification> ;
+        terms:identifier  "http://localhost:8080/occupancy"^^<http://www.w3.org/2000/01/rdf-schema#Literal> ;
+        tree:shape        [ rdf:type           shacl:NodeShape ;
+                            shacl:targetClass  <http://schema.mobivoc.org/#ParkingLot>
+                          ] ;
+        tree:view         occupancy:by-page .
+
+<https://w3id.org/ldes/specification>
+        rdf:type  terms:Standard .
+
+occupancy:by-page  rdf:type   tree:Node ;
+        tree:viewDescription  by-page:description .
+
+<https://w3id.org/tree/specification>
+        rdf:type  terms:Standard .
+
+by-page:description  rdf:type       tree:ViewDescription ;
+        tree:fragmentationStrategy  () ;
+        tree:pageSize               "2"^^<http://www.w3.org/2001/XMLSchema#int> .
 ```
 When re-requested:
 ```bash
-curl -i http://localhost:8080/mobility-hindrances
+curl -i http://localhost:8080/occupancy
 ```
 the result is:
 ```
 HTTP/1.1 200 
-Server: nginx/1.23.3
-Date: Fri, 13 Jan 2023 19:00:17 GMT
+Server: nginx/1.24.0
+Date: Fri, 22 Dec 2023 14:27:08 GMT
 Content-Type: text/turtle
 Transfer-Encoding: chunked
 Connection: keep-alive
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+ETag: "fd2f8e5c7c062ae81ad561022a34d5489348347730d2f231a8b142bda0b1479d"
 Cache-Control: public,max-age=604800,immutable
 Content-Disposition: inline
-ETag: "d8cd93fb6df91f6d19a6a87c3e645ebe32982a36cee85a75aa084a8ed90f789b"
 X-Cache-Status: HIT
 
-@prefix ldes:                <https://w3id.org/ldes#> .
-@prefix mobility-hindrances: <https://private-api.gipod.test-vlaanderen.be/api/v1/ldes/mobility-hindrances/> .
-@prefix tree:                <https://w3id.org/tree#> .
+@prefix by-page:   <http://localhost:8080/occupancy/by-page/> .
+@prefix dcat:      <http://www.w3.org/ns/dcat#> .
+@prefix ldes:      <https://w3id.org/ldes#> .
+@prefix occupancy: <http://localhost:8080/occupancy/> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix shacl:     <http://www.w3.org/ns/shacl#> .
+@prefix terms:     <http://purl.org/dc/terms/> .
+@prefix tree:      <https://w3id.org/tree#> .
 
-<http://localhost:8080/mobility-hindrances>
-        a           ldes:EventStream ;
-        tree:shape  mobility-hindrances:shape ;
-        tree:view   <http://localhost:8080/mobility-hindrances/by-page> .
+<http://localhost:8080/occupancy>
+        rdf:type          dcat:Dataset , ldes:EventStream ;
+        terms:conformsTo  <https://w3id.org/tree/specification> , <https://w3id.org/ldes/specification> ;
+        terms:identifier  "http://localhost:8080/occupancy"^^<http://www.w3.org/2000/01/rdf-schema#Literal> ;
+        tree:shape        [ rdf:type           shacl:NodeShape ;
+                            shacl:targetClass  <http://schema.mobivoc.org/#ParkingLot>
+                          ] ;
+        tree:view         occupancy:by-page .
+
+<https://w3id.org/ldes/specification>
+        rdf:type  terms:Standard .
+
+occupancy:by-page  rdf:type   tree:Node ;
+        tree:viewDescription  by-page:description .
+
+<https://w3id.org/tree/specification>
+        rdf:type  terms:Standard .
+
+by-page:description  rdf:type       tree:ViewDescription ;
+        tree:fragmentationStrategy  () ;
+        tree:pageSize               "2"^^<http://www.w3.org/2001/XMLSchema#int> .
 ```
 > **Note** that the cache did not contain a cached response the first time (`X-Cache-Status: MISS`) but it did the second time (`X-Cache-Status: HIT`).
 
 ### Verify Nginx Compression Setup
 The RDF file formats are rather verbose and therefore may benefit from compression during network transport. For this reason we have [configured](./nginx.conf) our nginx server to do gzip compression (`gzip on`) for the supported RDF types (`gzip_types application/n-triples application/ld+json text/turtle application/n-quads`) and switched it on (`gzip_static on`) for all forwarded requests. We can easily verify this if we request compression:
 ```bash
-curl -I -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-page
+curl -I -H "Accept-Encoding: gzip" http://localhost:8080/occupancy/by-page
 ```
 which results in:
 ```
@@ -329,7 +363,7 @@ Content-Encoding: gzip
 ```
 > **Note** the presence of the header `Content-Encoding: gzip` which indicates that the content is compressed using gzip. If we request the content, curl will warn us about the compressed, binary content:
 ```bash
-curl -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-page
+curl -H "Accept-Encoding: gzip" http://localhost:8080/occupancy/by-page
 ```
 results in:
 ```
@@ -339,7 +373,7 @@ Warning: <FILE>" to save to a file.
 ```
 if we do this:
 ```bash
-curl -H "Accept-Encoding: gzip" http://localhost:8080/mobility-hindrances/by-page --output view.ttl.gz
+curl -H "Accept-Encoding: gzip" http://localhost:8080/occupancy/by-page --output view.ttl.gz
 ```
 we receive the file and see:
 ```
@@ -360,17 +394,8 @@ To remove the temporary, downloaded file:
 rm view.ttl
 ```
 
-### Verify HTTP 304 Handling
-To launch the LDES client and follow its behavior run the following command:
-```bash
-docker compose up ldio-workbench -d
-while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-```
-> **NOTE**: it is not yet possible to validate that the HTTP 304 (Not Modified) header is correctly handled by the LDES client. The behavior is implemented but not yet logged. We are adding logging to the LDES client so very soon this will be available.
-
 ## Test Teardown
 Stop all systems, i.e.:
 ```bash
-docker compose rm -s -f -v ldio-workbench
 docker compose down
 ```

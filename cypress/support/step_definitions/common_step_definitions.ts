@@ -104,20 +104,11 @@ Given('I have uploaded the workflow', () => {
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
 })
 
-Given('I have aliased the pre-seeded simulator data set', () => {
+
+Given('I have aliased the {string} simulator data set', (dataSet: string) => {
     simulator.waitAvailable();
-    simulator.seed(Cypress.env('gipodDataSet'));
+    simulator.seed(Cypress.env(dataSet));
     simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
-})
-
-Given('I have uploaded the data files: {string}', (dataSet: string) => {
-    simulator.waitAvailable();
-    dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`));
-})
-
-Given('I have uploaded the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
-    simulator.waitAvailable();
-    dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
 })
 
 Given('I have aliased the data set', () => {
@@ -236,11 +227,6 @@ When('I resume the {string} workbench output', (workbench) => {
     }
 })
 
-When('I upload the data files: {string} with a duration of {int} seconds', (dataSet: string, seconds: number) => {
-    simulator.waitAvailable();
-    dataSet.split(',').forEach(baseName => simulator.postFragment(`${testContext.testPartialPath}/data/${baseName}.jsonld`, seconds));
-})
-
 export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
     return dockerCompose.create(service, additionalEnvironmentSettings)
         .then(() => dockerCompose.start(service, additionalEnvironmentSettings));
@@ -307,12 +293,12 @@ Then('the fragment member count increases for view {string}', (view:string) => {
         .then(fragment => cy.log(`New member count: ${fragment.memberCount}`));
 })
 
-Then('the sink contains {int} members', (count: number) => {
-    sink.checkCount('mobility-hindrances', count);
-})
-
 Then('the {string} sink contains at least {int} members', (collectionName: string, count: number) => {
     sink.checkCount(collectionName, count, (x, y) => x >= y);
+})
+
+Then('the sink contains {int} members in collection {string}', (count: number, collectionName: string) => {
+    sink.checkCount(collectionName, count);
 })
 
 export function currentMemberCount() {

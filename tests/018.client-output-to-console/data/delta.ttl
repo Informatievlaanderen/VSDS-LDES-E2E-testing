@@ -1,0 +1,1815 @@
+@prefix ldes:             <https://w3id.org/ldes#> .
+@prefix park-and-ride-pr: <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/> .
+@prefix rdf:              <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:             <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix terms:            <http://purl.org/dc/terms/> .
+@prefix tree:             <https://w3id.org/tree#> .
+@prefix wgs84_pos:        <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+<http://localhost:9003/ldes/occupancy/by-page?pageNumber=3>
+        rdf:type        tree:Node ;
+        terms:isPartOf  <http://localhost:9003/ldes/occupancy> .
+
+<http://localhost:9003/ldes/occupancy>
+        rdf:type     ldes:EventStream ;
+        tree:member  
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:44:56+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:00:50+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:30:49+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:21:03+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:47:20+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:54:47+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:11:40+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:53:25+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:00:49+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:07:52+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:17:40+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:13:58+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:27:48+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:18:00+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:51:21+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:56:56+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:21:03+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:01:27+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:25:47+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:14:57+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:57:05+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:41:56+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:37:13+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:21:28+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:57:24+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:07:34+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:39:12+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:48:00+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:27:13+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:44:56+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:05:30+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:51:21+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:30:49+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:47:52+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:41:14+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:55:04+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:53:10+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:23:03+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:11:40+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:53:25+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:13:58+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:27:48+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:50:39+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:00:01+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:15:41+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:41:27+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:51:21+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:43:16+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T14:01:06+01:00> ,
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:35:50+01:00> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:44:56+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:44:56+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:00:50+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T13:00:50+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          14
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                77 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:30:49+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:30:49+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:21:03+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T12:21:03+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:47:20+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T12:47:20+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:54:47+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T12:54:47+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          13
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                79 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:11:40+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:11:40+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:53:25+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T12:53:25+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          192
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:00:49+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T12:00:49+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:07:52+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:07:52+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:17:40+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:17:40+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:13:58+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T12:13:58+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          192
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:27:48+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:27:48+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:18:00+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T12:18:00+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:51:21+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T12:51:21+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          192
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:56:56+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T12:56:56+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          14
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                77 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:21:03+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:21:03+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:01:27+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:01:27+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:25:47+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T13:25:47+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:14:57+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T12:14:57+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:57:05+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T13:57:05+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:41:56+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T13:41:56+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:37:13+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T12:37:13+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          192
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:21:28+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T13:21:28+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          14
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                77 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:57:24+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:57:24+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:07:34+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:07:34+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:39:12+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T12:39:12+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:48:00+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T13:48:00+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:27:13+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T13:27:13+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          13
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                79 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:44:56+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:44:56+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:05:30+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T13:05:30+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:51:21+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T12:51:21+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:30:49+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:30:49+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:47:52+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T13:47:52+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          17
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                72 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T12:41:14+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T12:41:14+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:55:04+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T13:55:04+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:53:10+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T12:53:10+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          13
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                79 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T12:23:03+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T12:23:03+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:11:40+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:11:40+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:53:25+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:53:25+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:13:58+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:13:58+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T13:27:48+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T13:27:48+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:50:39+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T12:50:39+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          13
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                79 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T12:00:01+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T12:00:01+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          13
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                79 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T13:15:41+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T13:15:41+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg#2023-12-21T13:41:27+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Wondelgem" ;
+        terms:isVersionOf  park-and-ride-pr:pr-wondelgem-industrieweg ;
+        terms:modified     "2023-12-21T13:41:27+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          62
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          16
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                74 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-wondelgem-industrieweg ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0985019636"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.71138627257"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-gentbrugge-arsenaal#2023-12-21T12:51:21+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Gentbrugge Arsenaal" ;
+        terms:isVersionOf  park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        terms:modified     "2023-12-21T12:51:21+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          280
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          0
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                100 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-gentbrugge-arsenaal ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0325480691"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.7583663653"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T12:43:16+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  park-and-ride-pr:pr-bourgoyen ;
+        terms:modified     "2023-12-21T12:43:16+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          192
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-bourgoyen ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo#2023-12-21T14:01:06+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R The Loop" ;
+        terms:isVersionOf  park-and-ride-pr:pr-loopexpo ;
+        terms:modified     "2023-12-21T14:01:06+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          31
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          168
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                81 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-loopexpo ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.024483197"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.69519252261"^^<http://www.w3.org/2001/XMLSchema#double> .
+
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-oostakker#2023-12-21T13:35:50+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Oostakker" ;
+        terms:isVersionOf  park-and-ride-pr:pr-oostakker ;
+        terms:modified     "2023-12-21T13:35:50+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          201
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                3 ;
+        <http://schema.mobivoc.org/#url>
+                park-and-ride-pr:pr-oostakker ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0739904088"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.77726718837"^^<http://www.w3.org/2001/XMLSchema#double> .

@@ -75,6 +75,3 @@ or:
 docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```
-
-## Notes
-To verify the member count, alternatively use the [Mongo Compass](https://www.mongodb.com/products/compass) tool and verifying that the `gipod.ldesmember` document collection contains all the LDES members (check the document count).

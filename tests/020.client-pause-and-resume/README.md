@@ -15,28 +15,12 @@ docker compose up -d
 ## Test Execution
 1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
     ```bash
-    for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+    for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
     curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
     To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command: 
     ```bash
     curl http://localhost:9011/
-    ```
-    returns:
-    ```json
-    {
-    "aliases": [
-        "/api/v1/ldes/mobility-hindrances"
-    ],
-    "fragments": [
-        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-19T12:12:49.47Z",
-        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-21T09:38:34.617Z",
-        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-04-28T14:50:23.317Z",
-        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-06T11:55:00.313Z",
-        "/api/v1/ldes/mobility-hindrances?generatedAtTime=2022-05-13T11:36:49.04Z"
-    ],
-    "responses": {}
-    }
     ```
 
 2. Start the workflow containing to ingest the members:
@@ -52,18 +36,19 @@ docker compose up -d
 
 4. Stop the workflow when the member count is around 250 members:
    ```bash
-   docker compose stop ldio-workflow
+   export id=$(docker ps -f "name=workbench$" -q)
+   docker stop $id
    ```
 
 5. Verify that the message sink log file does not contain any warnings:
     ```bash
-    docker logs $(docker ps -f "name=test-message-sink$" -q)
+    docker logs $(docker ps -f "name=test-message-sink$" -q) | grep WARNING
     ```
     > **Note**: the log should not contain a line starting with "`[WARNING]`".
 
 6. Continue the workflow:
    ```bash
-   docker compose start ldio-workflow
+   docker start $id
    ```
    until the LDES is fully replicated (member count will be 1016):
     ```bash
@@ -72,7 +57,7 @@ docker compose up -d
 
 7. Verify that the message sink received all members only once:
     ```bash
-    docker logs $(docker ps -f "name=test-message-sink$" -q)
+    docker logs $(docker ps -f "name=test-message-sink$" -q) | grep 'overriding id'
     ```
     > **Note**: the log should not contain a line starting with "`[WARNING] overriding id`".
 

@@ -1,7 +1,7 @@
 @client @basics
 Feature: LDES Client Basic Functionality
 
-  @test-001 @replicate @gipod
+  @test-001 @replicate @parkAndRide
   Scenario Outline: 001: Client Can Replicate an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'Gent'
     And context 'tests/001.client-replicate-ldes' is started
@@ -19,7 +19,7 @@ Feature: LDES Client Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-003 @synchronize @gipod
+  @test-003 @synchronize @parkAndRide
   Scenario Outline: 003: Client Can Synchronize an LDES Using '<workbench>' Workbench
     Given the members are stored in database 'Gent'
     And context 'tests/003.client-synchronize-ldes' is started
@@ -43,7 +43,7 @@ Feature: LDES Client Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-018 @cli @ldio @gipod
+  @test-018 @cli @ldio @parkAndRide
   Scenario: 018: Client Can Output LDES members to the Console
     Given the members are stored in database 'gipod'
     And context 'tests/018.client-output-to-console' is started

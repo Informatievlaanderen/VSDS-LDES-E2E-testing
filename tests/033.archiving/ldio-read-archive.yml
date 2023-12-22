@@ -11,6 +11,6 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
-            endpoint: http://ldes-server:8080/mobility-hindrances
+            endpoint: http://ldes-server:8080/occupancy
             rdf-writer:
               content-type: application/n-quads

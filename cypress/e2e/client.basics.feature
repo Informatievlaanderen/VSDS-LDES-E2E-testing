@@ -45,8 +45,7 @@ Feature: LDES Client Basic Functionality
 
   @test-018 @cli @ldio @parkAndRide
   Scenario: 018: Client Can Output LDES members to the Console
-    Given the members are stored in database 'gipod'
-    And context 'tests/018.client-output-to-console' is started
+    Given context 'tests/018.client-output-to-console' is started
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
     When I start the LDES Client 'LDIO' workbench

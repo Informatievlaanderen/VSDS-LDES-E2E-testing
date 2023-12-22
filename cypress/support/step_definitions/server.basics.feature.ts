@@ -79,3 +79,23 @@ Then('the {string} root fragment contains at least {int} members', (ldes: string
 Then('the {string} LDES contains {int} members', (collection: string, count: number) => {
     new Fragment(`${server.baseUrl}/${collection}/${byPage}?pageNumber=1`).visit().then(fragment => waitForFragment(fragment, x => x.memberCount === count, `have member count equal ${count}`));
 })
+
+let rootFragment: Fragment;
+const connectionsLdes = 'connections';
+
+function fragmentationRootExists(ldes: string, view: string) {
+    return obtainRootFragment(ldes, view)
+        .then(fragment => {
+            expect(fragment.url).not.to.be.undefined;
+            return waitForFragment(fragment, x => x.success, 'to exist');
+        });
+}
+
+Then('the connections LDES is paginated', () => {
+    fragmentationRootExists(connectionsLdes, byPage).then(fragment => rootFragment = fragment);
+})
+
+Then('the first page contains {int} members', (count: number) => {
+    waitForFragment(rootFragment, x => x.memberCount === count, `have member count equal ${count}`);
+})
+

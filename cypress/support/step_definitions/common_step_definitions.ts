@@ -293,10 +293,6 @@ Then('the fragment member count increases for view {string}', (view:string) => {
         .then(fragment => cy.log(`New member count: ${fragment.memberCount}`));
 })
 
-Then('the sink contains {int} members', (count: number) => {
-    sink.checkCount('mobility-hindrances', count);
-})
-
 Then('the {string} sink contains at least {int} members', (collectionName: string, count: number) => {
     sink.checkCount(collectionName, count, (x, y) => x >= y);
 })

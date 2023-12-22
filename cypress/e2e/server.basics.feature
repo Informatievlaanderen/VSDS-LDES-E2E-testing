@@ -23,7 +23,7 @@ Feature: LDES Server Basic Functionality
       | workbench |
       | NIFI      |
 
-  @test-019 @consumption @cacheability @gipod
+  @test-019 @consumption @cacheability @parkAndRide
   Scenario: 019: Verify Actual Caching
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
@@ -32,14 +32,14 @@ Feature: LDES Server Basic Functionality
     When I request the LDES
     Then the LDES comes from the cache
 
-  @test-019 @consumption @compression @gipod
+  @test-019 @consumption @compression @parkAndRide
   Scenario: 019: Verify Nginx Compression Setup
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured
     When I request the view compressed
     Then I receive a zip file containing my view
 
-  @test-019 @consumption @caching
+  @test-019 @consumption @caching @parkAndRide
   Scenario: 019: Verify Nginx Caching Responses
     Given context 'tests/019.server-supports-cacheability' is started
     And the LDES server is available and configured

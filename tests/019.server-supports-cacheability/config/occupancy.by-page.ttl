@@ -1,7 +1,7 @@
 @prefix tree: <https://w3id.org/tree#>.
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 
-</mobility-hindrances/by-page> a tree:Node ; 
+</occupancy/by-page> a tree:Node ; 
   tree:viewDescription [ 
 		a tree:ViewDescription ;
 	  tree:fragmentationStrategy () ;

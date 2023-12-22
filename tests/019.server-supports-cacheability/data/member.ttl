@@ -1,72 +1,39 @@
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix ns0: <https://gipod.vlaanderen.be/ns/gipod#> .
-@prefix ns1: <https://data.vlaanderen.be/ns/mobiliteit#Inname.> .
-@prefix ns2: <http://www.w3.org/ns/locn#> .
-@prefix ns3: <http://www.opengis.net/ont/geosparql#> .
-@prefix ns4: <https://data.vlaanderen.be/ns/mobiliteit#Zone.> .
-@prefix ns5: <https://data.vlaanderen.be/ns/mobiliteit#> .
-@prefix org: <http://www.w3.org/ns/org#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix ns6: <https://w3id.org/tree#> .
-@prefix dc: <http://purl.org/dc/terms/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix ns7: <http://www.w3.org/ns/adms#> .
-@prefix dc11: <http://purl.org/dc/elements/1.1/> .
-@prefix ns8: <http://data.europa.eu/m8g/> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf:              <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:             <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix terms:            <http://purl.org/dc/terms/> .
+@prefix wgs84_pos:        <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/statuses/0a4ee99b-8b8a-47c8-913f-117220febee0> skos:prefLabel "In opmaak"@nl-BE .
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/groundworks/1491897>
-  ns0:gipodId 1491897 ;
-  ns1:heeftGevolg <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854224>, <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854221>, <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854219>, <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854218-C>, <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854217>, <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10285063/1854215> ;
-  a <https://data.vlaanderen.be/ns/mobiliteit#Grondwerk> .
-
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/zones/a5ccb214-c2fd-4bcc-bfe3-a01693a4f405>
-  a <https://data.vlaanderen.be/ns/mobiliteit#Zone> ;
-  ns2:geometry [
-    a ns2:Geometry ;
-    ns3:asWKT "<http://www.opengis.net/def/crs/EPSG/9.9.1/31370> POLYGON ((125776.11 181164.49, 125776.22 181164.66, 125776.36 181164.8, 125776.52 181164.91, 125776.7 181164.98, 125776.89 181165.02, 125777.09 181165.02, 125777.28 181164.99, 125777.46 181164.91, 125777.62 181164.8, 125777.76 181164.67, 125777.87 181164.5, 125777.95 181164.32, 125777.99 181164.13, 125777.99 181163.94, 125777.95 181163.74, 125777.88 181163.56, 125736.96 181085.95, 125736.85 181085.79, 125736.71 181085.65, 125736.55 181085.54, 125736.37 181085.46, 125736.18 181085.42, 125735.98 181085.42, 125735.79 181085.46, 125735.61 181085.53, 125735.44 181085.64, 125735.3 181085.78, 125735.19 181085.94, 125735.12 181086.12, 125735.08 181086.31, 125735.08 181086.51, 125735.11 181086.7, 125735.19 181086.88, 125776.11 181164.49))"^^ns3:wktLiteral
-  ], [
-    a ns2:Geometry ;
-    ns3:asWKT "<http://www.opengis.net/def/crs/EPSG/9.9.1/31370> POLYGON ((125776.11 181164.49, 125776.22 181164.66, 125776.36 181164.8, 125776.52 181164.91, 125776.7 181164.98, 125776.89 181165.02, 125777.09 181165.02, 125777.28 181164.99, 125777.46 181164.91, 125777.62 181164.8, 125777.76 181164.67, 125777.87 181164.5, 125777.95 181164.32, 125777.99 181164.13, 125777.99 181163.94, 125777.95 181163.74, 125777.88 181163.56, 125736.96 181085.95, 125736.85 181085.79, 125736.71 181085.65, 125736.55 181085.54, 125736.37 181085.46, 125736.18 181085.42, 125735.98 181085.42, 125735.79 181085.46, 125735.61 181085.53, 125735.44 181085.64, 125735.3 181085.78, 125735.19 181085.94, 125735.12 181086.12, 125735.08 181086.31, 125735.08 181086.51, 125735.11 181086.7, 125735.19 181086.88, 125776.11 181164.49))"^^ns3:wktLiteral
-  ], [
-    a ns2:Geometry ;
-    ns3:asWKT "<http://www.opengis.net/def/crs/EPSG/9.9.1/31370> POLYGON ((125776.11 181164.49, 125776.22 181164.66, 125776.36 181164.8, 125776.52 181164.91, 125776.7 181164.98, 125776.89 181165.02, 125777.09 181165.02, 125777.28 181164.99, 125777.46 181164.91, 125777.62 181164.8, 125777.76 181164.67, 125777.87 181164.5, 125777.95 181164.32, 125777.99 181164.13, 125777.99 181163.94, 125777.95 181163.74, 125777.88 181163.56, 125736.96 181085.95, 125736.85 181085.79, 125736.71 181085.65, 125736.55 181085.54, 125736.37 181085.46, 125736.18 181085.42, 125735.98 181085.42, 125735.79 181085.46, 125735.61 181085.53, 125735.44 181085.64, 125735.3 181085.78, 125735.19 181085.94, 125735.12 181086.12, 125735.08 181086.31, 125735.08 181086.51, 125735.11 181086.7, 125735.19 181086.88, 125776.11 181164.49))"^^ns3:wktLiteral
-  ], [
-    a ns2:Geometry ;
-    ns3:asWKT "<http://www.opengis.net/def/crs/EPSG/9.9.1/31370> POLYGON ((125776.11 181164.49, 125776.22 181164.66, 125776.36 181164.8, 125776.52 181164.91, 125776.7 181164.98, 125776.89 181165.02, 125777.09 181165.02, 125777.28 181164.99, 125777.46 181164.91, 125777.62 181164.8, 125777.76 181164.67, 125777.87 181164.5, 125777.95 181164.32, 125777.99 181164.13, 125777.99 181163.94, 125777.95 181163.74, 125777.88 181163.56, 125736.96 181085.95, 125736.85 181085.79, 125736.71 181085.65, 125736.55 181085.54, 125736.37 181085.46, 125736.18 181085.42, 125735.98 181085.42, 125735.79 181085.46, 125735.61 181085.53, 125735.44 181085.64, 125735.3 181085.78, 125735.19 181085.94, 125735.12 181086.12, 125735.08 181086.31, 125735.08 181086.51, 125735.11 181086.7, 125735.19 181086.88, 125776.11 181164.49))"^^ns3:wktLiteral
-  ] ;
-  ns4:type <https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/zonetypes/0fb72ef7-6ac9-4a70-b295-a30ea215d250> ;
-  ns5:gevolg <https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/mobility-hindrance/consequencetypes/5f8ff25a-87c7-47c8-9332-35d4fabf4b07> .
-
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/mobility-hindrance/consequencetypes/5f8ff25a-87c7-47c8-9332-35d4fabf4b07> skos:prefLabel "Versmalde rijstroken"@nl-BE .
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245>
-  a org:Organization ;
-  skos:prefLabel "EagleBe Smartcity"^^rdf:langString, "Eaglebe Smartcity"^^rdf:langString .
-
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/zonetypes/0fb72ef7-6ac9-4a70-b295-a30ea215d250> skos:prefLabel "HinderZone"@nl-BE .
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/ldes/mobility-hindrances> ns6:member <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854218-C> .
-<https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/1854218-C>
-  ns0:gipodId 10811062 ;
-  dc:modified "2022-05-24T14:57:19.5169051Z"^^xsd:dateTime ;
-  ns5:beheerder <https://private-api.gipod.beta-vlaanderen.be/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245> ;
-  ns5:zone <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062/zones/a5ccb214-c2fd-4bcc-bfe3-a01693a4f405> ;
-  dc:created "2022-05-24T14:57:19.513769Z"^^xsd:dateTime ;
-  ns7:identifier [
-    a ns7:Identifier ;
-    skos:notation "10811062"^^ns0:gipodId ;
-    ns7:schemaAgency "https://gipod.vlaanderen.be"@nl-BE
-  ] ;
-  ns1:status <https://private-api.gipod.beta-vlaanderen.be/api/v1/taxonomies/statuses/0a4ee99b-8b8a-47c8-913f-117220febee0> ;
-  dc11:contributor <https://private-api.gipod.beta-vlaanderen.be/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245> ;
-  dc:isVersionOf <https://private-api.gipod.beta-vlaanderen.be/api/v1/mobility-hindrances/10811062> ;
-  ns7:versionNotes "MobilityHindranceZoneWasAdded"@nl-BE ;
-  dc11:creator <https://private-api.gipod.beta-vlaanderen.be/api/v1/organisations/fedab33f-792a-029c-9b34-9d9cfe7d6245> ;
-  ns5:periode [
-    a <http://data.europa.eu/m8g/PeriodOfTime> ;
-    ns8:endTime "2026-12-13T16:00:00Z"^^xsd:dateTime ;
-    ns8:startTime "2022-07-13T05:00:00Z"^^xsd:dateTime
-  ] ;
-  prov:generatedAtTime "2022-05-24T14:57:19.513Z"^^xsd:dateTime ;
-  dc:description "9300 Aalst, Volksplaats 5: Werfzone met combinatie"^^rdf:langString ;
-  a ns5:Mobiliteitshinder .
+<https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen#2023-12-21T13:44:56+01:00>
+        rdf:type           <http://schema.mobivoc.org/#ParkingLot> ;
+        rdfs:label         "P+R Bourgoyen" ;
+        terms:isVersionOf  <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen> ;
+        terms:modified     "2023-12-21T13:44:56+01:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#Capacity> ;
+                  <http://schema.mobivoc.org/#totalCapacity>
+                          255
+                ] ;
+        <http://schema.mobivoc.org/#capacity>
+                [ rdf:type  <http://schema.mobivoc.org/#RealTimeCapacity> ;
+                  <http://schema.mobivoc.org/#currentValue>
+                          193
+                ] ;
+        <http://schema.mobivoc.org/#operatedBy>
+                [ rdf:type    terms:Agent , <http://schema.org/Organization> ;
+                  rdfs:label  "Mobiliteitsbedrijf Gent"
+                ] ;
+        <http://schema.mobivoc.org/#price>
+                [ rdf:type  <http://schema.org/PriceSpecification> ;
+                  <http://schema.mobivoc.org/#freeOfCharge>
+                          1
+                ] ;
+        <http://schema.mobivoc.org/#rateOfOccupancy>
+                24 ;
+        <http://schema.mobivoc.org/#url>
+                <https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen> ;
+        <http://schema.org/openingHoursSpecification>
+                [ rdf:type    <http://schema.org/OpeningHoursSpecification> ;
+                  rdfs:label  "24/7"
+                ] ;
+        wgs84_pos:lat      "51.0674048936"^^<http://www.w3.org/2001/XMLSchema#double> ;
+        wgs84_pos:long     "3.68175794804"^^<http://www.w3.org/2001/XMLSchema#double> .

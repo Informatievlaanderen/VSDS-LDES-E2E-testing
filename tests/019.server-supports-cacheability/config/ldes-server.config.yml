@@ -11,7 +11,7 @@ ldes-server:
 spring:
   data:
     mongodb:
-      database: gipod
+      database: Gent
       host: ldes-mongodb
       port: 27017
 rest:

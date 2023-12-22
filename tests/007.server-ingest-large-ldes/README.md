@@ -1,5 +1,5 @@
 # LDES Server Can Ingest GTFS/RT
-This scenario verifies that the LDES server can ingest GTFS (in addition to GIPOD mobility hindrances) and can keep in sync with the GTFS updates (GTFS/RT). It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
+This scenario verifies that the LDES server can ingest GTFS and can keep in sync with the GTFS updates (GTFS/RT). It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
 
 ## Test Setup
 1. Run all systems except the GTFS to LDES convertor by executing the following (bash) command:

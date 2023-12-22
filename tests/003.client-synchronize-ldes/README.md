@@ -1,5 +1,5 @@
 # LDES Client Can Synchronize an LDES
-The test verifies that the LDES Client can synchronize a (small subset of the) GIPOD data set, after replication. It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and a message sink backed by a data store (mongodb).
+The test verifies that the LDES Client can synchronize a (small subset of the) Gent P+R data set, after replication. It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and a message sink backed by a data store (mongodb).
 
 For this test we use a data set containing three fragments in the initial set (for the replication part):
 * `alfa.ttl` (250 items)

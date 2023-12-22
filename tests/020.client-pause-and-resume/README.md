@@ -1,7 +1,7 @@
 # LDES Client Can Persist State
 This test verifies that the LDES client can pause and resume replicating or synchronizing an LDES by saving respectively loading its state. It uses a context containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and a message sink backed by a data store (in memory).
 
-The simulator is seeded by a subset of the GIPOD dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served. 
+The simulator is seeded by a subset of the Gent P+R dataset containing five fragments of which the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES members served. 
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -13,7 +13,7 @@ docker compose up -d
 ```
 
 ## Test Execution
-1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
+1. Seed the LDES Server Simulator with a part of the Gent P+R data set and [alias it](./create-alias.json):
     ```bash
     for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
     curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'

@@ -22,7 +22,7 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
     ```
     > **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
 
-    You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/api/v1/ldes/mobility-hindrances):
+    You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/ldes/occupancy):
     ```bash
     curl http://localhost:9011/
     ```

@@ -12,7 +12,7 @@ export class LdesClientWorkbench extends LdesWorkbenchLdio {
     hasCount(containerId: string, count: number): any {
         return cy.exec(`docker logs ${containerId}`).then(result => {
             const logs = result.stdout;
-            const actualCount = (logs.match(new RegExp('http://purl.org/dc/terms/isVersionOf', 'g')) || []).length;
+            const actualCount = (logs.match(new RegExp('https://w3id.org/tree#member', 'g')) || []).length;
             cy.log('Actual count: ' + actualCount).then(() => actualCount === count)
         });
     }

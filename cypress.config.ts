@@ -56,10 +56,6 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     })
   );
 
-  // add simulator GIPOD data set
-  const gipodDataFolder = './data/gipod';
-  config.env.gipodDataSet = getFiles(gipodDataFolder).map(x => `${gipodDataFolder}/${x}`);
-
   // add simulator ParkAndRide data set
   const parkAndRideDataFolder = './data/parkAndRide';
   config.env.parkAndRide = getFiles(parkAndRideDataFolder).map(x => `${parkAndRideDataFolder}/${x}`);

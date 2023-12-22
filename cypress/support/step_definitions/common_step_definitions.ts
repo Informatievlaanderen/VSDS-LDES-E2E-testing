@@ -104,11 +104,6 @@ Given('I have uploaded the workflow', () => {
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
 })
 
-Given('I have aliased the pre-seeded simulator data set', () => {
-    simulator.waitAvailable();
-    simulator.seed(Cypress.env('gipodDataSet'));
-    simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
-})
 
 Given('I have aliased the {string} simulator data set', (dataSet: string) => {
     simulator.waitAvailable();

@@ -14,7 +14,7 @@ docker compose up -d
 ## Test Execution
 1. Seed the LDES Server Simulator with a part of the GIPOD data set and [alias it](./create-alias.json):
     ```bash
-    for f in ../../data/gipod/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: application/ld+json" -d "@$f"; done
+    for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
     curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
     To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command: 

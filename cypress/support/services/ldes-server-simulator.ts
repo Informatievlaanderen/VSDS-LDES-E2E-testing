@@ -39,11 +39,12 @@ export class LdesServerSimulator implements CanCheckAvailability {
 
     public postFragment(partialFilePath: string, maxAge?: number) {
         const query = maxAge ? `?max-age=${maxAge}` : '';
+        const contentType = partialFilePath.endsWith('.ttl') ? 'text/turtle' : 'application/ld+json';
         return cy.readFile(partialFilePath, 'utf8').then(data => 
             cy.request({
                 method: 'POST', 
                 url: `${this.baseUrl}/ldes${query}`, 
-                headers: { 'Content-Type': 'application/ld+json'}, 
+                headers: { 'Content-Type': contentType}, 
                 body: data,
             }).then(response => expect(response.status).to.equal(201)));
     }

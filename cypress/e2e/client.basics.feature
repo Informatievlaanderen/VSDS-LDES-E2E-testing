@@ -3,11 +3,11 @@ Feature: LDES Client Basic Functionality
 
   @test-001 @replicate @gipod
   Scenario Outline: 001: Client Can Replicate an LDES Using '<workbench>' Workbench
-    Given the members are stored in database 'gipod'
+    Given the members are stored in database 'Gent'
     And context 'tests/001.client-replicate-ldes' is started
-    And I have aliased the pre-seeded simulator data set
+    And I have aliased the 'parkAndRide' simulator data set
     When I start the LDES Client '<workbench>' workbench
-    Then the sink contains 1016 members
+    Then the sink contains 1016 members in collection 'parkAndRide'
 
     @ldio
     Examples: 
@@ -21,17 +21,17 @@ Feature: LDES Client Basic Functionality
 
   @test-003 @synchronize @gipod
   Scenario Outline: 003: Client Can Synchronize an LDES Using '<workbench>' Workbench
-    Given the members are stored in database 'gipod'
+    Given the members are stored in database 'Gent'
     And context 'tests/003.client-synchronize-ldes' is started
     And I have uploaded the data files: 'alfa,beta'
     And I have uploaded the data files: 'gamma' with a duration of 10 seconds
     And I have aliased the data set
     When I start the LDES Client '<workbench>' workbench
-    And the sink contains 501 members
+    And the sink contains 501 members in collection 'parkAndRide'
     When I upload the data files: 'delta' with a duration of 10 seconds
-    Then the sink contains 550 members
+    Then the sink contains 550 members in collection 'parkAndRide'
     When I upload the data files: 'epsilon' with a duration of 10 seconds
-    Then the sink contains 617 members
+    Then the sink contains 617 members in collection 'parkAndRide'
 
     @ldio
     Examples: 

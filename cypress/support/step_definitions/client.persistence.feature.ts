@@ -35,9 +35,9 @@ When('I restart the LDES Client {string} workbench', (workbench) => {
 
 // Then stuff
 
-Then('eventually the sink collection {string} contains about {int} members', (collectionName: string, count: number) => {
+Then('the sink collection {string} contains at least {int} members', (collectionName: string, count: number) => {
     const delta = count * 0.20;
-    sink.checkCount(collectionName, count, (actual, expected) => expected - delta < actual && actual <= 2 * expected);
+    sink.checkCount(collectionName, count, (actual, expected) => actual >= expected);
 })
 
 Then('the sink log contains no warnings', () => {

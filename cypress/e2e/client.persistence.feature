@@ -6,7 +6,7 @@ Feature: LDES Client Persistence
     Given context 'tests/020.client-pause-and-resume' is started
     And I have aliased the 'parkAndRide' simulator data set
     When I start the LDES Client '<workbench>' workbench
-    Then eventually the sink collection 'parkAndRide' contains about 250 members
+    Then the sink collection 'parkAndRide' contains at least 250 members
     When I stop the LDES Client '<workbench>' workbench
     Then the sink log contains no warnings
     When I restart the LDES Client '<workbench>' workbench

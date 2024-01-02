@@ -28,14 +28,14 @@ export const byPage = 'by-page';
 Before(() => {
     // log and cleanup if previous test failed (After is not run in this case!)
     // dockerCompose.logRunningContainers().then(() => 
-        dockerCompose.cleanup().then(() => {
+    dockerCompose.cleanup().then(() => {
         dockerCompose.initialize();
         testContext = {
             testPartialPath: '',
-            additionalEnvironmentSetting: {},
+            additionalEnvironmentSettings: {},
             database: '',
             collection: '',
-        }            
+        }
     })
     //);
 });
@@ -74,9 +74,9 @@ export function obtainRootFragment(ldes: string, view: string) {
 }
 
 export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean, message: string) {
-    return cy.waitUntil(() => 
-        fragment.visit().then(fragment => condition(fragment)), 
-        {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.`}).then(() => fragment);
+    return cy.waitUntil(() =>
+        fragment.visit().then(fragment => condition(fragment)),
+        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.` }).then(() => fragment);
 }
 
 // Given stuff
@@ -85,13 +85,19 @@ Given('the members are stored in database {string}', (database: string) => {
     testContext.database = database;
 });
 
+Given('environment variable {string} is defined as the hostname', (variable: string) => {
+    cy.exec('echo "$(hostname)"').then(result => {
+        setAdditionalEnvironmentSetting(variable, result.stdout);
+    })
+})
+
 Given('context {string} is started', (composeFilePath: string) => {
     if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
 
     const options: DockerComposeOptions = {
         dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,
-        additionalEnvironmentSetting: testContext.additionalEnvironmentSetting
+        additionalEnvironmentSettings: testContext.additionalEnvironmentSettings
     };
     dockerCompose.up(options);
 })
@@ -117,7 +123,7 @@ Given('I have aliased the data set', () => {
 })
 
 export function setAdditionalEnvironmentSetting(property: string, value: string) {
-    testContext.additionalEnvironmentSetting[property] = value;
+    testContext.additionalEnvironmentSettings[property] = value;
 }
 
 Given('the LDES server is available', () => {
@@ -161,7 +167,7 @@ Given('the {string} workbench is available', (workbench) => {
 
 // When stuff
 
-function startNifiWorkbench(){
+function startNifiWorkbench() {
     createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
     workbenchNifi.pushStart();
@@ -196,7 +202,7 @@ When('I start the {string} workbench', (workbench) => {
 })
 
 When('I pause the {string} workbench output', (workbench) => {
-    switch(workbench) {
+    switch (workbench) {
         case 'NIFI': {
             workbenchNifi.openWorkflow();
             workbenchNifi.selectProcessor('InvokeHTTP');
@@ -212,7 +218,7 @@ When('I pause the {string} workbench output', (workbench) => {
 })
 
 When('I resume the {string} workbench output', (workbench) => {
-    switch(workbench) {
+    switch (workbench) {
         case 'NIFI': {
             workbenchNifi.openWorkflow();
             workbenchNifi.selectProcessor('InvokeHTTP');
@@ -279,7 +285,7 @@ When('the GTFS to LDES service starts sending linked connections', () => {
 })
 
 let lastMemberCount: number;
-When('I remember the last fragment member count for view {string}', (view:string) => {
+When('I remember the last fragment member count for view {string}', (view: string) => {
     obtainRootFragment('devices', view)
         .then(fragment => waitForFragment(fragment, x => x.memberCount > 0, 'have members'))
         .then(fragment => cy.log(`Member count: ${fragment.memberCount}`).then(() => lastMemberCount = fragment.memberCount));
@@ -287,7 +293,7 @@ When('I remember the last fragment member count for view {string}', (view:string
 
 // Then stuff
 
-Then('the fragment member count increases for view {string}', (view:string) => {
+Then('the fragment member count increases for view {string}', (view: string) => {
     obtainRootFragment('devices', view)
         .then(fragment => waitForFragment(fragment, x => x.memberCount > lastMemberCount, 'increase member count'))
         .then(fragment => cy.log(`New member count: ${fragment.memberCount}`));

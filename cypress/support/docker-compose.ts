@@ -10,7 +10,7 @@ export interface EnvironmentSettings {
 export interface DockerComposeOptions {
     dockerComposeFile: string,
     environmentFile: string,
-    additionalEnvironmentSetting: EnvironmentSettings,
+    additionalEnvironmentSettings: EnvironmentSettings,
 };
 
 export class DockerCompose {
@@ -37,10 +37,10 @@ export class DockerCompose {
             this._environmentFile = options.environmentFile;
         }
 
-        if (options.additionalEnvironmentSetting) {
+        if (options.additionalEnvironmentSettings) {
             this._environment = {
                 ...this._environment,
-                ...options.additionalEnvironmentSetting
+                ...options.additionalEnvironmentSettings
             };
         }
 
@@ -63,7 +63,7 @@ export class DockerCompose {
     // }
 
     public cleanup() {
-        this._delayedServices.forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
+        this._delayedServices.reverse().forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
         this._delayedServices = [];
         return this.down();
     }

@@ -34,10 +34,10 @@ Optionally, combine both tests in one E2E test.
     while ! docker logs $(docker ps -q -f "name=ldes-server$") 2> /dev/null | grep 'Cancelled mongock lock daemon' ; do sleep 1; done
     ```
 
-2. Create LDES'es and their views using the [seed script](./server/seed/seed.sh):
+2. Create LDES'es and their views using the [seed script](./config/seed.sh):
     ```bash
-    chmod +x ./server/seed/seed.sh
-    sh ./server/seed/seed.sh
+    chmod +x ./config/seed.sh
+    sh ./config/seed.sh
     ```
     > This will create the following LDES'es and views:
     ```
@@ -78,7 +78,7 @@ Optionally, combine both tests in one E2E test.
     The query should contain only 3 observation results linked to the 1 sensor we keep sending updates about. Therefor these values should increase in time as they are, in this example, linked to the index of a generated test message.
 
     ```bash
-    curl --location 'http://localhost:7200/repositories/observations' \
+    curl -s --location 'http://localhost:7200/repositories/observations' \
     --header 'Accept: application/x-sparqlstar-results+json' \
     --header 'Content-Type: application/x-www-form-urlencoded' \
     --data-urlencode 'query=PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

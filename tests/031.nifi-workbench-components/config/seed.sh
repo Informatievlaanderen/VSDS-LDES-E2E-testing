@@ -1,6 +1,6 @@
 #!/bin/bash
 export SCRIPT_PATH=$(dirname -- "$( readlink -f -- "${BASH_SOURCE:-$0}"; )")
-export LDES_PATH=$SCRIPT_PATH/ldes
+export LDES_PATH=$SCRIPT_PATH
 export LDES_SERVER_ADMIN_BASE="${LDES_SERVER_ADMIN_BASE:-http://localhost:8080}"
 
 curl --fail -X POST "$LDES_SERVER_ADMIN_BASE/admin/api/v1/eventstreams" -H "Content-Type: text/turtle" -d "@$LDES_PATH/observations.ttl"

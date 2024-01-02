@@ -34,7 +34,7 @@ docker compose up -d
     curl http://localhost:9003
     ```
 
-4. Stop the workflow when the member count is around 250 members:
+4. Stop the workflow when the member count is at least 250 members:
    ```bash
    export id=$(docker ps -f "name=workbench$" -q)
    docker stop $id

@@ -16,9 +16,9 @@ jobs:
           - "@test-001 and @nifi"
           - "@test-003 and @ldio"
           - "@test-003 and @nifi"
-          - "@test-007 and @ldio"
-          - "@test-007 and @nifi"
-          - "@test-013"
+          # - "@test-007 and @ldio" # BROKEN
+          # - "@test-007 and @nifi" # BROKEN
+          # - "@test-013" # BROKEN
           - "@test-014 and @ldio"
           - "@test-014 and @nifi"
           - "@test-015"

@@ -11,18 +11,17 @@ services:
       - TEMPLATEFILE=/tmp/data/template.json
       - MIMETYPE=application/json
     volumes:
-      - ./data/template.json:/tmp/data/template.json:ro
+      - ./generator/template.json:/tmp/data/template.json:ro
     networks:
       - ldes
     profiles:
       - delay-started
 
   nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldi-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-      - LDES_SERVER=${LDES_SERVER}
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
@@ -31,23 +30,27 @@ services:
     networks:
       - ldes
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-
+      - "${LOCALHOST}:host-gateway"
+    profiles:
+      - delay-started
+  
   ldes-mongodb:
-    container_name: ldes-mongodb
-    image: mongo
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
     ports:
-      - 27017:27017
+      - ${MONGODB_PORT:-27017}:27017
     networks:
       - ldes
 
   ldes-server:
-    container_name: basic_ldes-server
-    image: ldes/ldes-server
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - SPRING_CONFIG_LOCATION=/config/
+      - SIS_DATA=/tmp
+      - LDES_SERVER=${LOCALHOST}
     volumes:
-      - ./ldes-server.yml:/config/application.yml:ro
+      - ./server/config.yml:/application.yml:ro
+      - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080
     networks:
@@ -67,8 +70,8 @@ services:
       - ldes
 
   test-message-sink:
-    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_test-message-sink
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     environment:
       - SILENT=false
       - MEMORY=false
@@ -82,10 +85,10 @@ services:
       - ldes
 
   graphdb:
-    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_graphdb
+    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
     volumes:
-      - ./data/graphdb:/repository.init/observations:rw
+      - ./graphdb:/repository.init/observations:rw
     ports:
       - ${GRAPHDB_PORT:-7200}:7200
     networks:

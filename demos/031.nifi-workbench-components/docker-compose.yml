@@ -96,4 +96,4 @@ services:
 
 networks:
   ldes:
-    name: quick_start_network
+    name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network

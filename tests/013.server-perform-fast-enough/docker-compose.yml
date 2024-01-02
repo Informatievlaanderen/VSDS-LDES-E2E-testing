@@ -7,7 +7,7 @@ services:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-latest}
     environment:
-      - NODE_OPTIONS=--max-old-space-size=768 # NOTE: in MB, set this a bit lower than the memory limit
+      - NODE_OPTIONS=--max-old-space-size=500 # NOTE: in MB, set this a bit lower than the memory limit
       - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
       - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
       - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}

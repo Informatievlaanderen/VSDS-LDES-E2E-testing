@@ -11,18 +11,17 @@ services:
       - TEMPLATEFILE=/tmp/data/template.json
       - MIMETYPE=application/json
     volumes:
-      - ./data/template.json:/tmp/data/template.json:ro
+      - ./generator/template.json:/tmp/data/template.json:ro
     networks:
       - ldes
     profiles:
       - delay-started
 
   nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldi-workbench-nifi
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-      - LDES_SERVER=${LDES_SERVER}
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
     ports:
@@ -31,8 +30,10 @@ services:
     networks:
       - ldes
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-
+      - "${LOCALHOST}:host-gateway"
+    profiles:
+      - delay-started
+  
   ldes-mongodb:
     container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-latest}
@@ -42,25 +43,13 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-workbench-components}_new-ldes-server
-    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    container_name: ${USECASE_NAME:-nifi-workbench-components}_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
-      - MONGOCK_MIGRATIONSCANPACKAGE_0=be.vlaanderen.informatievlaanderen.ldes.server.infra.mongo.mongock.changeset1
-      - MANAGEMENT_TRACING_ENABLED=False
       - SIS_DATA=/tmp
-      - SPRING_DATA_MONGODB_HOST=ldes-mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=iow_ldes
-      - COLLECTIONS_0_HOSTNAME=http://${LDES_SERVER}:8080
-      - COLLECTIONS_0_COLLECTIONNAME=observations
-      - COLLECTIONS_0_SHAPE=
-      - COLLECTIONS_0_TIMESTAMPPATH=http://www.w3.org/ns/prov#generatedAtTime
-      - COLLECTIONS_0_VERSIONOF=http://purl.org/dc/terms/isVersionOf
-      - COLLECTIONS_0_MEMBERTYPE=http://www.w3.org/ns/sosa/ObservationCollection
-      - COLLECTIONS_0_VIEWS_0_NAME=by-page
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_NAME=pagination
-      - COLLECTIONS_0_VIEWS_0_FRAGMENTATIONS_0_CONFIG_MEMBERLIMIT=25
+      - LDES_SERVER=${LOCALHOST}
     volumes:
+      - ./server/config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080
@@ -81,8 +70,8 @@ services:
       - ldes
 
   test-message-sink:
-    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_test-message-sink
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     environment:
       - SILENT=false
       - MEMORY=false
@@ -96,15 +85,15 @@ services:
       - ldes
 
   graphdb:
-    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
     container_name: ${USECASE_NAME:-nifi-workbench-components}_graphdb
+    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
     volumes:
-      - ./data/graphdb:/repository.init/observations:rw
+      - ./graphdb:/repository.init/observations:rw
     ports:
       - ${GRAPHDB_PORT:-7200}:7200
     networks:
       - ldes
-    
+
 networks:
   ldes:
-    name: ${USECASE_NAME:-nifi-workbench-components}_ldes_network
+    name: quick_start_network

@@ -1,0 +1,157 @@
+version: '3.3'
+services:
+
+  provider-connector:
+    container_name: connector_provider-connector
+    image: vsds-dataspace-connector:local
+    build:
+      context: ..
+      dockerfile: http-pull-connector/Dockerfile
+    environment:
+      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_KEYSTORE_PASSWORD=123456
+      - EDC_VAULT=http-pull-provider/provider-vault.properties
+      - EDC_FS_CONFIG=http-pull-provider/provider-configuration.properties
+    ports:
+      - 19191:19191
+      - 19193:19193
+      - 19194:19194
+      - 19291:19291
+      - 19192:19192
+    volumes:
+      - ./certs/cert.pfx:/app/certs/cert.pfx
+      - ./http-pull-provider/provider-configuration.properties:/app/http-pull-provider/provider-configuration.properties
+      - ./http-pull-provider/provider-vault.properties:/app/http-pull-provider/provider-vault.properties
+    networks:
+      - ldes
+    profiles:
+      - connectors
+
+  consumer-connector:
+    container_name: connector_consumer-connector
+    image: vsds-dataspace-connector:local
+    build:
+      context: ..
+      dockerfile: http-pull-connector/Dockerfile
+    environment:
+      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_KEYSTORE_PASSWORD=123456
+      - EDC_VAULT=http-pull-consumer/consumer-vault.properties
+      - EDC_FS_CONFIG=http-pull-consumer/consumer-configuration.properties
+    ports:
+      - 29191:29191
+      - 29193:29193
+      - 29194:29194
+      - 29291:29291
+      - 29192:29192
+    volumes:
+      - ./certs/cert.pfx:/app/certs/cert.pfx
+      - ./http-pull-consumer/consumer-configuration.properties:/app/http-pull-consumer/consumer-configuration.properties
+      - ./http-pull-consumer/consumer-vault.properties:/app/http-pull-consumer/consumer-vault.properties
+    networks:
+      - ldes
+    profiles:
+      - connectors
+
+  federated-catalog-connector:
+    container_name: federated-catalog-connector
+    image: vsds-federated-catalog-connector:local
+    build:
+      context: ..
+      dockerfile: federated-catalog-connector/Dockerfile
+    environment:
+      - EDC_FS_CONFIG=config/catalog-configuration.properties
+      - FCC_DIRECTORY_FILE=config/nodes-dc.json
+    depends_on: [ provider-connector ]
+    volumes:
+      - ./federated-catalog/catalog-configuration.properties:/app/config/catalog-configuration.properties
+      - ./federated-catalog/nodes-dc.json:/app/config/nodes-dc.json
+    ports:
+      - "8181:8181"
+    networks:
+      - ldes
+    profiles:
+      - connectors
+
+  test-message-generator:
+    container_name: connector_test-message-generator
+    image: ghcr.io/informatievlaanderen/test-message-generator:latest
+    environment:
+      - TARGETURL=http://ldio-server-seeder:8080/seed-server
+      - SILENT=false
+      - CRON=* * * * * *
+      - TEMPLATEFILE=/tmp/data/device.template.json
+      - MIMETYPE=application/ld+json
+    volumes:
+      - ./data/device.template.json:/tmp/data/device.template.json:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  ldio-server-seeder:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:latest
+    container_name: connector_ldio-server-seeder
+    volumes:
+      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
+    networks:
+      - ldes
+    depends_on:
+      - ldes-server
+
+  ldes-server:
+    container_name: connector_ldes-server
+    image: ghcr.io/informatievlaanderen/ldes-server:latest
+    environment:
+      - SIS_DATA=/tmp
+    volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - 8081:8081 # needed for admin API
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  ldes-mongodb:
+    container_name: connector_ldes-mongodb
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - ldes
+
+  nifi-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:latest
+    container_name: connector_nifi-workbench
+    environment:
+      - NIFI_WEB_HTTP_PORT=8000
+    volumes:
+      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+    ports:
+      - 8000:8000
+      - 8082:8080
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  ldio-workbench:
+    image: ldes/ldi-orchestrator:1.10.0-SNAPSHOT
+    container_name: connector_ldio-workbench
+    environment:
+      - SPRING_CONFIG_NAME=application
+      - SPRING_CONFIG_LOCATION=/config/
+    volumes:
+      - ./ldio-config.yml:/config/application.yml:ro
+    ports:
+      - 8082:8082
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+networks:
+  ldes:
+    name: ldes_connector_network

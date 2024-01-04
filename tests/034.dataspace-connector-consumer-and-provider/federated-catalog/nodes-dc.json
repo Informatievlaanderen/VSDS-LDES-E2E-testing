@@ -1,0 +1,9 @@
+[
+  {
+    "name": "provider-connector",
+    "url": "http://provider-connector:19194/protocol",
+    "supportedProtocols": [
+      "dataspace-protocol-http"
+    ]
+  }
+]

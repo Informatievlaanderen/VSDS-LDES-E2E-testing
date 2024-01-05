@@ -91,17 +91,17 @@ services:
       - ldes-server
 
   ldes-server:
-    container_name: connector_ldes-server
-    image: ghcr.io/informatievlaanderen/ldes-server:latest
+    container_name: ${USECASE_NAME:-connector}_ldes-server
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
-    ports:
-      - 8081:8081 # needed for admin API
     networks:
       - ldes
+    ports:
+      - 8081:8081 # needed for admin API
     depends_on:
       - ldes-mongodb
 
@@ -110,6 +110,17 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
+    networks:
+      - ldes
+
+  mongodb-rest-api:
+    container_name: ${USECASE_NAME:-connector}_mongodb-rest-api
+    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
+    environment:
+      - SILENT=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+    ports:
+      - ${MONGODB_REST_API_PORT:-9019}:80
     networks:
       - ldes
 

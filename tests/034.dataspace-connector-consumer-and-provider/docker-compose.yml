@@ -21,8 +21,6 @@ services:
       - ./http-pull-provider/provider-vault.properties:/app/http-pull-provider/provider-vault.properties
     networks:
       - ldes
-    profiles:
-      - connectors
 
   consumer-connector:
     container_name: connector_consumer-connector
@@ -44,8 +42,6 @@ services:
       - ./http-pull-consumer/consumer-vault.properties:/app/http-pull-consumer/consumer-vault.properties
     networks:
       - ldes
-    profiles:
-      - connectors
 
   federated-catalog-connector:
     container_name: federated-catalog-connector
@@ -61,8 +57,6 @@ services:
       - "8181:8181"
     networks:
       - ldes
-    profiles:
-      - connectors
 
   test-message-generator:
     container_name: connector_test-message-generator

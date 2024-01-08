@@ -107,13 +107,7 @@ EndpointDataReference.
 
 This property is used to define the endpoint exposed by the control plane to validate the token.
 
-## Run the connectors
-
-We can start the connectors with the following command:
-
-```bash
-docker compose --profile connectors up -d
-```
+#### 3. ports
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
 ports `29191`, `29192` (management API) and `29292` (IDS API) and the provider will listen on the

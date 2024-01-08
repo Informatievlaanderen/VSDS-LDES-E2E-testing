@@ -344,7 +344,7 @@ Sample output:
     "@id": "devices",
     "@type": "dcat:Dataset",
     "odrl:hasPolicy": {
-      "@id": "MQ==:ZGV2aWNlcw==:ZDI2Yjc3YWQtMTg1OC00MGI4LWFmMWQtM2U2NTBlZTQwOGFm",
+      "@id": "MQ==:ZGV2aWNlcw==:NzBjNTBiNTEtNWRlOC00M2VkLThmYzItMjlmNjlmZDQ3ODI1",
       "@type": "odrl:Set",
       "odrl:permission": [],
       "odrl:prohibition": [],
@@ -501,10 +501,10 @@ curl -d '{
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "offer": {
-   "offerId": "MQ==:ZGV2aWNlcw==:ZDI2Yjc3YWQtMTg1OC00MGI4LWFmMWQtM2U2NTBlZTQwOGFm",
+   "offerId": "MQ==:ZGV2aWNlcw==:NzBjNTBiNTEtNWRlOC00M2VkLThmYzItMjlmNjlmZDQ3ODI1",
    "assetId": "devices",
    "policy": {
-     "@id": "MQ==:ZGV2aWNlcw==:ZDI2Yjc3YWQtMTg1OC00MGI4LWFmMWQtM2U2NTBlZTQwOGFm",
+     "@id": "MQ==:ZGV2aWNlcw==:NzBjNTBiNTEtNWRlOC00M2VkLThmYzItMjlmNjlmZDQ3ODI1",
      "@type": "Set",
      "odrl:permission": [],
      "odrl:prohibition": [],
@@ -537,7 +537,7 @@ state, the negotiation is finished. We can now use the UUID to check the current
 negotiation using an endpoint on the consumer side.
 
 ```bash
-curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
+curl -X GET "http://localhost:29193/management/v2/contractnegotiations/2c549425-884e-4aeb-963b-e4e319585fcf" \
     --header 'Content-Type: application/json' \
     -s | jq
 ```
@@ -553,7 +553,7 @@ Sample output:
   "edc:state": "FINALIZED",
   "edc:counterPartyAddress": "http://provider-connector:19194/protocol",
   "edc:callbackAddresses": [],
-  "edc:contractAgreementId": "MQ==:ZGV2aWNlcw==:ZDI2Yjc3YWQtMTg1OC00MGI4LWFmMWQtM2U2NTBlZTQwOGFm",
+  "edc:contractAgreementId": "MQ==:ZGV2aWNlcw==:YWFjYWUzMmYtZTFlNS00Y2UxLThiNGUtNWYzNDIzMzFkOGI3",
   "@context": {
     "dct": "https://purl.org/dc/terms/",
     "edc": "https://w3id.org/edc/v0.0.1/ns/",
@@ -586,7 +586,7 @@ curl -X POST "http://localhost:8082/client-pipeline/transfer" \
         "@type": "TransferRequest",
         "connectorId": "provider",
         "connectorAddress": "http://provider-connector:19194/protocol",
-        "contractId": "MQ==:ZGV2aWNlcw==:Nzk4N2UwODgtNDY5Ni00ZTllLTkxNWItMTRlY2NkYzFlYzk5",
+        "contractId": "MQ==:ZGV2aWNlcw==:YWFjYWUzMmYtZTFlNS00Y2UxLThiNGUtNWYzNDIzMzFkOGI3",
         "assetId": "devices",
         "protocol": "dataspace-protocol-http",
         "dataDestination": {

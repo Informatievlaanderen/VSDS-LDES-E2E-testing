@@ -1,11 +1,5 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {
-    testPartialPath,
-    clientWorkbench,
-    createAndStartService,
-    jsonDataGenerator,
-    server
-} from "./common_step_definitions";
+import {clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
 
 
@@ -25,16 +19,26 @@ Then('The LDES Client is waiting for the token', () => {
     clientWorkbench.waitForDockerLog("waiting for token")
 })
 
+Then('The LDES Client is processing the LDES', () => {
+    clientWorkbench.waitForDockerLog("LdiConsoleOut")
+})
+
 When('I initiate a transfer', () => {
     cy.request(
         {
             method: 'POST',
-            url: 'http://localhost:8181/api/federatedcatalog',
+            url: 'http://localhost:29193/management/v2/catalog/request',
             headers: {'Content-Type': 'application/json'},
-            body: '{"criteria":[]}'
+            body: `{
+                  "@context": {
+                    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+                  },
+                  "providerUrl": "http://provider-connector:19194/protocol",
+                  "protocol": "dataspace-protocol-http"
+                }`
         }
     ).then(catalogResponse => {
-        const policyId = catalogResponse.body[0]["dcat:dataset"]["odrl:hasPolicy"]["@id"];
+        const policyId = catalogResponse.body["dcat:dataset"]["odrl:hasPolicy"]["@id"];
         cy.log(`Obtained policyId: ${policyId}`)
         cy.request({
                 method: 'POST',
@@ -124,7 +128,3 @@ function createNegotiationInitiateRequestDto(policyId: string) {
       }
     }`;
 }
-
-Then('foobar', () => {
-    clientWorkbench.waitForDockerLog("foobar")
-})

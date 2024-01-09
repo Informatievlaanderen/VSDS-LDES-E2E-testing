@@ -22,3 +22,10 @@ Feature: VSDS Dataspace Connectors
     Examples:
       | workbench |
       | LDIO      |
+
+  @test-034
+  Scenario: 034: The federated catalog polls and exposes the catalog from the provider
+    Given context 'tests/034.dataspace-connector-consumer-and-provider' is started
+    Then I wait for the connectors to have started
+    When The provider connector is configured
+    Then The federated catalog will eventually contain a policy

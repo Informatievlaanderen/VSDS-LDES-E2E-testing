@@ -45,6 +45,38 @@ When('I get the policyId from the consumer catalog', () => {
     });
 });
 
+Then('The federated catalog will eventually contain a policy', () => {
+    cy.waitUntil(() => {
+            return hasFederatedCatalogPolicy();
+        },
+        {
+            timeout: timeouts.slowAction,
+            interval: timeouts.slowCheck,
+            errorMsg: `Timed out waiting for the contract negotiation to finalize.'`
+        }
+    )
+});
+
+function hasFederatedCatalogPolicy() {
+    return cy.exec(`curl -X POST http://localhost:8181/api/federatedcatalog  --header 'Content-Type: application/json' -d '{"criteria":[]}'`,
+        {failOnNonZeroExit: false}).then(exec => exec.stdout.includes('odrl:hasPolicy'));
+}
+
+Then('I wait for the connectors to have started', () => {
+    const includeString = 'Incoming catalog request';
+    const containerName = 'provider-connector';
+    cy.exec(`docker ps -f "name=${containerName}$" -q`)
+        .then(result => {
+            return cy.waitUntil(
+                () => cy.exec(`docker logs ${result.stdout}`).then(result => result.stdout.includes(includeString)),
+                {
+                    timeout: timeouts.slowAction,
+                    interval: timeouts.slowCheck,
+                    errorMsg: `Timed out waiting for ${containerName} container log to include '${includeString}'`
+                });
+        });
+})
+
 When('I start negotiating a contract', () => {
     cy.request({
             method: 'POST',

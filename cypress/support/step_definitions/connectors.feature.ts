@@ -2,6 +2,8 @@ import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import {clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
 
+let policyId: string;
+let contractNegotiationId: string;
 
 When('The provider connector is configured', () => {
     const cmd = `sh ${testPartialPath()}/config/config-provider-connector.sh`;
@@ -23,7 +25,7 @@ Then('The LDES Client is processing the LDES', () => {
     clientWorkbench.waitForDockerLog("LdiConsoleOut")
 })
 
-When('I initiate a transfer', () => {
+When('I get the policyId from the consumer catalog', () => {
     cy.request(
         {
             method: 'POST',
@@ -38,43 +40,51 @@ When('I initiate a transfer', () => {
                 }`
         }
     ).then(catalogResponse => {
-        const policyId = catalogResponse.body["dcat:dataset"]["odrl:hasPolicy"]["@id"];
-        cy.log(`Obtained policyId: ${policyId}`)
-        cy.request({
-                method: 'POST',
-                url: 'http://localhost:29193/management/v2/contractnegotiations',
-                headers: {'Content-Type': 'application/json'},
-                body: createNegotiationInitiateRequestDto(policyId)
-            }
-        ).then(contractResponse => {
-            const contractNegotiationId = contractResponse.body["@id"];
-            cy.log(`Obtained contractNegotiationId: ${contractNegotiationId}`);
-            cy.log(`Start waiting for contract negotiation with id ${contractNegotiationId} to finalize.`)
-            cy.waitUntil(() => isContractReady(contractNegotiationId),
-                {
-                    timeout: timeouts.slowAction,
-                    interval: timeouts.slowCheck,
-                    errorMsg: `Timed out waiting for the contract negotiation to finalize.'`
-                }
-            ).then(() => {
-                cy.request({
-                    method: 'GET',
-                    url: 'http://localhost:29193/management/v2/contractnegotiations/' + contractNegotiationId,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(contractNegotiationDto => {
-                    const contractAgreementId = contractNegotiationDto.body['edc:contractAgreementId'];
-                    cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
-                    cy.request({
-                        method: 'POST',
-                        url: "http://localhost:8082/client-pipeline/transfer",
-                        headers: {'Content-Type': 'application/json'},
-                        body: createTransferRequest(contractAgreementId)
-                    })
-                });
-            });
-        });
-    })
+        policyId = catalogResponse.body["dcat:dataset"]["odrl:hasPolicy"]["@id"];
+        cy.log(`Obtained policyId: ${policyId}`);
+    });
+});
+
+When('I start negotiating a contract', () => {
+    cy.request({
+            method: 'POST',
+            url: 'http://localhost:29193/management/v2/contractnegotiations',
+            headers: {'Content-Type': 'application/json'},
+            body: createNegotiationInitiateRequestDto(policyId)
+        }
+    ).then(contractResponse => {
+        contractNegotiationId = contractResponse.body["@id"];
+        cy.log(`Obtained contractNegotiationId: ${contractNegotiationId}`);
+    });
+});
+
+Then('I wait for the contract negotiation to finish', () => {
+    cy.log(`Start waiting for contract negotiation with id ${contractNegotiationId} to finalize.`)
+    cy.waitUntil(() => isContractReady(contractNegotiationId),
+        {
+            timeout: timeouts.slowAction,
+            interval: timeouts.slowCheck,
+            errorMsg: `Timed out waiting for the contract negotiation to finalize.'`
+        }
+    )
 })
+
+When('I start a transfer', () => {
+    cy.request({
+        method: 'GET',
+        url: 'http://localhost:29193/management/v2/contractnegotiations/' + contractNegotiationId,
+        headers: {'Content-Type': 'application/json'}
+    }).then(contractNegotiationDto => {
+        const contractAgreementId = contractNegotiationDto.body['edc:contractAgreementId'];
+        cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
+        cy.request({
+            method: 'POST',
+            url: "http://localhost:8082/client-pipeline/transfer",
+            headers: {'Content-Type': 'application/json'},
+            body: createTransferRequest(contractAgreementId)
+        })
+    });
+});
 
 function isContractReady(contractNegotiationId: string) {
     return cy.exec(`curl -X GET http://localhost:29193/management/v2/contractnegotiations/${contractNegotiationId}  --header 'Content-Type: application/json'`,

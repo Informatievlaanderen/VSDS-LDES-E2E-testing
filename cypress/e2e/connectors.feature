@@ -12,7 +12,10 @@ Feature: VSDS Dataspace Connectors
     Then The LDES Client is waiting for the token
     When The provider connector is configured
     And The consumer connector is configured
-    Then I initiate a transfer
+    When I get the policyId from the consumer catalog
+    And I start negotiating a contract
+    Then I wait for the contract negotiation to finish
+    And I start a transfer
     Then The LDES Client is processing the LDES
 
     @ldio

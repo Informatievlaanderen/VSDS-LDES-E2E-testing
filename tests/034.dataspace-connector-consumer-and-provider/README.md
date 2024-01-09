@@ -1,6 +1,6 @@
 # Implement a simple flow from LdesClient to LdesServer with EDC Connectors.
 
-This example is based on [transfer-06-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-06-consumer-pull-http).
+This example is based on [transfer-02-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-02-consumer-pull).
 
 The purpose of this example is to show a data exchange between 2 connectors, one representing the
 data provider (LDES Server) and the other, the consumer (LDES Client). It's based on a consumer pull usecase that you can find
@@ -229,12 +229,10 @@ curl -d '{
            "@context": {
              "edc": "https://w3id.org/edc/v0.0.1/ns/"
            },
-           "asset": {
-             "@id": "devices",
-             "properties": {
-               "name": "device models",
-               "contenttype": "application/n-quads"
-             }
+           "@id": "devices",
+           "properties": {
+             "name": "device models",
+             "contenttype": "application/n-quads"
            },
            "dataAddress": {
              "type": "HttpData",
@@ -245,7 +243,7 @@ curl -d '{
              "contenttype": "application/n-quads",
              "header:Accept": "application/n-quads"
            }
-         }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
+         }' -H 'content-type: application/json' http://localhost:19193/management/v3/assets \
          -s | jq
 ```
 

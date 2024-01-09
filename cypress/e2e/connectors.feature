@@ -1,7 +1,7 @@
 @client @security @connectors
 Feature: VSDS Dataspace Connectors
 
-  @test-034
+  @test-034 @basic-connector-flow
   Scenario Outline: 034: LDES Client Can Consume Connector Protected Server Using '<workbench>' Workbench
     Given the members are stored in database 'iow'
     And context 'tests/034.dataspace-connector-consumer-and-provider' is started
@@ -23,7 +23,7 @@ Feature: VSDS Dataspace Connectors
       | workbench |
       | LDIO      |
 
-  @test-034
+  @test-034 @federated-catalog
   Scenario: 034: The federated catalog polls and exposes the catalog from the provider
     Given context 'tests/034.dataspace-connector-consumer-and-provider' is started
     Then I wait for the connectors to have started

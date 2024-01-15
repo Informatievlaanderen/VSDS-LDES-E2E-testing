@@ -1,7 +1,7 @@
 @server @performance
 Feature: LDES Server Performance
 
-  @test-013 @gtfs @broken
+  @test-013 @gtfs
   Scenario: 013: Server Performs Fast Enough for GTFS/RT Processing
     Given the members are stored in database 'bustang'
     And I have configured the GTFS trottle rate as 200

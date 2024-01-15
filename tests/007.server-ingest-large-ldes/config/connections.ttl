@@ -5,6 +5,6 @@
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
 
 </connections> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape ; sh:targetClass <http://semweb.mmlab.be/ns/linkedconnections#Connection> ] ;
+	tree:shape [ a sh:NodeShape ] ;
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf .	

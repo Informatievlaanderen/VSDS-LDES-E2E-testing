@@ -3,4 +3,4 @@
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
 
 </occupancy> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape ; sh:targetClass <http://schema.mobivoc.org/#ParkingLot> ] .
+	tree:shape [ a sh:NodeShape ] .

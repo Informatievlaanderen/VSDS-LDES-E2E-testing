@@ -3,8 +3,6 @@
 
 </occupancy/paged> a tree:Node ; 
   tree:viewDescription [ a tree:ViewDescription ;
-    tree:fragmentationStrategy ([
-		a tree:PaginationFragmentation ;
-		tree:memberLimit "1500"^^xsd:integer ;
-	]) ;
+    tree:fragmentationStrategy () ;
+    tree:pageSize "1500"^^xsd:integer ;
 ] .

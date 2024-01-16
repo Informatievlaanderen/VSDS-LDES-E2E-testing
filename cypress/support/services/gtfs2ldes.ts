@@ -3,6 +3,11 @@
 import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
+export interface SentCount {
+    sent: number;
+    done: boolean;
+}
+
 export class Gtfs2Ldes implements CanCheckAvailability {
 
     public get serviceName() {
@@ -31,11 +36,26 @@ export class Gtfs2Ldes implements CanCheckAvailability {
             ));
     }
 
-    sendLinkedConnectionCount(): Cypress.Chainable<number> {
+    sendLinkedConnectionCount(): Cypress.Chainable<SentCount> {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result =>
-            cy.exec(`docker logs -n 1 ${result.stdout}`)
+            cy.exec(`docker logs -n 5 ${result.stdout}`)
                 .then(result => result.stdout)
-                .then(lastLine => lastLine.startsWith('Posted') ? Number.parseInt(lastLine.replace(/[^0-9]/g, '')): 0)
+                .then(lines => {
+                    let result: SentCount;
+                    const doneMatch = lines.match(/posted (?<count>[0-9]+) new versioned Connections/);
+                    if (doneMatch) {
+                        result = { done: true, sent: Number.parseInt(doneMatch.groups.count) };
+                    } else {
+                        const lastLine = lines.split("\n").reverse().filter(x => x.startsWith('Posted')).pop();
+                        const postedMatch = lastLine?.match(/^Posted (?<count>[0-9]+) Connection updates/);
+                        if (postedMatch) {
+                            result = { done: false, sent: Number.parseInt(postedMatch.groups.count) };
+                        } else {
+                            result = { done: false, sent: 0 };
+                        }
+                    }
+                    return result;
+                })
         );
     }
 }

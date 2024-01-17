@@ -31,7 +31,7 @@ Then('the LDES server ingests linked connections for {int} seconds without laggi
         let counts: SentReceivedCount = { done: false, sent: 0, received: 0 };
         cy.waitUntil(() => validateCounts()
                 .then((x: SentReceivedCount) => counts = x)
-                .then(() => cy.task('log', `\tRunning average  : ${Math.round(counts.received * 1000/timer.end)} / second`))
+                .then(() => cy.log(`Running average  : ${Math.round(counts.received * 1000/timer.end)} / second`))
                 .then(() => counts.done || timer.end/1000 > seconds), { timeout: seconds * 1000, interval: timeouts.check })
             .then(() => averageIngestRate = counts.received * 1000/timer.end)
             .then(average => cy.task('log', `\tAverage ingest rate: ${Math.round(average)} / second`));

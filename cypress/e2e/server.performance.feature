@@ -10,4 +10,4 @@ Feature: LDES Server Performance
     When I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     Then the LDES server ingests linked connections for 120 seconds without lagging behind more than the throttle rate
-    And the LDES server ingests linked connections in average at least at 50 members per second
+    And the LDES server ingests linked connections in average at least at 200 members per second

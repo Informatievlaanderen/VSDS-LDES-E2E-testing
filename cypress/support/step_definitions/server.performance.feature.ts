@@ -14,29 +14,25 @@ interface SentReceivedCount extends SentCount {
     received: number;
 }
 
-function validateCounts(): Cypress.Chainable<SentReceivedCount> {
-    return gtfs2ldes.sendLinkedConnectionCount().then((sentCount: SentCount) =>
-        currentMemberCount().then(receivedCount => {
-            const difference = sentCount.sent - receivedCount;
-            expect(difference).not.to.be.greaterThan(throttleRate);
-            return { ...sentCount, received: receivedCount };
-        })
-    );
-}
-
 let averageIngestRate = 0;
 Then('the LDES server ingests linked connections for {int} seconds without lagging behind more than the throttle rate',
     (seconds: number) => {
         const timer = new PerformanceTimer();
         let counts: SentReceivedCount = { done: false, sent: 0, received: 0 };
-        cy.waitUntil(() => validateCounts()
-                .then((x: SentReceivedCount) => counts = x)
-                .then(() => cy.log(`Running average  : ${Math.round(counts.received * 1000/timer.end)} / second`))
-                .then(() => counts.done || timer.end/1000 > seconds), { timeout: seconds * 1000, interval: timeouts.check })
-            .then(() => averageIngestRate = counts.received * 1000/timer.end)
-            .then(average => cy.task('log', `\tAverage ingest rate: ${Math.round(average)} / second`));
-        });
+        cy.waitUntil(() =>
+            gtfs2ldes.sendLinkedConnectionCount().then((sentCount: SentCount) => currentMemberCount().then(receivedCount => {
+                const difference = sentCount.sent - receivedCount;
+                expect(difference).not.to.be.greaterThan(throttleRate);
+                counts = { ...sentCount, received: receivedCount };
+                const runningAverage = counts.received * 1000 / timer.end;
+                return cy.task('log', `\tRunning average  : ${Math.round(runningAverage)} / second`).then(() => counts.done || timer.end / 1000 > seconds);
+            })), { timeout: seconds * 1000, interval: timeouts.check / 2 })
+            .then(() => {
+                averageIngestRate = counts.received * 1000 / timer.end;
+                cy.task('log', `\tAverage ingest rate: ${Math.round(averageIngestRate)} / second`)
+            });
+    });
 
-Then('the LDES server ingests linked connections in average at least at {int} members per second', (rate: number) =>{
+Then('the LDES server ingests linked connections in average at least at {int} members per second', (rate: number) => {
     expect(averageIngestRate).not.to.be.lessThan(rate);
 });

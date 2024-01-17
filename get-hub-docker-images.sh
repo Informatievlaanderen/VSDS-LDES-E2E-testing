@@ -1,9 +1,9 @@
 #!/bin/sh
 
 export LDI_WORKBENCH_NIFI=docker.io/ldes/ldi-workbench-nifi
-export LDI_WORKBENCH_NIFI_TAG=1.12.0-SNAPSHOT
+export LDI_WORKBENCH_NIFI_TAG=1.13.0-SNAPSHOT
 export LDI_ORCHESTRATOR=docker.io/ldes/ldi-orchestrator
-export LDI_ORCHESTRATOR_TAG=1.12.0-SNAPSHOT
+export LDI_ORCHESTRATOR_TAG=1.13.0-SNAPSHOT
 export LDES_SERVER=docker.io/ldes/ldes-server
 export LDES_SERVER_TAG=2.7.0-SNAPSHOT
 

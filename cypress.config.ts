@@ -27,7 +27,8 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
         resolve: {
           extensions: [".ts", ".js"],
           fallback: {
-            "string_decoder": require.resolve("string_decoder/")
+            "string_decoder": require.resolve("string_decoder/"),
+            "http": require.resolve("stream-http")
           },
         },
         module: {

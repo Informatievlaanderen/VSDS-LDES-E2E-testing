@@ -26,12 +26,10 @@ curl --fail -d '{
            "@context": {
              "edc": "https://w3id.org/edc/v0.0.1/ns/"
            },
-           "asset": {
-             "@id": "devices",
-             "properties": {
-               "name": "device models",
-               "contenttype": "application/n-quads"
-             }
+           "@id": "devices",
+              "properties": {
+              "name": "device models",
+              "contenttype": "application/n-quads"
            },
            "dataAddress": {
              "type": "HttpData",
@@ -42,7 +40,7 @@ curl --fail -d '{
              "contenttype": "application/n-quads",
              "header:Accept": "application/n-quads"
            }
-         }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets
+         }' -H 'content-type: application/json' http://localhost:19193/management/v3/assets
 code=$?
 if [ $code != 0 ]
     then exit $code

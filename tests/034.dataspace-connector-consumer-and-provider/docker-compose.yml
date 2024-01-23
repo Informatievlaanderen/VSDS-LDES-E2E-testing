@@ -3,33 +3,35 @@ services:
 
   provider-connector:
     container_name: connector_provider-connector
-    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
+    image: vsds-dataspace-connector:local
     environment:
-      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_FS_CONFIG=/resources/provider-configuration.properties
+
+      - EDC_KEYSTORE=/certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456
-      - EDC_VAULT=http-pull-provider/provider-vault.properties
-      - EDC_FS_CONFIG=http-pull-provider/provider-configuration.properties
+      - EDC_VAULT=/resources/provider-vault.properties
     ports:
       - 19191:19191
       - 19193:19193
       - 19194:19194
       - 19291:19291
       - 19192:19192
+      - 19195:8180
     volumes:
-      - ./certs/cert.pfx:/app/certs/cert.pfx
-      - ./http-pull-provider/provider-configuration.properties:/app/http-pull-provider/provider-configuration.properties
-      - ./http-pull-provider/provider-vault.properties:/app/http-pull-provider/provider-vault.properties
+      - ./http-pull-provider:/resources
+      - ./certs:/certs
     networks:
       - ldes
 
   consumer-connector:
     container_name: connector_consumer-connector
-    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
+    image: vsds-dataspace-connector:local
     environment:
-      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_FS_CONFIG=/resources/consumer-configuration.properties
+
+      - EDC_KEYSTORE=/certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456
-      - EDC_VAULT=http-pull-consumer/consumer-vault.properties
-      - EDC_FS_CONFIG=http-pull-consumer/consumer-configuration.properties
+      - EDC_VAULT=/resources/consumer-vault.properties
     ports:
       - 29191:29191
       - 29193:29193
@@ -37,9 +39,8 @@ services:
       - 29291:29291
       - 29192:29192
     volumes:
-      - ./certs/cert.pfx:/app/certs/cert.pfx
-      - ./http-pull-consumer/consumer-configuration.properties:/app/http-pull-consumer/consumer-configuration.properties
-      - ./http-pull-consumer/consumer-vault.properties:/app/http-pull-consumer/consumer-vault.properties
+      - ./http-pull-consumer:/resources
+      - ./certs:/certs
     networks:
       - ldes
 
@@ -57,6 +58,8 @@ services:
       - "8181:8181"
     networks:
       - ldes
+    profiles:
+      - very-delay-started
 
   test-message-generator:
     container_name: connector_test-message-generator
@@ -147,6 +150,17 @@ services:
       - ldes
     profiles:
       - delay-started
+
+  did-server:
+    # provides DID Web for connectors
+    container_name: did-server
+    image: nginx
+    volumes:
+      - ./webdid:/usr/share/nginx/html
+    networks:
+      - ldes
+    ports:
+      - "8080:80"
 
 networks:
   ldes:

@@ -1,0 +1,33 @@
+{
+  "id": "did:web:did-server:consumer",
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    {
+      "@base": "did:web:did-server:consumer"
+    }
+  ],
+  "service": [
+    {
+      "id": "#identity-hub-url",
+      "type": "IdentityHub",
+      "serviceEndpoint": "http://consumer-connector:29191/api/identity-hub"
+    }
+  ],
+  "verificationMethod": [
+    {
+      "controller": "",
+      "id": "#consumer",
+      "publicKeyJwk": {
+        "kty": "RSA",
+        "kid": "O-_Oe4RiLGaE4TjIkt-EmedukppGevPWnTKeHO-r2NA",
+        "x5t": "nwd4oK5POz8oxOgRllrhZmk_FZ4",
+        "n": "wZel2iZ10y_ug1oqd2gYVPjM5mOHdVfYW05tbYmd4BNFW1K7xjty6GGsaT7-sxZrIN7ib-icVQHXuxHXYnTdCExwfXEDXQH3VCeZ45rBkj23ULjkEx8NGhu_0L0yP57L3xBOntJW1f9Huwx2nGU__js7QR9UcJBtspjPeB3_ByOse6usn0UwGTqnjjKzwmE3JbgIBPTbJKD741-agEmpAbVyEiiLDlPODdP9hwzd1hBjF76B1ELur64o-gcIsMSmsNQCsFhDSqIGu--Wz1zdzPiU0miChO3WWys78dGYtIeV_m8XNwSYt2fwrFAQsxPmNEhXrTomJspf9mJp53mKFQ",
+        "e": "AQAB"
+      },
+      "type": "JsonWebKey2020"
+    }
+  ],
+  "authentication": [
+    "#consumer"
+  ]
+}

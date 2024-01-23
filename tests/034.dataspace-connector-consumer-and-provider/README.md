@@ -1,12 +1,14 @@
 # Implement a simple flow from LdesClient to LdesServer with EDC Connectors.
 
-This example is based on [transfer-02-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-02-consumer-pull).
+This example is based
+on [transfer-02-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-02-consumer-pull).
 
 The purpose of this example is to show a data exchange between 2 connectors, one representing the
-data provider (LDES Server) and the other, the consumer (LDES Client). It's based on a consumer pull usecase that you can find
+data provider (LDES Server) and the other, the consumer (LDES Client). It's based on a consumer pull usecase that you
+can find
 more details
 on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane)
-The provider and the consumer will run in two different containers of the same connector image. 
+The provider and the consumer will run in two different containers of the same connector image.
 The final goal of this example is to present the steps through which the 2 connectors will
 have to pass so that the consumer can have access to the data, held by the provider.
 
@@ -34,16 +36,17 @@ Once the catalog is available, to access the data, the consumer should follow th
     * The provider will send an EndpointDataReference to the consumer
 * The consumer could reach the endpoint and access the data
 
-
 > For the sake of simplicity, we will use an in-memory catalog and fill it with just one single
 > asset. This will be deleted after the provider shutdown.
 
 # Server setup
 
 To prepare the LDES Server we use the following containers:
+
 - ldes-server: The actual server.
 - test-message-generator: Generates messages to seed the server with data.
-- ldio-server-seeder: ETL pipeline between the message generator and the server to insert the generated data into the server.
+- ldio-server-seeder: ETL pipeline between the message generator and the server to insert the generated data into the
+  server.
 - ldes-mongodb: Data persistence used by the server.
 
 Start the LDES Server:
@@ -52,24 +55,31 @@ Start the LDES Server:
 docker compose up -d
 ```
 
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following
+message `Cancelled mongock lock daemon`:
+
 ```bash
 docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```
+
 Press `CTRL-C` to stop following the log.
 
-> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh)
+> to setup the LDES with its views:
+
 ```bash
 chmod +x ./config/seed.sh
 sh ./config/seed.sh
 ```
 
 Seed the LDES Server by starting the message generator:
+
    ```bash
    docker compose up test-message-generator -d
    ```
 
 Verify that messages are correctly ingested by the server:
+
 ```bash
 curl http://localhost:8081/devices/paged?pageNumber=1
 ```
@@ -122,13 +132,15 @@ order.
 > drop it from the command. it's just used to format the output, and the same advice should be
 > applied to all calls that use `jq`.
 
+### 0.1 Federated catalog connector - State before datasets are provided by the provider connector
 
-### 0. Federated catalog connector - State before datasets are provided by the provider connector
-
-When the federated catalog connector is started, it will crawl the connectors defined in [nodes-dc.json](federated-catalog/nodes-dc.json).
-In our test, this is done for the first time, 5 seconds after startup as defined by "edc.catalog.cache.execution.delay.seconds" in the [config](federated-catalog/catalog-configuration.properties).
+When the federated catalog connector is started, it will crawl the connectors defined
+in [nodes-dc.json](federated-catalog/nodes-dc.json).
+In our test, this is done for the first time, 5 seconds after startup as defined by "
+edc.catalog.cache.execution.delay.seconds" in the [config](federated-catalog/catalog-configuration.properties).
 
 We can request the Federated Catalog with the following request:
+
 ```bash
 curl 'http://localhost:8181/api/federatedcatalog' \
     -H 'Content-Type: application/json' \
@@ -137,6 +149,7 @@ curl 'http://localhost:8181/api/federatedcatalog' \
 ```
 
 If you do this before the provider connectors have been crawled, then you will get an empty response:
+
 ```json
 []
 ```
@@ -168,6 +181,85 @@ After the first crawl we get the following response, which contains the connecto
 ]
 ```
 
+h3: ### 0.2 Authentication
+
+### 0.2 Authentication
+
+We will use the `Registration Service` to register the participant to the dataspace. We will use
+`curl` commands to demonstrate how to register the participant to the dataspace.
+
+We will use the following `curl` command to register the participant to the dataspace;
+
+```bash
+curl --location --request POST 'localhost:19195/authority/registry/participant' \
+--header 'Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cGFydGljaXBhbnQxIiwic3ViIjoiZGlkOndlYjpkaWQtc2VydmVyOnBhcnRpY2lwYW50MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODE4MC9hdXRob3JpdHkiLCJleHAiOjE3OTA5ODM1NTgsImp0aSI6IjQzMWJqYTgyLWE4MjUtNGYyNC05MjhmLTJjYjI3ZmE4MzFkNSJ9.E7TCtOEV1WhBXj04ATrg86mAF0pffgCCkIdI7ueQC2daEnxnIHJwCkyHy8K207JOek9HMLbuBXgjNurXVasYDQ'
+```
+
+The `Authorization` header is a `JWT` token. This token is used to authenticate the authority. The
+token is signed with the private key of the authority. The token is signed with the following
+command;
+
+We can use [jwt.io](https://jwt.io/) to create the token
+
+Header:
+
+```json
+{
+  "alg": "ES256"
+}
+```
+
+Payload:
+
+```json
+{
+  "iss": "did:web:did-server:consumer",
+  "sub": "did:web:did-server:consumer",
+  "aud": "http://provider-connector:8180/authority",
+  "exp": 1990983558,
+  "jti": "431bja82-a825-4f24-928f-2cb27fa831d5"
+}
+```
+
+Signature:
+
+Use the public and private key of the requestor to sign the token.
+One important thing to note is that [jwt.io](https://jwt.io/)  expects the private key to be in
+`PKCS#8` format. However, the private key resolver expects the private key to be in `EC` format.
+Therefore, we need to convert the private key to `PKCS#8` format before signing the token. We can
+use the following command to convert the private key to `PKCS#8` format;
+
+```bash
+openssl pkcs8 -topk8 -nocrypt -in private.key -out private-pkcs.key
+```
+
+The JWT should look something like this:
+
+````text
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxOTkwOTgzNTU4LCJqdGkiOiI0MzFiamE4Mi1hODI1LTRmMjQtOTI4Zi0yY2IyN2ZhODMxZDUifQ.tG4XBBzNiZvUYDOVu156B115K0vzGb2wegR2qBXb6Q6Mk-0-sjMktBKXInMV60V44PAdt6yokX_TxtQ0LuTT47LOhxOzyTf1zAn4YddBqfHT1dgrFlpICPmdpJQgJXOVCsKS2uE7RkHte6HKTGVVjhcS3cK0jBoBIk2kQRLp_l1fhLxc4lluGTAE04i9DT3_YOZohATtE97Tq9HM7dBVXbtBBGnPEAp7mw67v_UVuGtSgoOmJtOThpqrFzB_hvCuYQ9a7QG7Zc0yJp00IsKMdmPf3HA9aDdbibOkVsMAxYcLMY_s5Yh5087nWukeiFIZQ-Xn9Z1_PKgpM8t4lM7TOg
+````
+
+err
+
+2024-01-19 17:10:22 SEVERE 2024-01-19T16:10:22.889092913 ContractNegotiation: ID 3623fda5-8892-4015-8fd8-bd404864d6a4.
+Fatal error while [Provider] send agreement. Error details:
+
+```json
+{
+  "@type": "dspace:ContractNegotiationError",
+  "dspace:code": "401",
+  "dspace:reason": "Failed to get verifiable credentials: Could not retrieve identity hub URL from DID document",
+  "dspace:processId": "c869dbf8-c5e9-407f-aca7-b3fedd349351",
+  "@context": {
+    "dct": "https://purl.org/dc/terms/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
+}
+
+```
 ### 1. Provider connector - Register data plane instance for provider
 
 Before a consumer can start talking to a provider, it is necessary to register the data plane

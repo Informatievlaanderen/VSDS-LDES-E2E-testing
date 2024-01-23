@@ -17,6 +17,25 @@ When('The consumer connector is configured', () => {
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
 })
 
+When('I register the consumer connector with the consumer connector', () => {
+    const jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWI" +
+        "iOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5I" +
+        "iwiZXhwIjoxOTkwOTgzNTU4LCJqdGkiOiI0MzFiamE4Mi1hODI1LTRmMjQtOTI4Zi0yY2IyN2ZhODMxZDUifQ.tG4XBBzNiZvUYDOVu156B" +
+        "115K0vzGb2wegR2qBXb6Q6Mk-0-sjMktBKXInMV60V44PAdt6yokX_TxtQ0LuTT47LOhxOzyTf1zAn4YddBqfHT1dgrFlpICPmdpJQgJXOVC" +
+        "sKS2uE7RkHte6HKTGVVjhcS3cK0jBoBIk2kQRLp_l1fhLxc4lluGTAE04i9DT3_YOZohATtE97Tq9HM7dBVXbtBBGnPEAp7mw67v_UVuGtSgo" +
+        "OmJtOThpqrFzB_hvCuYQ9a7QG7Zc0yJp00IsKMdmPf3HA9aDdbibOkVsMAxYcLMY_s5Yh5087nWukeiFIZQ-Xn9Z1_PKgpM8t4lM7TOg"
+
+    cy.request(
+        {
+            method: 'POST',
+            url: 'http://localhost:19195/authority/registry/participant',
+            headers: {'Authorization': `Bearer ${jwt}`}
+        }
+    ).should(response => {
+        expect(response.isOkStatusCode).to.eq(true);
+    });
+})
+
 Then('The LDES Client is waiting for the token', () => {
     clientWorkbench.waitForDockerLog("waiting for token")
 })

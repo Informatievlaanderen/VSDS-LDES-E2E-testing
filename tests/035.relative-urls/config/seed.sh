@@ -1,0 +1,27 @@
+#!/bin/bash
+export SCRIPT_PATH=$(dirname -- "$( readlink -f -- "${BASH_SOURCE:-$0}"; )")
+
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/ldes.ttl"
+code=$?
+if [ $code != 0 ]
+    then exit $code
+fi
+
+curl --fail -X POST 'http://localhost:8080/admin/api/v1/eventstreams/mobility-hindrances/views' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/view.ttl"
+code=$?
+if [ $code != 0 ]
+    then exit $code
+fi
+i=0
+
+while [ $i -lt 5 ];
+do
+    curl --fail -X POST 'http://localhost:8080/mobility-hindrances' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/members/member"$i".ttl"
+    code=$?
+    ((i++))
+    if [ $code != 0 ]
+        then exit $code
+    fi
+done
+
+

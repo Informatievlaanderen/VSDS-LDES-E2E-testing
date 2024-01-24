@@ -1,17 +1,9 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {clientWorkbench, testPartialPath} from "./common_step_definitions";
+import {clientConnectorFailsOnStatusCode, clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
-/*
-import express = require("express");
-const app = express();
-const port = 3000;*/
-import http = require("http")
 
 let policyId: string;
 let contractNegotiationId: string;
-let token: string;
-let statusCode: number;
-let headers: {[key: string]: string};
 
 When('The provider connector is configured', () => {
     const cmd = `sh ${testPartialPath()}/config/config-provider-connector.sh`;
@@ -115,7 +107,7 @@ When('I start a transfer', () => {
         url: 'http://localhost:29193/management/v2/contractnegotiations/' + contractNegotiationId,
         headers: {'Content-Type': 'application/json'}
     }).then(contractNegotiationDto => {
-        const contractAgreementId = contractNegotiationDto.body['edc:contractAgreementId'];
+        const contractAgreementId = contractNegotiationDto.body['contractAgreementId'];
         cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
         cy.request({
             method: 'POST',
@@ -147,7 +139,7 @@ function createTransferRequest(contractId: string) {
           "type": "HttpProxy"
         },
         "privateProperties": {
-          "receiverHttpEndpoint" : "http://localhost:8089/"
+          "receiverHttpEndpoint" : "http://ldio-workbench:8082/client-pipeline/token"
         }
     }`;
 }
@@ -179,88 +171,7 @@ function createNegotiationInitiateRequestDto(policyId: string) {
     }`;
 }
 
-When('I start a local transfer', () => {
-    /*app.post('/', (req, res) => {
-        token = req.body;
-      });
-
-    app.listen(port, () => {
-        console.log(`Server listening at http://localhost:${port}`);
-    });*/
-
-
-    //Cypress.config('baseUrl', 'http://localhost:8082');
-
-    const port: number = 3000
-
-    const server = http.createServer((req, res) => {
-        // get tasks
-        cy.log("request received")
-        if (req.method == "POST") {
-            let data = "";
-
-            req.on("data", (chunk) => {
-              data += chunk.toString();
-            });
-            req.on("end", () => {
-                token = JSON.parse(data);
-                cy.log("token is: " + token)
-            })
-        }
-     });
-     
-server.on('error', (e) => {
-  // Handle Error
-});
-server.listen(port, () => {
-  // do whatever
-});
-
-    cy.intercept('POST',
-        '/client-pipeline/*',
-        (request) => token = request.body
-      ).as('token');
-    cy.intercept('POST',
-        'http://localhost:3000/**',
-        (request) => token = request.body
-      ).as('token2');
-      
-    /*cy.request({
-        method: 'POST',
-        url: 'http://localhost:8089/'
-    }).then(response=> cy.log(response.status.toString()))*/
-
-
-    cy.request({
-        method: 'GET',
-        url: 'http://localhost:29193/management/v2/contractnegotiations/' + contractNegotiationId,
-        headers: {'Content-Type': 'application/json'}
-    }).then(contractNegotiationDto => {
-        const contractAgreementId = contractNegotiationDto.body['contractAgreementId'];
-        cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
-        
-        
-
-        cy.request({
-            method: 'POST',
-            url: "http://localhost:29193/management/v2/transferprocesses",
-            headers: {'Content-Type': 'application/json'},
-            body: createTransferRequest(contractAgreementId)
-        }).then(response => {
-            statusCode = response.status;
-            headers = response.requestHeaders;
-            cy.log(`statuscode: ${statusCode}`)
-        })
-
-        cy.wait('@token2',{timeout: 10000})
-
-    });
-});
-
 Then('The status code is {int}', (code: number) => {
-    expect(statusCode == code);
+    clientConnectorFailsOnStatusCode(code);
 })
 
-Then('The header {string} is present', (headerName: number) => {
-    expect(headers[headerName].length > 0);
-})

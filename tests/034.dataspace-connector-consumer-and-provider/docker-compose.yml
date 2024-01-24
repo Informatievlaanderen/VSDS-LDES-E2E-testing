@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   provider-connector:
-    container_name: connector_provider-connector
+    container_name: provider-connector
     image: vsds-dataspace-connector:local
     environment:
       - EDC_FS_CONFIG=/resources/provider-configuration.properties
@@ -24,7 +24,7 @@ services:
       - ldes
 
   consumer-connector:
-    container_name: connector_consumer-connector
+    container_name: consumer-connector
     image: vsds-dataspace-connector:local
     environment:
       - EDC_FS_CONFIG=/resources/consumer-configuration.properties
@@ -46,7 +46,7 @@ services:
 
   federated-catalog-connector:
     container_name: federated-catalog-connector
-    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/federated-catalog:latest
+    image: vsds-federated-catalog-connector:local
     environment:
       - EDC_FS_CONFIG=config/catalog-configuration.properties
       - FCC_DIRECTORY_FILE=config/nodes-dc.json

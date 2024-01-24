@@ -18,11 +18,12 @@
       "controller": "",
       "id": "#consumer",
       "publicKeyJwk": {
-        "kty": "RSA",
-        "kid": "O-_Oe4RiLGaE4TjIkt-EmedukppGevPWnTKeHO-r2NA",
-        "x5t": "nwd4oK5POz8oxOgRllrhZmk_FZ4",
-        "n": "wZel2iZ10y_ug1oqd2gYVPjM5mOHdVfYW05tbYmd4BNFW1K7xjty6GGsaT7-sxZrIN7ib-icVQHXuxHXYnTdCExwfXEDXQH3VCeZ45rBkj23ULjkEx8NGhu_0L0yP57L3xBOntJW1f9Huwx2nGU__js7QR9UcJBtspjPeB3_ByOse6usn0UwGTqnjjKzwmE3JbgIBPTbJKD741-agEmpAbVyEiiLDlPODdP9hwzd1hBjF76B1ELur64o-gcIsMSmsNQCsFhDSqIGu--Wz1zdzPiU0miChO3WWys78dGYtIeV_m8XNwSYt2fwrFAQsxPmNEhXrTomJspf9mJp53mKFQ",
-        "e": "AQAB"
+        "kty": "EC",
+        "kid": "CN",
+        "x5t": "0J0l9QPn0XzQGKBvnvVxaPRWNDg",
+        "crv": "P-256",
+        "x": "gdPzYG59Vq36Tr0fYAoO_GlrDOWXVUiuWcRd3DI-cVY",
+        "y": "TEz5IZx_iKcPXbh-gVxgvOH9xQS219BWxvCu5U9hUgY"
       },
       "type": "JsonWebKey2020"
     }

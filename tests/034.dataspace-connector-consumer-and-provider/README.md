@@ -217,7 +217,7 @@ Payload:
   "sub": "did:web:did-server:consumer",
   "aud": "http://provider-connector:8180/authority",
   "exp": 1990983558,
-  "jti": "431bja82-a825-4f24-928f-2cb27fa831d5"
+  "jti": "5da0f4ba-3c4c-4384-b975-1a2770ecb0f0"
 }
 ```
 

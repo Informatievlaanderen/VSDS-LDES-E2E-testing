@@ -3,7 +3,7 @@ services:
 
   provider-connector:
     container_name: connector_provider-connector
-    image: fd98b558df6394607d7d46268e4291db24928f7819fab9581adba0c08e153c96
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
       - EDC_KEYSTORE=certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456
@@ -24,7 +24,7 @@ services:
 
   consumer-connector:
     container_name: connector_consumer-connector
-    image: fd98b558df6394607d7d46268e4291db24928f7819fab9581adba0c08e153c96
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
       - EDC_KEYSTORE=certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456

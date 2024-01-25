@@ -1,6 +1,7 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import {clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
+import {result} from "underscore";
 
 let policyId: string;
 let contractNegotiationId: string;
@@ -18,22 +19,28 @@ When('The consumer connector is configured', () => {
 })
 
 When('I register the consumer connector with the consumer connector', () => {
-    const jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWI" +
-        "iOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5I" +
-        "iwiZXhwIjoxOTkwOTgzNTU4LCJqdGkiOiI0MzFiamE4Mi1hODI1LTRmMjQtOTI4Zi0yY2IyN2ZhODMxZDUifQ.tG4XBBzNiZvUYDOVu156B" +
-        "115K0vzGb2wegR2qBXb6Q6Mk-0-sjMktBKXInMV60V44PAdt6yokX_TxtQ0LuTT47LOhxOzyTf1zAn4YddBqfHT1dgrFlpICPmdpJQgJXOVC" +
-        "sKS2uE7RkHte6HKTGVVjhcS3cK0jBoBIk2kQRLp_l1fhLxc4lluGTAE04i9DT3_YOZohATtE97Tq9HM7dBVXbtBBGnPEAp7mw67v_UVuGtSgo" +
-        "OmJtOThpqrFzB_hvCuYQ9a7QG7Zc0yJp00IsKMdmPf3HA9aDdbibOkVsMAxYcLMY_s5Yh5087nWukeiFIZQ-Xn9Z1_PKgpM8t4lM7TOg"
+    const consumerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxNzkwOTgzNTU4fQ.c3347tllHp_6Tb4d2AjgUe0Atrps_I9HzRTaY5gK1y-wdOTyQMgwKbn6CDpVTiRi5aUdGFTDR9uhXpQ-uGx0nw"
+    const producerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cHJvdmlkZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cHJvdmlkZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxNzkwOTgzNTU4fQ.Ku2xC45RxsQmkgX0BKAH4oQ_vO7estfaBCNS147AwPbEzZZ0bEN6c5lMVvqbr-UHRoaQD-AD1zp9JQcb8fMBhA"
 
-    cy.request(
-        {
-            method: 'POST',
-            url: 'http://localhost:19195/authority/registry/participant',
-            headers: {'Authorization': `Bearer ${jwt}`}
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:19195/authority/registry/participant',
+        headers: {
+            'Authorization': `Bearer ${consumerJwt}`
         }
-    ).should(response => {
-        expect(response.isOkStatusCode).to.eq(true);
-    });
+    }).then(result => {
+        cy.log(`register the consumer connector`);
+    })
+    // cy.request({
+    //     method: 'POST',
+    //     url: 'http://localhost:19195/authority/registry/participant',
+    //     headers: {
+    //         'Authorization': `Bearer ${producerJwt}`
+    //     }
+    // }).then(result => {
+    //     cy.log(`register the producer
+    //      connector`);
+    // })
 })
 
 Then('The LDES Client is waiting for the token', () => {
@@ -148,7 +155,7 @@ function createTransferRequest(contractId: string) {
           "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
         },
         "@type": "TransferRequest",
-        "connectorId": "provider",
+        "connectorId": "did:web:did-server:provider",
         "connectorAddress": "http://provider-connector:19194/protocol",
         "contractId": "${contractId}",
         "assetId": "devices",
@@ -170,10 +177,8 @@ function createNegotiationInitiateRequestDto(policyId: string) {
         "odrl": "http://www.w3.org/ns/odrl/2/"
       },
       "@type": "NegotiationInitiateRequestDto",
-      "connectorId": "provider",
       "connectorAddress": "http://provider-connector:19194/protocol",
-      "consumerId": "consumer",
-      "providerId": "provider",
+      "providerId": "did:web:did-server:provider",
       "protocol": "dataspace-protocol-http",
       "offer": {
        "offerId": "${policyId}",

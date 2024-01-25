@@ -1,5 +1,5 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {clientWorkbench, testPartialPath} from "./common_step_definitions";
+import {clientConnectorFailsOnStatusCode, clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
 
 let policyId: string;
@@ -58,12 +58,16 @@ Then('The federated catalog will eventually contain a policy', () => {
 });
 
 function hasFederatedCatalogPolicy() {
-    return cy.exec(`curl -X POST http://localhost:8181/api/federatedcatalog  --header 'Content-Type: application/json' -d '{"criteria":[]}'`,
-        {failOnNonZeroExit: false}).then(exec => exec.stdout.includes('odrl:hasPolicy'));
+    return cy.request({
+        method: 'POST',
+        url: 'http://localhost:8181/api/federatedcatalog',
+        headers: {'Content-Type': 'application/json'},
+        body: {"criteria":[]}
+    }).then(response => JSON.stringify(response.body).includes('odrl:hasPolicy'))
 }
 
 Then('I wait for the connectors to have started', () => {
-    const includeString = 'Incoming catalog request';
+    const includeString = 'Incoming CatalogRequestMessage';
     const containerName = 'provider-connector';
     cy.exec(`docker ps -f "name=${containerName}$" -q`)
         .then(result => {
@@ -107,7 +111,7 @@ When('I start a transfer', () => {
         url: 'http://localhost:29193/management/v2/contractnegotiations/' + contractNegotiationId,
         headers: {'Content-Type': 'application/json'}
     }).then(contractNegotiationDto => {
-        const contractAgreementId = contractNegotiationDto.body['edc:contractAgreementId'];
+        const contractAgreementId = contractNegotiationDto.body['contractAgreementId'];
         cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
         cy.request({
             method: 'POST',
@@ -170,3 +174,8 @@ function createNegotiationInitiateRequestDto(policyId: string) {
       }
     }`;
 }
+
+Then('The status code is {int}', (code: number) => {
+    clientConnectorFailsOnStatusCode(code);
+})
+

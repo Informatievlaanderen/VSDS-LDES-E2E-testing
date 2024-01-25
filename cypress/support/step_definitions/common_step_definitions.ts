@@ -79,6 +79,10 @@ export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => 
         { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.` }).then(() => fragment);
 }
 
+export function clientConnectorFailsOnStatusCode(code: number) {
+    workbenchLdio.waitForDockerLog(code.toString())
+}
+
 // Given stuff
 
 Given('the members are stored in database {string}', (database: string) => {
@@ -320,3 +324,4 @@ Then('the LDES member count increases', () => {
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })
+

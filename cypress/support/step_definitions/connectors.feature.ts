@@ -58,12 +58,16 @@ Then('The federated catalog will eventually contain a policy', () => {
 });
 
 function hasFederatedCatalogPolicy() {
-    return cy.exec(`curl -X POST http://localhost:8181/api/federatedcatalog  --header 'Content-Type: application/json' -d '{"criteria":[]}'`,
-        {failOnNonZeroExit: false}).then(exec => exec.stdout.includes('odrl:hasPolicy'));
+    return cy.request({
+        method: 'POST',
+        url: 'http://localhost:8181/api/federatedcatalog',
+        headers: {'Content-Type': 'application/json'},
+        body: {"criteria":[]}
+    }).then(response => JSON.stringify(response.body).includes('odrl:hasPolicy'))
 }
 
 Then('I wait for the connectors to have started', () => {
-    const includeString = 'Incoming catalog request';
+    const includeString = 'Incoming CatalogRequestMessage';
     const containerName = 'provider-connector';
     cy.exec(`docker ps -f "name=${containerName}$" -q`)
         .then(result => {

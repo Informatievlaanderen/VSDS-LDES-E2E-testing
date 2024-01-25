@@ -5,6 +5,9 @@
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
 
 </devices> a ldes:EventStream ;
-	tree:shape [ a sh:NodeShape ] ;
+	tree:shape [
+	    a sh:NodeShape ;
+        sh:targetClass <https://w3id.org/ldes#EventStream>
+    ] ;
 	ldes:timestampPath prov:generatedAtTime ;
 	ldes:versionOfPath dcterms:isVersionOf .

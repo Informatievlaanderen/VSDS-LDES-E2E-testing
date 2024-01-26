@@ -1,22 +1,27 @@
 {
-  "id": "did:web:did-server:provider",
+  "id": "did:web:did-server:federated-authority",
   "@context": [
     "https://www.w3.org/ns/did/v1",
     {
-      "@base": "did:web:did-server:provider"
+      "@base": "did:web:did-server:federated-authority"
     }
   ],
   "service": [
     {
+      "id": "#registration-url",
+      "type": "RegistrationUrl",
+      "serviceEndpoint": "http://federated-authority:8180/authority"
+    },
+    {
       "id": "#identity-hub-url",
       "type": "IdentityHub",
-      "serviceEndpoint": "http://provider-connector:19191/api/identity-hub"
+      "serviceEndpoint": "http://federated-authority:8181/api/identity-hub"
     }
   ],
   "verificationMethod": [
     {
       "controller": "",
-      "id": "#provider",
+      "id": "#federated-authority",
       "publicKeyJwk": {
         "kty": "EC",
         "kid": "CN",
@@ -29,6 +34,6 @@
     }
   ],
   "authentication": [
-    "#provider"
+    "#federated-authority"
   ]
 }

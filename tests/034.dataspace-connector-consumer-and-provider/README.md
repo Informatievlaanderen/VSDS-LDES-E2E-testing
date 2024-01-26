@@ -135,9 +135,9 @@ order.
 ### 0.1 Federated catalog connector - State before datasets are provided by the provider connector
 
 When the federated catalog connector is started, it will crawl the connectors defined
-in [nodes-dc.json](federated-catalog/nodes-dc.json).
+in [nodes-dc.json](federated-authority/nodes-dc.json).
 In our test, this is done for the first time, 5 seconds after startup as defined by "
-edc.catalog.cache.execution.delay.seconds" in the [config](federated-catalog/catalog-configuration.properties).
+edc.catalog.cache.execution.delay.seconds" in the [config](federated-authority/catalog-configuration.properties).
 
 We can request the Federated Catalog with the following request:
 
@@ -479,7 +479,7 @@ Sample output:
 ```
 
 Additionally, the Federated Catalog will now also include this entry. 
-This may take a couple of seconds as the federated catalog connector only polls the provider every 5 seconds as defined by "edc.catalog.cache.execution.period.seconds" in the [config](federated-catalog/catalog-configuration.properties).
+This may take a couple of seconds as the federated catalog connector only polls the provider every 5 seconds as defined by "edc.catalog.cache.execution.period.seconds" in the [config](federated-authority/catalog-configuration.properties).
 
 ```bash
 curl 'http://localhost:8181/api/federatedcatalog' \

@@ -1,7 +1,6 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import {clientWorkbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
-import {result} from "underscore";
 
 let policyId: string;
 let contractNegotiationId: string;
@@ -18,29 +17,28 @@ When('The consumer connector is configured', () => {
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
 })
 
-When('I register the consumer connector with the consumer connector', () => {
-    const consumerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxNzkwOTgzNTU4fQ.c3347tllHp_6Tb4d2AjgUe0Atrps_I9HzRTaY5gK1y-wdOTyQMgwKbn6CDpVTiRi5aUdGFTDR9uhXpQ-uGx0nw"
-    const producerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cHJvdmlkZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cHJvdmlkZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxNzkwOTgzNTU4fQ.Ku2xC45RxsQmkgX0BKAH4oQ_vO7estfaBCNS147AwPbEzZZ0bEN6c5lMVvqbr-UHRoaQD-AD1zp9JQcb8fMBhA"
+When('The consumer connector is registered with the authority', () => {
+    const consumerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vZmVkZXJhdGVkLWF1dGhvcml0eTo4MTgwL2F1dGhvcml0eSIsImV4cCI6MTc5MDk4MzU1OH0.6rKRqLNW9ebVa563bAGagmAUx3pQQJTyHvhjiZ1YdCR_BjxA7TnDPe3kRhdzqqoAndjIbYjt39_iHVW6S2k4Pg"
 
     cy.request({
         method: 'POST',
-        url: 'http://localhost:19195/authority/registry/participant',
+        url: 'http://localhost:38180/authority/registry/participant',
         headers: {
             'Authorization': `Bearer ${consumerJwt}`
         }
-    }).then(result => {
-        cy.log(`register the consumer connector`);
     })
-    // cy.request({
-    //     method: 'POST',
-    //     url: 'http://localhost:19195/authority/registry/participant',
-    //     headers: {
-    //         'Authorization': `Bearer ${producerJwt}`
-    //     }
-    // }).then(result => {
-    //     cy.log(`register the producer
-    //      connector`);
-    // })
+})
+
+When('The federated catalog is registered with the authority', () => {
+    const authorityJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6ZmVkZXJhdGVkLWF1dGhvcml0eSIsInN1YiI6ImRpZDp3ZWI6ZGlkLXNlcnZlcjpmZWRlcmF0ZWQtYXV0aG9yaXR5IiwiYXVkIjoiaHR0cDovL2ZlZGVyYXRlZC1hdXRob3JpdHk6ODE4MC9hdXRob3JpdHkiLCJleHAiOjE3OTA5ODM1NTh9.jmOkFKJ3Cy9Kd4oXnZocP2NShCySZYKrBfrY-BFEGBPQkA1dLkr1_4c24ZIxLcP8P1t5uvpUYsw2ivNpQkjFYA"
+
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:38180/authority/registry/participant',
+        headers: {
+            'Authorization': `Bearer ${authorityJwt}`
+        }
+    })
 })
 
 Then('The LDES Client is waiting for the token', () => {
@@ -84,8 +82,14 @@ Then('The federated catalog will eventually contain a policy', () => {
 });
 
 function hasFederatedCatalogPolicy() {
-    return cy.exec(`curl -X POST http://localhost:8181/api/federatedcatalog  --header 'Content-Type: application/json' -d '{"criteria":[]}'`,
-        {failOnNonZeroExit: false}).then(exec => exec.stdout.includes('odrl:hasPolicy'));
+    return cy.request({
+        method: 'POST',
+        url: 'http://localhost:38181/api/federatedcatalog',
+        headers: {'Content-Type': 'application/json'},
+        body: `{"criteria":[]}'`
+    }).then(catalogResponse => {
+        expect(catalogResponse.body).length(1)
+    })
 }
 
 Then('I wait for the connectors to have started', () => {

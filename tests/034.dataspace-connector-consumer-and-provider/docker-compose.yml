@@ -16,7 +16,6 @@ services:
       - 19194:19194
       - 19291:19291
       - 19192:19192
-      - 19195:8180
     volumes:
       - ./http-pull-provider:/resources
       - ./certs:/certs
@@ -44,22 +43,25 @@ services:
     networks:
       - ldes
 
-  federated-catalog-connector:
-    container_name: federated-catalog-connector
-    image: vsds-federated-catalog-connector:local
+  federated-authority:
+    container_name: federated-authority
+    image: vsds-federated-authority-connector:local
     environment:
-      - EDC_FS_CONFIG=config/catalog-configuration.properties
-      - FCC_DIRECTORY_FILE=config/nodes-dc.json
+      - EDC_FS_CONFIG=/resources/authority-configuration.properties
+      - FCC_DIRECTORY_FILE=/resources/nodes-dc.json
+
+      - EDC_KEYSTORE=/certs/cert.pfx
+      - EDC_KEYSTORE_PASSWORD=123456
+      - EDC_VAULT=/resources/authority-vault.properties
     depends_on: [ provider-connector ]
     volumes:
-      - ./federated-catalog/catalog-configuration.properties:/app/config/catalog-configuration.properties
-      - ./federated-catalog/nodes-dc.json:/app/config/nodes-dc.json
+      - ./federated-authority:/resources
+      - ./certs:/certs
     ports:
-      - "8181:8181"
+      - "38180:8180"
+      - "38181:8181"
     networks:
       - ldes
-    profiles:
-      - very-delay-started
 
   test-message-generator:
     container_name: connector_test-message-generator

@@ -5,7 +5,7 @@ services:
     container_name: ${USECASE_NAME:-upgrade-server}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ingest-workbench:8080/ngsi/device
+      - TARGETURL=http://ingest-workbench:8080/ngsi-device
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/device.template.json}

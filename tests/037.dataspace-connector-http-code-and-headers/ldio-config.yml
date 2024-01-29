@@ -1,0 +1,19 @@
+server:
+  port: 8082
+orchestrator:
+  pipelines:
+    - name: client-pipeline
+      description: "Simple LdioLdesClientConnector in, console out pipeline."
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioLdesClientConnector
+        config:
+          url: http://consumer-connector:29291/public
+          connector-transfer-url: http://consumer-connector:29193/management/v2/transferprocesses
+          proxy-url-to-replace: http://localhost:8081/devices
+          proxy-url-replacement: http://consumer-connector:29291/public
+          source-format: application/n-quads
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioConsoleOut
+          config:
+            rdf-writer:
+              content-type: text/turtle

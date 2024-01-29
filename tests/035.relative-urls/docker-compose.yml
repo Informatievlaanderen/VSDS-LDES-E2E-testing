@@ -1,0 +1,52 @@
+services:
+
+  ldes-server:
+    image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
+    container_name: ${USECASE_NAME:-relative-url}_ldes-server
+    environment:
+      - SIS_DATA=/tmp
+    volumes:
+      - ./ldes-server.config.yml:/application.yml:ro
+    ports:
+      - ${LDES_SERVER_PORT:-8080}:8080
+    depends_on:
+      - ldes-mongodb
+    networks:
+      - ldes
+
+  ldio-workbench:
+    container_name: ${USECASE_NAME:-relative-url}_ldio-workbench
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+  test-message-sink:
+    image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
+    container_name: ${USECASE_NAME:-relative-url}_test-message-sink
+    environment:
+      - SILENT=false
+      - MEMORY=false
+      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+      - DATABASE_NAME=testSink
+      - COLLECTION_NAME=mobility-hindrances
+      - MEMBER_TYPE=https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder
+    ports:
+      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
+    networks:
+      - ldes
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-relative-url}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-relative-url}_network

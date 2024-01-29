@@ -79,6 +79,10 @@ export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => 
         { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.` }).then(() => fragment);
 }
 
+export function clientConnectorFailsOnStatusCode(code: number) {
+    workbenchLdio.waitForDockerLog(code.toString())
+}
+
 // Given stuff
 
 Given('the members are stored in database {string}', (database: string) => {
@@ -201,7 +205,7 @@ When('I start the {string} workbench', (workbench) => {
     }
 })
 
-When('I pause the {string} workbench output', (workbench) => {
+When('I pause the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
     switch (workbench) {
         case 'NIFI': {
             workbenchNifi.openWorkflow();
@@ -210,14 +214,14 @@ When('I pause the {string} workbench output', (workbench) => {
             break;
         }
         case 'LDIO': {
-            workbenchLdio.pause();
+            workbenchLdio.pause(pipeline);
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
-When('I resume the {string} workbench output', (workbench) => {
+When('I resume the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
     switch (workbench) {
         case 'NIFI': {
             workbenchNifi.openWorkflow();
@@ -226,7 +230,7 @@ When('I resume the {string} workbench output', (workbench) => {
             break;
         }
         case 'LDIO': {
-            workbenchLdio.resume();
+            workbenchLdio.resume(pipeline);
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);
@@ -320,3 +324,4 @@ Then('the LDES member count increases', () => {
         mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })
+

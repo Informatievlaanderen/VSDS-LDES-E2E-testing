@@ -2,8 +2,8 @@ server:
   port: 8080
 orchestrator:
   pipelines:
-    - name: ngsi-device
-      description: "Simple http in http out pipeline allowing to pause output."
+    - name: seed-server
+      description: "Simple http in, version creation, http out pipeline allowing to pause output."
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
         adapter:
@@ -19,7 +19,5 @@ orchestrator:
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:
-            rdf-writer:
-              content-type: application/n-quads
-            endpoint: http://ldes-server:8080/devices
-            
+            content-type: application/n-quads
+            endpoint: http://ldes-server:8081/devices

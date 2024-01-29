@@ -32,3 +32,24 @@ Feature: VSDS Dataspace Connectors
     When The provider connector is configured
     And The federated catalog is registered with the authority
     Then The federated catalog will eventually contain a policy
+
+
+  @test-037 @connector-http-code @connector-http-headers
+  Scenario Outline: 034: The connector can pass http status codes and headers
+    Given the members are stored in database 'iow'
+    And context 'tests/037.dataspace-connector-http-code-and-headers' is started
+    And the LDES server is available
+    When I start the LDES Client '<workbench>' workbench
+    When The provider connector is configured
+    And The consumer connector is configured
+    When I get the policyId from the consumer catalog
+    And I start negotiating a contract
+    Then I wait for the contract negotiation to finish
+    When I start a transfer
+    Then The status code is 404
+
+
+    @ldio
+    Examples:
+      | workbench |
+      | LDIO      |

@@ -22,7 +22,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
-    echo http://old-ldio-workbench:8080/pipeline > ./data/TARGETURL
+    echo http://old-ldio-workbench:8080/upgrade-pipeline > ./data/TARGETURL
     docker compose up test-message-generator -d
     ```
 
@@ -48,8 +48,8 @@ This test uses a docker environment a data generator simulating the system pushi
 
 2. Stop data generator, change destination path (TARGETURL) to new http-in and restart data generator:
     ```bash
-    curl http://localhost:8082/admin/api/v1/pipeline/halt -X POST
-    echo http://new-ldio-workbench:8080/pipeline > ./data/TARGETURL
+    curl http://localhost:8082/admin/api/v1/pipeline/upgrade-pipeline/halt -X POST
+    echo http://new-ldio-workbench:8080/upgrade-pipeline > ./data/TARGETURL
     ```
 
 3. Ensure all data sent to LDES server i.e. member count does not change (execute repeatedly)):
@@ -68,7 +68,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 5. Resume new LDI-output
     ```bash
-    curl http://localhost:8082/admin/api/v1/pipeline/resume -X POST
+    curl http://localhost:8082/admin/api/v1/pipeline/upgrade-pipeline/resume -X POST
     ```
 
 6. Verify last fragment member count increases:

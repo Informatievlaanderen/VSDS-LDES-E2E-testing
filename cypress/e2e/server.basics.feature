@@ -14,12 +14,12 @@ Feature: LDES Server Basic Functionality
     And the first page contains 250 members
 
     @ldio
-    Examples: 
+    Examples:
       | workbench |
       | LDIO      |
 
     @nifi
-    Examples: 
+    Examples:
       | workbench |
       | NIFI      |
 
@@ -50,3 +50,11 @@ Feature: LDES Server Basic Functionality
     When I wait 10 seconds for the cache to expire
     And I request the LDES view
     Then the LDES view is re-requested from the LDES server
+
+  @test-035 @consumption @relativeUrls
+  Scenario: 035: Verify server and client can handle relative url
+    Given the members are stored in database 'bustang'
+    And context 'tests/035.relative-urls' is started
+    And the LDES server is available and configured
+    When I start the LDES Client 'LDIO' workbench
+    Then the sink contains 5 members

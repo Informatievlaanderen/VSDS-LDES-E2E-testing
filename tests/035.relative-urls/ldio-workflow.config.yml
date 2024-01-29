@@ -1,0 +1,21 @@
+server:
+  port: 8080
+orchestrator:
+  pipelines:
+    - name: simulator-to-sink-pipeline
+      description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to a sink application"
+      input:
+        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        config:
+          url: http://host.docker.internal:8080/mobility-hindrances
+      outputs:
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: http://test-message-sink/member
+            rdf-writer:
+              content-type: application/n-quads
+        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+          config:
+            endpoint: https://webhook.site/dd9ede3a-76ce-44ba-8c3e-3bb1f66afab6
+            rdf-writer:
+              content-type: application/n-quads

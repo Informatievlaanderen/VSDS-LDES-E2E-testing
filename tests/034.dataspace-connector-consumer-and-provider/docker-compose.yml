@@ -24,7 +24,7 @@ services:
 
   consumer-connector:
     container_name: consumer-connector
-    image: vsds-dataspace-connector:local
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
       - EDC_FS_CONFIG=/resources/consumer-configuration.properties
 

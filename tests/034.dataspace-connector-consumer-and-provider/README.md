@@ -198,7 +198,7 @@ This should be built up based on the template-did.json file containing :
 Before we can retrieve an LDES, we will use the following `curl` command to register the participant to the dataspace;
 
 ```bash
-curl --location --request POST 'localhost:19195/authority/registry/participant' \
+curl --location --request POST 'localhost:38180/authority/registry/participant' \
 --header 'Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vZmVkZXJhdGVkLWF1dGhvcml0eTo4MTgwL2F1dGhvcml0eSIsImV4cCI6MTc5MDk4MzU1OH0.6rKRqLNW9ebVa563bAGagmAUx3pQQJTyHvhjiZ1YdCR_BjxA7TnDPe3kRhdzqqoAndjIbYjt39_iHVW6S2k4Pg'
 ```
 
@@ -240,7 +240,7 @@ openssl pkcs8 -topk8 -nocrypt -in private.key -out private-pkcs.key
 ```
 
 To check VCs of the consumer connector (after successful registration you should get base64 encoded JWT):
-```
+```bash
 curl --location 'localhost:29191/api/identity-hub' \
 --header 'Content-Type: application/json' \
 --data '{

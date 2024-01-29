@@ -3,7 +3,7 @@ services:
 
   provider-connector:
     container_name: provider-connector
-    image: vsds-dataspace-connector:local
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
       - EDC_FS_CONFIG=/resources/provider-configuration.properties
 
@@ -45,7 +45,7 @@ services:
 
   federated-authority:
     container_name: federated-authority
-    image: vsds-federated-authority-connector:local
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/federated-authority:latest
     environment:
       - EDC_FS_CONFIG=/resources/authority-configuration.properties
       - FCC_DIRECTORY_FILE=/resources/nodes-dc.json

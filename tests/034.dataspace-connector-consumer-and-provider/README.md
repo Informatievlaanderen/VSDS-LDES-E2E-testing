@@ -134,7 +134,7 @@ order.
 
 ### 0.1 Federated catalog connector - State before datasets are provided by the provider connector
 
-When the federated catalog connector is started, it will crawl the connectors defined
+When the federated catalog functionality of the authority connector is started, it will crawl the connectors defined
 in [nodes-dc.json](federated-authority/nodes-dc.json).
 In our test, this is done for the first time, 5 seconds after startup as defined by "
 edc.catalog.cache.execution.delay.seconds" in the [config](federated-authority/catalog-configuration.properties).
@@ -181,18 +181,25 @@ After the first crawl we get the following response, which contains the connecto
 ]
 ```
 
-h3: ### 0.2 Authentication
-
 ### 0.2 Authentication
 
-We will use the `Registration Service` to register the participant to the dataspace. We will use
-`curl` commands to demonstrate how to register the participant to the dataspace.
+To authenticate our connectors, we use the [IdentityHub](https://github.com/eclipse-edc/IdentityHub/). 
+However, due to a limitation, RSA keys cannot be used.
 
-We will use the following `curl` command to register the participant to the dataspace;
+#### 0.2.0 Preparation
+
+Make sure that for each participant in the dataspace, there is a did.json file present. 
+This should be built up based on the template-did.json file containing :
+* a service that points to IdentityHub service
+* A JWK based on the public key of the participant. To be filled in the ``publicKeyJwk`` field. This can be computed by the following command  
+
+#### 0.2.1 Onboarding
+
+Before we can retrieve an LDES, we will use the following `curl` command to register the participant to the dataspace;
 
 ```bash
 curl --location --request POST 'localhost:19195/authority/registry/participant' \
---header 'Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6cGFydGljaXBhbnQxIiwic3ViIjoiZGlkOndlYjpkaWQtc2VydmVyOnBhcnRpY2lwYW50MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODE4MC9hdXRob3JpdHkiLCJleHAiOjE3OTA5ODM1NTgsImp0aSI6IjQzMWJqYTgyLWE4MjUtNGYyNC05MjhmLTJjYjI3ZmE4MzFkNSJ9.E7TCtOEV1WhBXj04ATrg86mAF0pffgCCkIdI7ueQC2daEnxnIHJwCkyHy8K207JOek9HMLbuBXgjNurXVasYDQ'
+--header 'Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vZmVkZXJhdGVkLWF1dGhvcml0eTo4MTgwL2F1dGhvcml0eSIsImV4cCI6MTc5MDk4MzU1OH0.6rKRqLNW9ebVa563bAGagmAUx3pQQJTyHvhjiZ1YdCR_BjxA7TnDPe3kRhdzqqoAndjIbYjt39_iHVW6S2k4Pg'
 ```
 
 The `Authorization` header is a `JWT` token. This token is used to authenticate the authority. The
@@ -215,9 +222,8 @@ Payload:
 {
   "iss": "did:web:did-server:consumer",
   "sub": "did:web:did-server:consumer",
-  "aud": "http://provider-connector:8180/authority",
-  "exp": 1990983558,
-  "jti": "431bja82-a825-4f24-928f-2cb27fa831d5"
+  "aud": "http://federated-authority:8180/authority",
+  "exp": 1790983558
 }
 ```
 
@@ -233,33 +239,22 @@ use the following command to convert the private key to `PKCS#8` format;
 openssl pkcs8 -topk8 -nocrypt -in private.key -out private-pkcs.key
 ```
 
-The JWT should look something like this:
-
-````text
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vcHJvdmlkZXItY29ubmVjdG9yOjgxODAvYXV0aG9yaXR5IiwiZXhwIjoxOTkwOTgzNTU4LCJqdGkiOiI0MzFiamE4Mi1hODI1LTRmMjQtOTI4Zi0yY2IyN2ZhODMxZDUifQ.tG4XBBzNiZvUYDOVu156B115K0vzGb2wegR2qBXb6Q6Mk-0-sjMktBKXInMV60V44PAdt6yokX_TxtQ0LuTT47LOhxOzyTf1zAn4YddBqfHT1dgrFlpICPmdpJQgJXOVCsKS2uE7RkHte6HKTGVVjhcS3cK0jBoBIk2kQRLp_l1fhLxc4lluGTAE04i9DT3_YOZohATtE97Tq9HM7dBVXbtBBGnPEAp7mw67v_UVuGtSgoOmJtOThpqrFzB_hvCuYQ9a7QG7Zc0yJp00IsKMdmPf3HA9aDdbibOkVsMAxYcLMY_s5Yh5087nWukeiFIZQ-Xn9Z1_PKgpM8t4lM7TOg
-````
-
-err
-
-2024-01-19 17:10:22 SEVERE 2024-01-19T16:10:22.889092913 ContractNegotiation: ID 3623fda5-8892-4015-8fd8-bd404864d6a4.
-Fatal error while [Provider] send agreement. Error details:
-
-```json
-{
-  "@type": "dspace:ContractNegotiationError",
-  "dspace:code": "401",
-  "dspace:reason": "Failed to get verifiable credentials: Could not retrieve identity hub URL from DID document",
-  "dspace:processId": "c869dbf8-c5e9-407f-aca7-b3fedd349351",
-  "@context": {
-    "dct": "https://purl.org/dc/terms/",
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
-    "dcat": "https://www.w3.org/ns/dcat/",
-    "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dspace": "https://w3id.org/dspace/v0.8/"
-  }
-}
-
+To check VCs of the consumer connector (after successful registration you should get base64 encoded JWT):
 ```
+curl --location 'localhost:29191/api/identity-hub' \
+--header 'Content-Type: application/json' \
+--data '{
+    "messages": [
+        {
+            "descriptor": {
+                "method": "CollectionsQuery"
+            }
+        }
+    ]
+}'
+```
+
+
 ### 1. Provider connector - Register data plane instance for provider
 
 Before a consumer can start talking to a provider, it is necessary to register the data plane

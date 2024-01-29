@@ -57,4 +57,4 @@ Feature: LDES Server Basic Functionality
     And context 'tests/035.relative-urls' is started
     And the LDES server is available and configured
     When I start the LDES Client 'LDIO' workbench
-    Then the sink contains 5 members
+    Then the sink contains 5 members in collection 'mobility-hindrances'

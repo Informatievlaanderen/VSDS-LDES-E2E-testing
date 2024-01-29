@@ -106,7 +106,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 1. Pause the workbench output.
 
     ```bash
-    curl -X POST "http://localhost:8081/admin/api/v1/pipeline/halt"
+    curl -X POST "http://localhost:8081/admin/api/v1/pipeline/ngsi-device/halt"
     ```
    or for nifi
 
@@ -268,7 +268,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 11. Resume the workbench output.
 
      ```bash
-     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/resume"
+     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/ngsi-device/resume"
      ```
     or for nifi
 

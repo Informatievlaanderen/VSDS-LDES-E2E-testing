@@ -35,7 +35,7 @@
                     "health-check-port": null,
                     "Authorized DN Pattern": ".*",
                     "max-thread-pool-size": "200",
-                    "Base Path": "ngsi-device",
+                    "Base Path": "upgrade-pipeline",
                     "multipart-read-buffer-size": "512 KB",
                     "SSL Context Service": null,
                     "Max Unconfirmed Flowfile Time": "60 secs",

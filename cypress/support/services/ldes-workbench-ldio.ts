@@ -31,11 +31,13 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         this.waitForDockerLog(this.availabilityMessage);
     }
 
-    pause() {
-        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/halt` }).then(response => expect(response.status).to.equal(200));
+    pause(pipeline: string) {
+        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/${pipeline}/halt` })
+            .then(response => expect(response.status).to.equal(200));
     }
 
-    resume() {
-        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/resume` }).then(response => expect(response.status).to.equal(200));
+    resume(pipeline: string) {
+        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline/${pipeline}/resume` })
+            .then(response => expect(response.status).to.equal(200));
     }
 }

@@ -75,7 +75,7 @@ When('I set the TARGETURL to the new {string} workbench', (workbench) => {
     }
 })
 
-When('I pause the new {string} workbench output', (workbench) => {
+When('I pause the {string} on the new {string} workbench', (pipeline: string, workbench: string) => {
     switch(workbench) {
         case 'NIFI': {
             newNifiWorkbench.openWorkflow();
@@ -84,14 +84,14 @@ When('I pause the new {string} workbench output', (workbench) => {
             break;
         }
         case 'LDIO': {
-            newLdioWorkbench.pause();
+            newLdioWorkbench.pause(pipeline);
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
-When('I resume the new {string} workbench output', (workbench) => {
+When('I resume the {string} pipeline on the new {string} workbench', (pipeline: string, workbench: string) => {
     switch(workbench) {
         case 'NIFI': {
             newNifiWorkbench.openWorkflow();
@@ -100,7 +100,7 @@ When('I resume the new {string} workbench output', (workbench) => {
             break;
         }
         case 'LDIO': {
-            newLdioWorkbench.resume();
+            newLdioWorkbench.resume(pipeline);
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);

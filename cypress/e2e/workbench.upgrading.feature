@@ -11,12 +11,12 @@ Feature: LDES Workbench Upgrading
     And I start the JSON Data Generator
     And the LDES contains at least 1 members
     When I start the new '<workbench>' workbench
-    And I pause the new '<workbench>' workbench output
+    And I pause the 'ngsi/device' pipeline on the new '<workbench>' workbench
     And I set the TARGETURL to the new '<workbench>' workbench
     Then the member count does not change
     When I bring the old '<workbench>' workbench down
     And I remember the last fragment member count for view 'by-page'
-    And I resume the new '<workbench>' workbench output
+    And I resume the 'ngsi/device' pipeline on the new '<workbench>' workbench
     Then the LDES member count increases
     And the fragment member count increases for view 'by-page'
 

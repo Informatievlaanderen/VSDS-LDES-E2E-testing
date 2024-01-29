@@ -31,7 +31,7 @@ a version creation component and a http sender).
 
 3. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:
     ```bash
-    echo http://old-nifi-workbench:9012/ngsi/device > ./data/TARGETURL
+    echo http://old-nifi-workbench:9012/ngsi-device > ./data/TARGETURL
     docker compose up test-message-generator -d
     ```
 
@@ -55,7 +55,7 @@ and stop the new http sender.
 
 2. Change the destination path (TARGETURL) to the new http listener:
     ```bash
-    echo http://new-nifi-workbench:9012/ngsi/device > ./data/TARGETURL
+    echo http://new-nifi-workbench:9012/ngsi-device > ./data/TARGETURL
     ```
 
 3. Ensure all the data is sent to the LDES server, i.e. the old workflow queues are empty. Then, stop the old workflow and bring the old workbench down:

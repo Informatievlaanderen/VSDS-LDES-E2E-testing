@@ -58,3 +58,24 @@ Feature: LDES Server Basic Functionality
     And the LDES server is available and configured
     When I start the LDES Client 'LDIO' workbench
     Then the sink contains 5 members in collection 'mobility-hindrances'
+
+  @test-038 @ports
+  Scenario: 038: Verify the server APIs are available on different ports
+    Given context 'tests/038.server-separate-ports' is started
+    And the LDES server is available
+    When I create an eventstream on port 8087
+    Then The response status code is 404
+    When I create an eventstream on port 8089
+    Then The response status code is 201
+    When I fetch the swagger docs on port 8087
+    Then The response status code is 404
+    When I fetch the swagger docs on port 8089
+    Then The response status code is 200
+    When I send a member on port 8087
+    Then The response status code is 404
+    When I send a member on port 8088
+    Then The response status code is 201
+    When I request a fragment on port 8088
+    Then The response status code is 404
+    When I request a fragment on port 8087
+    Then The response status code is 404

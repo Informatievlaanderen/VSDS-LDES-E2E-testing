@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+
+  ldes-server:
+    container_name: ${USECASE_NAME:-port-ldes}_ldes-server
+    image: 5f43811586ff61a6690908d73def54bc7d3eda83711330cd63bbfabecb3535d2 #${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    environment:
+      - SIS_DATA=/tmp
+    volumes:
+      - ./config/ldes-server.config.yml:/application.yml:ro
+      - ../../data/epsg:/tmp/Databases:rw
+    ports:
+      - ${LDES_SERVER_PORT:-8080}:8080
+      - ${LDES_FETCH_PORT:-8087}:8087
+      - ${LDES_INGEST_PORT:-8088}:8088
+      - ${LDES_ADMIN_PORT:-8089}:8089
+    networks:
+      - ldes
+    depends_on:
+      - ldes-mongodb
+
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-port-ldes}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-port-ldes}_network

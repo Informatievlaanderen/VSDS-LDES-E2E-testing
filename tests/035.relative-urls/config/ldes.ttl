@@ -10,7 +10,6 @@
     ldes:timestampPath prov:generatedAtTime ;
     ldes:versionOfPath dcterms:isVersionOf ;
     tree:shape [
-        sh:targetClass <https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitshinder> ;
         sh:closed false;
         a sh:NodeShape ;
     ] .

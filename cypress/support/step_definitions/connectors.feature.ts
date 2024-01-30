@@ -17,6 +17,30 @@ When('The consumer connector is configured', () => {
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
 })
 
+When('The consumer connector is registered with the authority', () => {
+    const consumerJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vZmVkZXJhdGVkLWF1dGhvcml0eTo4MTgwL2F1dGhvcml0eSIsImV4cCI6MTc5MDk4MzU1OH0.6rKRqLNW9ebVa563bAGagmAUx3pQQJTyHvhjiZ1YdCR_BjxA7TnDPe3kRhdzqqoAndjIbYjt39_iHVW6S2k4Pg"
+
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:38180/authority/registry/participant',
+        headers: {
+            'Authorization': `Bearer ${consumerJwt}`
+        }
+    })
+})
+
+When('The federated catalog is registered with the authority', () => {
+    const authorityJwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6ZmVkZXJhdGVkLWF1dGhvcml0eSIsInN1YiI6ImRpZDp3ZWI6ZGlkLXNlcnZlcjpmZWRlcmF0ZWQtYXV0aG9yaXR5IiwiYXVkIjoiaHR0cDovL2ZlZGVyYXRlZC1hdXRob3JpdHk6ODE4MC9hdXRob3JpdHkiLCJleHAiOjE3OTA5ODM1NTh9.jmOkFKJ3Cy9Kd4oXnZocP2NShCySZYKrBfrY-BFEGBPQkA1dLkr1_4c24ZIxLcP8P1t5uvpUYsw2ivNpQkjFYA"
+
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:38180/authority/registry/participant',
+        headers: {
+            'Authorization': `Bearer ${authorityJwt}`
+        }
+    })
+})
+
 Then('The LDES Client is waiting for the token', () => {
     clientWorkbench.waitForDockerLog("waiting for token")
 })
@@ -60,10 +84,12 @@ Then('The federated catalog will eventually contain a policy', () => {
 function hasFederatedCatalogPolicy() {
     return cy.request({
         method: 'POST',
-        url: 'http://localhost:8181/api/federatedcatalog',
+        url: 'http://localhost:38181/api/federatedcatalog',
         headers: {'Content-Type': 'application/json'},
-        body: {"criteria":[]}
-    }).then(response => JSON.stringify(response.body).includes('odrl:hasPolicy'))
+        body: `{"criteria":[]}'`
+    }).then(catalogResponse => {
+        expect(catalogResponse.body).length(1)
+    })
 }
 
 Then('I wait for the connectors to have started', () => {
@@ -133,7 +159,7 @@ function createTransferRequest(contractId: string) {
           "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
         },
         "@type": "TransferRequest",
-        "connectorId": "provider",
+        "connectorId": "did:web:did-server:provider",
         "connectorAddress": "http://provider-connector:19194/protocol",
         "contractId": "${contractId}",
         "assetId": "devices",
@@ -155,10 +181,8 @@ function createNegotiationInitiateRequestDto(policyId: string) {
         "odrl": "http://www.w3.org/ns/odrl/2/"
       },
       "@type": "NegotiationInitiateRequestDto",
-      "connectorId": "provider",
       "connectorAddress": "http://provider-connector:19194/protocol",
-      "consumerId": "consumer",
-      "providerId": "provider",
+      "providerId": "did:web:did-server:provider",
       "protocol": "dataspace-protocol-http",
       "offer": {
        "offerId": "${policyId}",

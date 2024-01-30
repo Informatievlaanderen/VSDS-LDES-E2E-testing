@@ -1,0 +1,34 @@
+{
+  "id": "did:web:did-server:provider",
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    {
+      "@base": "did:web:did-server:provider"
+    }
+  ],
+  "service": [
+    {
+      "id": "#identity-hub-url",
+      "type": "IdentityHub",
+      "serviceEndpoint": "http://provider-connector:19191/api/identity-hub"
+    }
+  ],
+  "verificationMethod": [
+    {
+      "controller": "",
+      "id": "#provider",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "kid": "CN",
+        "x5t": "0J0l9QPn0XzQGKBvnvVxaPRWNDg",
+        "crv": "P-256",
+        "x": "gdPzYG59Vq36Tr0fYAoO_GlrDOWXVUiuWcRd3DI-cVY",
+        "y": "TEz5IZx_iKcPXbh-gVxgvOH9xQS219BWxvCu5U9hUgY"
+      },
+      "type": "JsonWebKey2020"
+    }
+  ],
+  "authentication": [
+    "#provider"
+  ]
+}

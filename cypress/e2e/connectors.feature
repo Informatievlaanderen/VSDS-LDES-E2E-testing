@@ -10,7 +10,9 @@ Feature: VSDS Dataspace Connectors
     And the LDES fragment '/devices/paged?pageNumber=1' contains at least 3 members
     When I start the LDES Client '<workbench>' workbench
     Then The LDES Client is waiting for the token
-    When The provider connector is configured
+    When The consumer connector is registered with the authority
+    And The federated catalog is registered with the authority
+    And The provider connector is configured
     And The consumer connector is configured
     When I get the policyId from the consumer catalog
     And I start negotiating a contract
@@ -28,6 +30,7 @@ Feature: VSDS Dataspace Connectors
     Given context 'tests/034.dataspace-connector-consumer-and-provider' is started
     Then I wait for the connectors to have started
     When The provider connector is configured
+    And The federated catalog is registered with the authority
     Then The federated catalog will eventually contain a policy
 
 

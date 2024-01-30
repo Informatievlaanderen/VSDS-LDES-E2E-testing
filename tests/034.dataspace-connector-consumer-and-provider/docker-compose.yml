@@ -2,13 +2,14 @@ version: '3.3'
 services:
 
   provider-connector:
-    container_name: connector_provider-connector
+    container_name: provider-connector
     image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
-      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_FS_CONFIG=/resources/provider-configuration.properties
+
+      - EDC_KEYSTORE=/certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456
-      - EDC_VAULT=http-pull-provider/provider-vault.properties
-      - EDC_FS_CONFIG=http-pull-provider/provider-configuration.properties
+      - EDC_VAULT=/resources/provider-vault.properties
     ports:
       - 19191:19191
       - 19193:19193
@@ -16,20 +17,20 @@ services:
       - 19291:19291
       - 19192:19192
     volumes:
-      - ./certs/cert.pfx:/app/certs/cert.pfx
-      - ./http-pull-provider/provider-configuration.properties:/app/http-pull-provider/provider-configuration.properties
-      - ./http-pull-provider/provider-vault.properties:/app/http-pull-provider/provider-vault.properties
+      - ./http-pull-provider:/resources
+      - ./certs:/certs
     networks:
       - ldes
 
   consumer-connector:
-    container_name: connector_consumer-connector
+    container_name: consumer-connector
     image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/http-pull:latest
     environment:
-      - EDC_KEYSTORE=certs/cert.pfx
+      - EDC_FS_CONFIG=/resources/consumer-configuration.properties
+
+      - EDC_KEYSTORE=/certs/cert.pfx
       - EDC_KEYSTORE_PASSWORD=123456
-      - EDC_VAULT=http-pull-consumer/consumer-vault.properties
-      - EDC_FS_CONFIG=http-pull-consumer/consumer-configuration.properties
+      - EDC_VAULT=/resources/consumer-vault.properties
     ports:
       - 29191:29191
       - 29193:29193
@@ -37,24 +38,28 @@ services:
       - 29291:29291
       - 29192:29192
     volumes:
-      - ./certs/cert.pfx:/app/certs/cert.pfx
-      - ./http-pull-consumer/consumer-configuration.properties:/app/http-pull-consumer/consumer-configuration.properties
-      - ./http-pull-consumer/consumer-vault.properties:/app/http-pull-consumer/consumer-vault.properties
+      - ./http-pull-consumer:/resources
+      - ./certs:/certs
     networks:
       - ldes
 
-  federated-catalog-connector:
-    container_name: federated-catalog-connector
-    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/federated-catalog:latest
+  federated-authority:
+    container_name: federated-authority
+    image: ghcr.io/informatievlaanderen/vsds-dataspace-connector/federated-authority:latest
     environment:
-      - EDC_FS_CONFIG=config/catalog-configuration.properties
-      - FCC_DIRECTORY_FILE=config/nodes-dc.json
+      - EDC_FS_CONFIG=/resources/authority-configuration.properties
+      - FCC_DIRECTORY_FILE=/resources/nodes-dc.json
+
+      - EDC_KEYSTORE=/certs/cert.pfx
+      - EDC_KEYSTORE_PASSWORD=123456
+      - EDC_VAULT=/resources/authority-vault.properties
     depends_on: [ provider-connector ]
     volumes:
-      - ./federated-catalog/catalog-configuration.properties:/app/config/catalog-configuration.properties
-      - ./federated-catalog/nodes-dc.json:/app/config/nodes-dc.json
+      - ./federated-authority:/resources
+      - ./certs:/certs
     ports:
-      - "8181:8181"
+      - "38180:8180"
+      - "38181:8181"
     networks:
       - ldes
 
@@ -147,6 +152,17 @@ services:
       - ldes
     profiles:
       - delay-started
+
+  did-server:
+    # provides DID Web for connectors
+    container_name: did-server
+    image: nginx
+    volumes:
+      - ./webdid:/usr/share/nginx/html
+    networks:
+      - ldes
+    ports:
+      - "8080:80"
 
 networks:
   ldes:

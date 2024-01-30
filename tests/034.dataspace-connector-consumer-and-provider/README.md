@@ -1,12 +1,14 @@
 # Implement a simple flow from LdesClient to LdesServer with EDC Connectors.
 
-This example is based on [transfer-02-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-02-consumer-pull).
+This example is based
+on [transfer-02-consumer-pull-http](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-02-consumer-pull).
 
 The purpose of this example is to show a data exchange between 2 connectors, one representing the
-data provider (LDES Server) and the other, the consumer (LDES Client). It's based on a consumer pull usecase that you can find
+data provider (LDES Server) and the other, the consumer (LDES Client). It's based on a consumer pull usecase that you
+can find
 more details
 on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane)
-The provider and the consumer will run in two different containers of the same connector image. 
+The provider and the consumer will run in two different containers of the same connector image.
 The final goal of this example is to present the steps through which the 2 connectors will
 have to pass so that the consumer can have access to the data, held by the provider.
 
@@ -34,16 +36,17 @@ Once the catalog is available, to access the data, the consumer should follow th
     * The provider will send an EndpointDataReference to the consumer
 * The consumer could reach the endpoint and access the data
 
-
 > For the sake of simplicity, we will use an in-memory catalog and fill it with just one single
 > asset. This will be deleted after the provider shutdown.
 
 # Server setup
 
 To prepare the LDES Server we use the following containers:
+
 - ldes-server: The actual server.
 - test-message-generator: Generates messages to seed the server with data.
-- ldio-server-seeder: ETL pipeline between the message generator and the server to insert the generated data into the server.
+- ldio-server-seeder: ETL pipeline between the message generator and the server to insert the generated data into the
+  server.
 - ldes-mongodb: Data persistence used by the server.
 
 Start the LDES Server:
@@ -52,24 +55,31 @@ Start the LDES Server:
 docker compose up -d
 ```
 
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
+Please ensure that the LDES Server is ready to ingest by following the container log until you see the following
+message `Cancelled mongock lock daemon`:
+
 ```bash
 docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 ```
+
 Press `CTRL-C` to stop following the log.
 
-> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh)
+> to setup the LDES with its views:
+
 ```bash
 chmod +x ./config/seed.sh
 sh ./config/seed.sh
 ```
 
 Seed the LDES Server by starting the message generator:
+
    ```bash
    docker compose up test-message-generator -d
    ```
 
 Verify that messages are correctly ingested by the server:
+
 ```bash
 curl http://localhost:8081/devices/paged?pageNumber=1
 ```
@@ -122,13 +132,15 @@ order.
 > drop it from the command. it's just used to format the output, and the same advice should be
 > applied to all calls that use `jq`.
 
+### 0.1 Federated catalog connector - State before datasets are provided by the provider connector
 
-### 0. Federated catalog connector - State before datasets are provided by the provider connector
-
-When the federated catalog connector is started, it will crawl the connectors defined in [nodes-dc.json](federated-catalog/nodes-dc.json).
-In our test, this is done for the first time, 5 seconds after startup as defined by "edc.catalog.cache.execution.delay.seconds" in the [config](federated-catalog/catalog-configuration.properties).
+When the federated catalog functionality of the authority connector is started, it will crawl the connectors defined
+in [nodes-dc.json](federated-authority/nodes-dc.json).
+In our test, this is done for the first time, 5 seconds after startup as defined by "
+edc.catalog.cache.execution.delay.seconds" in the [config](federated-authority/catalog-configuration.properties).
 
 We can request the Federated Catalog with the following request:
+
 ```bash
 curl 'http://localhost:8181/api/federatedcatalog' \
     -H 'Content-Type: application/json' \
@@ -137,6 +149,7 @@ curl 'http://localhost:8181/api/federatedcatalog' \
 ```
 
 If you do this before the provider connectors have been crawled, then you will get an empty response:
+
 ```json
 []
 ```
@@ -167,6 +180,80 @@ After the first crawl we get the following response, which contains the connecto
   }
 ]
 ```
+
+### 0.2 Authentication
+
+To authenticate our connectors, we use the [IdentityHub](https://github.com/eclipse-edc/IdentityHub/). 
+However, due to a limitation, RSA keys cannot be used.
+
+#### 0.2.0 Preparation
+
+Make sure that for each participant in the dataspace, there is a did.json file present. 
+This should be built up based on the template-did.json file containing :
+* a service that points to IdentityHub service
+* A JWK based on the public key of the participant. To be filled in the ``publicKeyJwk`` field. This can be computed by the following command  
+
+#### 0.2.1 Onboarding
+
+Before we can retrieve an LDES, we will use the following `curl` command to register the participant to the dataspace;
+
+```bash
+curl --location --request POST 'localhost:38180/authority/registry/participant' \
+--header 'Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJzdWIiOiJkaWQ6d2ViOmRpZC1zZXJ2ZXI6Y29uc3VtZXIiLCJhdWQiOiJodHRwOi8vZmVkZXJhdGVkLWF1dGhvcml0eTo4MTgwL2F1dGhvcml0eSIsImV4cCI6MTc5MDk4MzU1OH0.6rKRqLNW9ebVa563bAGagmAUx3pQQJTyHvhjiZ1YdCR_BjxA7TnDPe3kRhdzqqoAndjIbYjt39_iHVW6S2k4Pg'
+```
+
+The `Authorization` header is a `JWT` token. This token is used to authenticate the authority. The
+token is signed with the private key of the authority. The token is signed with the following
+command;
+
+We can use [jwt.io](https://jwt.io/) to create the token
+
+Header:
+
+```json
+{
+  "alg": "ES256"
+}
+```
+
+Payload:
+
+```json
+{
+  "iss": "did:web:did-server:consumer",
+  "sub": "did:web:did-server:consumer",
+  "aud": "http://federated-authority:8180/authority",
+  "exp": 1790983558
+}
+```
+
+Signature:
+
+Use the public and private key of the requestor to sign the token.
+One important thing to note is that [jwt.io](https://jwt.io/)  expects the private key to be in
+`PKCS#8` format. However, the private key resolver expects the private key to be in `EC` format.
+Therefore, we need to convert the private key to `PKCS#8` format before signing the token. We can
+use the following command to convert the private key to `PKCS#8` format;
+
+```bash
+openssl pkcs8 -topk8 -nocrypt -in private.key -out private-pkcs.key
+```
+
+To check VCs of the consumer connector (after successful registration you should get base64 encoded JWT):
+```bash
+curl --location 'localhost:29191/api/identity-hub' \
+--header 'Content-Type: application/json' \
+--data '{
+    "messages": [
+        {
+            "descriptor": {
+                "method": "CollectionsQuery"
+            }
+        }
+    ]
+}'
+```
+
 
 ### 1. Provider connector - Register data plane instance for provider
 
@@ -387,7 +474,7 @@ Sample output:
 ```
 
 Additionally, the Federated Catalog will now also include this entry. 
-This may take a couple of seconds as the federated catalog connector only polls the provider every 5 seconds as defined by "edc.catalog.cache.execution.period.seconds" in the [config](federated-catalog/catalog-configuration.properties).
+This may take a couple of seconds as the federated catalog connector only polls the provider every 5 seconds as defined by "edc.catalog.cache.execution.period.seconds" in the [config](federated-authority/catalog-configuration.properties).
 
 ```bash
 curl 'http://localhost:8181/api/federatedcatalog' \

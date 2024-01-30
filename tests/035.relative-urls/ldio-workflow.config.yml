@@ -7,7 +7,7 @@ orchestrator:
       input:
         name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
         config:
-          url: http://ldio-workbench:8080/mobility-hindrances
+          url: http://ldes-server:8080/mobility-hindrances
       outputs:
         - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
           config:

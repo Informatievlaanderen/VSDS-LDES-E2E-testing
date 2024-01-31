@@ -16,9 +16,9 @@ i=0
 
 while [ $i -lt 5 ];
 do
-    curl --fail -X POST 'http://localhost:8080/mobility-hindrances' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/members/member"$i".ttl"
+    curl --fail -X POST 'http://localhost:8080/mobility-hindrances' -H 'Content-Type: text/turtle' -d "@$SCRIPT_PATH/members/member$i.ttl"
     code=$?
-    ((i++))
+    i=$((i+1))
     if [ $code != 0 ]
         then exit $code
     fi

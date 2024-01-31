@@ -25,32 +25,6 @@ services:
     profiles:
       - delay-started
 
-  test-message-generator:
-    container_name: test-message-generator
-    image: ghcr.io/informatievlaanderen/test-message-generator:latest
-    environment:
-      - TARGETURL=http://ldio-server-seeder:8080/seed-server
-      - SILENT=false
-      - CRON=* * * * * *
-      - TEMPLATEFILE=/tmp/data/member.template.json
-      - MIMETYPE=application/ld+json
-    volumes:
-      - ./data/member.template.json:/tmp/data/member.template.json:ro
-    networks:
-      - ldes
-    profiles:
-      - delay-started
-
-  ldio-server-seeder:
-    image: ghcr.io/informatievlaanderen/ldi-orchestrator:latest
-    container_name: ldio-server-seeder
-    volumes:
-      - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
-    networks:
-      - ldes
-    depends_on:
-      - ldes-server
-
   test-message-sink:
     image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     container_name: ${USECASE_NAME:-relative-url}_test-message-sink

@@ -8,8 +8,6 @@ management:
     enabled: false
 ldes-server:
   host-name: http://localhost:8080
-
-
   use-relative-url: true
 spring:
   data:

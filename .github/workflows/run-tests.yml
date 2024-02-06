@@ -48,6 +48,7 @@ jobs:
           - "@test-034 and @ldio and @basic-connector-flow"
           - "@test-034 and @federated-catalog"
           - "@test-035"
+          - "@test-038"
 
     runs-on: ubuntu-latest
       

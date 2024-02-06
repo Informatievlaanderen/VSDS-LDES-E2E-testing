@@ -62,11 +62,11 @@ Feature: LDES Server Basic Functionality
   @test-038 @ports
   Scenario: 038: Verify the server APIs are available on different ports
     Given context 'tests/038.server-separate-ports' is started
-    And the LDES server is available
+    And the LDES server is available and configured
     When I create an eventstream on port 8087
     Then The response status code is 404
     When I create an eventstream on port 8089
-    Then The response status code is 201
+    Then The response status code is 200
     When I fetch the swagger docs on port 8087
     Then The response status code is 404
     When I fetch the swagger docs on port 8089
@@ -78,4 +78,4 @@ Feature: LDES Server Basic Functionality
     When I request a fragment on port 8088
     Then The response status code is 404
     When I request a fragment on port 8087
-    Then The response status code is 404
+    Then The response status code is 200

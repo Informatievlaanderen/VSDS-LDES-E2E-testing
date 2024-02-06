@@ -28,7 +28,7 @@ sh ./config/seed.sh
    ```
    While this commmand will return an overview with 1 eventstream:
    ```bash
-   curl -i -X GET 'http://localhost:8087/admin/api/v1/eventstreams'
+   curl -i -X GET 'http://localhost:8089/admin/api/v1/eventstreams'
    ```
    
    The swagger API should be available under the same port, we can test this by checking if the following command returns the swagger docs:
@@ -40,28 +40,27 @@ sh ./config/seed.sh
    The ingest API should be available on port 8088.
    To test this we will try to send a member to port 8087 and see this will return a 404:
    ```bash
-   curl -i -X POST 'http://localhost:8087/mobility-hindrances' -H 'Content-Type: text/turtle' -d '@C:\Users\pieterjl\IdeaProjects\VSDS-LDES-E2E-testing\tests\038.server-separate-ports\data\member.ttl'
+   curl -i -X POST 'http://localhost:8087/mobility-hindrances' -H 'Content-Type: text/turtle' -d '@.\data\member.ttl'
    ```
    While this commmand will return a 201 status code:
    ```bash
-   curl -i -X POST 'http://localhost:8089/mobility-hindrances' -H 'Content-Type: text/turtle' -d '@C:\Users\pieterjl\IdeaProjects\VSDS-LDES-E2E-testing\tests\038.server-separate-ports\data\member.ttl'
+   curl -i -X POST 'http://localhost:8088/mobility-hindrances' -H 'Content-Type: text/turtle' -d '@.\data\member.ttl'
    ```
 
 3. Testing the fetch API
    The fetch API should be available on port 8087.
    To test this we will try to fetch the ldes on port 8088 and see this will return a 404:
    ```bash
-   curl -i -X GET 'http://localhost:8087/mobility-hindrances'
+   curl -i -X GET 'http://localhost:8089/mobility-hindrances'
    ```
    While this commmand will return the ldes:
    ```bash
-   curl -i -X GET 'http://localhost:8088/mobility-hindrances'
+   curl -i -X GET 'http://localhost:8087/mobility-hindrances'
    ```
 
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldio-workbench
 docker compose down
 ```

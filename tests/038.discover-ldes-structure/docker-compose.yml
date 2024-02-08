@@ -1,0 +1,25 @@
+services:
+
+  ldes-server-simulator:
+    image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-discover-ldes-structure}_ldes-server-simulator
+    environment:
+      - BASEURL=http://ldes-server-simulator
+    ports:
+      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
+    networks:
+      - ldes
+
+  ldes-discoverer:
+    image: ghcr.io/informatievlaanderen/ldi-ldes-discoverer:${LDES_DISCOVERER:-latest}
+    container_name: ${USECASE_NAME:-discover-ldes-structure}_ldes-discoverer
+    command:
+      - "--discoverer.url=http://ldes-server-simulator/ldes/occupancy"
+    networks:
+      - ldes
+    profiles:
+      - delay-started
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-discover-ldes-structure}_network

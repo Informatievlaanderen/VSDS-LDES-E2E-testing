@@ -11,10 +11,10 @@ services:
       - ldes
 
   ldes-discoverer:
-    image: ghcr.io/informatievlaanderen/ldi-ldes-discoverer:${LDES_DISCOVERER:-latest}
+    image: ghcr.io/informatievlaanderen/ldes-discoverer:${LDES_DISCOVERER:-latest}
     container_name: ${USECASE_NAME:-discover-ldes-structure}_ldes-discoverer
     command:
-      - "--discoverer.url=http://ldes-server-simulator/ldes/occupancy"
+      - "--url=http://ldes-server-simulator/ldes/occupancy"
     networks:
       - ldes
     profiles:

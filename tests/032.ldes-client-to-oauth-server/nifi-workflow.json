@@ -330,11 +330,11 @@
                     "x": 312.0,
                     "y": 32.0
                 },
-                "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.LdesClient",
+                "type": "be.vlaanderen.informatievlaanderen.ldes.ldi.processors.LdesClientProcessor",
                 "bundle": {
                     "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
                     "artifact": "ldes-client-processor",
-                    "version": "0.0.1-SNAPSHOT"
+                    "version": "2.0.0-SNAPSHOT"
                 },
                 "properties": {
                     "STREAM_TIMESTAMP_PATH_PROPERTY": "false",
@@ -347,7 +347,7 @@
                     "AUTHORIZATION_STRATEGY": "OAUTH2_CLIENT_CREDENTIALS",
                     "STREAM_SHAPE_PROPERTY": "false",
                     "STATUSES_TO_RETRY": null,
-                    "DATA_SOURCE_URL": "http://localhost:8080/devices",
+                    "DATA_SOURCE_URLS": "http://localhost:8080/devices",
                     "API_KEY_HEADER_PROPERTY": "X-API-KEY",
                     "API_KEY_PROPERTY": null,
                     "OAUTH_CLIENT_ID": "clientId",
@@ -416,8 +416,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATA_SOURCE_URL": {
-                        "name": "DATA_SOURCE_URL",
+                    "DATA_SOURCE_URLS": {
+                        "name": "DATA_SOURCE_URLS",
                         "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false

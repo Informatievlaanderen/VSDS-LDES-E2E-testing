@@ -5,18 +5,18 @@ orchestrator:
     - name: simulator-to-server-pipeline
       description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to a LDES Server"
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        name: Ldio:LdesClient
         config:
-          url: http://localhost:8080/devices
+          urls: http://localhost:8080/devices
           auth:
             type: OAUTH2_CLIENT_CREDENTIALS
             client-id: clientId
             client-secret: secret
             token-endpoint: http://mock-oauth2-server:8080/default/token
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://test-message-sink/member
             rdf-writer:

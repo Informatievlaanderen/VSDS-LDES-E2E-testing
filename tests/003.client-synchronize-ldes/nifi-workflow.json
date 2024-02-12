@@ -346,7 +346,7 @@
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "AUTHORIZATION_STRATEGY": "NO_AUTH",
                     "STREAM_SHAPE_PROPERTY": "false",
-                    "DATA_SOURCE_URLs": "http://ldes-server-simulator/ldes/occupancy",
+                    "DATA_SOURCE_URLS": "http://ldes-server-simulator/ldes/occupancy",
                     "API_KEY_HEADER_PROPERTY": "X-API-KEY",
                     "API_KEY_PROPERTY": null,
                     "OAUTH_CLIENT_ID": null,

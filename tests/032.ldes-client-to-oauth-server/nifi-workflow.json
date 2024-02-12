@@ -347,7 +347,7 @@
                     "AUTHORIZATION_STRATEGY": "OAUTH2_CLIENT_CREDENTIALS",
                     "STREAM_SHAPE_PROPERTY": "false",
                     "STATUSES_TO_RETRY": null,
-                    "DATA_SOURCE_URL": "http://localhost:8080/devices",
+                    "DATA_SOURCE_URLS": "http://localhost:8080/devices",
                     "API_KEY_HEADER_PROPERTY": "X-API-KEY",
                     "API_KEY_PROPERTY": null,
                     "OAUTH_CLIENT_ID": "clientId",
@@ -416,8 +416,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATA_SOURCE_URL": {
-                        "name": "DATA_SOURCE_URL",
+                    "DATA_SOURCE_URLS": {
+                        "name": "DATA_SOURCE_URLS",
                         "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false

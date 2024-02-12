@@ -347,7 +347,7 @@
                     "AUTHORIZATION_STRATEGY": "NO_AUTH",
                     "STREAM_SHAPE_PROPERTY": "false",
                     "STATUSES_TO_RETRY": null,
-                    "DATA_SOURCE_URL": "http://ldes-server-simulator/ldes/occupancy",
+                    "DATA_SOURCE_URLS": "http://ldes-server-simulator/ldes/occupancy",
                     "API_KEY_HEADER_PROPERTY": "X-API-KEY",
                     "API_KEY_PROPERTY": null,
                     "OAUTH_CLIENT_ID": null,
@@ -415,8 +415,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATA_SOURCE_URLs": {
-                        "name": "DATA_SOURCE_URLs",
+                    "DATA_SOURCE_URLS": {
+                        "name": "DATA_SOURCE_URLS",
                         "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false

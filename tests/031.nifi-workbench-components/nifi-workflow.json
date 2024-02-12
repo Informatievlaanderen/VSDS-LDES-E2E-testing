@@ -49,7 +49,7 @@
               "AUTHORIZATION_STRATEGY": "NO_AUTH",
               "STREAM_SHAPE_PROPERTY": "false",
               "STATUSES_TO_RETRY": null,
-              "DATA_SOURCE_URL": "http://ldes-server:8080/observations/by-page",
+              "DATA_SOURCE_URLS": "http://ldes-server:8080/observations/by-page",
               "API_KEY_HEADER_PROPERTY": "X-API-KEY",
               "API_KEY_PROPERTY": null,
               "POSTGRES_USERNAME": null,
@@ -130,8 +130,8 @@
                 "identifiesControllerService": false,
                 "sensitive": false
               },
-              "DATA_SOURCE_URL": {
-                "name": "DATA_SOURCE_URL",
+              "DATA_SOURCE_URLS": {
+                "name": "DATA_SOURCE_URLS",
                 "displayName": "Data source url",
                 "identifiesControllerService": false,
                 "sensitive": false

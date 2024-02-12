@@ -44,7 +44,7 @@
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
-                    "Remote URLs": "http://test-message-sink/member",
+                    "Remote URL": "http://test-message-sink/member",
                     "form-body-form-name": null,
                     "Content-Type": "${mime.type}",
                     "flow-file-naming-strategy": "RANDOM",
@@ -173,8 +173,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "Remote URLs": {
-                        "name": "Remote URLs",
+                    "Remote URL": {
+                        "name": "Remote URL",
                         "displayName": "HTTP URL",
                         "identifiesControllerService": false,
                         "sensitive": false

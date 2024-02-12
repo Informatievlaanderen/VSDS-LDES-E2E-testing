@@ -44,7 +44,7 @@
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
-                    "Remote URL": "http://test-message-sink/member",
+                    "Remote URLs": "http://test-message-sink/member",
                     "form-body-form-name": null,
                     "Content-Type": "${mime.type}",
                     "flow-file-naming-strategy": "RANDOM",
@@ -173,8 +173,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "Remote URL": {
-                        "name": "Remote URL",
+                    "Remote URLs": {
+                        "name": "Remote URLs",
                         "displayName": "HTTP URL",
                         "identifiesControllerService": false,
                         "sensitive": false
@@ -346,7 +346,7 @@
                     "DATA_DESTINATION_FORMAT": "application/n-quads",
                     "AUTHORIZATION_STRATEGY": "NO_AUTH",
                     "STREAM_SHAPE_PROPERTY": "false",
-                    "DATA_SOURCE_URL": "http://ldes-server-simulator/ldes/occupancy",
+                    "DATA_SOURCE_URLs": "http://ldes-server-simulator/ldes/occupancy",
                     "API_KEY_HEADER_PROPERTY": "X-API-KEY",
                     "API_KEY_PROPERTY": null,
                     "OAUTH_CLIENT_ID": null,
@@ -408,8 +408,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATA_SOURCE_URL": {
-                        "name": "DATA_SOURCE_URL",
+                    "DATA_SOURCE_URLS": {
+                        "name": "DATA_SOURCE_URLS",
                         "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false

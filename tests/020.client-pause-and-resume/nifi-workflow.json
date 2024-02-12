@@ -44,7 +44,7 @@
                     "Put Response Body In Attribute": null,
                     "Use Chunked Encoding": "false",
                     "Follow Redirects": "True",
-                    "Remote URL": "http://test-message-sink/member",
+                    "Remote URLs": "http://test-message-sink/member",
                     "form-body-form-name": null,
                     "Content-Type": "application/n-quads",
                     "flow-file-naming-strategy": "RANDOM",
@@ -173,8 +173,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "Remote URL": {
-                        "name": "Remote URL",
+                    "Remote URLs": {
+                        "name": "Remote URLs",
                         "displayName": "HTTP URL",
                         "identifiesControllerService": false,
                         "sensitive": false
@@ -415,8 +415,8 @@
                         "identifiesControllerService": false,
                         "sensitive": false
                     },
-                    "DATA_SOURCE_URL": {
-                        "name": "DATA_SOURCE_URL",
+                    "DATA_SOURCE_URLs": {
+                        "name": "DATA_SOURCE_URLs",
                         "displayName": "Data source url",
                         "identifiesControllerService": false,
                         "sensitive": false

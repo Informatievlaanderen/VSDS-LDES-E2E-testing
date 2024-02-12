@@ -5,11 +5,11 @@ orchestrator:
     - name: rdf4j-pipeline
       description: "Simple http in, version creation, http out pipeline allowing to pause output."
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        name: Ldio:HttpIn
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.RepositoryMaterialiser
+        - name: Ldio:RepositoryMaterialiser
           config:
             sparql-host: http://rdf4j-server:8080/rdf4j-server
             repository-id: test

@@ -5,15 +5,15 @@ orchestrator:
     - name: ldes-cli
       description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to the console output"
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        name: Ldio:LdesClient
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
         config:
-          url: http://ldes-server-simulator/ldes/occupancy
+          urls: http://ldes-server-simulator/ldes/occupancy
           state: sqlite
           keep-state: true
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://test-message-sink/member
             rdf-writer:

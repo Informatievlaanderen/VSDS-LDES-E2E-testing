@@ -5,13 +5,13 @@ orchestrator:
     - name: create-archive
       description: "This pipeline uses an LDES client to read an existing LDES and send the members to a file archive."
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldi.client.LdioLdesClient
+        name: Ldio:LdesClient
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
         config:
-          url: http://ldes-server-simulator/ldes/occupancy
+          urls: http://ldes-server-simulator/ldes/occupancy
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioFileOut
+        - name: Ldio:FileOut
           config:
             archive-root-dir: /tmp/archive
             timestamp-path: http://purl.org/dc/terms/modified

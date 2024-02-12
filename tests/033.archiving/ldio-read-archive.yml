@@ -5,11 +5,11 @@ orchestrator:
     - name: create-archive
       description: "This pipeline uses an Ldio Archive In component read members from an archive and sends them to the server."
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioArchiveFileIn
+        name: Ldio:ArchiveFileIn
         config:
           archive-root-dir: /tmp/archive
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://ldes-server:8080/occupancy
             rdf-writer:

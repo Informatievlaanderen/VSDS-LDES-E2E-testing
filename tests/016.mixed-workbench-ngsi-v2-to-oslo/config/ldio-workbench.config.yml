@@ -5,11 +5,11 @@ orchestrator:
     - name: device-models-pipeline
       description: "This pipeline uses a HTTP listener to read device model state objects, create a version object and forward it as N-quads to a LDES Server"
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        name: Ldio:HttpIn
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
       transformers:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+        - name: Ldio:VersionObjectCreator
           config:
             member-type: https://uri.etsi.org/ngsi-ld/default-context/DeviceModel
             delimiter: "/"
@@ -17,7 +17,7 @@ orchestrator:
             generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
             versionOf-property: http://purl.org/dc/terms/isVersionOf
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://ldes-server:8080/device-models
             rdf-writer:
@@ -26,11 +26,11 @@ orchestrator:
     - name: devices-pipeline
       description: "This pipeline uses a HTTP listener to read device state objects, create a version object and forward it as N-quads to a LDES Server"
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        name: Ldio:HttpIn
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
       transformers:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+        - name: Ldio:VersionObjectCreator
           config:
             member-type: https://uri.etsi.org/ngsi-ld/default-context/Device
             delimiter: "/"
@@ -38,7 +38,7 @@ orchestrator:
             generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
             versionOf-property: http://purl.org/dc/terms/isVersionOf
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://ldes-server:8080/devices
             rdf-writer:
@@ -47,11 +47,11 @@ orchestrator:
     - name: observations-pipeline
       description: "This pipeline uses a HTTP listener to read WQO state objects, create a version object and forward it as N-quads to a LDES Server"
       input:
-        name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpIn
+        name: Ldio:HttpIn
         adapter:
-          name: be.vlaanderen.informatievlaanderen.ldes.ldi.RdfAdapter
+          name: Ldio:RdfAdapter
       transformers:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldi.VersionObjectCreator
+        - name: Ldio:VersionObjectCreator
           config:
             member-type: http://www.w3.org/ns/sosa/ObservationCollection
             delimiter: "/"
@@ -59,7 +59,7 @@ orchestrator:
             generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
             versionOf-property: http://purl.org/dc/terms/isVersionOf
       outputs:
-        - name: be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://ldes-server:8080/water-quality-observations
             rdf-writer:

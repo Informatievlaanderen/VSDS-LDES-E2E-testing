@@ -139,7 +139,7 @@ services:
       - delay-started
 
   ldio-workbench:
-    image: ldes/ldi-orchestrator:1.10.0-SNAPSHOT
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:latest
     container_name: connector_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application

@@ -63,22 +63,14 @@ and stop the new http sender.
     docker compose rm --stop --force --volumes old-nifi-workbench
     ```
 
-4. Verify that members are available in LDES and check member count in the last fragment:
+4. Note the current member count:
     ```bash
-    docker compose up ldes-list-fragments -d
-    sleep 3 # ensure stream has been followed up to the last fragment
-    export LAST_FRAGMENT=$(docker logs --tail 1 $(docker ps -q --filter "name=ldes-list-fragments$"))
-    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 5. Start http sender in the new workflow.
 
-6. Verify last fragment member count increases:
-    ```bash
-    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
-    ```
-
-7. Verify data store member count increases (execute repeatedly):
+6. Verify data store member count increases (execute repeatedly):
     ```bash
     curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```

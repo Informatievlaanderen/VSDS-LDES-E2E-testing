@@ -8,9 +8,9 @@ services:
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-latest}
     environment:
       - NODE_OPTIONS=--max-old-space-size=500 # NOTE: in MB, set this a bit lower than the memory limit
-      - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
-      - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
-      - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}
+      - GTFS_SOURCE=${GTFS_SOURCE:-https://citycommbus.com/gtfs}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://citycommbus.com/gtfs-rt/tripupdates}
+      - BASE_IRI=${GTFS_BASE_IRI:-http://citycommbus.com/}
       - TARGET_URL=http://ldes-server:8080/connections
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}
       - GTFSRT_CRON=${GTFSRT_CRON:-*/30 * * * * *}

@@ -11,6 +11,6 @@ ldes-server:
 spring:
   data:
     mongodb:
-      database: bustang
+      database: gtfs-performance
       host: ldes-mongodb
       port: 27017

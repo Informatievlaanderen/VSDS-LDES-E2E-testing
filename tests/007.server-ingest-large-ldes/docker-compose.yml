@@ -5,9 +5,9 @@ services:
     container_name: ${USECASE_NAME:-gtfs-ingest-ldes}_gtfs2ldes-js
     image: ghcr.io/julianrojas87/gtfs2ldes-js:${GTFS2LDES_TAG:-latest}
     environment:
-      - GTFS_SOURCE=${GTFS_SOURCE:-https://www.rtd-denver.com/files/gtfs/bustang-co-us.zip}
-      - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://www.rtd-denver.com/files/bustang/gtfs-rt/Bustang_TripUpdate.pb}
-      - BASE_IRI=${GTFS_BASE_IRI:-http://www.rtd-denver.com/}
+      - GTFS_SOURCE=${GTFS_SOURCE:-https://citycommbus.com/gtfs}
+      - GTFSRT_SOURCE=${GTFSRT_SOURCE:-https://citycommbus.com/gtfs-rt/tripupdates}
+      - BASE_IRI=${GTFS_BASE_IRI:-http://citycommbus.com/}
       - NODE_OPTIONS=${NODE_OPTIONS:-}
       - TARGET_URL=http://ldes-workbench:8080/gtfs-pipeline
       - GTFS_CRON=${GTFS_CRON:-0 0 3 1 * *}

@@ -11,6 +11,6 @@ orchestrator:
       outputs:
         - name: Ldio:HttpOut
           config:
-            endpoints: http://ldes-server:8080/connections
+            endpoint: http://ldes-server:8080/connections
             rdf-writer:
               content-type: application/n-quads

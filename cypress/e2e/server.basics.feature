@@ -3,7 +3,7 @@ Feature: LDES Server Basic Functionality
 
   @test-007 @ingestion @smoke @large @gtfs
   Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
-    Given the members are stored in database 'bustang'
+    Given the members are stored in database 'gtfs'
     And context 'tests/007.server-ingest-large-ldes' is started
     And the LDES server is available and configured
     When I start the '<workbench>' workbench

@@ -19,7 +19,6 @@ docker pull ghcr.io/informatievlaanderen/ldes-server:20230405T0843
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230802075556
 
 # support
-docker pull ghcr.io/informatievlaanderen/ldes-list-fragments:latest
 docker pull ghcr.io/informatievlaanderen/ldes-server-simulator:latest
 docker pull ghcr.io/informatievlaanderen/mongodb-rest-api:latest
 docker pull ghcr.io/informatievlaanderen/test-message-generator:latest

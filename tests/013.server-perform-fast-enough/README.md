@@ -48,17 +48,12 @@ sh ./config/seed.sh
     while :; do curl http://localhost:9019/bustang/fragmentation_fragment; echo ''; sleep 0.5; done
     ```
 
-3. Optionally, verify which fragments are being created using the [LDES list fragments](/ldes-list-fragments/README.md) tool:
-    ```bash
-    docker compose up ldes-list-fragments
-    ```
 
-4. Stop following LDES member count, LDES fragment count and LDES fragment URIs
+3. Stop following LDES member count, LDES fragment count and LDES fragment URIs
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldes-list-fragments
 docker compose rm -s -f -v gtfs2ldes-js
 docker compose down
 ```

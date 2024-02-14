@@ -119,17 +119,6 @@ services:
     networks:
       - ldes
 
-  ldes-list-fragments:
-    container_name: ${USECASE_NAME:-upgrade-server}_ldes-list-fragments
-    image: ghcr.io/informatievlaanderen/ldes-list-fragments:${LDES_LIST_FRAGMENTS_TAG:-latest}
-    environment:
-      - FOLLOW=http://localhost:8080/devices/devices-by-time
-    # use the network stack of the new-ldes-server service so that 
-    # localhost refers to new-ldes-server and we can follow the LDES stream
-    network_mode: service:new-ldes-server
-    profiles:
-      - delay-started
-
 networks:
   ldes:
     name: ${USECASE_NAME:-upgrade-server}_network

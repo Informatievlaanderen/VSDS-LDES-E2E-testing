@@ -257,12 +257,9 @@ The server upgrade will include changesets that alter the database schema. We wi
    ]
    ```
 
-10. Verify that members are available in LDES and check member count in the last fragment:
+10. Note the current member count:
     ```bash
-    docker compose up ldes-list-fragments -d
-    sleep 3 # ensure stream has been followed up to the last fragment
-    export LAST_FRAGMENT=$(docker logs --tail 1 $(docker ps -q --filter "name=ldes-list-fragments$"))
-    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
+    curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
 
 11. Resume the workbench output.
@@ -274,12 +271,7 @@ The server upgrade will include changesets that alter the database schema. We wi
 
     Start http sender in workflow after redirecting the output to the new server.
 
-12. Verify last fragment member count increases (max count in fragment is 25):
-    ```bash
-    curl -s -H "accept: application/n-quads" $LAST_FRAGMENT | grep "<https://w3id.org/tree#member>" | wc -l
-    ```
-
-13. Verify data store member count increases (execute repeatedly):
+12. Verify data store member count increases (execute repeatedly):
     ```bash
     curl http://localhost:9019/iow_devices/ingest_ldesmember
     ```
@@ -288,7 +280,6 @@ The server upgrade will include changesets that alter the database schema. We wi
 Stop data generator and new server, and bring all systems down:
 ```bash
 docker compose rm -s -f -v new-ldes-server
-docker compose rm -s -f -v ldes-list-fragments
 docker compose rm -s -f -v test-message-generator
 docker compose rm -s -f -v ldio-workbench
 docker compose rm -s -f -v nifi-workbench

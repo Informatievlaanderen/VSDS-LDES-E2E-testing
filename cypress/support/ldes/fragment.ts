@@ -38,6 +38,7 @@ export class Fragment extends UrlResponse {
     }
 
     expectSingleRelationOf(type: string): Relation {
+        cy.log(type)
         const relations = this.relations.filter(x => x.type === tree.prefix(type));
         expect(relations.length).to.equal(1);
         return relations[0];

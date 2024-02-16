@@ -1,0 +1,16 @@
+@prefix tree: <https://w3id.org/tree#> .
+@prefix ldes: <https://w3id.org/ldes#> .
+@prefix example: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+
+<time> a ldes:View ;
+  tree:viewDescription [
+    tree:fragmentationStrategy ([
+                                        a tree:HierarchicalTimeBasedFragmentation ;
+                                        tree:maxGranularity "month" ;
+                                        tree:fragmentationPath dc:created ;
+                                    ]) ;
+    tree:pageSize "10"^^<http://www.w3.org/2001/XMLSchema#int> ;
+  ] .

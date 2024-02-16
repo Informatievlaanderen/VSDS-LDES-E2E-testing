@@ -58,3 +58,15 @@ Feature: LDES Server Basic Functionality
     And the LDES server is available and configured
     When I start the LDES Client 'LDIO' workbench
     Then the sink contains 5 members in collection 'mobility-hindrances'
+
+  @test-039 @default-fragment
+  Scenario: 039: Verify server puts non-fragmentable members in a default fragment
+    Given the members are stored in database 'bustang'
+    And context 'tests/039.default-bucket' is started
+    And the LDES server is available and configured
+    When I start the LDES Client 'LDIO' workbench
+    Then the sink contains 5 members in collection 'mobility-hindrances'
+    Then the 'time' view has a relation to the default fragment
+    And the 'ref' view has a relation to the default fragment
+    And the 'geo' view has a relation to the default fragment
+    And the 'mixed' view has a relation to the default fragment

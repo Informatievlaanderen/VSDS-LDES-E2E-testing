@@ -67,6 +67,12 @@ export function range(start: number, end: number) {
     return new Array(end - start + 1).fill(start).map((_, i) => i + 1);
 }
 
+export function obtainViewWithDefaultFragment(ldes: string, view: string) {
+    return server.getLdes(ldes)
+        .then(ldes => new Fragment(ldes.viewUrl(view).replace("ldes-server", "localhost")))
+        .then(view => waitForFragment(view, x => x.relations.filter(relation => relation.type == "https://w3id.org/tree#Relation").length >= 1, 'have 1 default relation'));
+}
+
 export function obtainRootFragment(ldes: string, view: string) {
     return server.getLdes(ldes)
         .then(ldes => new Fragment(ldes.viewUrl(view)))

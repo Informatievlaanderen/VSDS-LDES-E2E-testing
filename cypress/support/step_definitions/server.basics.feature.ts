@@ -2,7 +2,7 @@
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment } from '../ldes';
-import { server, waitForFragment, obtainRootFragment, byPage } from "./common_step_definitions";
+import { server, waitForFragment, obtainRootFragment, byPage, obtainViewWithDefaultFragment } from "./common_step_definitions";
 
 let ldesResponse: Cypress.Response<any>;
 let viewResponse: Cypress.Response<any>;
@@ -97,5 +97,9 @@ Then('the connections LDES is paginated', () => {
 
 Then('the first page contains {int} members', (count: number) => {
     waitForFragment(rootFragment, x => x.memberCount === count, `have member count equal ${count}`);
+})
+
+Then('the {string} view has a relation to the default fragment', (view: string) => {
+    obtainViewWithDefaultFragment("mobility-hindrances", view);
 })
 

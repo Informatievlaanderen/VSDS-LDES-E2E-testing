@@ -1,12 +1,11 @@
-# LDES Client Can Replicate an LDES
+# LDES Discoverer can discover the structure of an event stream or view
 
-The test verifies that the LDES Client can replicating a (small subset of the) Gent P+R dataset. It uses a context
-containing a (LDES Server) simulator serving the fragments, a workflow containing the LDES Client and a http sender and
-a message sink backed by a data store (mongodb).
+The test verifies that the LDES Discoverer can discover the structure of a (small subset of the) Geomobility dataset.
+It uses a context containing a (LDES Server) simulator serving the fragments and the LDES Discoverer.
 
-The simulator (http://localhost:9011) is seeded by a subset of the Gent P+R dataset containing five fragments of which
-the first four fragments contain 250 members each and the last one contains 16 members, making a total of 1016 LDES
-members served.
+The simulator (http://localhost:9011) is seeded by a subset of the Geomobility dataset containing a root fragment which
+refers to a view with a timebased hierarchical fragmentation strategy and a view without a fragmentation strategy,
+leading to only paginate the members.
 
 ## Test Setup
 
@@ -23,7 +22,7 @@ docker compose up -d
 
 1. Seed the LDES Server Simulator with a part of the Gent P+R data set and [alias it](./create-alias.json):
     ```bash
-    for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
+    for f in ../../data/geomobility/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
     curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
     ```
    To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command:
@@ -31,46 +30,40 @@ docker compose up -d
     curl http://localhost:9011/
    ```
 
-2. Start the workflow containing the LDES Client to run the replication using:
+2. Start the LDES Discoverer to run the discovery using:
     ```bash
     docker compose up ldes-discoverer -d
-    while ! docker logs $(docker ps -q -f "name=ldes-discoverer$") | grep 'Started Application in' ; do sleep 1; done
+    while ! docker logs $(docker ps -q -a -f "name=ldes-discoverer$") | grep 'Started Application in' ; do sleep 1; done
     ```
-   
+
 3. Verify the LDES structure
-You can check the logs of the ldes-discoverer container by executing the following command:
+   You can check the logs of the ldes-discoverer container by executing the following command:
+
 ```shell
-docker logs $(docker ps -qaf "name=ldes-discoverer$")
+docker compose logs ldes-discoverer --no-log-prefix
 ```
 
-You can verify in the logs of the ldes-discoverer container, which should look something like this:
-```turtle
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix tree: <https://w3id.org/tree#> .
+You can verify in the logs of the ldes-discoverer container, which should look like this:
 
-<http://localhost:9003/ldes/occupancy/by-page?pageNumber=1>
-        tree:relation   [ rdf:type   tree:Relation ;
-                          tree:node  <http://localhost:9003/ldes/occupancy/by-page?pageNumber=2>
-                        ] .
-
-<http://localhost:9003/ldes/occupancy/by-page?pageNumber=2>
-        tree:relation   [ rdf:type   tree:Relation ;
-                          tree:node  <http://localhost:9003/ldes/occupancy/by-page?pageNumber=3>
-                        ] .
-                        
-<http://localhost:9003/ldes/occupancy/by-page?pageNumber=3>
-        tree:relation   [ rdf:type   tree:Relation ;
-                          tree:node  <http://localhost:9003/ldes/occupancy/by-page?pageNumber=4>
-                        ] .
-                        
-<http://localhost:9003/ldes/occupancy/by-page?pageNumber=4>
-        tree:relation   [ rdf:type   tree:Relation ;
-                          tree:node  <http://localhost:9003/ldes/occupancy/by-page?pageNumber=5>
-                        ] .
+```text
+http://ldes-server-simulator/ldes/observations
++- http://ldes-server-simulator/ldes/observations/by-time
+|  +- http://ldes-server-simulator/ldes/observations/by-time?year=2022
+|  |  +- http://ldes-server-simulator/ldes/observations/by-time?year=2022&month=08
+|  +- http://ldes-server-simulator/ldes/observations/by-time?year=2023
+|     +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=07
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=16
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=20
++- http://ldes-server-simulator/ldes/observations/paged
+   +- http://ldes-server-simulator/ldes/observations/paged?pageNumber=1
 ```
 
 ## Test Teardown
+
 To stop all systems use:
+
 ```bash
+docker compose down ldes-discoverer
 docker compose down
 ```

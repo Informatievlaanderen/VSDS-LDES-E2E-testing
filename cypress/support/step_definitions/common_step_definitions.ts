@@ -10,7 +10,7 @@ import {
     TestMessageSink,
 } from "../services";
 import {Gtfs2Ldes} from "../services/gtfs2ldes";
-import {Fragment, ldes} from "../ldes";
+import {Fragment} from "../ldes";
 import {LdesClientWorkbench} from "../services/ldes-client-workbench";
 import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 
@@ -355,6 +355,10 @@ Then('the LDES member count increases', () => {
             (actual, expected) => actual > expected));
 })
 
-Then("the LDES structure contains {int} relations", (relationCount: number) => {
-    return ldesDiscoverer.checkRelationCount(relationCount)
+Then("the LDES structure contains {int} relations", (relationCount: number) =>
+    ldesDiscoverer.checkRelationCount(relationCount)
+)
+
+Then("the LDES structure is equal to {string}", (expectedOutputFileName: string) => {
+    ldesDiscoverer.checkOutputStructure(`${testContext.testPartialPath}/data/${expectedOutputFileName}`)
 })

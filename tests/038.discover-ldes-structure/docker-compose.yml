@@ -14,7 +14,7 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-discoverer:${LDES_DISCOVERER:-latest}
     container_name: ${USECASE_NAME:-discover-ldes-structure}_ldes-discoverer
     command:
-      - "--url=http://ldes-server-simulator/ldes/occupancy"
+      - "--url=http://ldes-server-simulator/ldes/observations"
     networks:
       - ldes
     profiles:

@@ -1,0 +1,11 @@
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix tree:  <https://w3id.org/tree#> .
+
+<http://localhost:9003/ldes/observations/by-time?year=2022&month=08>
+        rdf:type        tree:Node ;
+        terms:isPartOf  <http://localhost:9003/ldes/observations> ;
+        tree:relation   [ rdf:type    tree:Relation ;
+                          tree:node   <http://localhost:9003/ldes/observations/by-time?year=2022&month=08&pageNumber=1> ;
+                        ] .

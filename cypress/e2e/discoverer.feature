@@ -3,8 +3,8 @@ Feature: LDI LDES Discoverer
 
   @test-038 @discover @parkAndRide
   Scenario: 038: LDES Discoverer Can Discover The Structure of an LDES
-    Given the members are stored in database 'Gent'
-    And context 'tests/038.discover-ldes-structure' is started
-    And I have aliased the 'parkAndRide' simulator data set
+    Given context 'tests/038.discover-ldes-structure' is started
+    And I have aliased the 'geomobility' simulator data set
     When I start the LDES Discoverer
-    Then the LDES structure contains 4 relations
+    Then the LDES structure contains 10 relations
+    And the LDES structure is equal to "expected-output.txt"

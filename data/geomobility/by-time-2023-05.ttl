@@ -1,0 +1,23 @@
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix tree:  <https://w3id.org/tree#> .
+
+<http://localhost:9003/ldes/observations/by-time?year=2023&month=05>
+        rdf:type        tree:Node ;
+        terms:isPartOf  <http://localhost:9003/ldes/observations> ;
+        tree:relation   [ rdf:type    tree:InBetweenRelation ;
+                          tree:node   <http://localhost:9003/ldes/observations/by-time?year=2023&month=05&day=20> ;
+                          tree:path   prov:generatedAtTime ;
+                          tree:value  "2023-05-20"^^<http://www.w3.org/2001/XMLSchema#date>
+                        ] ;
+        tree:relation   [ rdf:type    tree:InBetweenRelation ;
+                          tree:node   <http://localhost:9003/ldes/observations/by-time?year=2023&month=05&day=07> ;
+                          tree:path   prov:generatedAtTime ;
+                          tree:value  "2023-05-07"^^<http://www.w3.org/2001/XMLSchema#date>
+                        ] ;
+        tree:relation   [ rdf:type    tree:InBetweenRelation ;
+                          tree:node   <http://localhost:9003/ldes/observations/by-time?year=2023&month=05&day=16> ;
+                          tree:path   prov:generatedAtTime ;
+                          tree:value  "2023-05-16"^^<http://www.w3.org/2001/XMLSchema#date>
+                        ] .

@@ -1,12 +1,18 @@
-import { After, Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import { DockerCompose, DockerComposeOptions, EnvironmentSettings, checkSuccess, timeouts } from "..";
+import {After, Before, Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import {checkSuccess, DockerCompose, DockerComposeOptions, EnvironmentSettings, timeouts} from "..";
 import {
-    LdesWorkbenchNiFi, LdesServerSimulator, TestMessageSink,
-    MongoRestApi, TestMessageGenerator, LdesServer, LdesWorkbenchLdio
+    LdesServer,
+    LdesServerSimulator,
+    LdesWorkbenchLdio,
+    LdesWorkbenchNiFi,
+    MongoRestApi,
+    TestMessageGenerator,
+    TestMessageSink,
 } from "../services";
-import { Gtfs2Ldes } from "../services/gtfs2ldes";
-import { Fragment } from "../ldes";
-import { LdesClientWorkbench } from "../services/ldes-client-workbench";
+import {Gtfs2Ldes} from "../services/gtfs2ldes";
+import {Fragment} from "../ldes";
+import {LdesClientWorkbench} from "../services/ldes-client-workbench";
+import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 
 let testContext: any;
 const ldesMemberCollection = 'ingest_ldesmember';
@@ -22,6 +28,7 @@ export const mongo = new MongoRestApi('http://localhost:9019');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
+export const ldesDiscoverer = new LdiLdesDiscoverer();
 
 export const byPage = 'by-page';
 
@@ -59,7 +66,7 @@ export function ensureRelationCount(fragment: Fragment, amount: number) {
 export function setTargetUrl(targeturl: string) {
     const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
     return cy.log(command)
-        .exec(command, { log: true, failOnNonZeroExit: false })
+        .exec(command, {log: true, failOnNonZeroExit: false})
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
 }
 
@@ -81,8 +88,12 @@ export function obtainRootFragment(ldes: string, view: string) {
 
 export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean, message: string) {
     return cy.waitUntil(() =>
-        fragment.visit().then(fragment => condition(fragment)),
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for ${fragment.url} to ${message}.` }).then(() => fragment);
+            fragment.visit().then(fragment => condition(fragment)),
+        {
+            timeout: timeouts.fastAction,
+            interval: timeouts.check,
+            errorMsg: `Timed out waiting for ${fragment.url} to ${message}.`
+        }).then(() => fragment);
 }
 
 export function clientConnectorFailsOnStatusCode(code: number) {
@@ -171,7 +182,8 @@ Given('the {string} workbench is available', (workbench) => {
             workbenchLdio.waitAvailable();
             break;
         }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
+        default:
+            throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
@@ -193,7 +205,8 @@ When('I start the LDES Client {string} workbench', (workbench) => {
             createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
             break;
         }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
+        default:
+            throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
@@ -207,7 +220,8 @@ When('I start the {string} workbench', (workbench) => {
             createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
             break;
         }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
+        default:
+            throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
@@ -223,7 +237,8 @@ When('I pause the {string} pipeline on the {string} workbench', (pipeline: strin
             workbenchLdio.pause(pipeline);
             break;
         }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
+        default:
+            throw new Error(`Unknown workbench '${workbench}'`);
     }
 })
 
@@ -239,8 +254,13 @@ When('I resume the {string} pipeline on the {string} workbench', (pipeline: stri
             workbenchLdio.resume(pipeline);
             break;
         }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
+        default:
+            throw new Error(`Unknown workbench '${workbench}'`);
     }
+})
+
+When('I start the LDES Discoverer', () => {
+    createAndStartService(ldesDiscoverer.serviceName);
 })
 
 export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
@@ -253,7 +273,7 @@ export function stopAndRemoveService(service: string) {
 }
 
 When('I start the JSON Data Generator', () => {
-    createAndStartService(jsonDataGenerator.serviceName, { JSON_DATA_GENERATOR_SILENT: false })
+    createAndStartService(jsonDataGenerator.serviceName, {JSON_DATA_GENERATOR_SILENT: false})
         .then(() => jsonDataGenerator.waitAvailable());
 })
 
@@ -281,8 +301,12 @@ export function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     return cy.waitUntil(() =>
-        currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
-        { timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for database '${testContext.database}' ingest count to retain the same (last: ${previousCount})` }
+            currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        {
+            timeout: timeouts.fastAction,
+            interval: timeouts.check,
+            errorMsg: `Timed out waiting for database '${testContext.database}' ingest count to retain the same (last: ${previousCount})`
+        }
     );
 }
 
@@ -331,3 +355,10 @@ Then('the LDES member count increases', () => {
             (actual, expected) => actual > expected));
 })
 
+Then("the LDES structure contains {int} relations", (relationCount: number) =>
+    ldesDiscoverer.checkRelationCount(relationCount)
+)
+
+Then("the LDES structure is equal to {string}", (expectedOutputFileName: string) => {
+    ldesDiscoverer.checkOutputStructure(`${testContext.testPartialPath}/data/${expectedOutputFileName}`)
+})

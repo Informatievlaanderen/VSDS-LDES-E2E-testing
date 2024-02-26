@@ -1,0 +1,11 @@
+http://ldes-server-simulator/ldes/observations
++- http://ldes-server-simulator/ldes/observations/by-time
+|  +- http://ldes-server-simulator/ldes/observations/by-time?year=2022
+|  |  +- http://ldes-server-simulator/ldes/observations/by-time?year=2022&month=08
+|  +- http://ldes-server-simulator/ldes/observations/by-time?year=2023
+|     +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=07
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=16
+|        +- http://ldes-server-simulator/ldes/observations/by-time?year=2023&month=05&day=20
++- http://ldes-server-simulator/ldes/observations/paged
+   +- http://ldes-server-simulator/ldes/observations/paged?pageNumber=1

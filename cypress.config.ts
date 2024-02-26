@@ -60,6 +60,9 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
   const parkAndRideDataFolder = './data/parkAndRide';
   config.env.parkAndRide = getFiles(parkAndRideDataFolder).map(x => `${parkAndRideDataFolder}/${x}`);
 
+  const geomobilityDataFolder = './data/geomobility';
+  config.env.geomobility = getFiles(geomobilityDataFolder).map(x => `${geomobilityDataFolder}/${x}`);
+
   // read user environment file
   function parseEnvironmentFile(filePath: string) {
     const content = filePath && fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf-8');

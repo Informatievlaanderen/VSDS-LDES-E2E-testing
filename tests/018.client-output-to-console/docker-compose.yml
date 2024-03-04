@@ -12,7 +12,7 @@ services:
       - ldes
 
   ldio-workbench:
-    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
+    image: ldes/ldi-orchestrator:2.1.0-SNAPSHOT
     container_name: ${USECASE_NAME:-simulator-cli}_ldio-workbench
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro

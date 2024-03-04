@@ -31,7 +31,7 @@ services:
       - ldes
 
   new-nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    image: ldes/ldi-workbench-nifi:2.1.0-SNAPSHOT
     container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_new-nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -54,7 +54,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-upgrade-nifi-workbench}_ldes-server
-    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    image: ldes/ldes-server:2.10.0
     environment:
       - SIS_DATA=/tmp
     volumes:

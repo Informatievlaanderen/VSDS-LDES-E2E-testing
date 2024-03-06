@@ -13,3 +13,4 @@ orchestrator:
           config:
             sparql-host: http://rdf4j-server:8080/rdf4j-server
             repository-id: test
+            batch-size: 1

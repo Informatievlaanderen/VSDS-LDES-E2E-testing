@@ -20,7 +20,7 @@ services:
       - nifi-workflow
 
   nifi-workflow:
-    image: ldes/ldi-workbench-nifi:2.1.0-SNAPSHOT
+    image: ldes/ldi-workbench-nifi:2.0.0-SNAPSHOT
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}

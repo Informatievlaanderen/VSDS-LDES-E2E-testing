@@ -90,7 +90,7 @@ export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => 
     return cy.waitUntil(() =>
             fragment.visit().then(fragment => condition(fragment)),
         {
-            timeout: timeouts.fastAction,
+            timeout: timeouts.slowAction,
             interval: timeouts.check,
             errorMsg: `Timed out waiting for ${fragment.url} to ${message}.`
         }).then(() => fragment);

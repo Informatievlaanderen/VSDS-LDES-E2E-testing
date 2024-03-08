@@ -1,4 +1,4 @@
-# E2E Tests
+# E2E Tests -SPRINT 47
 These following end-to-end tests currently exist:
 * [Manual Tests](./tests)
 * [Demos](./demos) (not yet automated) -- gradually automated and moved to [Manual Tests](./tests)

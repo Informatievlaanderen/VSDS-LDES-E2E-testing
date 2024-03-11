@@ -15,5 +15,5 @@ spring:
       host: ldes-mongodb
       port: 27017
 rest:
-  maxage: 10
-  maxage-immutable: 604800
+  max-age: 10
+  max-age-immutable: 604800

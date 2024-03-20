@@ -29,7 +29,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server
-    image: ldes/ldes-server:2.10.0
+    image: ldes/ldes-server:2.11.0
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -44,7 +44,7 @@ services:
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-workbench
-    image: ldes/ldi-orchestrator:2.1.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.2.0-SNAPSHOT
     ports:
       - 8081:8080
     volumes:

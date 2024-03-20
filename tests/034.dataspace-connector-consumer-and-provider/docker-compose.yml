@@ -91,7 +91,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-connector}_ldes-server
-    image: ldes/ldes-server:2.10.0
+    image: ldes/ldes-server:2.11.0
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -124,7 +124,7 @@ services:
       - ldes
 
   nifi-workbench:
-    image: ldes/ldi-workbench-nifi:2.0.0
+    image: ldes/ldi-workbench-nifi:2.2.0
     container_name: connector_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=8000

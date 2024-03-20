@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # deliverables
-docker pull ldes/ldi-workbench-nifi:2.0.0
+docker pull ldes/ldi-workbench-nifi:2.2.0
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:latest
 docker pull ghcr.io/informatievlaanderen/ldes-server:latest
 

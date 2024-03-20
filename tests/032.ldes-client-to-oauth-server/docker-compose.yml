@@ -29,7 +29,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
-    image: ldes/ldes-server:2.11.0
+    image: ldes/ldes-server:2.11.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:

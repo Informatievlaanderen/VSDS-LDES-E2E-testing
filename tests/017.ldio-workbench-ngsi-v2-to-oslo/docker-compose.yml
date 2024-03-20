@@ -29,7 +29,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldes-server
-    image: ldes/ldes-server:2.11.0
+    image: ldes/ldes-server:2.11.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:

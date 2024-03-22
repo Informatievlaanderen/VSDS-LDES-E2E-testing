@@ -86,7 +86,7 @@ services:
 
   graphdb:
     container_name: ${USECASE_NAME:-nifi-components}_graphdb
-    image: khaller/graphdb-free:${GRAPHDB_TAG:-latest}
+    image: khaller/graphdb-free:${GRAPHDB_TAG:-10.6.1}
     volumes:
       - ./config/graphdb:/repository.init/observations:rw
     ports:

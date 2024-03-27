@@ -20,7 +20,7 @@ services:
       - nifi-workflow
 
   nifi-workflow:
-    image: ldes/ldi-workbench-nifi:2.2.0-SNAPSHOT
+    image: ldes/ldi-workbench-nifi:2.3.0-SNAPSHOT
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldi-workbench-nifi
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
@@ -42,7 +42,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-server
-    image: ldes/ldes-server:2.11.0-SNAPSHOT
+    image: ldes/ldes-server:2.10.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -57,7 +57,7 @@ services:
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workbench
-    image: ldes/ldi-orchestrator:2.2.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.3.0-SNAPSHOT
     volumes:
       - ./config/ldio-workbench.config.yml:/ldio/application.yml:ro
       - ./observations.rq:/ldio/observations.rq:ro

@@ -30,7 +30,7 @@ services:
     networks:
       - ldes
     extra_hosts:
-      - "${LOCALHOST}:host-gateway"
+      - ${LOCALHOST}:host-gateway
     profiles:
       - delay-started
   
@@ -43,7 +43,7 @@ services:
       - ldes
 
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-components}_ldes-server
+    container_name: ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp

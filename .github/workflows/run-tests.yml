@@ -16,9 +16,10 @@ jobs:
           - "@test-001 and @nifi"
           - "@test-003 and @ldio"
           - "@test-003 and @nifi"
-          - "@test-007 and @ldio"
-          - "@test-007 and @nifi"
-          - "@test-013"
+#          - re-enable when gtfs-to-ldes stream conforms to new validation
+#          - "@test-007 and @ldio"
+#          - "@test-007 and @nifi"
+#          - "@test-013"
           - "@test-014 and @ldio"
           - "@test-014 and @nifi"
           - "@test-015"

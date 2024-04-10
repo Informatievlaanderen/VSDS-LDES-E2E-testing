@@ -107,7 +107,7 @@ Given('the members are stored in database {string}', (database: string) => {
 });
 
 Given('environment variable {string} is defined as the hostname', (variable: string) => {
-    cy.exec('echo "$(hostname)"').then(result => {
+    cy.exec('echo ldes-server').then(result => {
         setAdditionalEnvironmentSetting(variable, result.stdout);
     })
 })

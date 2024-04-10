@@ -2,7 +2,7 @@
 Feature: LDES Workbench Components
 
   @test-031 @nifi
-  Scenario Outline: 031: all NiFi components work as expected
+  Scenario: 031: all NiFi components work as expected
     Given environment variable 'LOCALHOST' is defined as the hostname
     And context 'tests/031.nifi-workbench-components' is started
     And the graph database is available and configured

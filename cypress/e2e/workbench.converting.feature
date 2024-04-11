@@ -21,12 +21,12 @@ Feature: LDES Workbench Conversions
     Then the root fragment contains a correct NGSI-LD observation version
 
     @nifi
-    Examples: 
+    Examples:
       | workbench |
       | NIFI      |
 
     @ldio
-    Examples: 
+    Examples:
       | workbench |
       | LDIO      |
 
@@ -50,12 +50,12 @@ Feature: LDES Workbench Conversions
     Then the root fragment contains a correct OSLO observation version
 
     @test-015 @nifi
-    Examples: 
+    Examples:
       | workbench | test-number | test-name                      |
       | NIFI      |         015 | nifi-workbench-ngsi-v2-to-oslo |
 
     @test-016 @nifi @ldio
-    Examples: 
+    Examples:
       | workbench   | test-number | test-name                       |
       | NIFI & LDIO |         016 | mixed-workbench-ngsi-v2-to-oslo |
 

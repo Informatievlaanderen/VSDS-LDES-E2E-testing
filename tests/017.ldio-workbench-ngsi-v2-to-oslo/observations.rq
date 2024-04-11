@@ -7,6 +7,7 @@ CONSTRUCT {
     ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?conductivity .
     ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?temperature .
     ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?batteryLevel .
+    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?depth .
     ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?location .
     ?wqo sosa:phenomenonTime ?dateObserved .
     ?batteryLevel <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> <https://data.vmm.be/concept/sensor/batterijniveau> .
@@ -14,7 +15,7 @@ CONSTRUCT {
     ?batteryLevel rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .
     ?batteryLevel <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .
     ?batteryLevel <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [
-        <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> [
+        ?batteryLevelValuePredicate [
             <https://schema.org/value> ?batteryLevelValue
         ]
     ] .
@@ -23,7 +24,7 @@ CONSTRUCT {
     ?conductivity rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .
     ?conductivity <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .
     ?conductivity <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [
-        <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> [
+        ?conductivityValuePredicate [
             <https://schema.org/value> ?conductivityValue
         ]
     ] .
@@ -41,7 +42,7 @@ CONSTRUCT {
     ?temperature rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .
     ?temperature <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .
     ?temperature <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [
-        <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> [
+        ?temperatureValuePredicate [
             <https://schema.org/value> ?temperatureValue
         ]
     ] .
@@ -58,12 +59,13 @@ CONSTRUCT {
         ?wqo ngsiLdDC:batteryLevel ?batteryLevel .
         ?batteryLevel <https://uri.etsi.org/ngsi-ld/observedAt> ?batteryLevelPhenomenonTime .
         ?batteryLevel <https://uri.etsi.org/ngsi-ld/hasValue> ?batteryLevelValue .
+        BIND ( <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?batteryLevelValuePredicate  ) .
     }
-    
     OPTIONAL {
         ?wqo ngsiLdDC:conductivity ?conductivity .
         ?conductivity <https://uri.etsi.org/ngsi-ld/observedAt> ?conductivityPhenomenonTime .
         ?conductivity <https://uri.etsi.org/ngsi-ld/hasValue> ?conductivityValue .
+        BIND ( <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?conductivityValuePredicate  ) .
     }
     OPTIONAL {
         ?wqo ngsiLdDC:depth ?depth .
@@ -74,6 +76,7 @@ CONSTRUCT {
         ?wqo ngsiLdDC:temperature ?temperature .
         ?temperature <https://uri.etsi.org/ngsi-ld/observedAt> ?temperaturePhenomenonTime .
         ?temperature <https://uri.etsi.org/ngsi-ld/hasValue> ?temperatureValue .
+        BIND ( <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?temperatureValuePredicate  ) .
     }
     OPTIONAL {
         ?wqo ngsiLd:location ?location .

@@ -33,7 +33,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-gtfs-direct-connect}_ldes-server
-    image: ldes/ldes-server:2.10.0-SNAPSHOT
+    image: ldes/ldes-server:2.13.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
 #      - SPRING_DATA_MONGODB_AUTO-INDEX-CREATION=true

@@ -18,7 +18,7 @@ services:
       - delay-started
 
   ldio-server-seeder:
-    image: ldes/ldi-orchestrator:2.3.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.4.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-server-seeder
     volumes:
       - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
@@ -29,7 +29,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
-    image: ldes/ldes-server:2.10.0-SNAPSHOT
+    image: ldes/ldes-server:2.13.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -62,7 +62,7 @@ services:
       - ldes
 
   ldio-workbench:
-    image: ldes/ldi-orchestrator:2.3.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.4.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-workbench
     volumes:
       - ./ldio-oauth-ldes-client.yml:/ldio/config/application.yml:ro
@@ -77,7 +77,7 @@ services:
       - delay-started
 
   nifi-workbench:
-    image: ldes/ldi-workbench-nifi:2.3.0-SNAPSHOT
+    image:  ldes/ldi-workbench-nifi:2.3.0
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}

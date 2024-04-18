@@ -5,7 +5,7 @@ orchestrator:
       input:
         name: Ldio:LdesClient
         config:
-          url: http://ldes-server:8080/mobility-hindrances/time
+          urls: http://ldes-server:8080/mobility-hindrances/time
       outputs:
         - name: Ldio:HttpOut
           config:

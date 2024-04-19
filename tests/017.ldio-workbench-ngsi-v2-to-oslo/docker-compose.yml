@@ -44,7 +44,7 @@ services:
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-workbench
-    image: ldes/ldi-orchestrator:2.4.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.5.1-SNAPSHOT
     ports:
       - 8081:8080
     volumes:

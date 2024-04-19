@@ -1,7 +1,7 @@
 @discoverer
 Feature: LDI LDES Discoverer
 
-  @test-038 @discover @geomobility
+  @test-038 @discoverer @geomobility
   Scenario: 038: LDES Discoverer Can Discover The Structure of an LDES
     Given context 'tests/038.discover-ldes-structure' is started
     And I have aliased the 'geomobility' simulator data set

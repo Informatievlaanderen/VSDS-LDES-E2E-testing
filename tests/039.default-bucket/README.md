@@ -32,7 +32,7 @@ docker compose up -d
     curl 'http://localhost:8080/mobility-hindrances/time?year=unknown&pageNumber=1'
     ```
 
-4. Verify the root fragment of the geospatial view has a relation to the default fragment and to the year=2023 fragment:
+4. Verify the root fragment of the geospatial view has a relation to the default fragment and to the tile 0/0/0 fragment:
     ```bash
     curl http://localhost:8080/mobility-hindrances/geo
     ```
@@ -42,7 +42,7 @@ docker compose up -d
     curl 'http://localhost:8080/mobility-hindrances/geo?tile=unknown&pageNumber=1'
     ```
 
-6. Verify the root fragment of the reference view has a relation to the default fragment and to the year=2023 fragment:
+6. Verify the root fragment of the reference view has a relation to the version=unknown fragment and to the version= fragment:
     ```bash
     curl http://localhost:8080/mobility-hindrances/ref
     ```
@@ -52,14 +52,14 @@ docker compose up -d
     curl 'http://localhost:8080/mobility-hindrances/ref?version=unknown&pageNumber=1'
     ```
 
-8. Verify the root fragment of the combined view has a relation to the default fragment and to the year=2023 fragment:
+8. Verify the root fragment of the combined view has a relation to the default fragment and to the tile=0/0/0 fragment:
     ```bash
     curl http://localhost:8080/mobility-hindrances/mixed
     ```
 
 9. Verify the default fragment contains exactly 2 members:
     ```bash
-    curl http://localhost:8080/mobility-hindrances/mixed?year=unknown&tile=unknown&version=unknown&pageNumber=1
+    curl http://localhost:8080/mobility-hindrances/mixed?tile=unknown&year=unknown&version=unknown&pageNumber=1
     ```
    
 

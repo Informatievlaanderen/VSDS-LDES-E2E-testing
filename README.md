@@ -1,4 +1,4 @@
-# E2E Tests - Sprint 50
+# E2E Tests - Sprint 51
 These following end-to-end tests currently exist:
 * [Manual Tests](./tests)
 * [Demos](./demos) (not yet automated) -- gradually automated and moved to [Manual Tests](./tests)

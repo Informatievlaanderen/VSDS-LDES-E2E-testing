@@ -44,11 +44,12 @@ jobs:
           - "@test-031"
           - "@test-032 and @ldio"
           - "@test-032 and @nifi"
-          - "@test-033 and @ldio"
-          - "@test-033 and @nifi"
           - "@test-034 and @ldio and @basic-connector-flow"
           - "@test-034 and @federated-catalog"
           - "@test-035"
+          - "@test-037"
+          - "@test-038"
+          - "@test-039"
 
     runs-on: ubuntu-latest
       

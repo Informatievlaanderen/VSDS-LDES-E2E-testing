@@ -3,11 +3,11 @@ orchestrator:
     - name: simulator-to-sink-pipeline
       description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-Quads to a sink application"
       input:
-        name: Ldio:LdioLdesClient
+        name: Ldio:LdesClient
         config:
-          url: http://ldes-server:8080/mobility-hindrances/time
+          urls: http://ldes-server:8080/mobility-hindrances/time
       outputs:
-        - name: Ldio:LdioHttpOut
+        - name: Ldio:HttpOut
           config:
             endpoint: http://test-message-sink/member
             rdf-writer:

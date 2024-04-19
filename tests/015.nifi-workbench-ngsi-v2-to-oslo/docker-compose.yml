@@ -42,7 +42,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-iow-oslo-compliancy}_ldes-server
-    image: ldes/ldes-server:2.13.0-SNAPSHOT
+    image: ldes/ldes-server:2.14.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:

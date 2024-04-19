@@ -12,7 +12,7 @@ services:
       - ldes
 
   ldio-create-archive:
-    image: ldes/ldi-orchestrator:2.4.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.3.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-create-archive
     volumes:
       - ./ldio-create-archive.yml:/ldio/config/application.yml:ro
@@ -24,7 +24,7 @@ services:
       - delay-started
 
   ldio-read-archive:
-    image: ldes/ldi-orchestrator:2.4.0-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.3.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-archiving}_ldio-read-archive
     volumes:
       - ./ldio-read-archive.yml:/ldio/config/application.yml:ro
@@ -37,7 +37,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-archiving}_ldes-server
-    image: ldes/ldes-server:2.13.0-SNAPSHOT
+    image: ldes/ldes-server:2.14.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:

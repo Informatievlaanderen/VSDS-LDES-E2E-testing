@@ -14,7 +14,7 @@ function introspectAccessToken(r) {
         r.return(401); // Unexpected response, return 'auth required'
       }
 
-      const response = JSON.parse(reply.responseBody);
+      const response = JSON.parse(reply.responseText);
       if (response.active) {
         r.return(204); // Token is valid, return success code
       } else {

@@ -67,11 +67,13 @@ for updates every 60 seconds. The count will increase in bursts of this interval
 ## Test Teardown
 To stop all systems use:
 ```bash
+docker compose rm -s -f -v test-message-generator
 docker compose rm -s -f -v ldio-workbench
 docker compose down
 ```
 or:
 ```bash
+docker compose rm -s -f -v test-message-generator
 docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```

@@ -17,7 +17,7 @@ services:
       - delay-started
 
   ldio-server-seeder:
-    image: ldes/ldi-orchestrator:2.5.1-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.6.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-server-seeder
     volumes:
       - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
@@ -28,7 +28,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-server
-    image: ldes/ldes-server:2.14.0-SNAPSHOT
+    image: ldes/ldes-server:2.15.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -61,7 +61,7 @@ services:
       - ldes
 
   ldio-workbench:
-    image: ldes/ldi-orchestrator:2.5.1-SNAPSHOT
+    image: ldes/ldi-orchestrator:2.6.0-SNAPSHOT
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-workbench
     volumes:
       - ./ldio-oauth-ldes-client.yml:/ldio/config/application.yml:ro

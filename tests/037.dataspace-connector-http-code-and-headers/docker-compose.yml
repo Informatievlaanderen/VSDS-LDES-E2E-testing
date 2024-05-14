@@ -104,7 +104,7 @@ services:
       - ldes
 
   ldio-workbench:
-    image: ldes/ldi-orchestrator:1.10.0-SNAPSHOT
+    image: ${LDIO_WORKBENCH:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDIO_WORKBENCH_TAG:-latest}
     container_name: connector_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application

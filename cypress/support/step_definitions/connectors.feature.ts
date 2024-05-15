@@ -181,8 +181,10 @@ function createNegotiationInitiateRequestDto(policyId: string) {
         "odrl": "http://www.w3.org/ns/odrl/2/"
       },
       "@type": "NegotiationInitiateRequestDto",
+      "connectorId": "provider",
       "connectorAddress": "http://provider-connector:19194/protocol",
-      "providerId": "did:web:did-server:provider",
+      "consumerId": "consumer",
+      "providerId": "provider",
       "protocol": "dataspace-protocol-http",
       "offer": {
        "offerId": "${policyId}",

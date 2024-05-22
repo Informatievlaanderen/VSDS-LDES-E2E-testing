@@ -13,7 +13,11 @@ ldes-server:
   host-name: http://${LDES_SERVER}:8080
 
 spring:
-  data:
-    mongodb:
-      uri: mongodb://ldes-mongodb:27017/ldes
-      auto-index-creation: true
+  datasource:
+    url: jdbc:postgresql://ldes-postgres:5432/test
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+

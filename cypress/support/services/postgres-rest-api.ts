@@ -2,13 +2,11 @@
 
 import { timeouts } from "../common";
 
-type CountResult = { count: number, ids: string[] };
-
 type FragmentInfo = { _id: string, nrOfMembersAdded: number }
 type DocumentResult = { count: number, documents: FragmentInfo[] };
 
 export class PostgresRestApi {
-    
+
     constructor(public baseUrl: string) { }
 
     checkCount(collection: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
@@ -28,18 +26,11 @@ export class PostgresRestApi {
 
     private hasCount(collection: string, count: number, checkFn: (actual: number, expected: number) => boolean) {
         return cy.request(`${this.baseUrl}/${collection}`)
-            .then(response => response.body)
-            .then((result: CountResult) => cy.log('Actual count: ' + result.count).then(() => checkFn(result.count , count)));
+            .then((response => cy.log('Actual count: ' + response.body.length).then(() => checkFn(response.body.length , count))));
     }
 
     count(collection: string) {
         return cy.request(`${this.baseUrl}/${collection}`)
-            .then(response => response.body)
-            .then((result: CountResult) => result.count);
-    }
-
-    private documentIds(document: string) {
-        return cy.request(`${this.baseUrl}/${document}?includeIds=true`)
-                 .then(response => response.body && (response.body.ids as string[]));
+            .then(response => response.body.length);
     }
 }

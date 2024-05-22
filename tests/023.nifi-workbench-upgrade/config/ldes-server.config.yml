@@ -9,8 +9,11 @@ management:
 ldes-server:
   host-name: http://localhost:8080
 spring:
-  data:
-    mongodb:
-      database: iow_devices
-      host: ldes-mongodb
-      port: 27017
+  datasource:
+    url: jdbc:postgresql://ldes-postgres:5432/test
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+

@@ -37,17 +37,4 @@ export class MongoRestApi {
             .then(response => response.body)
             .then((result: CountResult) => result.count);
     }
-
-    private documentIds(database: string, document: string) {
-        return cy.request(`${this.baseUrl}/${database}/${document}?includeIds=true`)
-                 .then(response => response.body && (response.body.ids as string[]));
-    }
-
-    fragmentIds(database: string) {
-        return this.documentIds(database, 'fragmentation_fragment');
-    }
-
-    snapshotIds(database: string) {
-        return this.documentIds(database, 'snapshot');
-    }
 }

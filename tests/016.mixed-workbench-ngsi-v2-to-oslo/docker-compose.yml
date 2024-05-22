@@ -45,7 +45,7 @@ services:
     networks:
       - ldes
     depends_on:
-      - ldes-mongodb
+      - ldes-postgres
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workbench

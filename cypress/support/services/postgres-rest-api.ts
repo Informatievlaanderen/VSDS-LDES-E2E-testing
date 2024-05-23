@@ -3,7 +3,6 @@
 import { timeouts } from "../common";
 
 type FragmentInfo = { _id: string, nrOfMembersAdded: number }
-type DocumentResult = { count: number, documents: FragmentInfo[] };
 
 export class PostgresRestApi {
 
@@ -20,7 +19,7 @@ export class PostgresRestApi {
     private hasFragmentMemberCount(fragment: string, count: number, checkFn: (actual: number, expected: number) => boolean) {
         return cy.request(`${this.baseUrl}/fragmentation_fragment`)
         .then(response => response.body)
-        .then((body: DocumentResult) => body.documents.find(x => x._id === fragment))
+        .then((body: FragmentInfo[]) => body.find(x => x._id === fragment))
         .then((fragment: FragmentInfo) => cy.log('Actual fragment member count: ' + fragment.nrOfMembersAdded).then(() => checkFn(fragment.nrOfMembersAdded , count)));
     }
 

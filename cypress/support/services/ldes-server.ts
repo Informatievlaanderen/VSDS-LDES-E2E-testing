@@ -6,7 +6,6 @@ import { CanCheckAvailability } from './interfaces';
 
 export class LdesServer implements CanCheckAvailability {
     public static ApplicationStarted = 'Started Application in';
-    public static DatabaseUpgradeFinished = 'Cancelled mongock lock daemon';
 
     constructor(public baseUrl: string, private _serviceName?: string) { }
 
@@ -17,7 +16,7 @@ export class LdesServer implements CanCheckAvailability {
     private isReady(containerId: string, message?: string, minOccurences: number = 1 ) {
         return cy.exec(`docker logs ${containerId}`)
             .then(result => {
-                const regex = new RegExp(LdesServer.ApplicationStarted || LdesServer.DatabaseUpgradeFinished, "g");
+                const regex = new RegExp(message || LdesServer.ApplicationStarted, "g");
                 return (result.stdout.match(regex) || []).length >= minOccurences;
             });
     }

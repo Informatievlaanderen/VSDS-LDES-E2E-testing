@@ -60,7 +60,7 @@ When('the LDES contains at least {int} members in the old database', (count: num
 })
 
 Given('the old LDES server is available', () => {
-    return oldServer.waitAvailable(LdesServer.ApplicationStarted, 1);
+    return oldServer.waitAvailable();
 })
 
 Then('the fragmentation_fragment collection is upgraded as expected', () => {

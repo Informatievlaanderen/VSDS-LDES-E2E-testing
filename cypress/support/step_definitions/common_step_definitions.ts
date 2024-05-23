@@ -13,6 +13,7 @@ import {Gtfs2Ldes} from "../services/gtfs2ldes";
 import {Fragment} from "../ldes";
 import {LdesClientWorkbench} from "../services/ldes-client-workbench";
 import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
+import {PostgresRestApi} from "../services/postgres-rest-api";
 
 let testContext: any;
 const ldesMemberCollection = 'ingest_ldesmember';
@@ -24,7 +25,7 @@ export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
 export const simulator = new LdesServerSimulator('http://localhost:9011');
-export const mongo = new MongoRestApi('http://localhost:9019');
+export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
 export const gtfs2ldes = new Gtfs2Ldes();
@@ -53,10 +54,6 @@ After(() => {
 
 export function testPartialPath() {
     return testContext && testContext.testPartialPath;
-}
-
-export function testDatabase() {
-    return testContext && testContext.database;
 }
 
 export function ensureRelationCount(fragment: Fragment, amount: number) {
@@ -278,23 +275,23 @@ When('I start the JSON Data Generator', () => {
 })
 
 When('the LDES contains {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, ldesMemberCollection, count);
+    postgres.checkCount(ldesMemberCollection, count);
 })
 
 When('the LDES contains {int} fragments', (count: number) => {
-    mongo.checkCount(testContext.database, ldesFragmentCollection, count);
+    postgres.checkCount(ldesFragmentCollection, count);
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
-    mongo.checkCount(testContext.database, ldesMemberCollection, count, (x, y) => x >= y);
+    postgres.checkCount(ldesMemberCollection, count, (x, y) => x >= y);
 })
 
 When('the LDES fragment {string} contains at least {int} members', (fragmentId: string, count: number) => {
-    mongo.checkFragmentMemberCount(testContext.database, fragmentId, count, (x, y) => x >= y);
+    postgres.checkFragmentMemberCount(fragmentId, count, (x, y) => x >= y);
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {
-    mongo.checkCount(testContext.database, ldesFragmentCollection, count, (x, y) => x >= y);
+    postgres.checkCount(ldesFragmentCollection, count, (x, y) => x >= y);
 })
 
 export function waitUntilMemberCountStable() {
@@ -305,7 +302,7 @@ export function waitUntilMemberCountStable() {
         {
             timeout: timeouts.fastAction,
             interval: timeouts.check,
-            errorMsg: `Timed out waiting for database '${testContext.database}' ingest count to retain the same (last: ${previousCount})`
+            errorMsg: `Timed out waiting for ingest count to retain the same (last: ${previousCount})`
         }
     );
 }
@@ -342,7 +339,7 @@ Then('the sink contains {int} members in collection {string}', (count: number, c
 })
 
 export function currentMemberCount() {
-    return mongo.count(testContext.database, ldesMemberCollection);
+    return postgres.count(ldesMemberCollection);
 }
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
@@ -351,7 +348,7 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
 
 Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
-        mongo.checkCount(testContext.database, ldesMemberCollection, currentCount,
+        postgres.checkCount(ldesMemberCollection, currentCount,
             (actual, expected) => actual > expected));
 })
 

@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { createAndStartService, stopAndRemoveService, mongo, testDatabase, waitUntilMemberCountStable } from "./common_step_definitions";
+import { createAndStartService, stopAndRemoveService, postgres, waitUntilMemberCountStable } from "./common_step_definitions";
 import { LdesServer } from "../services";
 import {EventStream} from "../ldes";
 
@@ -56,11 +56,11 @@ Given('the old ldesmember collection is structured as expected', () => {
 })
 
 When('the LDES contains at least {int} members in the old database', (count: number) => {
-    mongo.checkCount(testDatabase(), 'ldesmember', count, (x, y) => x >= y);
+    postgres.checkCount('ldesmember', count, (x, y) => x >= y);
 })
 
 Given('the old LDES server is available', () => {
-    return oldServer.waitAvailable(LdesServer.ApplicationStarted, 1);
+    return oldServer.waitAvailable();
 })
 
 Then('the fragmentation_fragment collection is upgraded as expected', () => {

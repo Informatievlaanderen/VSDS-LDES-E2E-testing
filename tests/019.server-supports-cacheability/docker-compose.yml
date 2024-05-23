@@ -12,13 +12,23 @@ services:
     networks:
       - ldes
     depends_on:
-      - ldes-mongodb
+      - ldes-postgres
 
-  ldes-mongodb:
-    container_name: ${USECASE_NAME:-setup-caching}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-latest}
+  ldes-postgres:
+    container_name: ldes-postgres
+    image: postgres:14-alpine
     ports:
-      - ${MONGODB_PORT:-27017}:27017
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=test
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
     networks:
       - ldes
 

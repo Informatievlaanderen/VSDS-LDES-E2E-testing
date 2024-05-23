@@ -82,24 +82,38 @@ services:
     ports:
       - 8081:8081 # needed for admin API
     depends_on:
-      - ldes-mongodb
+      - ldes-postgres
 
-  ldes-mongodb:
-    container_name: connector_ldes-mongodb
-    image: mongo:latest
+  ldes-postgres:
+    container_name: ldes-postgres
+    image: postgres:14-alpine
     ports:
-      - 27017:27017
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=test
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
     networks:
       - ldes
 
-  mongodb-rest-api:
-    container_name: ${USECASE_NAME:-connector}_mongodb-rest-api
-    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
-    environment:
-      - SILENT=false
-      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+  postgrest:
+    container_name: postgres-rest-api
+    image: postgrest/postgrest:latest
     ports:
-      - ${MONGODB_REST_API_PORT:-9019}:80
+      - "9018:3000"
+    environment:
+      - PGRST_DB_URI=postgres://admin:admin@ldes-postgres:5432/test
+      - PGRST_DB_ANON_ROLE=admin
+      - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
+
+    depends_on:
+      - ldes-postgres
     networks:
       - ldes
 

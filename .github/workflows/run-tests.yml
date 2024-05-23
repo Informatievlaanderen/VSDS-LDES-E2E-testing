@@ -35,8 +35,9 @@ jobs:
           - "@test-019 and @consumption and @caching"
           - "@test-020 and @ldio"
           - "@test-020 and @nifi"
-          - "@test-021 and @ldio"
-          - "@test-021 and @nifi"
+#          - Disabled for since mongock upgrade is no longer relevant. Liquibase approach needs to be discussed
+#          - "@test-021 and @ldio"
+#          - "@test-021 and @nifi"
           - "@test-023"
           - "@test-024 and @ldio"
           - "@test-024 and @nifi"

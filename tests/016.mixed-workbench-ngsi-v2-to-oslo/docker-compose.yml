@@ -32,14 +32,6 @@ services:
     networks:
       - ldes
 
-  ldes-mongodb:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-latest}
-    ports:
-      - ${MONGODB_PORT:-27017}:27017
-    networks:
-      - ldes
-
   ldes-server:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldes-server
     image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
@@ -53,7 +45,7 @@ services:
     networks:
       - ldes
     depends_on:
-      - ldes-mongodb
+      - ldes-postgres
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-iow-use-ldio}_ldio-workbench
@@ -64,14 +56,35 @@ services:
     networks:
       - ldes
 
-  mongodb-rest-api:
-    container_name: ${USECASE_NAME:-iow-use-ldio}_mongodb-rest-api
-    image: ghcr.io/informatievlaanderen/mongodb-rest-api:${MONGODB_REST_API_TAG:-latest}
-    environment:
-      - SILENT=false
-      - CONNECTION_URI=mongodb://ldes-mongodb:27017
+  ldes-postgres:
+    container_name: ldes-postgres
+    image: postgres:14-alpine
     ports:
-      - ${MONGODB_REST_API_PORT:-9019}:80
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=test
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - ldes
+
+  postgrest:
+    container_name: postgres-rest-api
+    image: postgrest/postgrest:latest
+    ports:
+      - "9018:3000"
+    environment:
+      - PGRST_DB_URI=postgres://admin:admin@ldes-postgres:5432/test
+      - PGRST_DB_ANON_ROLE=admin
+      - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
+    depends_on:
+      - ldes-postgres
     networks:
       - ldes
 

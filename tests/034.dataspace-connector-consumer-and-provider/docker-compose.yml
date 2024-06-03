@@ -69,7 +69,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-connector}_ldes-server
-    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    image: ldes/ldes-server:2.15.0-SNAPSHOT
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -116,7 +116,7 @@ services:
       - ldes
 
   nifi-workbench:
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:latest
+    image: ldes/ldi-workbench-nifi:2.3.0-SNAPSHOT
     container_name: connector_nifi-workbench
     environment:
       - NIFI_WEB_HTTP_PORT=8000

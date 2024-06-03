@@ -71,7 +71,7 @@ services:
 
   ldes-server:
     container_name: ${USECASE_NAME:-connector}_ldes-server
-    image: ldes/ldes-server:2.15.0-SNAPSHOT
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
     volumes:
@@ -118,7 +118,7 @@ services:
       - ldes
 
   ldio-workbench:
-    image: ldes/ldi-orchestrator:2.6.0-SNAPSHOT
+    image: ${LDIO_WORKBENCH:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDIO_WORKBENCH_TAG:-latest}
     container_name: connector_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application

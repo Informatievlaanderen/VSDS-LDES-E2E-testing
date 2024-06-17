@@ -1,6 +1,9 @@
 @prefix ldes:    <https://w3id.org/ldes#> .
 @prefix tree:    <https://w3id.org/tree#>.
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix terms:            <http://purl.org/dc/terms/> .
 
 </occupancy> a ldes:EventStream ;
+			 ldes:timestampPath terms:modified ;
+			 ldes:versionOfPath terms:isVersionOf ;
 	tree:shape [ a sh:NodeShape ] .

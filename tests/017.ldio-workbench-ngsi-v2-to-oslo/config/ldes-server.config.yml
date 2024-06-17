@@ -1,5 +1,3 @@
-mongock:
-  migration-scan-package: VSDS
 springdoc:
   swagger-ui:
     path: /v1/swagger
@@ -13,8 +11,8 @@ spring:
     url: jdbc:postgresql://ldes-postgres:5432/test
     username: admin
     password: admin
-  jpa:
-    hibernate:
-      ddl-auto: update
+  batch:
+    jdbc:
+      initialize-schema: always
 
 

@@ -16,7 +16,7 @@ import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 import {PostgresRestApi} from "../services/postgres-rest-api";
 
 let testContext: any;
-const ldesMemberCollection = 'ingest_ldesmember';
+const ldesMemberCollection = 'members';
 const ldesFragmentCollection = 'fragmentation_fragment'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));

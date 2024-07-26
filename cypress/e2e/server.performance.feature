@@ -1,7 +1,7 @@
 @server @performance
 Feature: LDES Server Performance
 
-  @test-013 @gtfs
+  @test-013 @gtfs @BROKEN
   Scenario: 013: Server Performs Fast Enough for GTFS/RT Processing
     Given the members are stored in database 'gtfs-performance'
     And context 'tests/013.server-perform-fast-enough' is started

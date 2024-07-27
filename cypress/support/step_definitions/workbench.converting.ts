@@ -9,12 +9,11 @@ import { timeouts } from "../common";
 When('I upload the data file {string} to the workbench', (baseName: string) => {
     const fileName = `${testPartialPath()}/data/${baseName}.json`;
     const url = `http://localhost:8081/${baseName}s-pipeline`;
-    cy.waitUntil(
-        () => cy.readFile(fileName, 'utf8').then(data => 
-            cy.request({method: 'POST', url: url, headers: { 'Content-Type': 'application/json' }, body: data,})
-                .then(response => 200 <= response.status && response.status < 300)), 
-        {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for upload of file '${fileName}' to '${url}' to succeed`}
-    );
+    return cy.readFile(fileName, 'utf8').then(data => 
+        cy.waitUntil(() => 
+            cy.request({method: 'POST', url: url, headers: { 'Content-Type': 'application/json' }, body: data, failOnStatusCode: false })
+                .then(response => 200 <= response.status && response.status < 300), 
+            {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for upload of file '${fileName}' to '${url}' to succeed`}));
 })
 
 let rootFragment: Fragment;

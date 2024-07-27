@@ -3,6 +3,8 @@
 import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
+interface StatusResponse { [key: string]: string };
+
 export class LdesWorkbenchLdio implements CanCheckAvailability {
 
     constructor(public baseUrl: string, private _serviceName?: string) { }
@@ -28,7 +30,22 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
     }
 
     waitAvailable() {
-        this.waitForDockerLog(this.availabilityMessage);
+        return this.waitForDockerLog(this.availabilityMessage);
+    }
+
+    waitForPipelinesRunning() {
+        return cy.waitUntil(() => this.allPipelinesRunning(),
+            { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: 'Timed out waiting for all pipelines to be running' });
+    }
+
+    private allPipelinesRunning() {
+        return cy.request(`${this.baseUrl}/admin/api/v1/pipeline/status`).then(response => {
+            if (response.isOkStatusCode && response.body) {
+                const values = Object.values(response.body as StatusResponse);
+                return values.length > 0 && values.every(x => x === 'RUNNING');
+            }
+            return false;
+        });
     }
 
     pause(pipeline: string) {

@@ -40,7 +40,9 @@ When('I start the new {string} workbench', (workbench) => {
             break;
         }
         case 'LDIO': {
-            createAndStartService(newLdioWorkbench.serviceName).then(() => newLdioWorkbench.waitAvailable());
+            createAndStartService(newLdioWorkbench.serviceName)
+                .then(() => newLdioWorkbench.waitAvailable())
+                .then(() => newLdioWorkbench.waitForPipelinesRunning());
             break;
         }
         default: throw new Error(`Unknown workbench '${workbench}'`);

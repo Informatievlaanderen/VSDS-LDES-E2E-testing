@@ -52,7 +52,6 @@ services:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./config/ldio-workbench.config.yml:/ldio/application.yml:ro
-      - ./observations.rq:/ldio/observations.rq:ro
     networks:
       - ldes
 

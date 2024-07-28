@@ -9,7 +9,7 @@ orchestrator:
         adapter:
           name: Ldio:RdfAdapter
       outputs:
-        - name: Ldio:RepositoryMaterialiser
+        - name: Ldio:RepositorySink
           config:
             sparql-host: http://rdf4j-server:8080/rdf4j-server
             repository-id: test

@@ -5,7 +5,6 @@ import {
     LdesServerSimulator,
     LdesWorkbenchLdio,
     LdesWorkbenchNiFi,
-    MongoRestApi,
     TestMessageGenerator,
     TestMessageSink,
 } from "../services";
@@ -16,8 +15,8 @@ import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 import {PostgresRestApi} from "../services/postgres-rest-api";
 
 let testContext: any;
-const ldesMemberCollection = 'ingest_ldesmember';
-const ldesFragmentCollection = 'fragmentation_fragment'
+const ldesMemberCollection = 'members';
+const ldesFragmentCollection = 'pages'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')

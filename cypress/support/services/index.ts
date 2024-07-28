@@ -4,6 +4,6 @@ export * from './ldes-server-simulator';
 export * from './ldes-workbench-ldio';
 export * from './ldes-workbench-nifi';
 export * from './member-generator';
-export * from './mongo-rest-api';
+export * from './postgres-rest-api';
 export * from './test-message-generator';
 export * from './test-message-sink';

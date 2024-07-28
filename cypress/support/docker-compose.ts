@@ -10,7 +10,7 @@ export interface EnvironmentSettings {
 export interface DockerComposeOptions {
     dockerComposeFile: string,
     environmentFile: string,
-    additionalEnvironmentSettings: EnvironmentSettings,
+    additionalEnvironmentSettings: EnvironmentSettings
 };
 
 export class DockerCompose {
@@ -45,7 +45,7 @@ export class DockerCompose {
         }
 
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} up -d`;
+        const command = `docker compose ${environmentFile} up -d --wait`;
         return cy.log(command)
             .exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.dockerPull })
             .then(result => checkSuccess(result).then(success => this._isUp = success));

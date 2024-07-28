@@ -1,4 +1,4 @@
-version: '3.3'
+
 services:
   rdf4j-server:
     container_name: ${USECASE_NAME:-rdf4j-repo}_server
@@ -14,31 +14,13 @@ services:
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
+      - SERVER_PORT=8080
     volumes:
       - ./ldio-config.yml:/config/application.yml:ro
     networks:
-      ldes:
-        aliases:
-          - ldes-workbench
+      - ldes
     ports:
       - 8082:8080
-    profiles:
-      - delay-started
-
-  nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
-    container_name: ${USECASE_NAME:-ldio-repository-materialiser}_nifi-workbench
-    environment:
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-    volumes:
-      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-    ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
-      - 8082:8080
-    networks:
-      ldes:
-        aliases:
-          - ldes-workbench
     profiles:
       - delay-started
 

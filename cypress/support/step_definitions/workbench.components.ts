@@ -2,15 +2,12 @@
 
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { GraphDatabase } from '../services/graph-database';
-import { testPartialPath } from '../step_definitions/common_step_definitions'
 import { unique } from "underscore";
 
 const graphDatabase = new GraphDatabase('http://localhost:7200')
 
 Given('the graph database is available and configured', () => {
   graphDatabase.waitAvailable();
-
-  cy.exec(`rm -f ${testPartialPath()}/graphdb/init.lock`);
 })
 
 interface TypeAndValue {

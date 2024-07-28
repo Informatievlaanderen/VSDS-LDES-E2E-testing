@@ -1,11 +1,11 @@
-version: '3.3'
+
 services:
 
   test-message-generator:
     container_name: ${USECASE_NAME:-upgrade-server}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ingest-workbench:8080/ngsi-device
+      - TARGETURL=http://ldio-workbench:8080/ngsi-device
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/device.template.json}
@@ -17,37 +17,19 @@ services:
     profiles:
       - delay-started
 
-  nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
-    container_name: ${USECASE_NAME:-upgrade-server}_nifi-workbench
-    environment:
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-    volumes:
-      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-    ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
-      - 8081:8080
-    networks:
-      ldes:
-        aliases:
-          - ingest-workbench
-    profiles:
-      - delay-started
-
   ldio-workbench:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-upgrade-server}_ldio-workbench
     environment:
       - SPRING_CONFIG_NAME=application
       - SPRING_CONFIG_LOCATION=/config/
+      - SERVER_PORT=8080
     volumes:
       - ./ldio-config.yml:/config/application.yml:ro
     ports:
       - 8081:8080
     networks:
-      ldes:
-        aliases:
-          - ingest-workbench
+      - ldes
     profiles:
       - delay-started
 

@@ -1,4 +1,4 @@
-version: '3.3'
+
 services:
   
   ldes-server-simulator:
@@ -16,6 +16,8 @@ services:
     container_name: ${USECASE_NAME:-simulator-cli}_ldio-workbench
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+    environment:
+      - SERVER_PORT=8080
     networks:
       - ldes
     profiles:

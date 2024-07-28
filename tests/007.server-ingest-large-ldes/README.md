@@ -2,9 +2,14 @@
 This scenario verifies that the LDES server can ingest GTFS and can keep in sync with the GTFS updates (GTFS/RT). It uses a context containing a [GTFS to LDES convertor (JavaScript variant)](https://github.com/julianrojas87/gtfs2ldes-js) generating GTFS and GTFS/RT linked connections (version objects), a workflow (for buffering) containing a http listener and a http sender and the LDES Server backed by a data store (mongodb).
 
 ## Test Setup
-1. Run all systems except the GTFS to LDES convertor by executing the following (bash) command:
+To run all systems except the GTFS to LDES convertor by executing the following (bash) command:
 ```bash
-docker compose up -d
+clear
+chmod +x ./config/seed.sh
+cp ./config/gtfs2ldes.config.json ./gtfs/config.json
+chmod 0777 ./gtfs/config.json
+docker compose up -d --wait
+sh ./config/seed.sh
 ```
 > **Notes**:
 > * if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -12,32 +17,8 @@ docker compose up -d
 > * for the [GTFS(RT) data from De Lijn](https://data.delijn.be/) you will need to request a subcription and then you will receive an API (authentication) key which is required to receive the realtime changes.
 > * the GTFS2LDES service is assigned to an arbitrary profile named `delay-started` to prevent it from starting immediately.
 
-Please ensure that the LDES Server is ready to ingest by following the container log until you see the following message `Cancelled mongock lock daemon`:
-```bash
-docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
-```
-Press `CTRL-C` to stop following the log.
-
-> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
-```bash
-chmod +x ./config/seed.sh
-sh ./config/seed.sh
-```
-
 ## Test Execution
-1. Start the workbench:
-    ```bash
-    docker compose up ldio-workbench -d
-    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-    ```
-    or:
-    ```bash
-    docker compose up nifi-workbench -d
-    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
-    ```
-    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
-
-2. Start the GTFS to LDES convertor:
+1. Start the GTFS to LDES convertor:
     ```bash
     docker compose up gtfs2ldes-js -d
     ```
@@ -47,26 +28,20 @@ sh ./config/seed.sh
     ```
     Press `CTRL-C` to stop following the log.
 
-3. Verify LDES Members are being ingested (execute repeatedly):
+2. Verify LDES Members are being ingested (execute repeatedly):
     ```bash
-    curl http://localhost:9019/bustang/ingest_ldesmember
+    while :; do curl -I -H "Range-Unit: items" -H "Range: 0-9" -H "Prefer: count=exact" http://localhost:9018/members; echo ''; sleep 5; done
     ```
     or request the collection:
     ```bash
     curl http://localhost:8080/connections/by-page
     ```
+    > **Note** that the current count is shown in the `Content-Range` header, e.g. `Content-Range: 0-9/1569`.
 
 ## Test Teardown
 To stop all systems use:
 ```bash
 docker compose rm -s -f -v gtfs2ldes-js
-docker compose rm -s -f -v ldio-workbench
-docker compose down
-```
-or:
-```bash
-docker compose rm -s -f -v gtfs2ldes-js
-docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```
 

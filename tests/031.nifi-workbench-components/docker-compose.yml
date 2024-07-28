@@ -1,4 +1,9 @@
-version: '3.3'
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-nifi-components}_ldes_network
+    
+
 services:
 
   test-message-generator:
@@ -17,37 +22,45 @@ services:
     profiles:
       - delay-started
 
+
   nifi-workbench:
-    container_name: ${USECASE_NAME:-nifi-components}_ldi-workbench-nifi
-    image: ghcr.io/informatievlaanderen/ldi-workbench-nifi:${LDI_WORKBENCH_NIFI_TAG:-latest}
+    container_name: ${USECASE_NAME:-nifi-components}_nifi-workbench
+    image: apache/nifi:${NIFI_TAG:-2.0.0-M4}
     environment:
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${NIFI_USER}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PWD}
+      - NIFI_WEB_HTTPS_PORT=8443
     volumes:
       - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+      - ../../_nifi-workbench/nar-ext:/opt/nifi/nifi-current/nar_extensions:rw
     ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
+      - 8443:8443
       - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
     networks:
       - ldes
     extra_hosts:
       - ${LOCALHOST}:host-gateway
-    profiles:
-      - delay-started
-  
-  ldes-mongodb:
-    container_name: ${USECASE_NAME:-nifi-components}_ldes-mongodb
-    image: mongo:${MONGODB_TAG:-latest}
-    ports:
-      - ${MONGODB_PORT:-27017}:27017
-    networks:
-      - ldes
+    # profiles:
+    #   - delay-started
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "-s", "-k", "-I", "https://$${HOSTNAME}:8443/nifi/#/login"]
+    #   interval: 12s
+    #   timeout: 3s
+    #   retries: 8
 
   ldes-server:
-    container_name: ldes-server
+    container_name: ${USECASE_NAME:-nifi-components}_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
-      - LDES_SERVER=${LOCALHOST}
+      - LDESSERVER_HOSTNAME=http://${LOCALHOST}:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+      - SPRING_BATCH_JDBC_INITIALIZESCHEMA=ALWAYS
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
+      - MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS=always
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
@@ -57,16 +70,22 @@ services:
       - ldes
     depends_on:
       - ldes-postgres
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://ldes-server:8080/actuator/health"]
+      interval: 12s
+      timeout: 3s
+      retries: 20
+
 
   ldes-postgres:
-    container_name: ldes-postgres
+    container_name: ${USECASE_NAME:-nifi-components}_ldes-postgres
     image: postgres:14-alpine
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=test
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
       interval: 5s
@@ -76,13 +95,14 @@ services:
     networks:
       - ldes
 
+
   postgrest:
-    container_name: postgres-rest-api
+    container_name: ${USECASE_NAME:-nifi-components}_postgres-rest-api
     image: postgrest/postgrest:latest
     ports:
       - "9018:3000"
     environment:
-      - PGRST_DB_URI=postgres://admin:admin@ldes-postgres:5432/test
+      - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
       - PGRST_DB_ANON_ROLE=admin
       - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
 
@@ -90,6 +110,7 @@ services:
       - ldes-postgres
     networks:
       - ldes
+
 
   test-message-sink:
     container_name: ${USECASE_NAME:-nifi-components}_test-message-sink
@@ -105,17 +126,25 @@ services:
       - ${TEST_MESSAGE_SINK_PORT:-9003}:80
     networks:
       - ldes
+  
 
-  graphdb:
+  ldes-mongodb:
+    container_name: ${USECASE_NAME:-nifi-components}_ldes-mongodb
+    image: mongo:${MONGODB_TAG:-latest}
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    networks:
+      - ldes
+
+
+  ldes-graphdb:
     container_name: ${USECASE_NAME:-nifi-components}_graphdb
-    image: khaller/graphdb-free:${GRAPHDB_TAG:-10.6.1}
+    image: khaller/graphdb-free:${GRAPHDB_TAG:-10.6.2}
     volumes:
-      - ./config/graphdb:/repository.init/observations:rw
+      - ./config/graphdb/config.ttl:/repository.init/observations/config.ttl:ro
     ports:
       - ${GRAPHDB_PORT:-7200}:7200
     networks:
       - ldes
-
-networks:
-  ldes:
-    name: ${USECASE_NAME:-nifi-components}_ldes_network
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "-s", "http://ldes-graphdb:7200/repositories"]

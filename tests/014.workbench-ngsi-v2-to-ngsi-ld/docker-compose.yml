@@ -1,11 +1,11 @@
-version: '3.3'
+
 services:
 
   test-message-generator:
     container_name: ${USECASE_NAME:-iow-context}_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
-      - TARGETURL=http://ingest-workbench:8080/observations-pipeline
+      - TARGETURL=http://ldio-workbench:8080/observations-pipeline
       - SILENT=${JSON_DATA_GENERATOR_SILENT:-false}
       - CRON=${JSON_DATA_GENERATOR_CRON:-* * * * * *}
       - TEMPLATEFILE=${JSON_DATA_GENERATOR_TEMPLATEFILE:-/tmp/data/wqo.template.json}
@@ -17,23 +17,6 @@ services:
     profiles:
       - delay-started
 
-  nifi-workbench:
-    image: ${LDI_WORKBENCH_NIFI:-ghcr.io/informatievlaanderen/ldi-workbench-nifi}:${LDI_WORKBENCH_NIFI_TAG:-latest}
-    container_name: ${USECASE_NAME:-iow-context}_nifi-workbench
-    environment:
-      - NIFI_WEB_HTTP_PORT=${NIFI_UI_PORT:-8000}
-    volumes:
-      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-    ports:
-      - ${NIFI_UI_PORT:-8000}:${NIFI_UI_PORT:-8000}
-      - 8081:8080
-    networks:
-      ldes:
-        aliases:
-          - ingest-workbench
-    profiles:
-      - delay-started
-
   ldio-workbench:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-iow-context}_ldio-workbench
@@ -41,10 +24,10 @@ services:
       - 8081:8080
     volumes:
       - ./ldio-workbench.config.yml:/ldio/application.yml:ro
+    environment:
+      - SERVER_PORT=8080
     networks:
-      ldes:
-        aliases:
-          - ingest-workbench
+      - ldes
     profiles:
       - delay-started
 
@@ -53,6 +36,14 @@ services:
     image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health
+      - SERVER_PORT=8080
+      - LDESSERVER_HOSTNAME=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+      - SPRING_BATCH_JDBC_INITIALIZESCHEMA=always
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
@@ -62,6 +53,12 @@ services:
       - ldes
     depends_on:
       - ldes-postgres
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://ldes-server:8080/actuator/health"]
+      interval: 12s
+      timeout: 3s
+      retries: 20
+
 
   ldes-postgres:
     container_name: ldes-postgres
@@ -69,11 +66,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=test
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -87,10 +84,9 @@ services:
     ports:
       - "9018:3000"
     environment:
-      - PGRST_DB_URI=postgres://admin:admin@ldes-postgres:5432/test
-      - PGRST_DB_ANON_ROLE=admin
+      - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
+      - PGRST_DB_ANON_ROLE=${POSTGRES_USER}
       - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
-
     depends_on:
       - ldes-postgres
     networks:

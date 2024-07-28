@@ -1,9 +1,7 @@
-# Use New Framework to Convert Water Quality NGSI-v2 to NGSI-LD or OSLO Model - Part 2
-This tests is the second and final step towards a setup which does not require the use of Apache NiFi to host the workflow which converts the incoming NGSI-v2 messages towards an OSLO model (or a NGSI-LD model if no corresponding OSLO model exists). The test is based on the [previous IoW test](../016.mixed-workbench-ngsi-v2-to-oslo/README.md).
+# Convert NGSI-v2 State Objects to OSLO Version Objects
+This test verifies the convertion towards OSLO models, more specific, it demonstrates converting the [NGSI water quality model](https://github.com/smart-data-models/dataModel.WaterQuality) into its [OSLO model](https://data.vlaanderen.be/standaarden/kandidaat-standaard/vocabularium-en-applicatieprofiel-oslo-waterkwaliteit.html). The test uses a similar setup as the [NGSI-v2 to NGSI-LD conversion test](../014.workbench-ngsi-v2-to-ngsi-ld/README.md) but adds an additional component in the LDIO workflow to convert the NGSI-LD to the OSLO model. This conversion happens after converting the incoming NGSI-v2 model to the NGSI-LD model and before creating a version object and sending that to an LDES server.
 
-This second step towards a NiFi-less approach executes the complete transformation pipline using the [new runner](https://github.com/Informatievlaanderen/VSDS-Linked-Data-Interactions). The result is then ingested in an LDES server.
-
-> **Note**: that the steps and the results are identical to these from the [previous IoW test](../015.nifi-workbench-ngsi-v2-to-oslo/README.md).
+The conversion from NGSI-LD to OSLO is a SPARQL construct conversion and is done using a custom LDIO component ([Sparql Construct](https://www.w3.org/TR/rdf-sparql-query/#construct) processor).
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -54,7 +52,7 @@ This second step towards a NiFi-less approach executes the complete transformati
    > **Note**: that only the observations are converted to an OSLO model. The object type should be `ttp://www.w3.org/ns/sosa/ObservationCollection`. The model type and the device type should still be `https://uri.etsi.org/ngsi-ld/default-context/DeviceModel` respectively `https://uri.etsi.org/ngsi-ld/default-context/Device`.
 
 ## Test Teardown
-First [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+To stop all systems use:
 ```bash
 docker compose rm -s -f -v test-message-generator
 docker compose down

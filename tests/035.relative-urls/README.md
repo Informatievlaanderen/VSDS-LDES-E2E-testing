@@ -27,7 +27,7 @@ docker compose up -d
     docker compose up ldio-workbench -d
     while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
-    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
+    > **Note**: for the [NiFi workbench](https://localhost:8443/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
 
 3. Verify LDES members are correctly received
 

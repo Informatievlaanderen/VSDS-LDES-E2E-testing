@@ -13,20 +13,16 @@ export class LdesServer implements CanCheckAvailability {
         return this._serviceName || 'ldes-server';
     }
 
-    private isReady(containerId: string, message?: string, minOccurences: number = 1 ) {
-        return cy.exec(`docker logs ${containerId}`)
-            .then(result => {
-                const regex = new RegExp(message || LdesServer.ApplicationStarted, "g");
-                return (result.stdout.match(regex) || []).length >= minOccurences;
-            });
+    private isReady() {
+        return cy.request({ url: `${this.baseUrl}/actuator/health`, failOnStatusCode: false }).then(response => response.isOkStatusCode);
     }
 
-    waitAvailable(message?: string, minOccurences: number = 1) {
-        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
-            .then(result => {
-                const containerId = result.stdout;
-                return cy.waitUntil(() => this.isReady(containerId, message, minOccurences), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` }).then(() => this);
-            });
+    waitAvailable() {
+        return cy.waitUntil(() => this.isReady(), {
+            timeout: timeouts.slowAction,
+            interval: timeouts.slowCheck, errorMsg:
+                `Timed out waiting for container '${this.serviceName}' to be available`
+        }).then(() => this);
     }
 
     getLdes(collection: string) {
@@ -34,11 +30,11 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     sendMemberFile(collection: string, partialFilePath: string, mimeType: string) {
-        return cy.readFile(partialFilePath, 'utf8').then(data => 
+        return cy.readFile(partialFilePath, 'utf8').then(data =>
             cy.request({
-                method: 'POST', 
-                url: `${this.baseUrl}/${collection}`, 
-                headers: { 'Content-Type': mimeType}, 
+                method: 'POST',
+                url: `${this.baseUrl}/${collection}`,
+                headers: { 'Content-Type': mimeType },
                 body: data
             }));
     }
@@ -51,7 +47,7 @@ export class LdesServer implements CanCheckAvailability {
     }
 
     createSnapshot(collection: string) {
-        return cy.request({method: 'POST', url: `${this.baseUrl}/admin/api/v1/${collection}/snapshots`});
+        return cy.request({ method: 'POST', url: `${this.baseUrl}/admin/api/v1/${collection}/snapshots` });
     }
 
     sendConfiguration(testPartialPath: string, configFileName?: string): any {
@@ -62,27 +58,27 @@ export class LdesServer implements CanCheckAvailability {
 
     configureLdesFromTurtleContent(body: string) {
         cy.request({
-            method: 'POST', 
-            url: `${this.baseUrl}/admin/api/v1/eventstreams`, 
-            headers: {'Content-Type': 'text/turtle'},
-            body: body, 
-        }).then(response => {expect(response.status).to.equal(201);});
+            method: 'POST',
+            url: `${this.baseUrl}/admin/api/v1/eventstreams`,
+            headers: { 'Content-Type': 'text/turtle' },
+            body: body,
+        }).then(response => { expect(response.status).to.equal(201); });
     }
 
     configureViewFromTurtleContent(body: string, collection: string) {
         cy.request({
-            method: 'POST', 
-            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views`, 
-            headers: {'Content-Type': 'text/turtle'},
-            body: body, 
-        }).then(response => {expect(response.status).to.equal(201);});
+            method: 'POST',
+            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views`,
+            headers: { 'Content-Type': 'text/turtle' },
+            body: body,
+        }).then(response => { expect(response.status).to.equal(201); });
     }
 
     removeView(collection: string, view: string) {
         cy.request({
-            method: 'DELETE', 
-            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views/${view}`, 
-        }).then(response => {expect(response.status).to.equal(200);});
+            method: 'DELETE',
+            url: `${this.baseUrl}/admin/api/v1/eventstreams/${collection}/views/${view}`,
+        }).then(response => { expect(response.status).to.equal(200); });
     }
 
 }

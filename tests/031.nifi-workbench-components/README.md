@@ -24,14 +24,11 @@ Optionally, combine both tests in one E2E test.
 * RDF4J system for capturing observations (state objects)
 
 ## Test Setup
-1. Run all systems except the message generator and NiFi workbench by executing the following (bash) command:
+1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
-    rm -f ./graphdb/init.lock
-
+    clear
     export LOCALHOST=$(hostname)
-    docker compose up -d
-    while ! curl --fail -I -s --header 'Accept: text/plain' http://localhost:7200/repositories/observations/size ; do sleep 1; done
-    while ! docker logs $(docker ps -q -f "name=ldes-server$") 2> /dev/null | grep 'Cancelled mongock lock daemon' ; do sleep 1; done
+    docker compose up -d --wait
     ```
 
 2. Create LDES'es and their views using the [seed script](./config/seed.sh):
@@ -40,18 +37,12 @@ Optionally, combine both tests in one E2E test.
     sh ./config/seed.sh
     ```
     > This will create the following LDES'es and views:
-    ```
+    ```bash
     curl http://${LOCALHOST}:8080/observations
     curl http://${LOCALHOST}:8080/observations/by-page
     ```
 
-3. Start the LDIO workbench
-    ```bash
-    docker compose up nifi-workbench -d
-    while ! curl --fail -I -s http://localhost:8000/nifi/ ; do sleep 1; done
-    ```
-    and then [logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at http://localhost:8000/nifi and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
-
+3. Upload and start the NiFi workflow: [logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at https://localhost:8443/nifi#login and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
     Verify that the NiFi HTTP listener is ready (it should answer `OK`):
     ```bash
     curl http://localhost:9005/observations/healthcheck
@@ -102,7 +93,5 @@ Optionally, combine both tests in one E2E test.
 Stop and destroy all systems
 ```bash
 docker compose rm -s -f -v test-message-generator
-docker compose rm -s -f -v nifi-workbench
 docker compose down
-rm -f ./graphdb/init.lock
 ```

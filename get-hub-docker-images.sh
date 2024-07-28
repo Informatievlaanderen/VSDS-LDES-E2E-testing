@@ -1,19 +1,15 @@
 #!/bin/sh
 
-export LDI_WORKBENCH_NIFI=docker.io/ldes/ldi-workbench-nifi
-export LDI_WORKBENCH_NIFI_TAG=2.0.0-SNAPSHOT
-export LDI_ORCHESTRATOR=docker.io/ldes/ldi-orchestrator
-export LDI_ORCHESTRATOR_TAG=2.0.0-SNAPSHOT
-export LDES_SERVER=docker.io/ldes/ldes-server
-export LDES_SERVER_TAG=2.10.0-SNAPSHOT
-
 # deliverables
-docker pull $LDI_WORKBENCH_NIFI:$LDI_WORKBENCH_NIFI_TAG
+export LDI_ORCHESTRATOR=docker.io/ldes/ldi-orchestrator
+export LDI_ORCHESTRATOR_TAG=2.8.0-SNAPSHOT
+export LDES_SERVER=docker.io/ldes/ldes-server
+export LDES_SERVER_TAG=3.2.0-SNAPSHOT
 docker pull $LDI_ORCHESTRATOR:$LDI_ORCHESTRATOR_TAG
 docker pull $LDES_SERVER:$LDES_SERVER_TAG
 
 # historical deliverables (for upgrade tests)
-docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
+docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20240405122246
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:20230324T175226
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230405T0843
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230802075556

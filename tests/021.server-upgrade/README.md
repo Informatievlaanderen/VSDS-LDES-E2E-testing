@@ -1,10 +1,10 @@
 # Upgrading an LDES Server
-This test verifies the upgrade procedure for an LDES Server in a typical scenario with Nifi or the LDI-orchestrator.
+This test verifies the upgrade procedure for an LDES Server in a typical scenario with the LDI-orchestrator.
 We do not want to interrupt the inflow of data as some system (such as Orion) cannot buffer 
 the messages, and consequently we would lose some during the upgrade process.
 
 This test uses a docker environment containing a data generator simulating the system pushing data, 
-a NiFi or LDI workbench, an LDES data store (mongoDB), an old LDES server and a new LDES server (both setup for timebased fragmentation).
+a LDIO workbench, an LDES data store (mongoDB), an old LDES server and a new LDES server (both setup for timebased fragmentation).
 
 The server upgrade will include changesets that alter the database schema. We will also verify that these changes have been implemented.
 
@@ -27,13 +27,7 @@ The server upgrade will include changesets that alter the database schema. We wi
     docker compose up ldio-workbench -d
     while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
-   or:
-    ```bash
-    docker compose up nifi-workbench -d
-    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
-    ```
-   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it
-   
+
 3. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the http listener:
    ```bash
    docker compose up test-message-generator -d
@@ -108,9 +102,6 @@ The server upgrade will include changesets that alter the database schema. We wi
     ```bash
     curl -X POST "http://localhost:8081/admin/api/v1/pipeline/ngsi-device/halt"
     ```
-   or for nifi
-
-   Stop http sender in workflow.
 
 2. Ensure old server is done processing (i.e. data store member count does not change) and bring old server down (stop it, remove volumes and image without confirmation):
    ```bash
@@ -267,9 +258,6 @@ The server upgrade will include changesets that alter the database schema. We wi
      ```bash
      curl -X POST "http://localhost:8081/admin/api/v1/pipeline/ngsi-device/resume"
      ```
-    or for nifi
-
-    Start http sender in workflow after redirecting the output to the new server.
 
 12. Verify data store member count increases (execute repeatedly):
     ```bash
@@ -282,6 +270,5 @@ Stop data generator and new server, and bring all systems down:
 docker compose rm -s -f -v new-ldes-server
 docker compose rm -s -f -v test-message-generator
 docker compose rm -s -f -v ldio-workbench
-docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```

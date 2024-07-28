@@ -1,0 +1,108 @@
+{
+  "general": {
+    "run_on_launch": "${RUN_ON_LAUNCH}",
+    "data_folder": "/data",
+    "target_url": "${TARGET_URL}",
+    "throttle_rate": "${THROTTLE_RATE}"
+  },
+  "gtfs": {
+    "source": "${GTFS_SOURCE}",
+    "cron": "${GTFS_CRON}"
+  },
+  "gtfs_realtime": {
+    "source": "${GTFSRT_SOURCE}",
+    "cron": "${GTFSRT_CRON}",
+    "auth_headers": {
+      "${AUTH_HEADER}": "${AUTH_HEADER_VALUE}"
+    }
+  },
+  "@context": {
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "lc": "http://semweb.mmlab.be/ns/linkedconnections#",
+    "gtfs": "http://vocab.gtfs.org/terms#",
+    "wgs": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    "gsp": "http://www.opengis.net/ont/geosparql#",
+    "gtfs:trip": {
+      "@type": "@id"
+    },
+    "gtfs:route": {
+      "@type": "@id"
+    },
+    "gtfs:pickupType": {
+      "@type": "@id"
+    },
+    "gtfs:dropOffType": {
+      "@type": "@id"
+    },
+    "wgs:lat": {
+      "@type": "xsd:double"
+    },
+    "wgs:long": {
+      "@type": "xsd:double"
+    },
+    "gsp:asWKT": {
+      "@type": "gsp:wktLiteral"
+    },
+    "Stop": {
+      "@id": "gtfs:Stop",
+      "@type": "@id"
+    },
+    "Connection": {
+      "@id": "lc:Connection",
+      "@type": "@id"
+    },
+    "CancelledConnection": {
+      "@id": "lc:CancelledConnection",
+      "@type": "@id"
+    },
+    "departureTime": {
+      "@id": "lc:departureTime",
+      "@type": "xsd:dateTime"
+    },
+    "arrivalTime": {
+      "@id": "lc:arrivalTime",
+      "@type": "xsd:dateTime"
+    },
+    "departureDelay": {
+      "@id": "lc:departureDelay",
+      "@type": "xsd:integer"
+    },
+    "arrivalDelay": {
+      "@id": "lc:arrivalDelay",
+      "@type": "xsd:integer"
+    },
+    "departureStop": {
+      "@id": "lc:departureStop",
+      "@type": "@id"
+    },
+    "arrivalStop": {
+      "@id": "lc:arrivalStop",
+      "@type": "@id"
+    },
+    "isVersionOf": {
+      "@id": "dct:isVersionOf",
+      "@type": "@id"
+    },
+    "generatedAtTime": {
+      "@id": "prov:generatedAtTime",
+      "@type": "xsd:dateTime"
+    }
+  },
+  "uri_templates": {
+    "stop": "${BASE_IRI}stops/{stops.stop_id}",
+    "connection": "${BASE_IRI}connections/{routeName}/{direction}/{tripStartTime}/{depStop}/{depTime}/{arrStop}/",
+    "trip": "${BASE_IRI}trips/{routeName}/{direction}/{tripStartTime}",
+    "route": "${BASE_IRI}routes/{routeName}",
+    "resolve": {
+      "routeName": "routes.route_long_name.replace(/\\s/g, '_')",
+      "direction": "trips.trip_headsign.replace(/\\s/g, '_')",
+      "tripStartTime": "format(trips.startTime, 'yyyyMMdd\\'T\\'HHmm')",
+      "depStop": "connection.departureStop.stop_id",
+      "depTime": "format(connection.departureTime, 'yyyyMMdd\\'T\\'HHmm')",
+      "arrStop": "connection.arrivalStop.stop_id"
+    }
+  }
+}

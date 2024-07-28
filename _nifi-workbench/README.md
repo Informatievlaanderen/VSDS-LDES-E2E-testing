@@ -2,7 +2,7 @@
 The Apache NiFi system is a workbench capable of running workflows containing NiFi processors.
 
 ## Logon to Apache NiFi
-In order to logon, point your favorite browser to http://localhost:8000/nifi/login.
+In order to logon, point your favorite browser to https://localhost:8443/nifi/#/login.
 
 ## Create a Workflow
 In order to create a workflow based on a predefined workflow definition, you need to:

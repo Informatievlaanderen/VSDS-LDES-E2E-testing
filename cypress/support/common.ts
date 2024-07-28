@@ -14,4 +14,5 @@ export const timeouts = {
     slowAction: 120000,
     slowCheck: 5000,
     dockerPull: 300000,
+    verySlowAction: 1200000,
 }

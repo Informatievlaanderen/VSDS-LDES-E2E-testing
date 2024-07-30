@@ -1,14 +1,24 @@
 /// <reference types="cypress" />
 
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { Fragment } from '../ldes';
-import { server, waitForFragment, obtainRootFragment, byPage, obtainViewWithDefaultFragment } from "./common_step_definitions";
+import { server, waitForFragment, obtainRootFragment, byPage, obtainViewWithDefaultFragment, createAndStartService } from "./common_step_definitions";
+import {Gtfs2Ldes} from "../services/gtfs2ldes";
 
 let ldesResponse: Cypress.Response<any>;
 let viewResponse: Cypress.Response<any>;
 let compressedViewResponse: Cypress.Response<any>;
 
+export const gtfs2ldes = new Gtfs2Ldes();
+
 const parkAndRideLdes = 'occupancy';
+
+// Given
+
+Given('I configure the GTFS2LDES service in context {string}', (path: string) => {
+    const cmd = `cp ${path}/config/gtfs2ldes.config.json ${path}/gtfs/config.json && chmod 0777 ${path}/gtfs/config.json`
+    return cy.exec(cmd, {log: true});
+})
 
 // When
 
@@ -32,6 +42,14 @@ When('I request the LDES view', () => {
 
 When('I wait {int} seconds for the cache to expire', (timeout: number) => {
     cy.wait((timeout + 1) * 1000);
+})
+
+When('I start the GTFS2LDES service', () => {
+    createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
+})
+
+When('the GTFS to LDES service starts sending linked connections', () => {
+    gtfs2ldes.waitSendingLinkedConnections();
 })
 
 // Then
@@ -102,4 +120,3 @@ Then('the first page contains {int} members', (count: number) => {
 Then('the {string} view has a relation to the default fragment', (view: string) => {
     obtainViewWithDefaultFragment("mobility-hindrances", view);
 })
-

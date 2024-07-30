@@ -1,12 +1,11 @@
 #!/bin/sh
 
 # deliverables
-docker pull ghcr.io/informatievlaanderen/ldi-workbench-nifi:20230704080200
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:20230704080159
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230703153349
 
 # historical deliverables (for upgrade tests)
-docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20230124T140316
+docker pull ghcr.io/informatievlaanderen/ldes-workbench-nifi:20240405122246
 docker pull ghcr.io/informatievlaanderen/ldi-orchestrator:20230324T175226
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230405T0843
 docker pull ghcr.io/informatievlaanderen/ldes-server:20230802075556

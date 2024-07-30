@@ -1,4 +1,4 @@
-version: '3.3'
+
 services:
 
   test-message-generator:
@@ -24,6 +24,14 @@ services:
     image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health
+      - SERVER_PORT=8080
+      - LDESSERVER_HOSTNAME=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+      - SPRING_BATCH_JDBC_INITIALIZESCHEMA=always
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
@@ -33,6 +41,12 @@ services:
       - ldes
     depends_on:
       - ldes-postgres
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://ldes-server:8080/actuator/health"]
+      interval: 12s
+      timeout: 3s
+      retries: 20
+
 
   ldio-workbench:
     container_name: ${USECASE_NAME:-nifi-less-approach}_ldio-workbench
@@ -42,6 +56,8 @@ services:
     volumes:
       - ./config/ldio-workbench.config.yml:/ldio/application.yml:ro
       - ./observations.rq:/ldio/observations.rq:ro
+    environment:
+      - SERVER_PORT=8080
     networks:
       - ldes
 
@@ -51,11 +67,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=test
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -69,10 +85,9 @@ services:
     ports:
       - "9018:3000"
     environment:
-      - PGRST_DB_URI=postgres://admin:admin@ldes-postgres:5432/test
-      - PGRST_DB_ANON_ROLE=admin
+      - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
+      - PGRST_DB_ANON_ROLE=${POSTGRES_USER}
       - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
-
     depends_on:
       - ldes-postgres
     networks:

@@ -1,5 +1,3 @@
-server:
-  port: 8080
 orchestrator:
   pipelines:
     - name: simulator-to-sink-pipeline
@@ -15,4 +13,4 @@ orchestrator:
           config:
             endpoint: http://test-message-sink/member
             rdf-writer:
-              content-type: application/n-quads
+              content-type: application/n-triples

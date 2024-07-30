@@ -1,27 +1,16 @@
 @server
 Feature: LDES Server Basic Functionality
 
-  @test-007 @ingestion @smoke @large @gtfs @BROKEN
-  Scenario Outline: 007: Server Can Ingest a Large LDES Using '<workbench>' Workbench
-    Given the members are stored in database 'gtfs'
+  @test-007 @ingestion @smoke @large @gtfs
+  Scenario: 007: Server Can Ingest a Large LDES Using LDIO Workbench
+    Given I configure the GTFS2LDES service in context 'tests/007.server-ingest-large-ldes'
     And context 'tests/007.server-ingest-large-ldes' is started
     And the LDES server is available and configured
-    When I start the '<workbench>' workbench
-    And I start the GTFS2LDES service
+    When I start the GTFS2LDES service
     And the GTFS to LDES service starts sending linked connections
     And the LDES contains at least 250 members
     Then the connections LDES is paginated
     And the first page contains 250 members
-
-    @ldio
-    Examples:
-      | workbench |
-      | LDIO      |
-
-    @nifi
-    Examples:
-      | workbench |
-      | NIFI      |
 
   @test-019 @consumption @cacheability @parkAndRide
   Scenario: 019: Verify Actual Caching
@@ -53,18 +42,16 @@ Feature: LDES Server Basic Functionality
 
   @test-035 @consumption @relativeUrls
   Scenario: 035: Verify server and client can handle relative url
-    Given the members are stored in database 'bustang'
-    And context 'tests/035.relative-urls' is started
+    Given context 'tests/035.relative-urls' is started
     And the LDES server is available and configured
-    When I start the LDES Client 'LDIO' workbench
+    When I start the LDES Client LDIO workbench
     Then the sink contains 5 members in collection 'mobility-hindrances'
 
   @test-039 @default-fragment
   Scenario: 039: Verify server puts non-fragmentable members in a default fragment
-    Given the members are stored in database 'bustang'
-    And context 'tests/039.default-bucket' is started
+    Given context 'tests/039.default-bucket' is started
     And the LDES server is available and configured
-    When I start the LDES Client 'LDIO' workbench
+    When I start the LDES Client LDIO workbench
     Then the sink contains 5 members in collection 'mobility-hindrances'
     Then the 'time' view has a relation to the default fragment
     And the 'ref' view has a relation to the default fragment

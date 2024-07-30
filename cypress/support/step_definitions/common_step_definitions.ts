@@ -8,18 +8,17 @@ import {
     TestMessageGenerator,
     TestMessageSink,
 } from "../services";
-import {Gtfs2Ldes} from "../services/gtfs2ldes";
 import {Fragment} from "../ldes";
 import {LdesClientWorkbench} from "../services/ldes-client-workbench";
 import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 import {PostgresRestApi} from "../services/postgres-rest-api";
 
 let testContext: any;
-const ldesMemberCollection = 'members';
-const ldesFragmentCollection = 'pages'
+const membersTable = 'members';
+const pagesTable = 'pages'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
-export const workbenchNifi = new LdesWorkbenchNiFi('http://localhost:8000')
+export const workbenchNifi = new LdesWorkbenchNiFi('https://localhost:8443')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
@@ -27,7 +26,7 @@ export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
-export const gtfs2ldes = new Gtfs2Ldes();
+export const protectedServer = new LdesServer('http://localhost:8081');
 export const ldesDiscoverer = new LdiLdesDiscoverer();
 
 export const byPage = 'by-page';
@@ -98,10 +97,6 @@ export function clientConnectorFailsOnStatusCode(code: number) {
 
 // Given stuff
 
-Given('the members are stored in database {string}', (database: string) => {
-    testContext.database = database;
-});
-
 Given('environment variable {string} is defined as the hostname', (variable: string) => {
     cy.exec('echo ldes-server').then(result => {
         setAdditionalEnvironmentSetting(variable, result.stdout);
@@ -151,6 +146,14 @@ Given('the LDES server is available and configured', () => {
     return server.waitAvailable().then(server => server.sendConfiguration(testContext.testPartialPath));
 })
 
+Given('the protected LDES server is available', () => {
+    return protectedServer.waitAvailable();
+})
+
+Given('the protected LDES server is available and configured', () => {
+    return protectedServer.waitAvailable().then(server => server.sendConfiguration(testContext.testPartialPath));
+})
+
 Given('the LDES Server Simulator is available', () => {
     simulator.waitAvailable();
 })
@@ -186,39 +189,22 @@ Given('the {string} workbench is available', (workbench) => {
 // When stuff
 
 function startNifiWorkbench() {
-    createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+    // createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
+    workbenchNifi.login();
     workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
     workbenchNifi.pushStart();
 }
 
-When('I start the LDES Client {string} workbench', (workbench) => {
-    switch (workbench) {
-        case 'NIFI': {
-            startNifiWorkbench();
-            break;
-        }
-        case 'LDIO': {
-            createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
-            break;
-        }
-        default:
-            throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I start the LDES Client LDIO workbench', () => {
+    return createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
 })
 
-When('I start the {string} workbench', (workbench) => {
-    switch (workbench) {
-        case 'NIFI': {
-            startNifiWorkbench();
-            break;
-        }
-        case 'LDIO': {
-            createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
-            break;
-        }
-        default:
-            throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I start the NIFI workbench', () => {
+    return startNifiWorkbench();
+})
+
+When('I start the LDIO workbench', () => {
+    return createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
 When('I pause the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
@@ -274,15 +260,15 @@ When('I start the JSON Data Generator', () => {
 })
 
 When('the LDES contains {int} members', (count: number) => {
-    postgres.checkCount(ldesMemberCollection, count);
+    postgres.checkCount(membersTable, count);
 })
 
 When('the LDES contains {int} fragments', (count: number) => {
-    postgres.checkCount(ldesFragmentCollection, count);
+    postgres.checkCount(pagesTable, count);
 })
 
 When('the LDES contains at least {int} members', (count: number) => {
-    postgres.checkCount(ldesMemberCollection, count, (x, y) => x >= y);
+    postgres.checkCount(membersTable, count, (x, y) => x >= y);
 })
 
 When('the LDES fragment {string} contains at least {int} members', (fragmentId: string, count: number) => {
@@ -290,7 +276,7 @@ When('the LDES fragment {string} contains at least {int} members', (fragmentId: 
 })
 
 When('the LDES contains at least {int} fragments', (count: number) => {
-    postgres.checkCount(ldesFragmentCollection, count, (x, y) => x >= y);
+    postgres.checkCount(pagesTable, count, (x, y) => x >= y);
 })
 
 export function waitUntilMemberCountStable() {
@@ -305,14 +291,6 @@ export function waitUntilMemberCountStable() {
         }
     );
 }
-
-When('I start the GTFS2LDES service', () => {
-    createAndStartService(gtfs2ldes.serviceName).then(() => gtfs2ldes.waitAvailable());
-})
-
-When('the GTFS to LDES service starts sending linked connections', () => {
-    gtfs2ldes.waitSendingLinkedConnections();
-})
 
 let lastMemberCount: number;
 When('I remember the last fragment member count for view {string}', (view: string) => {
@@ -338,7 +316,7 @@ Then('the sink contains {int} members in collection {string}', (count: number, c
 })
 
 export function currentMemberCount() {
-    return postgres.count(ldesMemberCollection);
+    return postgres.count(membersTable);
 }
 
 Then('the LDES should contain {int} members', (memberCount: number) => {
@@ -347,7 +325,7 @@ Then('the LDES should contain {int} members', (memberCount: number) => {
 
 Then('the LDES member count increases', () => {
     currentMemberCount().then(currentCount =>
-        postgres.checkCount(ldesMemberCollection, currentCount,
+        postgres.checkCount(membersTable, currentCount,
             (actual, expected) => actual > expected));
 })
 

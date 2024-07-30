@@ -3,6 +3,11 @@
 import { timeouts } from "../common";
 import { CanCheckAvailability } from "./interfaces";
 
+const defaultCredentials = {
+    username:'administrator',
+    password:'Pwd4Admin_DoNotChangeMe'
+}
+
 export class LdesWorkbenchNiFi implements CanCheckAvailability {
 
     constructor(private baseUrl: string, private _serviceName?: string) {
@@ -19,7 +24,7 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
      * @returns true if ready, false otherwise
      */
     private isReady(): Cypress.Chainable<boolean> {
-        return cy.exec(`curl --insecure -I ${this.baseUrl}/nifi`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+        return cy.exec(`curl --insecure -I ${this.baseUrl}/nifi/#/login`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
     }
 
     waitAvailable() {
@@ -110,12 +115,21 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         });
     }
 
-    login(credentials: { username: string; password: string; }) {
+    // loginVersion1(credentials: { username: string; password: string; } = defaultCredentials) {
+    //     cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
+    //     return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/login')
+    //             .get('#username').type(credentials.username)
+    //             .get('#password').type(credentials.password)
+    //             .get('#login-submission-button').click().wait('@loggedIn')
+    //         );
+    // }
+
+    login(credentials: { username: string; password: string; } = defaultCredentials) {
         cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
-        return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/login')
-                .get('#username').type(credentials.username)
-                .get('#password').type(credentials.password)
-                .get('#login-submission-button').click().wait('@loggedIn')
+        return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/#/login')
+                .get('input[formcontrolname="username"]').type(credentials.username)
+                .get('input[formcontrolname="password"]').type(credentials.password)
+                .get('button[type="submit"]').click().wait('@loggedIn')
             );
     }
 

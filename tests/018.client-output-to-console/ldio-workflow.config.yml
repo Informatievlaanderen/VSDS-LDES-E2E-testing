@@ -1,5 +1,3 @@
-server:
-  port: 8080
 orchestrator:
   pipelines:
     - name: ldes-cli

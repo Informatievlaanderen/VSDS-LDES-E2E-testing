@@ -1,5 +1,5 @@
 # Materialise members to a triplestore
-This test verifies that members can be persisted to a triplestore using the RepositoryMaterialiser component.
+This test verifies that members can be persisted to a triplestore using the RDF4JRepositorySink component.
 The test contains two components, an RDF4J repository server hosting a triple store and a workbench containing
 the RepositoryMaterialiser component. We will send data through the workbench and verify that it is stored
 correctly in the triplestore.
@@ -15,12 +15,6 @@ correctly in the triplestore.
     docker compose up ldio-workbench -d
     while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
-    or:
-    ```bash
-    docker compose up nifi-workbench -d
-    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
-    ```
-   > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](nifi-workflow.json) and start it
 
 3. Create the repository in the RDF4J server:
    ```bash
@@ -69,6 +63,5 @@ correctly in the triplestore.
 Stop data generator and new workbench, and bring all systems down:
 ```bash
 docker compose rm -s -f -v ldio-workbench
-docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```

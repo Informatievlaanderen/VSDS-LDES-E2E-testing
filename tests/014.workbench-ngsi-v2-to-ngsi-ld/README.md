@@ -1,5 +1,5 @@
 # Convert NGSI-v2 State Objects to NGSI-LD Version Objects
-The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages formatted as NGSI-v2 into NGSI-LD messages. It uses a [JSON Data Generator](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), an Apache NiFi or LDIO instance containing an HTTP listener that receives the observations (and devices & models), the components translating the NGSI-v2 entities to NGSI-LD entities, the components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
+The test verifies that the (LDIO) Workbench can convert IoW messages formatted as NGSI-v2 into NGSI-LD messages. It uses a [JSON Data Generator](https://github.com/Informatievlaanderen/VSDS-LDES-E2E-message-generator/README.md) which produces a continues stream of water-quality observations (as a controlled alternative to an actual Orion broker over which we have no control), a LDIO instance containing an HTTP listener that receives the observations (and devices & models), the components translating the NGSI-v2 entities to NGSI-LD entities, the components creating the LDES members (version objects) from the NGSI-LD entities and the LDES servers configured to capture the LDES members.
 
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
@@ -25,15 +25,6 @@ The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages for
     docker compose up ldio-workbench -d
     while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
-    or:
-    ```bash
-    docker compose up nifi-workbench -d
-    while ! curl -s -I "http://localhost:8000/nifi/"; do sleep 5; done
-    ```
-    > **Note**: for the [NiFi workbench](http://localhost:8000/nifi/) you also need to upload the [workflow](./nifi-workflow.json) and start it. Finally, verify that the NiFi HTTP listeners are ready (they should answer `OK`):
-    > ```bash
-    > curl http://localhost:8081/healthcheck
-    > ```
 
 3. Verify that the empty LDES can be retrieved:
     ```bash
@@ -67,16 +58,10 @@ The test verifies that the (NiFi or LDIO) Workbench can convert IoW messages for
 
 
 ## Test Teardown
-If using NiFi, first [stop the workflow](../../_nifi-workbench/README.md#stop-a-workflow) and then to stop all systems use:
+To stop all systems use:
 ```bash
 docker compose rm -s -f -v test-message-generator
 docker compose rm -s -f -v ldio-workbench
-docker compose down
-```
-or
-```bash
-docker compose rm -s -f -v test-message-generator
-docker compose rm -s -f -v nifi-workbench
 docker compose down
 ```
 

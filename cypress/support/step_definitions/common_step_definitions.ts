@@ -204,7 +204,9 @@ When('I start the NIFI workbench', () => {
 })
 
 When('I start the LDIO workbench', () => {
-    return createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+    return createAndStartService(workbenchLdio.serviceName)
+        .then(() => workbenchLdio.waitAvailable())
+        .then(() => workbenchLdio.waitForPipelinesRunning());
 })
 
 When('I pause the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {

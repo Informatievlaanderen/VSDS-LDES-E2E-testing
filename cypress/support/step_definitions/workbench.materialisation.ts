@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { testPartialPath, server, range } from "./common_step_definitions";
+import { testPartialPath, range } from "./common_step_definitions";
 import { timeouts } from "../common";
 
 Given('I create the rdf4j repository', () => {
@@ -11,7 +11,7 @@ Given('I create the rdf4j repository', () => {
 })
 
 When('I upload {int} files from the {string} directory to the workbench', (amount: number, directory: string) => {
-    const url = `http://localhost:8082/rdf4j-pipeline`;
+    const url = `http://localhost:8081/rdf4j-pipeline`;
     range(1, amount).forEach(member => {
         const fileName = `${testPartialPath()}/data/${directory}/${member}.nq`;
         cy.readFile(fileName, 'utf8')

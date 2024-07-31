@@ -31,22 +31,21 @@ services:
       - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PWD}
       - NIFI_WEB_HTTPS_PORT=8443
     volumes:
-      - ../../data/scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
-      - ../../_nifi-workbench/nar-ext:/opt/nifi/nifi-current/nar_extensions:rw
+      - ./scripts/check-healthy.sh:/opt/nifi/nifi-current/bin/check-healthy.sh:ro
+      - ./scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+      - ./temp:/opt/nifi/nifi-current/nar_extensions:rw
     ports:
       - 8443:8443
-      - ${NIFI_WORKFLOW_LISTEN_PORT:-9005}:9005
+      - 9005:9005
     networks:
       - ldes
     extra_hosts:
       - ${LOCALHOST}:host-gateway
-    # profiles:
-    #   - delay-started
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "-s", "-k", "-I", "https://$${HOSTNAME}:8443/nifi/#/login"]
-    #   interval: 12s
-    #   timeout: 3s
-    #   retries: 8
+    healthcheck:
+      test: ["CMD", "/opt/nifi/nifi-current/bin/check-healthy.sh"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   ldes-server:
     container_name: ${USECASE_NAME:-nifi-components}_ldes-server
@@ -60,7 +59,6 @@ services:
       - SPRING_BATCH_JDBC_INITIALIZESCHEMA=ALWAYS
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
-      - MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS=always
     volumes:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
@@ -87,7 +85,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5

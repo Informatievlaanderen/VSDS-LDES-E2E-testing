@@ -42,8 +42,32 @@ Optionally, combine both tests in one E2E test.
     curl http://${LOCALHOST}:8080/observations/by-page
     ```
 
-3. Upload and start the NiFi workflow: [logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at https://localhost:8443/nifi#login and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
-    Verify that the NiFi HTTP listener is ready (it should answer `OK`):
+3. Upload and start the NiFi workflow: 
+    ```bash
+    # export all environment variables
+    export $(grep -v '^#' .env | xargs)
+    
+    # request access token
+    TOKEN=`curl -s -k -X POST "https://localhost:8443/nifi-api/access/token" -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "username=$NIFI_USER" --data-urlencode "password=$NIFI_PWD"` && export TOKEN
+
+    # generate client ID
+    CLIENT=`uuidgen` && export CLIENT
+
+    # get current working directory
+    DIRECTORY=`pwd` && export DIRECTORY
+
+    # upload the workflow
+    WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$DIRECTORY/nifi-workflow.json\""` && export WORKFLOW
+
+    # extract workflow uri and id
+    WORKFLOW_URI=`echo $WORKFLOW | grep -P 'https[^"]+' -o` && export WORKFLOW_URI
+    WORKFLOW_ID=`echo $WORKFLOW_URI | grep -P '[^/]+$' -o` && export WORKFLOW_ID
+
+    # start the workflow
+    curl -s -k -X PUT "https://localhost:8443/nifi-api/flow/process-groups/$WORKFLOW_ID" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{\"id\":\"$WORKFLOW_ID\",\"state\":\"RUNNING\"}"
+    ```
+
+    Now, verify that the NiFi HTTP listener is ready (it should answer `OK`):
     ```bash
     curl http://localhost:9005/observations/healthcheck
     ```
@@ -86,7 +110,6 @@ Optionally, combine both tests in one E2E test.
             ]
     }'
     ```
-
 
 ## Test Teardown
 

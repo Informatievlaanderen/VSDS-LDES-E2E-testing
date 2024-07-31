@@ -24,6 +24,27 @@ Optionally, combine both tests in one E2E test.
 * RDF4J system for capturing observations (state objects)
 
 ## Test Setup
+0. Download and extract the latest LDI for NiFi components:
+    First set the version of the components and the download location:
+    ```bash
+    clear
+    export LDI_PROCESSORS_VERSION="2.9.0-SNAPSHOT"
+    export LDI_PROCESSORS_BUNDLE_URI="https://s01.oss.sonatype.org/service/local/repositories/snapshots/content/be/vlaanderen/informatievlaanderen/ldes/ldi/nifi/ldi-processors-bundle/2.9.0-SNAPSHOT/ldi-processors-bundle-2.9.0-20240724.102650-2-nar-bundle.jar"
+    ```
+    then download and extract the processors:
+    ```bash
+    export DIRECTORY=$(pwd)
+    export LDI_PROCESSORS_BUNDLE_ARCHIVE=$DIRECTORY/ldi-processors-bundle.jar
+    curl -s $LDI_PROCESSORS_BUNDLE_URI --output $LDI_PROCESSORS_BUNDLE_ARCHIVE
+    unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar  -d $DIRECTORY/temp
+    rm $LDI_PROCESSORS_BUNDLE_ARCHIVE
+    ```
+    and finally, prepare the NiFi workflow definition to use the correct versions:
+    ```bash
+    export WORKFLOW_DEFINITION=$DIRECTORY/nifi-workflow.json
+    envsubst < $DIRECTORY/config/nifi-workflow-template.json > $WORKFLOW_DEFINITION
+    ```
+
 1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
     clear
@@ -36,7 +57,7 @@ Optionally, combine both tests in one E2E test.
     chmod +x ./config/seed.sh
     sh ./config/seed.sh
     ```
-    > This will create the following LDES'es and views:
+    > **Note** that this will create the following LDES'es and views:
     ```bash
     curl http://${LOCALHOST}:8080/observations
     curl http://${LOCALHOST}:8080/observations/by-page
@@ -53,11 +74,11 @@ Optionally, combine both tests in one E2E test.
     # generate client ID
     CLIENT=`uuidgen` && export CLIENT
 
-    # get current working directory
-    DIRECTORY=`pwd` && export DIRECTORY
-
     # upload the workflow
-    WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$DIRECTORY/nifi-workflow.json\""` && export WORKFLOW
+    WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$WORKFLOW_DEFINITION\""` && export WORKFLOW
+
+    # delete the workflow definition
+    rm $WORKFLOW_DEFINITION
 
     # extract workflow uri and id
     WORKFLOW_URI=`echo $WORKFLOW | grep -P 'https[^"]+' -o` && export WORKFLOW_URI
@@ -78,7 +99,7 @@ Optionally, combine both tests in one E2E test.
     docker compose up test-message-generator -d
     ```
 
-2. Verify if observations are being inserted on the sink (the number of members should increase over time)
+2. Verify if observations are being inserted on the sink (the number of members should increase over time):
     ```bash
     curl http://localhost:9003
     ```
@@ -117,4 +138,5 @@ Stop and destroy all systems
 ```bash
 docker compose rm -s -f -v test-message-generator
 docker compose down
+rm -rf ./temp/*.nar
 ```

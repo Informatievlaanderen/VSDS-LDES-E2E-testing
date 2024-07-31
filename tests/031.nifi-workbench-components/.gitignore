@@ -1,3 +1,4 @@
 init.lock
 temp/**
 !temp/.placeholder
+nifi-workflow.json

@@ -34,7 +34,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "ldes-client-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "POSTGRES_URL": null,
@@ -671,7 +671,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "sparql-interactions-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "SPARQL_CONSTRUCT_QUERY": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX sosa: <http://www.w3.org/ns/sosa/>\nPREFIX ngsiLdDC: <https://uri.etsi.org/ngsi-ld/default-context/>\nPREFIX ngsiLd: <https://uri.etsi.org/ngsi-ld/>\nCONSTRUCT {\n    ?wqo rdf:type <http://www.w3.org/ns/sosa/ObservationCollection> .\n    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?conductivity .\n    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?temperature .\n    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?batteryLevel .\n    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?depth .\n    ?wqo <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> ?location .\n    ?wqo sosa:phenomenonTime ?dateObserved .\n    ?batteryLevel <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> <https://data.vmm.be/concept/sensor/batterijniveau> .\n    ?batteryLevel <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime> ?batteryLevelPhenomenonTime .\n    ?batteryLevel rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .\n    ?batteryLevel <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .\n    ?batteryLevel <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [\n        ?scopedItem [\n            <https://schema.org/value> ?batteryLevelValue\n        ]\n    ] .\n    ?conductivity <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> <https://data.vmm.be/concept/waterkwaliteitparameter/conductiviteit> .\n    ?conductivity <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime> ?conductivityPhenomenonTime .\n    ?conductivity rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .\n    ?conductivity <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .\n    ?conductivity <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [\n        ?conductivityValuePredicate [\n            <https://schema.org/value> ?conductivityValue\n        ]\n    ] .\n    ?depth <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> <https://data.vmm.be/concept/observatieparameter/hydrostatische-druk> .\n    ?depth <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime> ?depthPhenomenonTime .\n    ?depth rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .\n    ?depth <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .\n    ?depth <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [\n        ?depthValuePredicate [\n            <https://schema.org/value> ?depthValue\n        ]\n    ] .\n    ?temperature <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> <https://data.vmm.be/concept/waterkwaliteitparameter/temperatuur> .\n    ?temperature <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime> ?temperaturePhenomenonTime .\n    ?temperature rdf:type <http://def.isotc211.org/iso19156/2011/Measurement#OM_Measurement> .\n    ?temperature <http://www.w3.org/ns/sosa/madeBySensor> ?madeBySensor .\n    ?temperature <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result> [\n        ?temperatureValuePredicate [\n            <https://schema.org/value> ?temperatureValue\n        ]\n    ] .\n    ?location rdf:type <https://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#SF_SpatialSamplingFeature> .\n    ?location rdf:asWkt ?locationWkt\n} WHERE {\n    ?wqo rdf:type <https://uri.etsi.org/ngsi-ld/default-context/WaterQualityObserved> .\n    ?wqo ngsiLdDC:dateObserved [\n        ngsiLd:hasValue ?dateObserved\n    ] .\n    ?wqo ngsiLdDC:refDevice ?refDevice .\n    ?refDevice <https://uri.etsi.org/ngsi-ld/hasObject> ?madeBySensor .\n    OPTIONAL {\n        ?wqo ngsiLdDC:batteryLevel ?batteryLevel .\n        ?batteryLevel <https://uri.etsi.org/ngsi-ld/observedAt> ?batteryLevelPhenomenonTime .\n        ?batteryLevel <https://uri.etsi.org/ngsi-ld/hasValue> ?batteryLevelValue .\n   bind(<http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?batteryValuePredicate) .\n  }\n    \n    OPTIONAL {\n        ?wqo ngsiLdDC:conductivity ?conductivity .\n        ?conductivity <https://uri.etsi.org/ngsi-ld/observedAt> ?conductivityPhenomenonTime .\n        ?conductivity <https://uri.etsi.org/ngsi-ld/hasValue> ?conductivityValue .\n   bind(<http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?conductivityValuePredicate) .\n    }\n    OPTIONAL {\n        ?wqo ngsiLdDC:depth ?depth .\n        ?depth <https://uri.etsi.org/ngsi-ld/observedAt> ?depthPhenomenonTime .\n        ?depth <https://uri.etsi.org/ngsi-ld/hasValue> ?depthValue .\n   bind(<http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?depthValuePredicate) .\n    }\n    OPTIONAL {\n        ?wqo ngsiLdDC:temperature ?temperature .\n        ?temperature <https://uri.etsi.org/ngsi-ld/observedAt> ?temperaturePhenomenonTime .\n        ?temperature <https://uri.etsi.org/ngsi-ld/hasValue> ?temperatureValue .\n   bind(<http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> as ?temperatureValuePredicate) .\n    }\n    OPTIONAL {\n      ?wqo ngsiLd:location ?location .\n      ?location ngsiLdDC:asWkt ?locationWkt .\n    }\n}",
@@ -982,7 +982,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "rdf4j-repository-sink-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "SPARQL_HOST": "http://ldes-graphdb:7200",
@@ -1064,7 +1064,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "version-materialisation-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "VERSION_OF_PROPERTY": "http://purl.org/dc/terms/isVersionOf",
@@ -1117,7 +1117,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "geojson-to-wkt-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "TRANSFORM_TO_RDF_WKT": "false",
@@ -1170,7 +1170,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "create-version-object-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "DATE_OBSERVED_VALUE_RDF_PROPERTY": "http://www.w3.org/ns/sosa/phenomenonTime",
@@ -1263,7 +1263,7 @@
             "bundle": {
               "group": "be.vlaanderen.informatievlaanderen.ldes.ldi.nifi",
               "artifact": "ngsiv2-to-ld-processor",
-              "version": "2.9.0-SNAPSHOT"
+              "version": "${LDI_PROCESSORS_VERSION}"
             },
             "properties": {
               "CORE_CONTEXT": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld",

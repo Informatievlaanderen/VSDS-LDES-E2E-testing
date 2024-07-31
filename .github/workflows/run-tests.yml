@@ -26,8 +26,7 @@ jobs:
           # - "@test-021"
           - "@test-024"
           - "@test-026"
-          # - Disabled until auto-test is fixed to the new tables
-          # - "@test-031"
+          - "@test-031"
           - "@test-032"
           - "@test-034"
           - "@test-035"

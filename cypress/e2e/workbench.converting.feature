@@ -23,7 +23,7 @@ Feature: LDES Workbench Conversions
   Scenario: 017: Can Convert NGSI-v2 to OSLO Using LDIO Workbench
     Given context 'tests/017.ldio-workbench-ngsi-v2-to-oslo' is started
     And the LDES server is available and configured
-    And the 'LDIO' workbench is available
+    And the LDIO workbench is available
     When I upload the data file 'device-model' to the workbench
     And the LDES contains 1 members
     And the root fragment of 'device-models' is obtained

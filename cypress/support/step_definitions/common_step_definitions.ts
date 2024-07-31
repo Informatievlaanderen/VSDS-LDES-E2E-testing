@@ -4,7 +4,6 @@ import {
     LdesServer,
     LdesServerSimulator,
     LdesWorkbenchLdio,
-    LdesWorkbenchNiFi,
     TestMessageGenerator,
     TestMessageSink,
 } from "../services";
@@ -18,7 +17,6 @@ const membersTable = 'members';
 const pagesTable = 'pages'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
-export const workbenchNifi = new LdesWorkbenchNiFi('https://localhost:8443')
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 export const sink = new TestMessageSink('http://localhost:9003');
@@ -103,6 +101,22 @@ Given('environment variable {string} is defined as the hostname', (variable: str
     })
 })
 
+Given('we use context {string}', (composeFilePath: string) => {
+    if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
+})
+
+Given('the previously defined context is started', () => {
+    if (!testContext.testPartialPath)
+        throw new Error("No context defined previously");
+
+    const options: DockerComposeOptions = {
+        dockerComposeFile: `${testContext.testPartialPath}/docker-compose.yml`,
+        environmentFile: `${testContext.testPartialPath}/.env`,
+        additionalEnvironmentSettings: testContext.additionalEnvironmentSettings
+    };
+    dockerCompose.up(options);
+})
+
 Given('context {string} is started', (composeFilePath: string) => {
     if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
 
@@ -113,15 +127,6 @@ Given('context {string} is started', (composeFilePath: string) => {
     };
     dockerCompose.up(options);
 })
-
-Given('the NiFi workbench is available', () => {
-    workbenchNifi.waitAvailable();
-});
-
-Given('I have uploaded the workflow', () => {
-    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
-})
-
 
 Given('I have aliased the {string} simulator data set', (dataSet: string) => {
     simulator.waitAvailable();
@@ -155,52 +160,17 @@ Given('the protected LDES server is available and configured', () => {
 })
 
 Given('the LDES Server Simulator is available', () => {
-    simulator.waitAvailable();
+    return simulator.waitAvailable();
 })
 
-Given('I started the workflow', () => {
-    workbenchNifi.pushStart();
-})
-
-Given('the {string} workbench is available', (workbench) => {
-    switch (workbench) {
-        case 'NIFI': {
-            workbenchNifi.waitAvailable();
-            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
-            workbenchNifi.pushStart();
-            break;
-        }
-        case 'LDIO': {
-            workbenchLdio.waitAvailable();
-            break;
-        }
-        case 'NIFI & LDIO': {
-            workbenchNifi.waitAvailable();
-            workbenchNifi.uploadWorkflow(`${testPartialPath()}/nifi-workflow.json`);
-            workbenchNifi.pushStart();
-            workbenchLdio.waitAvailable();
-            break;
-        }
-        default:
-            throw new Error(`Unknown workbench '${workbench}'`);
-    }
+Given('the LDIO workbench is available', () => {
+    return workbenchLdio.waitAvailable();
 })
 
 // When stuff
 
-function startNifiWorkbench() {
-    // createAndStartService(workbenchNifi.serviceName).then(() => workbenchNifi.waitAvailable());
-    workbenchNifi.login();
-    workbenchNifi.uploadWorkflow(`${testContext.testPartialPath}/nifi-workflow.json`);
-    workbenchNifi.pushStart();
-}
-
 When('I start the LDES Client LDIO workbench', () => {
     return createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
-})
-
-When('I start the NIFI workbench', () => {
-    return startNifiWorkbench();
 })
 
 When('I start the LDIO workbench', () => {
@@ -211,12 +181,6 @@ When('I start the LDIO workbench', () => {
 
 When('I pause the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
     switch (workbench) {
-        case 'NIFI': {
-            workbenchNifi.openWorkflow();
-            workbenchNifi.selectProcessor('InvokeHTTP');
-            workbenchNifi.pushStop();
-            break;
-        }
         case 'LDIO': {
             workbenchLdio.pause(pipeline);
             break;
@@ -228,12 +192,6 @@ When('I pause the {string} pipeline on the {string} workbench', (pipeline: strin
 
 When('I resume the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
     switch (workbench) {
-        case 'NIFI': {
-            workbenchNifi.openWorkflow();
-            workbenchNifi.selectProcessor('InvokeHTTP');
-            workbenchNifi.pushStart();
-            break;
-        }
         case 'LDIO': {
             workbenchLdio.resume(pipeline);
             break;
@@ -337,4 +295,8 @@ Then("the LDES structure contains {int} relations", (relationCount: number) =>
 
 Then("the LDES structure is equal to {string}", (expectedOutputFileName: string) => {
     ldesDiscoverer.checkOutputStructure(`${testContext.testPartialPath}/data/${expectedOutputFileName}`)
+})
+
+Then('the previously defined context is stopped', () => {
+    dockerCompose.cleanup();
 })

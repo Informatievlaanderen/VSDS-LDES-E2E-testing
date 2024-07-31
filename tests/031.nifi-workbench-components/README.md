@@ -31,18 +31,13 @@ Optionally, combine both tests in one E2E test.
     export LDI_PROCESSORS_VERSION="2.9.0-SNAPSHOT"
     export LDI_PROCESSORS_BUNDLE_URI="https://s01.oss.sonatype.org/service/local/repositories/snapshots/content/be/vlaanderen/informatievlaanderen/ldes/ldi/nifi/ldi-processors-bundle/2.9.0-SNAPSHOT/ldi-processors-bundle-2.9.0-20240724.102650-2-nar-bundle.jar"
     ```
-    then download and extract the processors:
+    and then download and extract the processors:
     ```bash
     export DIRECTORY=$(pwd)
-    export LDI_PROCESSORS_BUNDLE_ARCHIVE=$DIRECTORY/ldi-processors-bundle.jar
+    export LDI_PROCESSORS_BUNDLE_ARCHIVE=$DIRECTORY/temp/ldi-processors-bundle.jar
     curl -s $LDI_PROCESSORS_BUNDLE_URI --output $LDI_PROCESSORS_BUNDLE_ARCHIVE
-    unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar  -d $DIRECTORY/temp
+    unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar
     rm $LDI_PROCESSORS_BUNDLE_ARCHIVE
-    ```
-    and finally, prepare the NiFi workflow definition to use the correct versions:
-    ```bash
-    export WORKFLOW_DEFINITION=$DIRECTORY/nifi-workflow.json
-    envsubst < $DIRECTORY/config/nifi-workflow-template.json > $WORKFLOW_DEFINITION
     ```
 
 1. Run all systems except the message generator by executing the following (bash) command:
@@ -65,14 +60,18 @@ Optionally, combine both tests in one E2E test.
 
 3. Upload and start the NiFi workflow: 
     ```bash
+    # create workflow definition from template
+    export WORKFLOW_DEFINITION=$DIRECTORY/nifi-workflow.json
+    envsubst < $DIRECTORY/config/nifi-workflow-template.json > $WORKFLOW_DEFINITION
+
+    # generate client ID
+    export CLIENT=$(uuidgen)
+
     # export all environment variables
     export $(grep -v '^#' .env | xargs)
     
     # request access token
     TOKEN=`curl -s -k -X POST "https://localhost:8443/nifi-api/access/token" -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "username=$NIFI_USER" --data-urlencode "password=$NIFI_PWD"` && export TOKEN
-
-    # generate client ID
-    CLIENT=`uuidgen` && export CLIENT
 
     # upload the workflow
     WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$WORKFLOW_DEFINITION\""` && export WORKFLOW

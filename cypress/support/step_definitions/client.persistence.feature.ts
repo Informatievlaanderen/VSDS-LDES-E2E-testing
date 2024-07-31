@@ -1,36 +1,16 @@
 /// <reference types="cypress" />
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { clientWorkbench, dockerCompose, sink, workbenchNifi } from "./common_step_definitions";
+import { clientWorkbench, dockerCompose, sink } from "./common_step_definitions";
 
 // When stuff
 
-When('I stop the LDES Client {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            dockerCompose.stop(workbenchNifi.serviceName);
-            break;
-        }
-        case 'LDIO': {
-            dockerCompose.stop(clientWorkbench.serviceName);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I stop the LDES Client LDIO workbench', () => {
+    dockerCompose.stop(clientWorkbench.serviceName);
 })
 
-When('I restart the LDES Client {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'NIFI': {
-            dockerCompose.start(workbenchNifi.serviceName);
-            break;
-        }
-        case 'LDIO': {
-            dockerCompose.start(clientWorkbench.serviceName);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I restart the LDES Client LDIO workbench', () => {
+    dockerCompose.start(clientWorkbench.serviceName);
 })
 
 // Then stuff

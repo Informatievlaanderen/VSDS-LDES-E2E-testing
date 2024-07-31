@@ -7,8 +7,8 @@ Feature: LDES Client Persistence
     And I have aliased the 'parkAndRide' simulator data set
     When I start the LDES Client LDIO workbench
     Then the sink collection 'parkAndRide' contains at least 250 members
-    When I stop the LDES Client 'LDIO' workbench
+    When I stop the LDES Client LDIO workbench
     Then the sink log contains no warnings
-    When I restart the LDES Client 'LDIO' workbench
+    When I restart the LDES Client LDIO workbench
     And the sink contains 1016 members in collection 'parkAndRide'
     Then the sink received every member only once

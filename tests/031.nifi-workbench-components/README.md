@@ -24,6 +24,22 @@ Optionally, combine both tests in one E2E test.
 * RDF4J system for capturing observations (state objects)
 
 ## Test Setup
+0. Download and extract the latest LDI for NiFi components:
+    First set the version of the components and the download location:
+    ```bash
+    clear
+    export LDI_PROCESSORS_VERSION="2.9.0-SNAPSHOT"
+    export LDI_PROCESSORS_BUNDLE_URI="https://s01.oss.sonatype.org/service/local/repositories/snapshots/content/be/vlaanderen/informatievlaanderen/ldes/ldi/nifi/ldi-processors-bundle/2.9.0-SNAPSHOT/ldi-processors-bundle-2.9.0-20240724.102650-2-nar-bundle.jar"
+    ```
+    and then download and extract the processors:
+    ```bash
+    export DIRECTORY=$(pwd)
+    export LDI_PROCESSORS_BUNDLE_ARCHIVE=$DIRECTORY/temp/ldi-processors-bundle.jar
+    curl -s $LDI_PROCESSORS_BUNDLE_URI --output $LDI_PROCESSORS_BUNDLE_ARCHIVE
+    unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar
+    rm $LDI_PROCESSORS_BUNDLE_ARCHIVE
+    ```
+
 1. Run all systems except the message generator by executing the following (bash) command:
     ```bash
     clear
@@ -36,14 +52,42 @@ Optionally, combine both tests in one E2E test.
     chmod +x ./config/seed.sh
     sh ./config/seed.sh
     ```
-    > This will create the following LDES'es and views:
+    > **Note** that this will create the following LDES'es and views:
     ```bash
     curl http://${LOCALHOST}:8080/observations
     curl http://${LOCALHOST}:8080/observations/by-page
     ```
 
-3. Upload and start the NiFi workflow: [logon to Apache NiFi](../../_nifi-workbench/README.md#logon-to-apache-nifi) user interface at https://localhost:8443/nifi#login and [create a workflow](../../_nifi-workbench/README.md#create-a-workflow) from the [provided workflow](./nifi-workflow.json) and [start it](../../_nifi-workbench/README.md#start-a-workflow).
-    Verify that the NiFi HTTP listener is ready (it should answer `OK`):
+3. Upload and start the NiFi workflow: 
+    ```bash
+    # create workflow definition from template
+    export WORKFLOW_DEFINITION=$DIRECTORY/nifi-workflow.json
+    envsubst < $DIRECTORY/config/nifi-workflow-template.json > $WORKFLOW_DEFINITION
+
+    # generate client ID
+    export CLIENT=$(uuidgen)
+
+    # export all environment variables
+    export $(grep -v '^#' .env | xargs)
+    
+    # request access token
+    TOKEN=`curl -s -k -X POST "https://localhost:8443/nifi-api/access/token" -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "username=$NIFI_USER" --data-urlencode "password=$NIFI_PWD"` && export TOKEN
+
+    # upload the workflow
+    WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$WORKFLOW_DEFINITION\""` && export WORKFLOW
+
+    # delete the workflow definition
+    rm $WORKFLOW_DEFINITION
+
+    # extract workflow uri and id
+    WORKFLOW_URI=`echo $WORKFLOW | grep -P 'https[^"]+' -o` && export WORKFLOW_URI
+    WORKFLOW_ID=`echo $WORKFLOW_URI | grep -P '[^/]+$' -o` && export WORKFLOW_ID
+
+    # start the workflow
+    curl -s -k -X PUT "https://localhost:8443/nifi-api/flow/process-groups/$WORKFLOW_ID" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{\"id\":\"$WORKFLOW_ID\",\"state\":\"RUNNING\"}"
+    ```
+
+    Now, verify that the NiFi HTTP listener is ready (it should answer `OK`):
     ```bash
     curl http://localhost:9005/observations/healthcheck
     ```
@@ -54,7 +98,7 @@ Optionally, combine both tests in one E2E test.
     docker compose up test-message-generator -d
     ```
 
-2. Verify if observations are being inserted on the sink (the number of members should increase over time)
+2. Verify if observations are being inserted on the sink (the number of members should increase over time):
     ```bash
     curl http://localhost:9003
     ```
@@ -87,11 +131,11 @@ Optionally, combine both tests in one E2E test.
     }'
     ```
 
-
 ## Test Teardown
 
 Stop and destroy all systems
 ```bash
 docker compose rm -s -f -v test-message-generator
 docker compose down
+rm -rf ./temp/*.nar
 ```

@@ -8,8 +8,11 @@ const defaultCredentials = {
     password:'Pwd4Admin_DoNotChangeMe'
 }
 
-export class LdesWorkbenchNiFi implements CanCheckAvailability {
+interface NiFiProcessGroup {
+    id: string;
+}
 
+export class LdesWorkbenchNiFi implements CanCheckAvailability {
     constructor(private baseUrl: string, private _serviceName?: string) {
     }
 
@@ -17,7 +20,9 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return this._serviceName || 'nifi-workbench';
     }
 
-    private _lastUploadedWorkflowId: string;
+    get apiUrl() {
+        return `${this.baseUrl}/nifi-api`;
+    }
 
     /**
      * Checks if the Apache NiFi workbench is ready to accept login attempts
@@ -31,114 +36,35 @@ export class LdesWorkbenchNiFi implements CanCheckAvailability {
         return cy.waitUntil(() => this.isReady(), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
     }
 
-    private containerLogIncludes(containerId: string, includeString: string) {
-        return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes(includeString));
-    }
-
-    waitForDockerLog(includeString: string) {
-        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
-            .then(result => {
-                const containerId = result.stdout;
-                return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' log to include '${includeString}'` });
-            });
+    private isIngestEndpointReady(ingestUrl: string): any {
+        return cy.request({ url: `${ingestUrl}/healthcheck`, failOnStatusCode: false })
+            .then(response => response.isOkStatusCode && response.body === 'OK');
     }
 
     waitIngestEndpointAvailable(ingestUrl: string) {
         return cy.waitUntil(() => this.isIngestEndpointReady(ingestUrl), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for ingest endpoint '${ingestUrl}' to be available` });
     }
 
-    private isIngestEndpointReady(ingestUrl: string): any {
-        return cy.request({ url: `${ingestUrl}/healthcheck`, failOnStatusCode: false })
-            .then(response => response.isOkStatusCode && response.body === 'OK');
+    requestAccessToken(credentials: { username: string; password: string; } = defaultCredentials) {
+        const cmd = `curl -s -k -X POST "${this.apiUrl}/access/token" -H "Content-Type: application/x-www-form-urlencoded"\
+            --data-urlencode "username=${credentials.username}" --data-urlencode "password=${credentials.password}"`
+        return cy.exec(cmd).then(result => result.stdout);
     }
 
-    uploadWorkflow(partialPath: string) {
-        cy.intercept({url: '**/upload', times: 1}).as('uploaded');
-        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToUpload');
-        cy.origin(this.baseUrl, { args: {file: partialPath, wait: timeouts} } , ({file, wait}) => {
-            cy.visit('/nifi/').wait('@readyToUpload', { timeout: wait.ready });
-
-            cy.get("#group-component")
-                .trigger("mousedown", 1, 1, {
-                    button: 0,
-                    force: true,
-                    eventConstructor: "MouseEvent"
-                })
-                .trigger("mousemove", 200, 200, {
-                    button: 0,
-                    force: true,
-                    eventConstructor: "MouseEvent"
-                })
-                .trigger("mouseup", 200, 200, {
-                    button: 0,
-                    force: true,
-                    eventConstructor: "MouseEvent"
-                });
-
-            return cy.readFile(file, 'utf8').then(data => cy.get('#upload-file-field').selectFile({
-                        contents: Cypress.Buffer.from(JSON.stringify(data)), 
-                        fileName: 'nifi-workflow.json',
-                        mimeType: 'application/json',
-                        lastModified: Date.now()
-                    }, { force: true })
-                    .get('#new-process-group-dialog > .dialog-buttons > div').first().click({ force: true })
-                    .wait('@uploaded')
-                    .then(upload => upload.response.body.id)
-                    .then((id: string) => cy.get('#operation-context-id').should('have.text', id).then(() => id))
-                );
-        }).then((id: string) => this._lastUploadedWorkflowId = id);
+    uploadWorkflow(token: string, clientId: string, workflowDefinition: string) {
+      const cmd = `curl -s -k -X POST "${this.apiUrl}/process-groups/root/process-groups/upload" -H "Authorization: Bearer ${token}"\
+        -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"${clientId}\"" -F "file=@\"${workflowDefinition}\""`;
+        return cy.exec(cmd)
+            .then(result => result.stdout)
+            .then(body => JSON.parse(body))
+            .then((workflow: NiFiProcessGroup) => workflow.id);
     }
 
-    pushStart() {
-        cy.origin(this.baseUrl, () => {
-            cy.get('#operate-start').click();
-        });
+    startWorkflow(token: string, workflowId: string) {
+        const message = { id: workflowId, state: 'RUNNING' };
+        const cmd = `curl -s -k -X PUT "${this.apiUrl}/flow/process-groups/${workflowId}" -H "Authorization: Bearer ${token}"\
+            -H "Content-Type: application/json" -d '${JSON.stringify(message)}'`;
+            return cy.exec(cmd);
     }
 
-    pushStop() {
-        cy.origin(this.baseUrl, () => { 
-            cy.get('#operate-stop').click();
-        });
-    }
-
-    openWorkflow() {
-        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('readyToOpenWorkflow');
-        cy.origin(this.baseUrl, { args: {workflowId: this._lastUploadedWorkflowId} } , ({workflowId}) => {
-            cy.visit('/nifi/').wait('@readyToOpenWorkflow');
-            cy.get(`#id-${workflowId}`).dblclick();
-        });
-    }
-
-    selectProcessor(name: string) {
-        cy.origin(this.baseUrl, {args: {processorName: name}}, ({processorName}) => {
-            cy.get(`g.processor > text > title:contains(${processorName})`).parent().parent().click();
-        });
-    }
-
-    // loginVersion1(credentials: { username: string; password: string; } = defaultCredentials) {
-    //     cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
-    //     return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/login')
-    //             .get('#username').type(credentials.username)
-    //             .get('#password').type(credentials.password)
-    //             .get('#login-submission-button').click().wait('@loggedIn')
-    //         );
-    // }
-
-    login(credentials: { username: string; password: string; } = defaultCredentials) {
-        cy.intercept({url: '/nifi-api/flow/cluster/summary', times: 1}).as('loggedIn');
-        return cy.origin(this.baseUrl, {args: { credentials }}, ({credentials}) => cy.visit('/nifi/#/login')
-                .get('input[formcontrolname="username"]').type(credentials.username)
-                .get('input[formcontrolname="password"]').type(credentials.password)
-                .get('button[type="submit"]').click().wait('@loggedIn')
-            );
-    }
-
-    logout() {
-        cy.origin(this.baseUrl, () => {
-            cy.visit('/nifi/logout');
-            cy.clearCookies();
-            cy.clearLocalStorage();
-            return cy.clearAllSessionStorage();
-        });
-    }
 }

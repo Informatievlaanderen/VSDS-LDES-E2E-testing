@@ -22,10 +22,9 @@ Feature: LDES Client Basic Functionality
 
   @test-018 @cli @ldio @parkAndRide
   Scenario: 018: Client Can Output LDES members to the Console
-    Given context 'tests/018.client-output-to-console' is started
-    And I have uploaded the data files: 'gamma' with a duration of 10 seconds
-    And I have aliased the data set
-    When I start the LDES Client LDIO workbench
-    Then the Client CLI contains 1 members
-    When I have uploaded the data files: 'delta'
-    Then the Client CLI contains 50 members
+    Given I have setup context 'tests/018.client-output-to-console'
+    When I upload the LDIO 'client-pipeline'
+    Then the client console contains 1 members
+    When I upload the simulator file: 'delta'
+    Then the client console contains 50 members
+    And I tear down the context

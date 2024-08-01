@@ -8,7 +8,6 @@ import {
     TestMessageSink,
 } from "../services";
 import {Fragment} from "../ldes";
-import {LdesClientWorkbench} from "../services/ldes-client-workbench";
 import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 import {PostgresRestApi} from "../services/postgres-rest-api";
 
@@ -51,7 +50,6 @@ const pagesTable = 'pages'
 
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
-export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
 export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
@@ -201,7 +199,7 @@ Given('the LDIO workbench is available', () => {
 // When stuff
 
 When('I start the LDES Client LDIO workbench', () => {
-    return createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
+    return createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
 When('I start the LDIO workbench', () => {

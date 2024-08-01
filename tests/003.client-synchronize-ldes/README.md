@@ -15,61 +15,23 @@ We need to upload all but the last fragment as an immutable fragment and the las
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-1. Run all systems except the workflow by executing the following (bash) command:
-    ```bash
-    docker compose up -d
-    ```
-
-2. Seed the initial data set and [alias it](./create-alias.json)
-    ```bash
-    curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d '@data/alfa.ttl'
-    curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d '@data/beta.ttl'
-    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: text/turtle' -d '@data/gamma.ttl'
-    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
-    ```
-    **Note** the `?max-age=10` part in the last command limiting the freshness to 10 seconds.
-
-    The simulator (http://localhost:9011) will respond with:
-    ```json
-   {"content-type":"text/turtle","cache-control":"public, max-age=604800, immutable","id":"/ldes/occupancy/by-page?pageNumber=1"}
-   {"content-type":"text/turtle","cache-control":"public, max-age=604800, immutable","id":"/ldes/occupancy/by-page?pageNumber=2"}
-   {"content-type":"text/turtle","cache-control":"public, max-age=10","id":"/ldes/occupancy/by-page?pageNumber=3"}
-   {"from":"/ldes/occupancy","to":"/ldes/occupancy/by-page?pageNumber=1"}
-    ```
-    **Note** the `"cache-control":"public, max-age=604800, immutable"` for the first two fragments and the `"cache-control":"public, max-age=10"` for the last one.
-
-3. Start the workflow containing the LDES Client
-    ```bash
-    docker compose up ldio-workbench -d
-    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-    ```
-
-4. Verify that all members are received by the [sink](http://localhost:9003/) (execute repeatedly):
-    ```bash
-    curl http://localhost:9003/
-    ```
-    **Note** that after a short while the result should be (alfa + beta + gamma):
-    ```json
-    {"count":501}
-    ```
-
-5. Verify that last fragment is re-requested on a regular interval (definied by the amount of seconds in the `?max-age=10` part when uploading it, i.e. every 10 seconds) but no members are sent to the sink HTTP server (execute repeatedly):
-    ```bash
-    curl http://localhost:9011/
-    curl http://localhost:9003/
-    ```
+To run all systems, seed the initial data set and [alias it](./create-alias.json), start the workflow containing the LDES Client and verify that all (501) members are received (replicated) by the [sink](http://localhost:9003/) execute the following (bash) command:
+```bash
+clear
+sh ./setup.sh
+```
 
 ## Test Execution
 This part verifies that the *synchronization* works after the initial data set is *replicated*.
 
 1. Seed a data set update.
     ```bash
-    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: text/turtle' -d '@data/delta.ttl'
+    curl -X POST "http://localhost:9011/ldes?max-age=10" -H 'Content-Type: text/turtle' -d '@data/delta.ttl'
     ```
 
 2. Verify update received (execute repeatedly):
     ```bash
-    curl http://localhost:9003/
+    COUNT=0 && while [ "$COUNT" -ne "550" ] ; do sleep 3; COUNT=$(curl -s http://localhost:9003 | jq '.parkAndRide.total') ; echo "count: $COUNT" ; done
     ```
     **Note** that after a short while the result should be (alfa + beta + delta):
     ```json
@@ -78,12 +40,12 @@ This part verifies that the *synchronization* works after the initial data set i
 
 3. Seed another data set update:
     ```bash
-    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: text/turtle' -d '@data/epsilon.ttl'
+    curl -X POST "http://localhost:9011/ldes?max-age=10" -H 'Content-Type: text/turtle' -d '@data/epsilon.ttl'
     ```
 
 4. Verify that synchronization happens correctly (execute repeatedly):
     ```bash
-    curl http://localhost:9003/
+    COUNT=0 && while [ "$COUNT" -ne "617" ] ; do sleep 3; COUNT=$(curl -s http://localhost:9003 | jq '.parkAndRide.total') ; echo "count: $COUNT" ; done
     ```
     **Note** that after a short while the result should be (alfa + beta + epsilon):
     ```json
@@ -93,6 +55,5 @@ This part verifies that the *synchronization* works after the initial data set i
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldio-workbench
-docker compose down
+sh ./teardown.sh
 ```

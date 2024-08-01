@@ -12,16 +12,12 @@ Feature: LDES Client Basic Functionality
 
   @test-003 @synchronize @parkAndRide @ldio
   Scenario: 003: Client Can Synchronize an LDES Using LDIO Workbench
-    Given context 'tests/003.client-synchronize-ldes' is started
-    And I have uploaded the data files: 'alfa,beta'
-    And I have uploaded the data files: 'gamma' with a duration of 10 seconds
-    And I have aliased the data set
-    When I start the LDES Client LDIO workbench
-    And the sink contains 501 members in collection 'parkAndRide'
-    When I upload the data files: 'delta' with a duration of 10 seconds
+    Given I have setup context 'tests/003.client-synchronize-ldes'
+    When I upload the simulator file: 'delta' with a duration of 10 seconds
     Then the sink contains 550 members in collection 'parkAndRide'
-    When I upload the data files: 'epsilon' with a duration of 10 seconds
+    When I upload the simulator file: 'epsilon' with a duration of 10 seconds
     Then the sink contains 617 members in collection 'parkAndRide'
+    And I tear down the context
 
 
   @test-018 @cli @ldio @parkAndRide

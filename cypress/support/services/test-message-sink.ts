@@ -14,10 +14,6 @@ export class TestMessageSink {
 
     constructor(private baseUrl: string, private _serviceName?: string) { }
 
-    public get serviceName() {
-        return this._serviceName || 'test-message-sink';
-    }
-
     checkCount(collectionName: string, count: number, checkFn: (actual: number, expected: number) => boolean = (x, y) => x === y) {
         return cy.waitUntil(() => this.hasCount(collectionName, count, checkFn), { timeout: timeouts.slowAction, interval: timeouts.check, errorMsg: `Timed out waiting for document collection '${collectionName}' in test sink to correctly compare to ${count}` });
     }
@@ -29,6 +25,12 @@ export class TestMessageSink {
                 cy.log('Actual count: ' + result[collectionName].total).then(() =>
                     checkFn(result[collectionName].total, count))
             );
+    }
+
+    // TODO: check below this line
+
+    public get serviceName() {
+        return this._serviceName || 'test-message-sink';
     }
 
     public deleteMember() {

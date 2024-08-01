@@ -9,6 +9,17 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
 
     constructor(public baseUrl: string, private _serviceName?: string) { }
 
+    upload(pipelinePath: string) {
+        return cy.readFile(pipelinePath)
+            .then(contents => cy.request({
+                method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline`,
+                headers: { 'Content-Type': 'application/yaml' }, body: contents
+            }))
+            .then(response => expect(response.isOkStatusCode).to.be.true);
+    }
+
+    // TODO: check below this line
+
     public get serviceName() {
         return this._serviceName || 'ldio-workbench';
     }

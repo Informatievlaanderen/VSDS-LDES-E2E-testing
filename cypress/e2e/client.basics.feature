@@ -3,10 +3,12 @@ Feature: LDES Client Basic Functionality
 
   @test-001 @replicate @parkAndRide @ldio
   Scenario: 001: Client Can Replicate an LDES Using LDIO Workbench
-    Given context 'tests/001.client-replicate-ldes' is started
-    And I have aliased the 'parkAndRide' simulator data set
-    When I start the LDES Client LDIO workbench
+    Given I have setup context 'tests/001.client-replicate-ldes'
+    And I have seeded and aliased the 'parkAndRide' simulator data set
+    When I upload the LDIO 'client-pipeline'
     Then the sink contains 1016 members in collection 'parkAndRide'
+    And I tear down the context
+
 
   @test-003 @synchronize @parkAndRide @ldio
   Scenario: 003: Client Can Synchronize an LDES Using LDIO Workbench
@@ -20,6 +22,7 @@ Feature: LDES Client Basic Functionality
     Then the sink contains 550 members in collection 'parkAndRide'
     When I upload the data files: 'epsilon' with a duration of 10 seconds
     Then the sink contains 617 members in collection 'parkAndRide'
+
 
   @test-018 @cli @ldio @parkAndRide
   Scenario: 018: Client Can Output LDES members to the Console

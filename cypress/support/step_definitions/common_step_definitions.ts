@@ -12,6 +12,39 @@ import {LdesClientWorkbench} from "../services/ldes-client-workbench";
 import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
 import {PostgresRestApi} from "../services/postgres-rest-api";
 
+export const simulator = new LdesServerSimulator('http://localhost:9011');
+export const workbench = new LdesWorkbenchLdio('http://localhost:8081');
+export const sink = new TestMessageSink('http://localhost:9003');
+
+function run(script: string, location: string) {
+    const cmd = `cd ${location} && chmod +x ./${script} && sh ./${script}`;
+    return cy.log(cmd).exec(cmd).then(result => expect(result.code).to.eql(0));
+}
+
+Given('I have setup context {string}', (testPartialPath: string) => {
+    if (!testContext.testPartialPath) testContext.testPartialPath = testPartialPath;
+    return run('setup.sh', testPartialPath);
+})
+
+Given('I have seeded and aliased the {string} simulator data set', (dataSet: string) => {
+    simulator.seed(Cypress.env(dataSet));
+    return simulator.postAlias(`${testContext.testPartialPath}/simulator/create-alias.json`);
+})
+
+When('I upload the LDIO {string}', (pipeline: string) => {
+    return workbench.upload(`${testContext.testPartialPath}/workbench/${pipeline}.yml`);
+})
+
+Then('the sink contains {int} members in collection {string}', (count: number, collectionName: string) => {
+    sink.checkCount(collectionName, count);
+})
+
+Then('I tear down the context', () => {
+    return run('teardown.sh', testContext.testPartialPath);
+})
+
+// TODO: check below this line
+
 let testContext: any;
 const membersTable = 'members';
 const pagesTable = 'pages'
@@ -19,8 +52,6 @@ const pagesTable = 'pages'
 export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
-export const sink = new TestMessageSink('http://localhost:9003');
-export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
@@ -269,10 +300,6 @@ Then('the fragment member count increases for view {string}', (view: string) => 
 
 Then('the {string} sink contains at least {int} members', (collectionName: string, count: number) => {
     sink.checkCount(collectionName, count, (x, y) => x >= y);
-})
-
-Then('the sink contains {int} members in collection {string}', (count: number, collectionName: string) => {
-    sink.checkCount(collectionName, count);
 })
 
 export function currentMemberCount() {

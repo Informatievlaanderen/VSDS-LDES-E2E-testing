@@ -21,18 +21,6 @@ interface RootResponse {
 export class LdesServerSimulator implements CanCheckAvailability {
     constructor(private baseUrl: string) { };
 
-    public get serviceName() {
-        return 'ldes-server-simulator'
-    }
-
-    public waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
-    }
-
-    private isReady() {
-        return cy.exec(`curl --head ${this.baseUrl}`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
-    }
-
     public seed(files: string[]) {
         files.forEach(file => this.postFragment(file));
     }
@@ -46,7 +34,7 @@ export class LdesServerSimulator implements CanCheckAvailability {
                 url: `${this.baseUrl}/ldes${query}`, 
                 headers: { 'Content-Type': contentType}, 
                 body: data,
-            }).then(response => expect(response.status).to.equal(201)));
+            }).then(response => expect(response.isOkStatusCode).to.be.true));
     }
 
     public postAlias(partialFilePath: string) {
@@ -56,8 +44,23 @@ export class LdesServerSimulator implements CanCheckAvailability {
                 url: `${this.baseUrl}/alias`, 
                 headers: { 'Content-Type': 'application/json'}, 
                 body: data
-            }).then(response => expect(response.status).to.equal(201)));
+            }).then(response => expect(response.isOkStatusCode).to.be.true));
     }
+
+    // TODO: check below this line
+
+    public get serviceName() {
+        return 'ldes-server-simulator'
+    }
+
+    public waitAvailable() {
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
+    }
+
+    private isReady() {
+        return cy.exec(`curl --head ${this.baseUrl}`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
+    }
+
 
     public deleteFragments() {
         return cy.request({url: `${this.baseUrl}/ldes`, method: 'DELETE', failOnStatusCode: false}).then(response => expect(response.status).to.equals(200));

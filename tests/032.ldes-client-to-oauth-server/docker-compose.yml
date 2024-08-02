@@ -19,6 +19,8 @@ services:
   ldio-server-seeder:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldio-server-seeder
+    environment:
+      - SERVER_PORT=8080
     volumes:
       - ./ldio-server-seeder.yml:/ldio/config/application.yml:ro
     networks:
@@ -66,7 +68,7 @@ services:
     container_name: ldes-postgres
     image: postgres:14-alpine
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PWD}
@@ -133,7 +135,7 @@ services:
     environment:
       - BASEURL=http://mock-oauth2-server
     ports:
-      - ${OAUTH2_SERVER_PORT:-8090}:8080
+      - 8090:8080
     networks:
       - ldes
 
@@ -148,7 +150,7 @@ services:
       - COLLECTION_NAME=devices
       - MEMBER_TYPE=https://uri.etsi.org/ngsi-ld/default-context/Device
     ports:
-      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
+      - 9003:80
     networks:
       - ldes
     depends_on:

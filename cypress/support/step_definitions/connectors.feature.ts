@@ -141,7 +141,7 @@ When('I start a transfer', () => {
         cy.log(`Obtained contractAgreementId: ${contractAgreementId}`)
         cy.request({
             method: 'POST',
-            url: "http://localhost:8082/client-pipeline/transfer",
+            url: "http://localhost:8081/client-pipeline/transfer",
             headers: {'Content-Type': 'application/json'},
             body: createTransferRequest(contractAgreementId)
         })
@@ -169,7 +169,7 @@ function createTransferRequest(contractId: string) {
           "type": "HttpProxy"
         },
         "privateProperties": {
-          "receiverHttpEndpoint" : "http://ldio-workbench:8082/client-pipeline/token"
+          "receiverHttpEndpoint" : "http://ldio-workbench:8080/client-pipeline/token"
         }
     }`;
 }

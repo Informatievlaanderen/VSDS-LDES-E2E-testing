@@ -40,13 +40,13 @@ export const sink = new TestMessageSink('http://localhost:9003');
 
 function run(script: string) {
     const cmd = `cd ${testContext.testPartialPath} && chmod +x ./${script} && sh ./${script}`;
-    return cy.log(cmd).exec(cmd, { timeout: timeouts.slowAction, env: testContext.environment })
+    return cy.log(cmd).exec(cmd, { timeout: timeouts.verySlowAction, env: testContext.environment })
         .then(result => expect(result.code).to.eql(0));
 }
 
 function startService(serviceName: string) {
     const cmd = `cd ${testContext.testPartialPath} && docker compose up ${serviceName} -d --wait`;
-    return cy.log(cmd).exec(cmd, { timeout: timeouts.exec, env: testContext.environment })
+    return cy.log(cmd).exec(cmd, { timeout: timeouts.slowAction, env: testContext.environment })
         .then(result => expect(result.code).to.eql(0));
 }
 

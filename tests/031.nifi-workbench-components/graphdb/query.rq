@@ -1,0 +1,10 @@
+PREFIX iso19156-ob: <http://def.isotc211.org/iso19156/2011/Observation#>
+PREFIX iso19156-sf: <http://def.isotc211.org/iso19156/2011/SamplingFeature#>
+PREFIX iso19103-um: <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#>
+PREFIX schema:      <https://schema.org/>
+select * where { 
+  ?observation iso19156-sf:SF_SamplingFeatureCollection.member [
+      iso19156-ob:OM_Observation.observedProperty ?type ;
+      iso19156-ob:OM_Observation.result [ iso19103-um:Measure.value [ schema:value ?result] ]
+    ]
+}

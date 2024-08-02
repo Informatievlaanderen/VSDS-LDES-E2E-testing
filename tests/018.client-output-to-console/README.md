@@ -10,49 +10,28 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-1.  Run all systems except the workflow by executing the following (bash) command:
-    ```bash
-    docker compose up -d
-    ```
-
-2. Ingest the [data set](./data/gamma.ttl) and [alias it](./data/create-alias.json) - in a new terminal window (bash shell):
-    ```bash
-    curl -X POST http://localhost:9011/ldes?max-age=10 -H 'Content-Type: text/turtle' -d '@data/gamma.ttl'
-    curl -X POST http://localhost:9011/alias -H "Content-Type: application/json" -d '@data/create-alias.json'
-    ```
-    > **Note**: that we specified `?max-age=10` to indicate that the fragment is mutable with a freshness of 10 seconds.
-
-    You can verify that the LDES Server Simulator now contains a single fragment (containing one member - see http://localhost:9011/ldes/occupancy):
-    ```bash
-    curl http://localhost:9011/
-    ```
-    returns:
-    ```json
-    {
-        "aliases":["/ldes/occupancy"],
-        "fragments":["/ldes/occupancy/by-page?pageNumber=3"],
-        "responses":{}
-    }
-    ```
+To run all systems and ingest the [data set](./data/gamma.ttl) and [alias it](./data/create-alias.json) execute the following (bash) command:
+```bash
+clear
+sh ./setup.sh
+```
 
 ## Test Execution
 1. Start the workflow containing the LDES Client:
     ```bash
-    docker compose up ldio-workbench -d
-    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
+    curl -X POST http://localhost:8081/admin/api/v1/pipeline -H "Content-Type: application/yaml" --data-binary "@./workbench/client-pipeline.yml"
     ```
 
 2. Verify replication
     
     Check that exactly one member is output to the log:
     ```bash
-    docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+    COUNT=0 && while [ "$COUNT" -ne "1" ] ; do sleep 3; COUNT=$(docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l) ; echo "count: $COUNT" ; done
     ```
     As we have specified a freshness of 10 seconds the LDES Client CLI will re-request the fragment every 10 seconds. You can verify this by waiting a while and then querying the LDES Server Simulator (see the data under `responses`):
     ```bash
     curl http://localhost:9011/
     ```
-
 
 3. Ingest the [data set update](./data/delta.ttl) containing the additional members:
     ```bash
@@ -63,13 +42,12 @@ The LDES Client CLI starts to follow the given data set url as soons as it start
 
     Check that exactly one member is output to the log:
     ```bash
-    docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l
+    COUNT=0 && while [ "$COUNT" -ne "50" ] ; do sleep 3; COUNT=$(docker logs $(docker ps -q --filter "name=ldio-workbench$") | grep "http://purl.org/dc/terms/isVersionOf" | wc -l) ; echo "count: $COUNT" ; done
     ```
     Again, wait a while and request the LDES Server Simulator home page (http://localhost:9011/) and ensure that the repeated re-requesting has ended.
 
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldio-workbench
-docker compose down
+sh ./teardown.sh
 ```

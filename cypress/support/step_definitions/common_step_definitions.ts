@@ -1,26 +1,88 @@
-import {After, Before, Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {checkSuccess, DockerCompose, DockerComposeOptions, EnvironmentSettings, timeouts} from "..";
-import {
-    LdesServer,
-    LdesServerSimulator,
-    LdesWorkbenchLdio,
-    TestMessageGenerator,
-    TestMessageSink,
-} from "../services";
-import {Fragment} from "../ldes";
-import {LdesClientWorkbench} from "../services/ldes-client-workbench";
-import {LdiLdesDiscoverer} from "../services/ldi-ldes-discoverer";
-import {PostgresRestApi} from "../services/postgres-rest-api";
+import { After, Before, Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { checkSuccess, DockerCompose, DockerComposeOptions, EnvironmentSettings, timeouts } from "..";
+import { LdesServer, LdesServerSimulator, LdesWorkbenchLdio, TestMessageGenerator, TestMessageSink } from "../services";
+import { Fragment } from "../ldes";
+import { LdiLdesDiscoverer } from "../services/ldi-ldes-discoverer";
+import { PostgresRestApi } from "../services/postgres-rest-api";
 
 let testContext: any;
+
+export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
+
+export function testPartialPath() {
+    return testContext && testContext.testPartialPath;
+}
+
+export function setAdditionalEnvironmentSetting(property: string, value: string) {
+    testContext.environment[property] = value;
+}
+
+Before(() => {
+    // log and cleanup if previous test failed (After is not run in this case!)
+    dockerCompose.cleanup().then(() => {
+        dockerCompose.initialize();
+        testContext = {
+            testPartialPath: '',
+            environment: {},
+            database: '',
+            collection: '',
+        }
+    })
+});
+
+After(() => {
+    dockerCompose.cleanup();
+});
+
+export const simulator = new LdesServerSimulator('http://localhost:9011');
+export const workbench = new LdesWorkbenchLdio('http://localhost:8081');
+export const sink = new TestMessageSink('http://localhost:9003');
+
+function run(script: string) {
+    const cmd = `cd ${testContext.testPartialPath} && chmod +x ./${script} && sh ./${script}`;
+    return cy.log(cmd).exec(cmd, { timeout: timeouts.slowAction, env: testContext.environment })
+        .then(result => expect(result.code).to.eql(0));
+}
+
+function startService(serviceName: string) {
+    const cmd = `cd ${testContext.testPartialPath} && docker compose up ${serviceName} -d --wait`;
+    return cy.log(cmd).exec(cmd, { timeout: timeouts.exec, env: testContext.environment })
+        .then(result => expect(result.code).to.eql(0));
+}
+
+Given('I have setup context {string}', (testPartialPath: string) => {
+    if (!testContext.testPartialPath) testContext.testPartialPath = testPartialPath;
+    return run('setup.sh');
+})
+
+Given('I have seeded and aliased the {string} simulator data set', (dataSet: string) => {
+    simulator.seed(Cypress.env(dataSet));
+    return simulator.postAlias(`${testContext.testPartialPath}/simulator/create-alias.json`);
+})
+
+When('I upload the LDIO {string}', (pipeline: string) => {
+    return workbench.upload(`${testContext.testPartialPath}/workbench/${pipeline}.yml`);
+})
+
+Then('the sink contains {int} members in collection {string}', (count: number, collectionName: string) => {
+    sink.checkCount(collectionName, count);
+})
+
+Then('I tear down the context', () => {
+    return run('teardown.sh');
+})
+
+When('I start the {string} service', (serviceName: string) => {
+    return startService(serviceName);
+})
+
+
+// TODO: check below this line
+
 const membersTable = 'members';
 const pagesTable = 'pages'
 
-export const dockerCompose = new DockerCompose(Cypress.env('userEnvironment'));
 export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
-export const clientWorkbench = new LdesClientWorkbench('http://localhost:8081');
-export const sink = new TestMessageSink('http://localhost:9003');
-export const simulator = new LdesServerSimulator('http://localhost:9011');
 export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
@@ -29,28 +91,6 @@ export const ldesDiscoverer = new LdiLdesDiscoverer();
 
 export const byPage = 'by-page';
 
-Before(() => {
-    // log and cleanup if previous test failed (After is not run in this case!)
-    // dockerCompose.logRunningContainers().then(() => 
-    dockerCompose.cleanup().then(() => {
-        dockerCompose.initialize();
-        testContext = {
-            testPartialPath: '',
-            additionalEnvironmentSettings: {},
-            database: '',
-            collection: '',
-        }
-    })
-    //);
-});
-
-After(() => {
-    dockerCompose.cleanup();
-});
-
-export function testPartialPath() {
-    return testContext && testContext.testPartialPath;
-}
 
 export function ensureRelationCount(fragment: Fragment, amount: number) {
     return waitForFragment(fragment, x => x.relations.length >= amount, `have at least ${amount} relations`);
@@ -59,7 +99,7 @@ export function ensureRelationCount(fragment: Fragment, amount: number) {
 export function setTargetUrl(targeturl: string) {
     const command = `echo ${targeturl} > ${testContext.testPartialPath}/data/TARGETURL`;
     return cy.log(command)
-        .exec(command, {log: true, failOnNonZeroExit: false})
+        .exec(command, { log: true, failOnNonZeroExit: false })
         .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
 }
 
@@ -81,7 +121,7 @@ export function obtainRootFragment(ldes: string, view: string) {
 
 export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => boolean, message: string) {
     return cy.waitUntil(() =>
-            fragment.visit().then(fragment => condition(fragment)),
+        fragment.visit().then(fragment => condition(fragment)),
         {
             timeout: timeouts.slowAction,
             interval: timeouts.check,
@@ -95,12 +135,6 @@ export function clientConnectorFailsOnStatusCode(code: number) {
 
 // Given stuff
 
-Given('environment variable {string} is defined as the hostname', (variable: string) => {
-    cy.exec('echo ldes-server').then(result => {
-        setAdditionalEnvironmentSetting(variable, result.stdout);
-    })
-})
-
 Given('we use context {string}', (composeFilePath: string) => {
     if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
 })
@@ -112,7 +146,7 @@ Given('the previously defined context is started', () => {
     const options: DockerComposeOptions = {
         dockerComposeFile: `${testContext.testPartialPath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,
-        additionalEnvironmentSettings: testContext.additionalEnvironmentSettings
+        environment: testContext.environment
     };
     dockerCompose.up(options);
 })
@@ -123,7 +157,7 @@ Given('context {string} is started', (composeFilePath: string) => {
     const options: DockerComposeOptions = {
         dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
         environmentFile: `${testContext.testPartialPath}/.env`,
-        additionalEnvironmentSettings: testContext.additionalEnvironmentSettings
+        environment: testContext.environment
     };
     dockerCompose.up(options);
 })
@@ -139,9 +173,15 @@ Given('I have aliased the data set', () => {
     simulator.postAlias(`${testContext.testPartialPath}/data/create-alias.json`);
 })
 
-export function setAdditionalEnvironmentSetting(property: string, value: string) {
-    testContext.additionalEnvironmentSettings[property] = value;
+
+export function createAndStartService(service: string, environment?: EnvironmentSettings) {
+    return dockerCompose.create(service, environment)
+        .then(() => dockerCompose.start(service, environment));
 }
+
+When('I start the JSON Data Generator', () => {
+    createAndStartService(jsonDataGenerator.serviceName).then(() => jsonDataGenerator.waitAvailable());
+})
 
 Given('the LDES server is available', () => {
     return server.waitAvailable();
@@ -170,7 +210,7 @@ Given('the LDIO workbench is available', () => {
 // When stuff
 
 When('I start the LDES Client LDIO workbench', () => {
-    return createAndStartService(clientWorkbench.serviceName).then(() => clientWorkbench.waitAvailable());
+    return createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
 })
 
 When('I start the LDIO workbench', () => {
@@ -205,19 +245,10 @@ When('I start the LDES Discoverer', () => {
     createAndStartService(ldesDiscoverer.serviceName);
 })
 
-export function createAndStartService(service: string, additionalEnvironmentSettings?: EnvironmentSettings) {
-    return dockerCompose.create(service, additionalEnvironmentSettings)
-        .then(() => dockerCompose.start(service, additionalEnvironmentSettings));
-}
 
 export function stopAndRemoveService(service: string) {
     return dockerCompose.stopContainerAndRemoveVolumesAndImage(service);
 }
-
-When('I start the JSON Data Generator', () => {
-    createAndStartService(jsonDataGenerator.serviceName, {JSON_DATA_GENERATOR_SILENT: false})
-        .then(() => jsonDataGenerator.waitAvailable());
-})
 
 When('the LDES contains {int} members', (count: number) => {
     postgres.checkCount(membersTable, count);
@@ -243,7 +274,7 @@ export function waitUntilMemberCountStable() {
     let previousCount: number;
     currentMemberCount().then(count => previousCount = count).then(count => cy.log(`Previous count: ${count}`));
     return cy.waitUntil(() =>
-            currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
+        currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
         {
             timeout: timeouts.fastAction,
             interval: timeouts.check,
@@ -269,10 +300,6 @@ Then('the fragment member count increases for view {string}', (view: string) => 
 
 Then('the {string} sink contains at least {int} members', (collectionName: string, count: number) => {
     sink.checkCount(collectionName, count, (x, y) => x >= y);
-})
-
-Then('the sink contains {int} members in collection {string}', (count: number, collectionName: string) => {
-    sink.checkCount(collectionName, count);
 })
 
 export function currentMemberCount() {

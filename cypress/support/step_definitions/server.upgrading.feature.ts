@@ -107,7 +107,7 @@ Then('the id of ldesmember has the collectionName {string} as prefix', (collecti
 Then('the migrated config matches the expected config {string}', (filePath: string) => {
     new EventStream(eventstreamsUrl).visit().then(page => {
         expect(page.success).to.be.true;
-        cy.fixture(`${filePath}`).then((content: string | object) => page.expectContent(content));
+        cy.fixture(filePath).then((content: string | object) => page.expectContent(content));
     });
 })
 

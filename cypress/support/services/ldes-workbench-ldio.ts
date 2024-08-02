@@ -9,6 +9,33 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
 
     constructor(public baseUrl: string, private _serviceName?: string) { }
 
+    upload(pipelinePath: string) {
+        return cy.readFile(pipelinePath)
+            .then(contents => cy.request({
+                method: 'POST', url: `${this.baseUrl}/admin/api/v1/pipeline`,
+                headers: { 'Content-Type': 'application/yaml' }, body: contents
+            }))
+            .then(response => expect(response.isOkStatusCode).to.be.true);
+    }
+
+    private hasVersionCount(containerId: string, count: number): any {
+        return cy.exec(`docker logs ${containerId}`).then(result => {
+            const logs = result.stdout;
+            const actualCount = (logs.match(new RegExp('http://purl.org/dc/terms/isVersionOf', 'g')) || []).length;
+            cy.log('Actual count: ' + actualCount).then(() => actualCount === count)
+        });
+    }
+
+    checkConsoleCount(count: number) {
+        return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
+            .then(result => {
+                const containerId = result.stdout;
+                return cy.waitUntil(() => this.hasVersionCount(containerId, count), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for member count to be ${count}` });
+            });
+    }
+
+    // TODO: check below this line
+
     public get serviceName() {
         return this._serviceName || 'ldio-workbench';
     }

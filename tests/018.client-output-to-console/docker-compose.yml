@@ -1,28 +1,43 @@
+networks:
+  ldes:
+    name: simulator-cli_network
+
 
 services:
   
   ldes-server-simulator:
     image: ghcr.io/informatievlaanderen/ldes-server-simulator:${LDES_SERVER_SIMULATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-simulator-cli}_ldes-server-simulator
+    container_name: simulator-cli_ldes-server-simulator
     environment:
       - BASEURL=http://ldes-server-simulator
     ports:
-      - ${LDES_SERVER_SIMULATOR_PORT:-9011}:80
+      - 9011:80
     networks:
       - ldes
+    healthcheck:
+      start_period: 15s
+      test: curl -f -s http://ldes-server-simulator
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
 
   ldio-workbench:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
-    container_name: ${USECASE_NAME:-simulator-cli}_ldio-workbench
+    container_name: simulator-cli_ldio-workbench
     volumes:
-      - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+      - ./workbench/config.yml:/ldio/application.yml:ro
     environment:
-      - SERVER_PORT=8080
+      - SERVER_PORT=80
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
+    ports:
+      - 8081:80
     networks:
       - ldes
-    profiles:
-      - delay-started
-
-networks:
-  ldes:
-    name: ${USECASE_NAME:-simulator-cli}_network
+    healthcheck:
+      start_period: 15s
+      test: wget -qO- http://ldio-workbench/actuator/health
+      interval: 3s
+      timeout: 3s
+      retries: 5

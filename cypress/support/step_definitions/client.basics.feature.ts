@@ -1,22 +1,15 @@
 /// <reference types="cypress" />
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { clientWorkbench, simulator, testPartialPath } from "./common_step_definitions";
+import {  When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { workbench, simulator, testPartialPath } from "./common_step_definitions";
 
-Then('the Client CLI contains {int} members', (count: number) => {
-    clientWorkbench.checkCount(count);
+When('I upload the simulator file: {string}', (file: string) => {
+    simulator.postFragment(`${testPartialPath()}/simulator/${file}.ttl`);
 })
 
-Given('I have uploaded the data files: {string}', (dataSet: string) => {
-    simulator.waitAvailable();
-    dataSet.split(',').forEach(baseName => simulator.postFragment(`${testPartialPath()}/data/${baseName}.ttl`));
+When('I upload the simulator file: {string} with a duration of {int} seconds', (file: string, seconds: number) => {
+    simulator.postFragment(`${testPartialPath()}/simulator/${file}.ttl`, seconds);
 })
 
-Given('I have uploaded the data files: {string} with a duration of {int} seconds', (files: string, seconds: number) => {
-    simulator.waitAvailable();
-    files.split(',').forEach(baseName => simulator.postFragment(`${testPartialPath()}/data/${baseName}.ttl`, seconds));
-})
-
-When('I upload the data files: {string} with a duration of {int} seconds', (files: string, seconds: number) => {
-    simulator.waitAvailable();
-    files.split(',').forEach(baseName => simulator.postFragment(`${testPartialPath()}/data/${baseName}.ttl`, seconds));
+Then('the client console contains {int} members', (count: number) => {
+    workbench.checkConsoleCount(count);
 })

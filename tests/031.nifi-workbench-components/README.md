@@ -24,73 +24,13 @@ Optionally, combine both tests in one E2E test.
 * RDF4J system for capturing observations (state objects)
 
 ## Test Setup
-0. Download and extract the latest LDI for NiFi components:
-    First set the version of the components and the download location:
-    ```bash
-    clear
-    export LDI_PROCESSORS_VERSION="2.9.0-SNAPSHOT"
-    export LDI_PROCESSORS_BUNDLE_URI="https://s01.oss.sonatype.org/service/local/repositories/snapshots/content/be/vlaanderen/informatievlaanderen/ldes/ldi/nifi/ldi-processors-bundle/2.9.0-SNAPSHOT/ldi-processors-bundle-2.9.0-20240724.102650-2-nar-bundle.jar"
-    ```
-    and then download and extract the processors:
-    ```bash
-    export DIRECTORY=$(pwd)
-    export LDI_PROCESSORS_BUNDLE_ARCHIVE=$DIRECTORY/temp/ldi-processors-bundle.jar
-    curl -s $LDI_PROCESSORS_BUNDLE_URI --output $LDI_PROCESSORS_BUNDLE_ARCHIVE
-    unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar
-    rm $LDI_PROCESSORS_BUNDLE_ARCHIVE
-    ```
+> **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-1. Run all systems except the message generator by executing the following (bash) command:
-    ```bash
-    clear
-    export LOCALHOST=$(hostname)
-    docker compose up -d --wait
-    ```
-
-2. Create LDES'es and their views using the [seed script](./config/seed.sh):
-    ```bash
-    chmod +x ./config/seed.sh
-    sh ./config/seed.sh
-    ```
-    > **Note** that this will create the following LDES'es and views:
-    ```bash
-    curl http://${LOCALHOST}:8080/observations
-    curl http://${LOCALHOST}:8080/observations/by-page
-    ```
-
-3. Upload and start the NiFi workflow: 
-    ```bash
-    # create workflow definition from template
-    export WORKFLOW_DEFINITION=$DIRECTORY/nifi-workflow.json
-    envsubst < $DIRECTORY/config/nifi-workflow-template.json > $WORKFLOW_DEFINITION
-
-    # generate client ID
-    export CLIENT=$(uuidgen)
-
-    # export all environment variables
-    export $(grep -v '^#' .env | xargs)
-    
-    # request access token
-    TOKEN=`curl -s -k -X POST "https://localhost:8443/nifi-api/access/token" -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "username=$NIFI_USER" --data-urlencode "password=$NIFI_PWD"` && export TOKEN
-
-    # upload the workflow
-    WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/root/process-groups/upload" -H "Authorization: Bearer $TOKEN" -F "groupName=\"nifi-workflow\"" -F "positionX=\"0\"" -F "positionY=\"0\"" -F "clientId=\"$CLIENT\"" -F "file=@\"$WORKFLOW_DEFINITION\""` && export WORKFLOW
-
-    # delete the workflow definition
-    rm $WORKFLOW_DEFINITION
-
-    # extract workflow uri and id
-    WORKFLOW_URI=`echo $WORKFLOW | grep -P 'https[^"]+' -o` && export WORKFLOW_URI
-    WORKFLOW_ID=`echo $WORKFLOW_URI | grep -P '[^/]+$' -o` && export WORKFLOW_ID
-
-    # start the workflow
-    curl -s -k -X PUT "https://localhost:8443/nifi-api/flow/process-groups/$WORKFLOW_ID" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{\"id\":\"$WORKFLOW_ID\",\"state\":\"RUNNING\"}"
-    ```
-
-    Now, verify that the NiFi HTTP listener is ready (it should answer `OK`):
-    ```bash
-    curl http://localhost:9005/observations/healthcheck
-    ```
+Setup and run all systems by executing the following (bash) command:
+```bash
+clear
+sh ./setup.sh
+```
 
 ## Test Execution
 1. Start the JSON Data Generator to start receiving `WaterQualityObserved` messages:
@@ -113,29 +53,16 @@ Optionally, combine both tests in one E2E test.
     The query should contain only 3 observation results linked to the 1 sensor we keep sending updates about. Therefor these values should increase in time as they are, in this example, linked to the index of a generated test message.
 
     ```bash
-    curl -s --location 'http://localhost:7200/repositories/observations' \
-    --header 'Accept: application/x-sparqlstar-results+json' \
-    --header 'Content-Type: application/x-www-form-urlencoded' \
-    --data-urlencode 'query=PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX sosa: <http://www.w3.org/ns/sosa/>
-    PREFIX omObservation: <http://def.isotc211.org/iso19156/2011/Observation#>
-    select * where { 
-        ?observation <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeatureCollection.member> [
-            omObservation:OM_Observation.observedProperty ?type ;
-            omObservation:OM_Observation.result [
-                <http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure.value> [
-                        <https://schema.org/value> ?result
-                    ] 
-                ]
-            ]
-    }'
+    RESULTS=$(curl -s http://localhost:7200/repositories/observations -H 'accept: application/x-sparqlstar-results+json' --data-urlencode query@./graphdb/query.rq | jq '.results.bindings')
+    echo $RESULTS | jq '.[].observation'
+    echo $RESULTS | jq '.[].result'
     ```
+
+    >**NOTE** that the observation values should all be the same. Likewise, the result values should also all be the same.
 
 ## Test Teardown
 
 Stop and destroy all systems
 ```bash
-docker compose rm -s -f -v test-message-generator
-docker compose down
-rm -rf ./temp/*.nar
+sh ./teardown.sh
 ```

@@ -10,7 +10,7 @@ export interface EnvironmentSettings {
 export interface DockerComposeOptions {
     dockerComposeFile: string,
     environmentFile: string,
-    additionalEnvironmentSettings: EnvironmentSettings
+    environment: EnvironmentSettings
 };
 
 export class DockerCompose {
@@ -37,10 +37,10 @@ export class DockerCompose {
             this._environmentFile = options.environmentFile;
         }
 
-        if (options.additionalEnvironmentSettings) {
+        if (options.environment) {
             this._environment = {
                 ...this._environment,
-                ...options.additionalEnvironmentSettings
+                ...options.environment
             };
         }
 
@@ -51,28 +51,17 @@ export class DockerCompose {
             .then(result => checkSuccess(result).then(success => this._isUp = success));
     }
 
-    // private get hasRunningContainers() {
-    //     return this._isUp || this._delayedServices.length;
-    // }
-
-    // public logRunningContainers() {
-    //     if (!this.hasRunningContainers) return cy.wrap(undefined);
-       
-    //     const cmd = './log-running-containers.sh';
-    //     return cy.log(cmd).exec(cmd).then(result => cy.task('log', result.stdout));
-    // }
-
     public cleanup() {
         this._delayedServices.reverse().forEach((x: string) => this.stopContainerAndRemoveVolumesAndImage(x));
         this._delayedServices = [];
         return this.down();
     }
 
-    public create(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
-        if (additionalEnvironmentSettings) {
+    public create(serviceName: string, environment?: EnvironmentSettings) {
+        if (environment) {
             this._environment = {
                 ...this._environment,
-                ...additionalEnvironmentSettings
+                ...environment
             };
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
@@ -86,11 +75,11 @@ export class DockerCompose {
             }));
     }
 
-    public start(serviceName: string, additionalEnvironmentSettings?: EnvironmentSettings) {
-        if (additionalEnvironmentSettings) {
+    public start(serviceName: string, environment?: EnvironmentSettings) {
+        if (environment) {
             this._environment = {
                 ...this._environment,
-                ...additionalEnvironmentSettings
+                ...environment
             };
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';

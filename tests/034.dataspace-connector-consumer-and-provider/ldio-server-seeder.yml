@@ -20,4 +20,4 @@ orchestrator:
         - name: Ldio:HttpOut
           config:
             content-type: application/n-quads
-            endpoint: http://ldes-server:8081/devices
+            endpoint: http://ldes-server:8080/devices

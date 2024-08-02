@@ -82,11 +82,10 @@ When('I start the {string} service', (serviceName: string) => {
 const membersTable = 'members';
 const pagesTable = 'pages'
 
-export const workbenchLdio = new LdesWorkbenchLdio('http://localhost:8081');
 export const postgres = new PostgresRestApi('http://localhost:9018');
 export const jsonDataGenerator = new TestMessageGenerator();
 export const server = new LdesServer('http://localhost:8080');
-export const protectedServer = new LdesServer('http://localhost:8081');
+export const protectedServer = new LdesServer('http://localhost:8082');
 export const ldesDiscoverer = new LdiLdesDiscoverer();
 
 export const byPage = 'by-page';
@@ -130,7 +129,7 @@ export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => 
 }
 
 export function clientConnectorFailsOnStatusCode(code: number) {
-    workbenchLdio.waitForDockerLog(code.toString())
+    workbench.waitForDockerLog(code.toString())
 }
 
 // Given stuff
@@ -204,41 +203,27 @@ Given('the LDES Server Simulator is available', () => {
 })
 
 Given('the LDIO workbench is available', () => {
-    return workbenchLdio.waitAvailable();
+    return workbench.waitAvailable();
 })
 
 // When stuff
 
 When('I start the LDES Client LDIO workbench', () => {
-    return createAndStartService(workbenchLdio.serviceName).then(() => workbenchLdio.waitAvailable());
+    return createAndStartService(workbench.serviceName).then(() => workbench.waitAvailable());
 })
 
 When('I start the LDIO workbench', () => {
-    return createAndStartService(workbenchLdio.serviceName)
-        .then(() => workbenchLdio.waitAvailable())
-        .then(() => workbenchLdio.waitForPipelinesRunning());
+    return createAndStartService(workbench.serviceName)
+        .then(() => workbench.waitAvailable())
+        .then(() => workbench.waitForPipelinesRunning());
 })
 
-When('I pause the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
-    switch (workbench) {
-        case 'LDIO': {
-            workbenchLdio.pause(pipeline);
-            break;
-        }
-        default:
-            throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I pause the {string} pipeline on the LDIO workbench', (pipeline: string) => {
+    workbench.pause(pipeline);
 })
 
-When('I resume the {string} pipeline on the {string} workbench', (pipeline: string, workbench: string) => {
-    switch (workbench) {
-        case 'LDIO': {
-            workbenchLdio.resume(pipeline);
-            break;
-        }
-        default:
-            throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I resume the {string} pipeline on the LDIO workbench', (pipeline: string) => {
+    workbench.resume(pipeline);
 })
 
 When('I start the LDES Discoverer', () => {

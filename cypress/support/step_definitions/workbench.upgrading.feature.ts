@@ -3,79 +3,37 @@ import { createAndStartService, stopAndRemoveService, setTargetUrl, waitUntilMem
 import { LdesWorkbenchLdio } from "../services";
 
 const oldLdioWorkbench = new LdesWorkbenchLdio('http://localhost:8081', 'old-ldio-workbench');
-const newLdioWorkbench = new LdesWorkbenchLdio('http://localhost:8082', 'new-ldio-workbench');
+const newLdioWorkbench = new LdesWorkbenchLdio('http://localhost:8083', 'new-ldio-workbench');
 
-Given('the old {string} workbench is available', (workbench) => {
-    switch(workbench) {
-        case 'LDIO': {
-            oldLdioWorkbench.waitAvailable();
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+Given('the old LDIO workbench is available', () => {
+    oldLdioWorkbench.waitAvailable();
 })
 
-When('I start the new {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'LDIO': {
-            createAndStartService(newLdioWorkbench.serviceName)
-                .then(() => newLdioWorkbench.waitAvailable())
-                .then(() => newLdioWorkbench.waitForPipelinesRunning());
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I start the new LDIO workbench', () => {
+    createAndStartService(newLdioWorkbench.serviceName)
+        .then(() => newLdioWorkbench.waitAvailable())
+        .then(() => newLdioWorkbench.waitForPipelinesRunning());
 })
 
-When('I set the TARGETURL to the old {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'LDIO': {
-            setTargetUrl(`http://${oldLdioWorkbench.serviceName}:8080/upgrade-pipeline`);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I set the TARGETURL to the old LDIO workbench', () => {
+    setTargetUrl(`http://${oldLdioWorkbench.serviceName}:8080/upgrade-pipeline`);
 })
 
-When('I set the TARGETURL to the new {string} workbench', (workbench) => {
-    switch(workbench) {
-        case 'LDIO': {
-            setTargetUrl(`http://${newLdioWorkbench.serviceName}:8080/upgrade-pipeline`);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I set the TARGETURL to the new LDIO workbench', () => {
+    setTargetUrl(`http://${newLdioWorkbench.serviceName}:8080/upgrade-pipeline`);
 })
 
-When('I pause the {string} pipeline on the new {string} workbench', (pipeline: string, workbench: string) => {
-    switch(workbench) {
-        case 'LDIO': {
-            newLdioWorkbench.pause(pipeline);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I pause the {string} pipeline on the new LDIO workbench', (pipeline: string) => {
+    newLdioWorkbench.pause(pipeline);
 })
 
-When('I resume the {string} pipeline on the new {string} workbench', (pipeline: string, workbench: string) => {
-    switch(workbench) {
-        case 'LDIO': {
-            newLdioWorkbench.resume(pipeline);
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+When('I resume the {string} pipeline on the new LDIO workbench', (pipeline: string) => {
+    newLdioWorkbench.resume(pipeline);
 })
 
-When('I bring the old {string} workbench down', (workbench) => {
+When('I bring the old LDIO workbench down', () => {
     let serviceName: string;
-    switch(workbench) {
-        case 'LDIO': {
-            serviceName = oldLdioWorkbench.serviceName;
-            break;
-        }
-        default: throw new Error(`Unknown workbench '${workbench}'`);
-    }
+    serviceName = oldLdioWorkbench.serviceName;
     stopAndRemoveService(serviceName);
 })
 

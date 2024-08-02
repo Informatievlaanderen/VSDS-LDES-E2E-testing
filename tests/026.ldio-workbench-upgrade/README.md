@@ -48,7 +48,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 2. Stop data generator, change destination path (TARGETURL) to new http-in and restart data generator:
     ```bash
-    curl http://localhost:8082/admin/api/v1/pipeline/upgrade-pipeline/halt -X POST
+    curl http://localhost:8083/admin/api/v1/pipeline/upgrade-pipeline/halt -X POST
     echo http://new-ldio-workbench:8080/upgrade-pipeline > ./data/TARGETURL
     ```
 
@@ -68,7 +68,7 @@ This test uses a docker environment a data generator simulating the system pushi
 
 5. Resume new LDI-output
     ```bash
-    curl http://localhost:8082/admin/api/v1/pipeline/upgrade-pipeline/resume -X POST
+    curl http://localhost:8083/admin/api/v1/pipeline/upgrade-pipeline/resume -X POST
     ```
 
 6. Verify last fragment member count increases:

@@ -20,7 +20,7 @@ services:
       - ./config/ldes-server.config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
-      - 8081:8080
+      - 8082:8080
     networks:
       - ldes
     depends_on:
@@ -55,7 +55,7 @@ services:
     image: nginx:${NGINX_TAG:-stable}
     container_name: ${USECASE_NAME:-setup-caching}_nginx
     ports:
-      - ${NGINX_PORT:-8080}:8080
+      - 8080:8080
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/fwd-ldes-server.conf:ro
     depends_on:

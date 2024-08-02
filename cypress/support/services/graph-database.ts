@@ -1,21 +1,13 @@
 /// <reference types="cypress" />
 
-import { timeouts } from "../common";
-import { CanCheckAvailability } from "./interfaces";
-export class GraphDatabase implements CanCheckAvailability {
+export class GraphDatabase {
 
-  constructor(private baseUrl: string, private _serviceName?: string) { }
+  constructor(private baseUrl: string) { }
 
-  public get serviceName() {
-    return this._serviceName || 'graphdb';
+  public query(repository: string, sparqlQueryFile: string) {
+    const cmd = `curl -s ${this.baseUrl}/repositories/${repository} -H 'accept: application/x-sparqlstar-results+json' --data-urlencode query@${sparqlQueryFile}`
+    return cy.log(cmd).exec(cmd)
+      .then(x => JSON.parse(x.stdout))
+      .then(x => x.results.bindings);
   }
-
-  public waitAvailable(collection: string = 'observations') {
-    return cy.waitUntil(() => this.isReady(collection), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
-  }
-
-  private isReady(collection:string) {
-    return cy.exec(`curl --head --header 'Accept: text/plain' ${this.baseUrl}/repositories/${collection}/size`, { failOnNonZeroExit: false }).then(exec => exec.code === 0);
-  }
-
 }

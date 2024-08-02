@@ -7,3 +7,4 @@ export * from './member-generator';
 export * from './postgres-rest-api';
 export * from './test-message-generator';
 export * from './test-message-sink';
+export * from './graph-database';

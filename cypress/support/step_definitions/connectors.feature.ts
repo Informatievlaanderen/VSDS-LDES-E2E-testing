@@ -1,5 +1,5 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {clientConnectorFailsOnStatusCode, clientWorkbench, testPartialPath} from "./common_step_definitions";
+import {clientConnectorFailsOnStatusCode, workbench, testPartialPath} from "./common_step_definitions";
 import {checkSuccess, timeouts} from "../common";
 
 let policyId: string;
@@ -42,11 +42,11 @@ When('The federated catalog is registered with the authority', () => {
 })
 
 Then('The LDES Client is waiting for the token', () => {
-    clientWorkbench.waitForDockerLog("waiting for token")
+    workbench.waitForDockerLog("waiting for token")
 })
 
 Then('The LDES Client is processing the LDES', () => {
-    clientWorkbench.waitForDockerLog("LdiConsoleOut")
+    workbench.waitForDockerLog("LdiConsoleOut")
 })
 
 When('I get the policyId from the consumer catalog', () => {

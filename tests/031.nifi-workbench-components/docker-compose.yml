@@ -1,13 +1,13 @@
 
 networks:
   ldes:
-    name: ${USECASE_NAME:-nifi-components}_ldes_network
+    name: nifi-components_ldes_network
     
 
 services:
 
   test-message-generator:
-    container_name: ${USECASE_NAME:-nifi-components}_test-message-generator
+    container_name: nifi-components_test-message-generator
     image: ghcr.io/informatievlaanderen/test-message-generator:${TEST_MESSAGE_GENERATOR_TAG:-latest}
     environment:
       - TARGETURL=http://nifi-workbench:9005/observations
@@ -16,7 +16,7 @@ services:
       - TEMPLATEFILE=/tmp/data/template.json
       - MIMETYPE=application/json
     volumes:
-      - ./config/template.json:/tmp/data/template.json:ro
+      - ./generator/template.json:/tmp/data/template.json:ro
     networks:
       - ldes
     profiles:
@@ -24,15 +24,15 @@ services:
 
 
   nifi-workbench:
-    container_name: ${USECASE_NAME:-nifi-components}_nifi-workbench
+    container_name: nifi-components_nifi-workbench
     image: apache/nifi:${NIFI_TAG:-2.0.0-M4}
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=${NIFI_USER}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PWD}
       - NIFI_WEB_HTTPS_PORT=8443
     volumes:
-      - ./scripts/check-healthy.sh:/opt/nifi/nifi-current/bin/check-healthy.sh:ro
-      - ./scripts/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
+      - ./workbench/check-healthy.sh:/opt/nifi/nifi-current/bin/check-healthy.sh:ro
+      - ./workbench/nifi-env.sh:/opt/nifi/nifi-current/bin/nifi-env.sh:ro
       - ./temp:/opt/nifi/nifi-current/nar_extensions:rw
     ports:
       - 8443:8443
@@ -40,19 +40,21 @@ services:
     networks:
       - ldes
     extra_hosts:
-      - ${LOCALHOST}:host-gateway
+      - ${HOSTNAME}:host-gateway
     healthcheck:
-      test: ["CMD", "/opt/nifi/nifi-current/bin/check-healthy.sh"]
+      start_period: 15s
+      test: /opt/nifi/nifi-current/bin/check-healthy.sh
       interval: 3s
       timeout: 3s
       retries: 20
 
+
   ldes-server:
-    container_name: ${USECASE_NAME:-nifi-components}_ldes-server
+    container_name: nifi-components_ldes-server
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     environment:
       - SIS_DATA=/tmp
-      - LDESSERVER_HOSTNAME=http://${LOCALHOST}:8080
+      - LDESSERVER_HOSTNAME=http://${HOSTNAME}:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
@@ -60,7 +62,7 @@ services:
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
     volumes:
-      - ./config/ldes-server.config.yml:/application.yml:ro
+      - ./server/config.yml:/application.yml:ro
       - ../../data/epsg:/tmp/Databases:rw
     ports:
       - 8080:8080
@@ -69,23 +71,24 @@ services:
     depends_on:
       - ldes-postgres
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://ldes-server:8080/actuator/health"]
+      start_period: 30s
+      test: wget -qO- http://ldes-server:8080/actuator/health
       interval: 12s
       timeout: 3s
       retries: 20
 
 
   ldes-postgres:
-    container_name: ${USECASE_NAME:-nifi-components}_ldes-postgres
+    container_name: nifi-components_ldes-postgres
     image: postgres:14-alpine
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PWD}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 5s
       timeout: 5s
       retries: 5
@@ -95,23 +98,37 @@ services:
 
 
   postgrest:
-    container_name: ${USECASE_NAME:-nifi-components}_postgres-rest-api
-    image: postgrest/postgrest:latest
+    container_name: nifi-components_postgres-rest-api
+    image: vsds/postgrest:latest
+    build:
+      dockerfile_inline: |
+        FROM alpine:latest
+        COPY --from=postgrest/postgrest /bin/postgrest /bin
+        RUN apk update && apk upgrade
+        RUN apk add curl
+        EXPOSE 3000
+        USER 1000
+        CMD [ "/bin/postgrest" ]
     ports:
-      - "9018:3000"
+      - 9018:3000
     environment:
       - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
       - PGRST_DB_ANON_ROLE=admin
       - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
-
     depends_on:
       - ldes-postgres
     networks:
       - ldes
+    healthcheck:
+      start_period: 15s
+      test: 'curl -s -f -I http://postgrest:3000'
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
 
   test-message-sink:
-    container_name: ${USECASE_NAME:-nifi-components}_test-message-sink
+    container_name: nifi-components_test-message-sink
     image: ghcr.io/informatievlaanderen/test-message-sink:${TEST_MESSAGE_SINK_TAG:-latest}
     environment:
       - SILENT=false
@@ -121,28 +138,49 @@ services:
       - COLLECTION_NAME=observations
       - MEMBER_TYPE=http://www.w3.org/ns/sosa/ObservationCollection
     ports:
-      - ${TEST_MESSAGE_SINK_PORT:-9003}:80
+      - 9003:80
     networks:
       - ldes
-  
+    healthcheck:
+      start_period: 15s
+      test: curl -f -s http://test-message-sink
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
 
   ldes-mongodb:
-    container_name: ${USECASE_NAME:-nifi-components}_ldes-mongodb
+    container_name: nifi-components_ldes-mongodb
     image: mongo:${MONGODB_TAG:-latest}
     ports:
-      - ${MONGODB_PORT:-27017}:27017
+      - 27017:27017
     networks:
       - ldes
+    healthcheck:
+      start_period: 15s
+      test: echo 'db.runCommand("ping").ok' | mongosh ldes-mongodb:27017/test --quiet
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
 
   ldes-graphdb:
-    container_name: ${USECASE_NAME:-nifi-components}_graphdb
-    image: khaller/graphdb-free:${GRAPHDB_TAG:-10.6.2}
+    container_name: nifi-components_graphdb
+    image: vsds/graphdb-free:${GRAPHDB_TAG:-10.6.2}
+    build:
+      dockerfile_inline: |
+        FROM khaller/graphdb-free:${GRAPHDB_TAG:-10.6.2}
+        RUN apt update && apt upgrade -y
+        RUN apt install -y curl
     volumes:
-      - ./config/graphdb/config.ttl:/repository.init/observations/config.ttl:ro
+      - ./graphdb/config.ttl:/repository.init/observations/config.ttl:ro
     ports:
-      - ${GRAPHDB_PORT:-7200}:7200
+      - 7200:7200
     networks:
       - ldes
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "-s", "http://ldes-graphdb:7200/repositories"]
+    healthcheck:
+      start_period: 15s
+      test: 'curl -s -f "http://ldes-graphdb:7200/repositories/observations/size"'
+      interval: 3s
+      timeout: 3s
+      retries: 10

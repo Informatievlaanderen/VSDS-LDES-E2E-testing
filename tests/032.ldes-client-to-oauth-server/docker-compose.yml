@@ -45,7 +45,7 @@ services:
     networks:
       - ldes
     ports:
-      - 8081:8080 # needed for admin API
+      - 8082:8080 # needed for admin API
     depends_on:
       - ldes-postgres
     healthcheck:
@@ -58,7 +58,7 @@ services:
     container_name: ${USECASE_NAME:-ldes-oauth-client}_ldes-mongodb
     image: mongo:${MONGODB_TAG:-latest}
     ports:
-      - ${MONGODB_PORT:-27017}:27017
+      - 27017:27017
     networks:
       - ldes
 
@@ -84,7 +84,7 @@ services:
     container_name: postgres-rest-api
     image: postgrest/postgrest:latest
     ports:
-      - "9018:3000"
+      - 9018:3000
     environment:
       - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
       - PGRST_DB_ANON_ROLE=${POSTGRES_USER}
@@ -115,7 +115,7 @@ services:
     image: nginx:${NGINX_TAG:-stable}
     container_name: ${USECASE_NAME:-ldes-oauth-client}_nginx
     ports:
-      - ${NGINX_PORT:-8080}:8080
+      - 8080:8080
       - 8443:8443
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro

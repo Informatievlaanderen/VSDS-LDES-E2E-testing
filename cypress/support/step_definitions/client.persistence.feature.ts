@@ -1,16 +1,16 @@
 /// <reference types="cypress" />
 
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { workbenchLdio, dockerCompose, sink } from "./common_step_definitions";
+import { workbench, dockerCompose, sink } from "./common_step_definitions";
 
 // When stuff
 
 When('I stop the LDES Client LDIO workbench', () => {
-    dockerCompose.stop(workbenchLdio.serviceName);
+    dockerCompose.stop(workbench.serviceName);
 })
 
 When('I restart the LDES Client LDIO workbench', () => {
-    dockerCompose.start(workbenchLdio.serviceName);
+    dockerCompose.start(workbench.serviceName);
 })
 
 // Then stuff

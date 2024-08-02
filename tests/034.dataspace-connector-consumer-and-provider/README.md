@@ -81,7 +81,7 @@ Seed the LDES Server by starting the message generator:
 Verify that messages are correctly ingested by the server:
 
 ```bash
-curl http://localhost:8081/devices/paged?pageNumber=1
+curl http://localhost:8082/devices/paged?pageNumber=1
 ```
 
 ### Provider connector
@@ -324,7 +324,7 @@ curl -d '{
            "dataAddress": {
              "type": "HttpData",
              "name": "Test asset",
-             "baseUrl": "http://ldes-server:8081/devices",
+             "baseUrl": "http://ldes-server:8080/devices",
              "proxyPath": "true",
              "proxyQueryParams": "true",
              "contenttype": "application/n-quads",
@@ -662,7 +662,7 @@ Before executing the request, insert the contract agreement ID from the previous
 > datasource
 
 ```bash
-curl -X POST "http://localhost:8082/client-pipeline/transfer" \
+curl -X POST "http://localhost:8081/client-pipeline/transfer" \
     -H "Content-Type: application/json" \
     -d '{
         "@context": {
@@ -679,7 +679,7 @@ curl -X POST "http://localhost:8082/client-pipeline/transfer" \
           "type": "HttpProxy"
         },
         "privateProperties": {
-          "receiverHttpEndpoint" : "http://ldio-workbench:8082/client-pipeline/token"
+          "receiverHttpEndpoint" : "http://ldio-workbench:8080/client-pipeline/token"
         }
     }' \
     -s | jq

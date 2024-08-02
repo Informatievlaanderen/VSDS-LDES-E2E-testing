@@ -34,7 +34,7 @@ curl --fail -d '{
            "dataAddress": {
              "type": "HttpData",
              "name": "Test asset",
-             "baseUrl": "http://ldes-server:8081/devices",
+             "baseUrl": "http://ldes-server:8080/devices",
              "proxyPath": "true",
              "proxyQueryParams": "true",
              "contenttype": "application/n-quads",

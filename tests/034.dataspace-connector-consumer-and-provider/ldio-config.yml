@@ -7,7 +7,7 @@ orchestrator:
         config:
           urls: http://consumer-connector:29291/public
           connector-transfer-url: http://consumer-connector:29193/management/v2/transferprocesses
-          proxy-url-to-replace: http://localhost:8081/devices
+          proxy-url-to-replace: http://localhost:8082/devices
           proxy-url-replacement: http://consumer-connector:29291/public
           source-format: application/n-quads
       outputs:

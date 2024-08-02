@@ -10,7 +10,7 @@ Feature: LDES Server Upgrading
     And the LDES contains at least 26 members in the old database
     And the old ldesfragment collection is structured as expected
     And the old ldesmember collection is structured as expected
-    When I pause the 'ngsi-device' pipeline on the 'LDIO' workbench
+    When I pause the 'ngsi-device' pipeline on the LDIO workbench
     And the old server is done processing
     And I remember the last fragment member count for view 'devices-by-time'
     And I bring the old server down
@@ -24,6 +24,6 @@ Feature: LDES Server Upgrading
     And the view collection is upgraded as expected
     And the shacl_shape collection is upgraded as expected
     And the migrated config matches the expected config 'test-021/expected_config.ttl'
-    When I resume the 'ngsi-device' pipeline on the 'LDIO' workbench
+    When I resume the 'ngsi-device' pipeline on the LDIO workbench
     Then the LDES member count increases
     And the fragment member count increases for view 'devices-by-time'

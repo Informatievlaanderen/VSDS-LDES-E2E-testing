@@ -75,7 +75,7 @@ export class DockerCompose {
             }));
     }
 
-    public start(serviceName: string, environment?: EnvironmentSettings) {
+    public start(serviceName: string, cwd: string, environment?: EnvironmentSettings) {
         if (environment) {
             this._environment = {
                 ...this._environment,
@@ -84,14 +84,14 @@ export class DockerCompose {
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
         //NOTE: we cannot use docker compose start because this doesn't work on Mac
-        const command = `docker compose ${environmentFile} up ${serviceName} -d`;
+        const command = `cd ${cwd} && docker compose ${environmentFile} up ${serviceName} -d`;
         return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.exec })
             .then(result => checkSuccess(result).then(success => expect(success).to.be.true));
     }
 
-    public stop(serviceName: string) {
+    public stop(serviceName: string, cwd: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} stop ${serviceName}`;
+        const command = `cd ${cwd} && docker compose ${environmentFile} stop ${serviceName}`;
         return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.exec })
             .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
             .then(() => this.waitServiceStopped(serviceName));

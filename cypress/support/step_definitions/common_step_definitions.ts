@@ -175,7 +175,7 @@ Given('I have aliased the data set', () => {
 
 export function createAndStartService(service: string, environment?: EnvironmentSettings) {
     return dockerCompose.create(service, environment)
-        .then(() => dockerCompose.start(service, environment));
+        .then(() => dockerCompose.start(service, testPartialPath(), environment));
 }
 
 When('I start the JSON Data Generator', () => {

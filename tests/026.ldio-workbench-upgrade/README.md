@@ -14,10 +14,10 @@ This test uses a docker environment a data generator simulating the system pushi
     ```
     Press `CTRL-C` to stop following the log.
 
-   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./server/seed.sh) to setup the LDES with its views:
    ```bash
-   chmod +x ./config/seed.sh
-   sh ./config/seed.sh
+   chmod +x ./server/seed.sh
+   sh ./server/seed.sh
    ```
 
 2. Start the data generator pushing JSON-LD messages (based on a single message [template](./data/device.template.json)) to the old http listener:

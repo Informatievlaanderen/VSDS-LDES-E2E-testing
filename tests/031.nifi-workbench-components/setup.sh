@@ -54,8 +54,8 @@ WORKFLOW=`curl -s -k -X POST "https://localhost:8443/nifi-api/process-groups/roo
 rm $WORKFLOW_DEFINITION
 
 # extract workflow uri and id
-WORKFLOW_URI=`echo $WORKFLOW | grep -P 'https[^"]+' -o` && export WORKFLOW_URI
-WORKFLOW_ID=`echo $WORKFLOW_URI | grep -P '[^/]+$' -o` && export WORKFLOW_ID
+WORKFLOW_URI=`echo $WORKFLOW | egrep -i 'https[^"]+' -o` && export WORKFLOW_URI
+WORKFLOW_ID=`echo $WORKFLOW_URI | egrep -i '[^/]+$' -o` && export WORKFLOW_ID
 
 # start the workflow
 curl -s -k -X PUT "https://localhost:8443/nifi-api/flow/process-groups/$WORKFLOW_ID" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{\"id\":\"$WORKFLOW_ID\",\"state\":\"RUNNING\"}"

@@ -104,7 +104,7 @@ services:
       - 9018:3000
     environment:
       - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
-      - PGRST_DB_ANON_ROLE=admin
+      - PGRST_DB_ANON_ROLE=${POSTGRES_USER}
       - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
     depends_on:
       - ldes-postgres

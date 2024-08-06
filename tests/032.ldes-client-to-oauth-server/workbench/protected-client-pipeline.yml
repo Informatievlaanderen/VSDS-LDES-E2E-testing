@@ -1,0 +1,19 @@
+name: protected-client-pipeline
+description: "This pipeline uses a LDES client to read a protected LDES and send the members as N-Quads to a sink"
+input:
+  name: Ldio:LdesClient
+  config:
+    urls: http://localhost:8080/devices
+    auth:
+      type: OAUTH2_CLIENT_CREDENTIALS
+      client-id: clientId
+      client-secret: secret
+      token-endpoint: http://mock-oauth2-server:8080/default/token
+  adapter:
+    name: Ldio:RdfAdapter
+outputs:
+  - name: Ldio:HttpOut
+    config:
+      endpoint: http://test-message-sink/member
+      rdf-writer:
+        content-type: application/n-quads

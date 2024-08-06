@@ -14,6 +14,7 @@ export interface DockerComposeOptions {
 };
 
 export class DockerCompose {
+    private _testPartialPath: string;
     private _isUp: boolean;
     private _environmentFile: string;
     private _environment: object;
@@ -22,13 +23,16 @@ export class DockerCompose {
     constructor(private userEnvironment: EnvironmentSettings) { }
 
     public initialize() {
+        this._testPartialPath = '';
         this._environment = this.userEnvironment || {};
         this._environmentFile = '';
         this._isUp = false;
         this._delayedServices = [];
     }
 
-    public up(options: Partial<DockerComposeOptions>) {
+    public up(testPartialPath: string, options: Partial<DockerComposeOptions>) {
+        this._testPartialPath = testPartialPath;
+
         if (options.dockerComposeFile) {
             this._environment['COMPOSE_FILE'] = options.dockerComposeFile;
         }
@@ -45,7 +49,7 @@ export class DockerCompose {
         }
 
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} up -d --wait`;
+        const command = `cd ${this._testPartialPath} && docker compose ${environmentFile} up -d --wait`;
         return cy.log(command)
             .exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.dockerPull })
             .then(result => checkSuccess(result).then(success => this._isUp = success));
@@ -65,7 +69,7 @@ export class DockerCompose {
             };
         }
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} create ${serviceName}`;
+        const command = `cd ${this._testPartialPath} && docker compose ${environmentFile} create ${serviceName}`;
         return cy.log(this.userEnvironment ? `Using user environment: ${this.userEnvironment}` : 'No user env.')
             .log(command)
             .exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.dockerPull })
@@ -108,7 +112,7 @@ export class DockerCompose {
     private down() {
         if (this._isUp) {
             const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-            const command = `docker compose ${environmentFile} down`;
+            const command = `cd ${this._testPartialPath} && docker compose ${environmentFile} down`;
             return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.exec })
                 .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
                 .then(() => this.waitNoContainersRunning().then(() => this._isUp = false));
@@ -119,19 +123,19 @@ export class DockerCompose {
 
     public stopContainerAndRemoveVolumesAndImage(serviceName: string) {
         const environmentFile = this._environmentFile ? `--env-file ${this._environmentFile}` : '';
-        const command = `docker compose ${environmentFile} rm --stop --force --volumes ${serviceName}`;
+        const command = `cd ${this._testPartialPath} && docker compose ${environmentFile} rm --stop --force --volumes ${serviceName}`;
         return cy.log(command).exec(command, { log: true, env: this._environment, failOnNonZeroExit: false, timeout: timeouts.exec })
             .then(result => checkSuccess(result).then(success => expect(success).to.be.true))
             .then(() => this.waitServiceStopped(serviceName));
     }
 
     createVolume(volumeName: string) {
-        const cmd = `docker volume create ${volumeName}`;
+        const cmd = `cd ${this._testPartialPath} && docker volume create ${volumeName}`;
         cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => checkSuccess(result));
     }
 
     removeVolume(volumeName: string) {
-        const cmd = `docker volume rm ${volumeName}`;
+        const cmd = `cd ${this._testPartialPath} && docker volume rm ${volumeName}`;
         cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => checkSuccess(result));
     }
 }

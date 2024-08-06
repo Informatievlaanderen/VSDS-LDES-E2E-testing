@@ -17,7 +17,7 @@ const parkAndRideLdes = 'occupancy';
 
 Given('I configure the GTFS2LDES service in context {string}', (path: string) => {
     const cmd = `cp ${path}/config/gtfs2ldes.config.json ${path}/gtfs/config.json && chmod 0777 ${path}/gtfs/config.json`
-    return cy.exec(cmd, {log: true});
+    return cy.log(cmd).exec(cmd);
 })
 
 // When

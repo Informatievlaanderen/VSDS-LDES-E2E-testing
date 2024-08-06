@@ -99,16 +99,7 @@ services:
 
   postgrest:
     container_name: nifi-components_postgres-rest-api
-    image: vsds/postgrest:latest
-    build:
-      dockerfile_inline: |
-        FROM alpine:latest
-        COPY --from=postgrest/postgrest /bin/postgrest /bin
-        RUN apk update && apk upgrade
-        RUN apk add curl
-        EXPOSE 3000
-        USER 1000
-        CMD [ "/bin/postgrest" ]
+    image: postgrest/postgrest:latest
     ports:
       - 9018:3000
     environment:
@@ -119,12 +110,6 @@ services:
       - ldes-postgres
     networks:
       - ldes
-    healthcheck:
-      start_period: 15s
-      test: 'curl -s -f -I http://postgrest:3000'
-      interval: 3s
-      timeout: 3s
-      retries: 5
 
 
   test-message-sink:

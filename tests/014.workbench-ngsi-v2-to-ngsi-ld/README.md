@@ -14,10 +14,10 @@ The test verifies that the (LDIO) Workbench can convert IoW messages formatted a
     ```
     Press `CTRL-C` to stop following each log.
 
-   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh) to setup the LDES with its views:
+   > **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./server/seed.sh) to setup the LDES with its views:
    ```bash
-   chmod +x ./config/seed.sh
-   sh ./config/seed.sh
+   chmod +x ./server/seed.sh
+   sh ./server/seed.sh
    ```
 
 2. Start the workflow containing the LDES Client

@@ -5,11 +5,11 @@ This scenario verifies that the LDES server can ingest GTFS and can keep in sync
 To run all systems except the GTFS to LDES convertor by executing the following (bash) command:
 ```bash
 clear
-chmod +x ./config/seed.sh
+chmod +x ./server/seed.sh
 cp ./config/gtfs2ldes.config.json ./gtfs/config.json
 chmod 0777 ./gtfs/config.json
 docker compose up -d --wait
-sh ./config/seed.sh
+sh ./server/seed.sh
 ```
 > **Notes**:
 > * if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.

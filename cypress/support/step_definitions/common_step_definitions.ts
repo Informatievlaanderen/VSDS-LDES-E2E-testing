@@ -143,22 +143,22 @@ Given('the previously defined context is started', () => {
         throw new Error("No context defined previously");
 
     const options: DockerComposeOptions = {
-        dockerComposeFile: `${testContext.testPartialPath}/docker-compose.yml`,
-        environmentFile: `${testContext.testPartialPath}/.env`,
+        dockerComposeFile: '',
+        environmentFile: '',
         environment: testContext.environment
     };
-    dockerCompose.up(options);
+    dockerCompose.up(testContext.testPartialPath, options);
 })
 
-Given('context {string} is started', (composeFilePath: string) => {
-    if (!testContext.testPartialPath) testContext.testPartialPath = composeFilePath;
+Given('context {string} is started', (testPartialPath: string) => {
+    if (!testContext.testPartialPath) testContext.testPartialPath = testPartialPath;
 
     const options: DockerComposeOptions = {
-        dockerComposeFile: `${composeFilePath}/docker-compose.yml`,
-        environmentFile: `${testContext.testPartialPath}/.env`,
+        dockerComposeFile: '',
+        environmentFile: '',
         environment: testContext.environment
     };
-    dockerCompose.up(options);
+    dockerCompose.up(testPartialPath, options);
 })
 
 Given('I have aliased the {string} simulator data set', (dataSet: string) => {
@@ -175,7 +175,7 @@ Given('I have aliased the data set', () => {
 
 export function createAndStartService(service: string, environment?: EnvironmentSettings) {
     return dockerCompose.create(service, environment)
-        .then(() => dockerCompose.start(service, environment));
+        .then(() => dockerCompose.start(service, testPartialPath(), environment));
 }
 
 When('I start the JSON Data Generator', () => {

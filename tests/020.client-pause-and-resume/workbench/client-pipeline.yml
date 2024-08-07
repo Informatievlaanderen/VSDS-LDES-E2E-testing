@@ -1,0 +1,16 @@
+name: client-pipeline
+description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-triples to a message sink"
+input:
+  name: Ldio:LdesClient
+  adapter:
+    name: Ldio:RdfAdapter
+  config:
+    urls: http://ldes-server-simulator/ldes/occupancy
+    state: sqlite
+    keep-state: true
+outputs:
+  - name: Ldio:HttpOut
+    config:
+      endpoint: http://test-message-sink/member
+      rdf-writer:
+        content-type: application/n-triples

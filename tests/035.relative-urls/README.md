@@ -14,8 +14,8 @@ docker compose up -d
 ## Test Execution
 1. Seed the LDES Server with a collection and a view and i send 5 members:
     ```bash
-   chmod +x ./config/seed.sh
-   sh ./config/seed.sh
+   chmod +x ./server/seed.sh
+   sh ./server/seed.sh
    ```
     To verify that the [server](http://localhost:8080) is correctly seeded you can run this command: 
     ```bash

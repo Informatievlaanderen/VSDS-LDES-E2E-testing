@@ -6,56 +6,49 @@ The simulator is seeded by a subset of the Gent P+R dataset containing five frag
 ## Test Setup
 > **Note**: if needed, copy the [environment file (.env)](./.env) to a personal file (e.g. `user.env`) and change the settings as needed. If you do, you need to add ` --env-file user.env` to each `docker compose` command.
 
-Run all systems except the workflow by executing the following (bash) command:
+Run all systems by executing the following (bash) command:
 ```bash
-docker volume create ldes-client-state
-docker compose up -d
+clear
+sh ./setup.sh
 ```
 
 ## Test Execution
-1. Seed the LDES Server Simulator with a part of the Gent P+R data set and [alias it](./create-alias.json):
+1. Upload and start the [workflow](./workbench/client-pipeline.yml) containing the LDES Client to run the replication using:
     ```bash
-    for f in ../../data/parkAndRide/*; do curl -X POST "http://localhost:9011/ldes" -H "Content-Type: text/turtle" -d "@$f"; done
-    curl -X POST "http://localhost:9011/alias" -H "Content-Type: application/json" -d '@data/create-alias.json'
+    curl -X POST http://localhost:8081/admin/api/v1/pipeline -H "Content-Type: application/yaml" --data-binary "@./workbench/client-pipeline.yml"
     ```
-    To verify that the [simulator](http://localhost:9011/) is correctly seeded you can run this command: 
+    To verify that the workflow is correctly started you can run this command: 
     ```bash
-    curl http://localhost:9011/
-    ```
-
-2. Start the workflow containing to ingest the members:
-   ```bash
-   docker compose up ldio-workbench -d
-   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
-   ```
-
-3. Verify how many members are already ingested (execute repeatedly):
-    ```bash
-    curl http://localhost:9003
+    curl http://localhost:8081/admin/api/v1/pipeline/client-pipeline/status
     ```
 
-4. Stop the workflow when the member count is at least 250 members:
-   ```bash
-   export id=$(docker ps -f "name=workbench$" -q)
-   docker stop $id
-   ```
+2. Verify how many members are already ingested and stop the workflow when the member count is at least 250 members:
+    ```bash
+    COUNT=0 && while [ "$COUNT" -lt "250" ] ; do sleep 1; COUNT=$(curl -s http://localhost:9003 | jq '.parkAndRide.total') ; echo "count: $COUNT" ; done
+    ID=$(docker ps -f "name=workbench$" -q)
+    docker stop $ID
+    ```
 
-5. Verify that the message sink log file does not contain any warnings:
+3. Verify that the message sink log file does not contain any warnings:
     ```bash
     docker logs $(docker ps -f "name=test-message-sink$" -q) | grep WARNING
     ```
     > **Note**: the log should not contain a line starting with "`[WARNING]`".
 
-6. Continue the workflow:
+4. Continue the workflow:
    ```bash
-   docker start $id
+    docker start $ID
+    STARTING=-1 && while [ "$STARTING" -ne 0 ] ; do sleep 1; curl -f -s http://localhost:8081/actuator/health; STARTING=$? ; done
+    curl -X POST http://localhost:8081/admin/api/v1/pipeline -H "Content-Type: application/yaml" --data-binary "@./workbench/client-pipeline.yml"
    ```
-   until the LDES is fully replicated (member count will be 1016):
+
+
+5. Wait until the LDES is fully replicated (member count will be 1016):
     ```bash
-    curl http://localhost:9003
+    COUNT=0 && while [ "$COUNT" -ne "1016" ] ; do sleep 1; COUNT=$(curl -s http://localhost:9003 | jq '.parkAndRide.total') ; echo "count: $COUNT" ; done
     ```
 
-7. Verify that the message sink received all members only once:
+6. Verify that the message sink received all members only once:
     ```bash
     docker logs $(docker ps -f "name=test-message-sink$" -q) | grep 'overriding id'
     ```
@@ -64,7 +57,5 @@ docker compose up -d
 ## Test Teardown
 To stop all systems use:
 ```bash
-docker compose rm -s -f -v ldio-workbench
-docker compose down
-docker volume rm ldes-client-state
+sh ./teardown.sh
 ```

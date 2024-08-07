@@ -49,8 +49,20 @@ services:
     image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
     volumes:
       - ./ldio-workflow.config.yml:/ldio/application.yml:ro
+    environment:
+      - SERVER_PORT=80
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
+    ports:
+      - 8081:80
     networks:
       - ldes
+    healthcheck:
+      start_period: 15s
+      test: wget -qO- http://ldio-workbench/actuator/health
+      interval: 3s
+      timeout: 3s
+      retries: 5
     profiles:
       - delay-started
 

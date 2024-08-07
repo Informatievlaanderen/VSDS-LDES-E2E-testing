@@ -1,3 +1,5 @@
+
+
 orchestrator:
   pipelines:
     - name: simulator-to-sink-pipeline
@@ -12,3 +14,9 @@ orchestrator:
             endpoint: http://test-message-sink/member
             rdf-writer:
               content-type: application/n-quads
+
+logging:
+  level:
+    root: WARN
+    be.vlaanderen.informatievlaanderen.ldes.ldio.Application: INFO
+    be.vlaanderen.informatievlaanderen.ldes.ldio.LdioHttpOut: DEBUG

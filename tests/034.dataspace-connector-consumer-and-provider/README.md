@@ -64,12 +64,12 @@ docker logs --tail 1000 -f $(docker ps -q --filter "name=ldes-server$")
 
 Press `CTRL-C` to stop following the log.
 
-> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./config/seed.sh)
+> **Note**: as of server v1.0 which uses dynamic configuration you need to execute the [seed script](./server/seed.sh)
 > to setup the LDES with its views:
 
 ```bash
-chmod +x ./config/seed.sh
-sh ./config/seed.sh
+chmod +x ./server/seed.sh
+sh ./server/seed.sh
 ```
 
 Seed the LDES Server by starting the message generator:

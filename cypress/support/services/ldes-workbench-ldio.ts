@@ -34,15 +34,26 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
             });
     }
 
-    // TODO: check below this line
-
     public get serviceName() {
         return this._serviceName || 'ldio-workbench';
     }
-
-    protected get availabilityMessage() {
-        return "Started Application in";
+    
+    private isReady() {
+        const cmd = `curl -f -s ${this.baseUrl}/actuator/health`;
+        return cy.log(cmd).exec(cmd, {failOnNonZeroExit: false}).then(result => result.code === 0)
     }
+
+    waitAvailable() {
+        return cy.waitUntil(() => this.isReady(), {
+            timeout: timeouts.slowAction,
+            interval: timeouts.slowCheck, errorMsg:
+                `Timed out waiting for container '${this.serviceName}' to be available`
+        }).then(() => this);
+    }
+
+
+    // TODO: check below this line
+
 
     private containerLogIncludes(containerId: string, includeString: string) {
         return cy.exec(`docker logs ${containerId}`).then(result => result.stdout.includes(includeString));
@@ -54,10 +65,6 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
                 const containerId = result.stdout;
                 return cy.waitUntil(() => this.containerLogIncludes(containerId, includeString), { timeout: timeouts.slowAction, interval: timeouts.slowCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' log to include '${includeString}'` });
             });
-    }
-
-    waitAvailable() {
-        return this.waitForDockerLog(this.availabilityMessage);
     }
 
     waitForPipelinesRunning() {

@@ -106,6 +106,16 @@ services:
     networks:
       - ldes
 
+  adminer:
+    image: adminer:${ADMINER_TAG:-latest}
+    container_name: ${USECASE_NAME:-awv-verkeersmetingen-onboarding}_adminer
+    depends_on:
+      - ldes-postgres
+    ports:
+      - 8085:8080
+    networks:
+      - ldes
+
 networks:
   ldes:
     name: ${USECASE_NAME:-default-bucket}_network

@@ -8,7 +8,7 @@ The server (http://localhost:8080) is seeded by a subset of the mobility-hindran
 
 Run all systems except the workflow by executing the following (bash) command:
 ```bash
-docker compose up -d
+docker compose up -d --wait
 ```
 
 ## Test Execution

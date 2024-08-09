@@ -57,4 +57,13 @@ export class Fragment extends UrlResponse {
         });
         return relations;
     }
+
+    get subjects() {
+        return this.store.getSubjects(null, null, null);
+    }
+
+    get objects() {
+        return this.store.getObjects(null, null, null);
+    }
+
 }

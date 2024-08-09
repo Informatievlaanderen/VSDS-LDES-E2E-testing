@@ -1,0 +1,69 @@
+networks:
+  ldes:
+    name: ldes-skolemization_network
+
+
+services:
+  
+  ldes-server:
+    container_name: ldes-skolemization_ldes-server
+    image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
+    environment:
+      - SIS_DATA=/tmp
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
+      - SERVER_PORT=8080
+      - LDESSERVER_HOSTNAME=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+      - SPRING_BATCH_JDBC_INITIALIZESCHEMA=always
+    volumes:
+      - ./server/config.yml:/application.yml:ro
+      - ../../data/epsg:/tmp/Databases:rw
+    networks:
+      - ldes
+    ports:
+      - 8080:8080
+    depends_on:
+      - ldes-postgres
+    healthcheck:
+      test: wget -qO- http://ldes-server:8080/actuator/health
+      interval: 12s
+      timeout: 3s
+      retries: 20
+
+
+  ldes-postgres:
+    container_name: ldes-skolemization_ldes-postgres
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - ldes
+
+
+  postgrest:
+    container_name: ldes-skolemization_postgres-rest-api
+    image: postgrest/postgrest:latest
+    ports:
+      - 9018:3000
+    environment:
+      - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PWD}@ldes-postgres:5432/${POSTGRES_DB}
+      - PGRST_DB_ANON_ROLE=${POSTGRES_USER}
+      - PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:9018
+    depends_on:
+      - ldes-postgres
+    networks:
+      - ldes
+

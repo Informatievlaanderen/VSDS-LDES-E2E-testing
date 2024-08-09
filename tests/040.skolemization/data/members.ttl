@@ -1,0 +1,141 @@
+@prefix ns0: <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix ns1: <https://data.vlaanderen.be/ns/verkeersmetingen#> .
+@prefix ns2: <http://def.isotc211.org/iso19156/2011/SamplingPoint#SF_SamplingPoint.> .
+@prefix ns3: <http://www.opengis.net/ont/geosparql#> .
+@prefix ns4: <https://data.vlaanderen.be/ns/weg#> .
+@prefix ns5: <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Rijrichting.> .
+@prefix ns6: <https://data.vlaanderen.be/ns/netwerk#Link.> .
+@prefix ns7: <https://data.vlaanderen.be/ns/netwerk#> .
+@prefix ns8: <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeersmeetpunt.> .
+@prefix ns9: <https://schema.org/> .
+@prefix ns10: <https://w3id.org/cdt/> .
+@prefix ns11: <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstelling.> .
+@prefix ns12: <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstellingkenmerk.> .
+
+<https://example.org/id/observation/1>
+  a <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstelling> ;
+  ns0:phenomenonTime [
+    a time:TemporalEntity ;
+    time:hasBeginning [
+      a time:Instant ;
+      time:inXSDDateTimeStamp "2022-11-20T20:15:00.000Z"^^xsd:dateTime
+    ] ;
+    time:hasXSDDuration "PT15M"^^xsd:duration
+  ] ;
+  sosa:madeBySensor [
+    a sosa:Sensor ;
+    dc:type <https://data.vlaanderen.be/doc/concept/VkmMeetInstrumentType/rubberslang>
+  ] ;
+  ns1:geobserveerdObject [
+    a ns1:Verkeersmeetpunt ;
+    ns2:shape [
+      a <http://www.opengis.net/ont/sf#Point> ;
+      ns3:asWKT "POINT (3.22994761168957 51.1994773490174)"^^ns3:wktLiteral
+    ] ;
+    ns1:bemonsterdObject [
+      a <https://data.vlaanderen.be/ns/weg#Rijrichting> ;
+      ns4:rijrichting <https://inspire.ec.europa.eu/codelist/LinkDirectionValue/inDirection> ;
+      ns5:netwerkreferentieelement [
+        a ns4:Wegsegment ;
+        ns6:geometriemiddellijn [
+          a <http://www.opengis.net/ont/sf#LineString> ;
+          ns3:asWKT "LINESTRING (3.23008742183447 51.1993964651886, 3.22994761168957 51.1994773490174, 3.22981584817171 51.1995498292108)"^^ns3:wktLiteral
+        ] ;
+        ns7:beginknoop [
+          a ns4:Wegknoop ;
+          ns7:Knoop.geometrie [
+            a <http://www.opengis.net/ont/sf#Point> ;
+            ns3:asWKT "POINT (3.23008742183447 51.1993964651886)"^^ns3:wktLiteral
+          ]
+        ] ;
+        ns7:eindknoop [
+          a ns4:Wegknoop ;
+          ns7:Knoop.geometrie [
+            a <http://www.opengis.net/ont/sf#Point> ;
+            ns3:asWKT "POINT (3.22981584817171 51.1995498292108)"^^ns3:wktLiteral
+          ]
+        ]
+      ]
+    ] ;
+    ns8:verkeersmeetpuntnetwerkreferentie [
+      a ns7:Puntreferentie ;
+      ns7:Puntreferentie.opPositie [
+        a <http://def.isotc211.org/iso19103/2015/MeasureTypes#Length> ;
+        ns9:unitCode "m"^^ns10:ucumunit ;
+        ns9:value 1.328417e+1
+      ] ;
+      ns7:toepassingsRichting <https://inspire.ec.europa.eu/codelist/LinkDirectionValue/bothDirection>
+    ]
+  ] ;
+  ns11:geobserveerdKenmerk [
+    a <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstellingkenmerk> ;
+    ns1:voertuigType <https://data.vlaanderen.be/doc/concept/VkmVoertuigType/fiets> ;
+    ns12:kenmerktype <https://data.vlaanderen.be/doc/concept/VkmVerkeersKenmerkType/aantal>
+  ] ;
+  ns11:tellingresultaat 6 .
+
+<https://example.org/id/observation/2>
+  a <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstelling> ;
+  ns0:phenomenonTime [
+    a time:TemporalEntity ;
+    time:hasBeginning [
+      a time:Instant ;
+      time:inXSDDateTimeStamp "2022-11-23T06:00:00.000Z"^^xsd:dateTime
+    ] ;
+    time:hasXSDDuration "PT15M"^^xsd:duration
+  ] ;
+  sosa:madeBySensor [
+    a sosa:Sensor ;
+    dc:type <https://data.vlaanderen.be/doc/concept/VkmMeetInstrumentType/rubberslang>
+  ] ;
+  ns1:geobserveerdObject [
+    a ns1:Verkeersmeetpunt ;
+    ns2:shape [
+      a <http://www.opengis.net/ont/sf#Point> ;
+      ns3:asWKT "POINT (3.22994761168957 51.1994773490174)"^^ns3:wktLiteral
+    ] ;
+    ns1:bemonsterdObject [
+      a ns4:Rijrichting ;
+      ns4:rijrichting <https://inspire.ec.europa.eu/codelist/LinkDirectionValue/inDirection> ;
+      ns5:netwerkreferentieelement [
+        a ns4:Wegsegment ;
+        ns6:geometriemiddellijn [
+          a <http://www.opengis.net/ont/sf#LineString> ;
+          ns3:asWKT "LINESTRING (3.23008742183447 51.1993964651886, 3.22994761168957 51.1994773490174, 3.22981584817171 51.1995498292108)"^^ns3:wktLiteral
+        ] ;
+        ns7:beginknoop [
+          a ns4:Wegknoop ;
+          ns7:Knoop.geometrie [
+            a <http://www.opengis.net/ont/sf#Point> ;
+            ns3:asWKT "POINT (3.23008742183447 51.1993964651886)"^^ns3:wktLiteral
+          ]
+        ] ;
+        ns7:eindknoop [
+          a ns4:Wegknoop ;
+          ns7:Knoop.geometrie [
+            a <http://www.opengis.net/ont/sf#Point> ;
+            ns3:asWKT "POINT (3.22981584817171 51.1995498292108)"^^ns3:wktLiteral
+          ]
+        ]
+      ]
+    ] ;
+    ns8:verkeersmeetpuntnetwerkreferentie [
+      a ns7:Puntreferentie ;
+      ns7:Puntreferentie.opPositie [
+        a <http://def.isotc211.org/iso19103/2015/MeasureTypes#Length> ;
+        ns9:unitCode "m"^^ns10:ucumunit ;
+        ns9:value 1.328417e+1
+      ] ;
+      ns7:toepassingsRichting <https://inspire.ec.europa.eu/codelist/LinkDirectionValue/bothDirection>
+    ]
+  ] ;
+  ns11:geobserveerdKenmerk [
+    a <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#Verkeerstellingkenmerk> ;
+    ns1:voertuigType <https://data.vlaanderen.be/doc/concept/VkmVoertuigType/auto> ;
+    ns12:kenmerktype <https://data.vlaanderen.be/doc/concept/VkmVerkeersKenmerkType/aantal>
+  ] ;
+  ns11:tellingresultaat 2 .

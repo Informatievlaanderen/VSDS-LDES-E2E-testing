@@ -76,6 +76,20 @@ When('I start the {string} service', (serviceName: string) => {
     return startService(serviceName);
 })
 
+function fileToMimeType(filename: string) {
+    const extension = filename.split('.').reverse().shift();
+    switch (extension) {
+        case 'ttl': return 'text/turtle';
+        // case 'nt': return 'application/n-triples';
+        // case 'nq': return 'application/n-quads';
+        // case 'jsonld': return 'application/ld+json';
+        default: throw new Error(`unknown file extension: ${extension}`);
+    }
+}
+
+When('I upload the members in {string} to the server in collection {string}', (dataFile: string, collection: string) => {
+    server.sendMemberFile(collection, `${testPartialPath()}/${dataFile}`, fileToMimeType(dataFile));
+});
 
 // TODO: check below this line
 

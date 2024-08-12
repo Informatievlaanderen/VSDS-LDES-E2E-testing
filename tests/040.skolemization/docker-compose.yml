@@ -13,7 +13,7 @@ services:
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
       - SERVER_PORT=8080
-      - LDESSERVER_HOSTNAME=http://localhost:8080
+      - LDESSERVER_HOSTNAME=http://${HOSTNAME}:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
@@ -66,4 +66,49 @@ services:
       - ldes-postgres
     networks:
       - ldes
+
+
+  ldio-workbench:
+    container_name: ldes-skolemization_ldio-workbench
+    image: ${LDI_ORCHESTRATOR:-ghcr.io/informatievlaanderen/ldi-orchestrator}:${LDI_ORCHESTRATOR_TAG:-latest}
+    volumes:
+      - ./workbench/config.yml:/ldio/application.yml:ro
+    environment:
+      - SERVER_PORT=80
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
+    ports:
+      - 8081:80
+    networks:
+      - ldes
+    extra_hosts:
+      - ${HOSTNAME}:host-gateway
+    healthcheck:
+      start_period: 15s
+      test: wget -qO- http://ldio-workbench/actuator/health
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+
+  ldes-graphdb:
+    container_name: ldes-skolemization_ldes-graphdb
+    image: vsds/graphdb-free:${GRAPHDB_TAG:-10.6.2}
+    build:
+      dockerfile_inline: |
+        FROM khaller/graphdb-free:${GRAPHDB_TAG:-10.6.2}
+        RUN apt update && apt upgrade -y
+        RUN apt install -y curl
+    volumes:
+      - ./graphdb/config.ttl:/repository.init/observations/config.ttl:ro
+    ports:
+      - 7200:7200
+    networks:
+      - ldes
+    healthcheck:
+      start_period: 15s
+      test: 'curl -s -f "http://ldes-graphdb:7200/repositories/observations/size"'
+      interval: 3s
+      timeout: 3s
+      retries: 10
 

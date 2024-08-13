@@ -19,7 +19,7 @@ interface Observation {
 export const graphDatabase = new GraphDatabase('http://localhost:7200')
 
 Then('the graph database contains {int} observations for the same sensor', (count: number) => {
-  return graphDatabase.query('observations', `${testPartialPath()}/graphdb/query.rq`)
+  return graphDatabase.queryFile('observations', `${testPartialPath()}/graphdb/query.rq`)
       .then((observations: Observation[]) => {
         expect(observations).to.have.length(count);
 

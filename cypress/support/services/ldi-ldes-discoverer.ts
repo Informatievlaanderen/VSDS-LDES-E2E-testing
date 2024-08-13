@@ -59,7 +59,7 @@ export class LdiLdesDiscoverer implements CanCheckAvailability {
             .then(containerId => {
                 return cy.waitUntil(() => this.hasCount(containerId, count), {
                     timeout: timeouts.ready,
-                    interval: timeouts.check,
+                    interval: timeouts.fastCheck,
                     errorMsg: `Timed out waiting for relation count to be ${count}`
                 })
             })

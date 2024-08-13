@@ -13,7 +13,7 @@ services:
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
       - SERVER_PORT=8080
-      - LDESSERVER_HOSTNAME=http://${HOSTNAME}:8080
+      - LDESSERVER_HOSTNAME=http://${LDES_SERVER_HOSTNAME}:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ldes-postgres:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
@@ -82,7 +82,7 @@ services:
     networks:
       - ldes
     extra_hosts:
-      - ${HOSTNAME}:host-gateway
+      - ${LDES_SERVER_HOSTNAME}:host-gateway
     healthcheck:
       start_period: 15s
       test: wget -qO- http://ldio-workbench/actuator/health

@@ -30,7 +30,7 @@ function getRepositorySize(tripleCount: number) {
     cy.waitUntil(
         () => cy.request({method: 'GET', url: url,})
             .then(response => response.body == tripleCount),
-        {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for checking number of triples in server`}
+        {timeout: timeouts.fastAction, interval: timeouts.fastCheck, errorMsg: `Timed out waiting for checking number of triples in server`}
     );
 }
 

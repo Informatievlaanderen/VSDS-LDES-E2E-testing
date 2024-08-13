@@ -1,5 +1,5 @@
 select DISTINCT ?bs where {
-    bind(${OBSERVATION_URI} as ?sub).
+    bind(uri('${OBSERVATION_URI}') as ?sub).
     bind('http://schema.org/.well-known/genid' as ?skolem) .
     {
         ?sub ?sp ?b1 .

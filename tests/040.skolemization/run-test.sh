@@ -29,26 +29,25 @@ curl -X POST http://localhost:8081/admin/api/v1/pipeline -H "Content-Type: appli
 INITIAL_COUNT=0 && while [ "$INITIAL_COUNT" -lt "92" ] ; do sleep 3; INITIAL_COUNT=$(curl -s -H "accept: application/sparql-results+json" http://localhost:7200/repositories/observations/size); echo "count: $INITIAL_COUNT" ; done
 
 # query initial skolem IDs
-OBSERVATION1=$(export OBSERVATION_URI="<https://example.org/id/observation/1>" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
-OBSERVATION2=$(export OBSERVATION_URI="<https://example.org/id/observation/2>" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
+OBSERVATION1=$(export OBSERVATION_URI="https://example.org/id/observation/1" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
+OBSERVATION2=$(export OBSERVATION_URI="https://example.org/id/observation/2" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
 
 # send member update
-sleep 1
 curl -X POST "http://localhost:8080/observations" -H "content-type: text/turtle" --data-binary @./data/members.update.ttl
 
 # wait until member update is processed
 UNIQUE_DATE_COUNT=0 && while [ "$UNIQUE_DATE_COUNT" -ne "2" ] ; do sleep 3; UNIQUE_DATE_COUNT=$(curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @./graphdb/generated-at-dates.rq | jq -c '.results.bindings[].date.value' | uniq | wc -l) ; echo "unique number of dates: $UNIQUE_DATE_COUNT" ; done
 echo ""
 
-# query skolem IDs after update
-UPDATED1=$(export OBSERVATION_URI="<https://example.org/id/observation/1>" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
-UPDATED2=$(export OBSERVATION_URI="<https://example.org/id/observation/2>" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
-
 # expect triple size to be the same
 UPDATED_COUNT=$(curl -s -H "accept: application/sparql-results+json" http://localhost:7200/repositories/observations/size)
 if [ "$INITIAL_COUNT" != "$UPDATED_COUNT" ] 
   then echo "Initial triple count ($INITIAL_COUNT) does not match updated triple count ($UPDATED_COUNT), therefore not all skolem triples were deleted" && exit -1
 fi
+
+# query skolem IDs after update
+UPDATED1=$(export OBSERVATION_URI="https://example.org/id/observation/1" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
+UPDATED2=$(export OBSERVATION_URI="https://example.org/id/observation/2" && envsubst < ./graphdb/skolem-ids.rq | curl -s -X POST -H "Content-Type: application/sparql-query" -H "accept: application/sparql-results+json" "http://localhost:7200/repositories/observations" -d @-)
 
 # expect all skolem IDs for observation 1 are different
 readarray -t SKOLEM_IDS1 < <(echo $OBSERVATION1 | jq -c '.results.bindings[].bs.value' | sort)

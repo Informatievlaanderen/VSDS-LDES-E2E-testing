@@ -137,7 +137,7 @@ export function waitForFragment(fragment: Fragment, condition: (x: Fragment) => 
         fragment.visit().then(fragment => condition(fragment)),
         {
             timeout: timeouts.slowAction,
-            interval: timeouts.check,
+            interval: timeouts.fastCheck,
             errorMsg: `Timed out waiting for ${fragment.url} to ${message}.`
         }).then(() => fragment);
 }
@@ -276,7 +276,7 @@ export function waitUntilMemberCountStable() {
         currentMemberCount().then(count => cy.log(`Current count: ${count}`).then(() => count === previousCount ? true : (previousCount = count, false))),
         {
             timeout: timeouts.fastAction,
-            interval: timeouts.check,
+            interval: timeouts.fastCheck,
             errorMsg: `Timed out waiting for ingest count to retain the same (last: ${previousCount})`
         }
     );

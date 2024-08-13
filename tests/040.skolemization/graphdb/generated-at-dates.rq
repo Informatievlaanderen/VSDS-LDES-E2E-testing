@@ -1,0 +1,3 @@
+select ?date where { 
+    ?sub <http://www.w3.org/ns/prov#generatedAtTime> ?date .
+}

@@ -12,7 +12,7 @@ docker compose stop ldio-workbench
 
 # check that the message sink log file does not contain any warnings
 WARNING_COUNT=$(docker logs $(docker ps -f "name=test-message-sink$" -q) | grep WARNING | wc -l)
-if [ $WARNING_COUNT != 0 ] 
+if [ "$WARNING_COUNT" -ne "0" ] 
     then exit $WARNING_COUNT
 fi
 sleep 3
@@ -31,6 +31,6 @@ COUNT=0 && while [ "$COUNT" -ne "1016" ] ; do sleep 1; COUNT=$(curl -s http://lo
 
 # check that the message sink received all members only once
 DUPLICATE_COUNT=$(docker logs $(docker ps -f "name=test-message-sink$" -q) | grep 'overriding id' | wc -l)
-if [ $DUPLICATE_COUNT != 0 ] 
+if [ "$DUPLICATE_COUNT" -ne "0" ] 
     then exit $DUPLICATE_COUNT
 fi

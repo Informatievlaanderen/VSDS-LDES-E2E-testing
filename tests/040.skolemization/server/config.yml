@@ -1,3 +1,12 @@
 springdoc:
   swagger-ui:
     path: /v1/swagger
+
+rest:
+  max-age: 15
+
+logging:
+  level:
+    root: WARN
+    be.vlaanderen.informatievlaanderen.ldes.server.Application: INFO
+    org.springframework.batch.core.step.AbstractStep: WARN

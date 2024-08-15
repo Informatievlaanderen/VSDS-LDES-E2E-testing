@@ -1,0 +1,35 @@
+select DISTINCT ?bs where {
+    bind(uri('${OBSERVATION_URI}') as ?sub).
+    bind('http://schema.org/.well-known/genid' as ?skolem) .
+    {
+        ?sub ?sp ?b1 .
+        FILTER(STRSTARTS(str(?b1), ?skolem)) .
+        bind(?b1 as ?bs) .
+    } union{
+        ?sub ?sp ?b1 .
+        ?b1 ?p1 ?b2 .
+        FILTER(STRSTARTS(str(?b2), ?skolem)) .
+        bind(?b2 as ?bs) .
+    } union {
+        ?sub ?sp ?b1 .
+        ?b1 ?p1 ?b2 .
+        ?b2 ?p2 ?b3 .
+        FILTER(STRSTARTS(str(?b3), ?skolem)) .
+        bind(?b3 as ?bs) .
+    } union {
+        ?sub ?sp ?b1 .
+        ?b1 ?p1 ?b2 .
+        ?b2 ?p2 ?b3 .
+        ?b3 ?p3 ?b4 .
+        FILTER(STRSTARTS(str(?b4), ?skolem)) .
+        bind(?b4 as ?bs) .
+    } union {
+        ?sub ?sp ?b1 .
+        ?b1 ?p1 ?b2 .
+        ?b2 ?p2 ?b3 .
+        ?b3 ?p3 ?b4 .
+        ?b4 ?p4 ?b5 .
+        FILTER(STRSTARTS(str(?b5), ?skolem)) .
+        bind(?b5 as ?bs) .
+    }
+}

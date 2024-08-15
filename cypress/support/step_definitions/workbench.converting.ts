@@ -13,7 +13,7 @@ When('I upload the data file {string} to the workbench', (baseName: string) => {
         cy.waitUntil(() => 
             cy.request({method: 'POST', url: url, headers: { 'Content-Type': 'application/json' }, body: data, failOnStatusCode: false })
                 .then(response => 200 <= response.status && response.status < 300), 
-            {timeout: timeouts.fastAction, interval: timeouts.check, errorMsg: `Timed out waiting for upload of file '${fileName}' to '${url}' to succeed`}));
+            {timeout: timeouts.fastAction, interval: timeouts.fastCheck, errorMsg: `Timed out waiting for upload of file '${fileName}' to '${url}' to succeed`}));
 })
 
 let rootFragment: Fragment;

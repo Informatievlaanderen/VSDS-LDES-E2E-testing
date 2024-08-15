@@ -30,7 +30,7 @@ export class LdesWorkbenchLdio implements CanCheckAvailability {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`)
             .then(result => {
                 const containerId = result.stdout;
-                return cy.waitUntil(() => this.hasVersionCount(containerId, count), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for member count to be ${count}` });
+                return cy.waitUntil(() => this.hasVersionCount(containerId, count), { timeout: timeouts.ready, interval: timeouts.fastCheck, errorMsg: `Timed out waiting for member count to be ${count}` });
             });
     }
 

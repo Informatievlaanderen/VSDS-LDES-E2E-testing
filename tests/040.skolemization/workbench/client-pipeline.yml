@@ -1,0 +1,15 @@
+name: client-pipeline
+description: "This pipeline uses an LDES client to read an existing LDES and send the members as N-triples to a sink application"
+input:
+  name: Ldio:LdesClient
+  config:
+    urls: http://ldes-server:8080/observations
+    materialisation:
+      enabled: true
+outputs:
+  - name: Ldio:RepositorySink
+    config:
+      sparql-host: http://ldes-graphdb:7200
+      repository-id: observations
+      batch-size: 2
+      batch-timeout: 100

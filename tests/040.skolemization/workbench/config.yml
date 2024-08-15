@@ -1,0 +1,7 @@
+logging:
+  level:
+    root: WARN
+    be.vlaanderen.informatievlaanderen.ldes.ldio.Application: INFO
+    # be.vlaanderen.informatievlaanderen.ldes.ldio.LdioRepositorySink: DEBUG
+    # be.vlaanderen.informatievlaanderen.ldes.ldio.LdioLdesClient: DEBUG
+    

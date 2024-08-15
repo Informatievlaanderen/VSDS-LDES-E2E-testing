@@ -21,7 +21,7 @@ export class Gtfs2Ldes implements CanCheckAvailability {
     waitAvailable() {
         return cy.exec(`docker ps -f "name=${this.serviceName}$" -q`).then(result => cy.waitUntil(
             () => this.isReady(result.stdout), 
-            { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` }
+            { timeout: timeouts.ready, interval: timeouts.fastCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` }
         ));
     }
 

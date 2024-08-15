@@ -54,7 +54,7 @@ export class LdesServerSimulator implements CanCheckAvailability {
     }
 
     public waitAvailable() {
-        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.check, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
+        return cy.waitUntil(() => this.isReady(), { timeout: timeouts.ready, interval: timeouts.fastCheck, errorMsg: `Timed out waiting for container '${this.serviceName}' to be available` });
     }
 
     private isReady() {

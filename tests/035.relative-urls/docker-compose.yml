@@ -5,6 +5,8 @@ services:
     image: ghcr.io/informatievlaanderen/ldes-server:${LDES_SERVER_TAG:-latest}
     container_name: ldes-server
     environment:
+      - SPRING_TASK_SCHEDULING_POOL_SIZE=5
+      - LDESSERVER_FRAGMENTATIONCRON=${LDES_SERVER_FRAGMENTATION_CRON:-*/5 * * * * *}
       - SIS_DATA=/tmp
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health

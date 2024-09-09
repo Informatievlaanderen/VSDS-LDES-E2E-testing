@@ -9,6 +9,8 @@ services:
     container_name: ldes-skolemization_ldes-server
     image: ${LDES_SERVER:-ghcr.io/informatievlaanderen/ldes-server}:${LDES_SERVER_TAG:-latest}
     environment:
+      - SPRING_TASK_SCHEDULING_POOL_SIZE=5
+      - LDESSERVER_FRAGMENTATIONCRON=${LDES_SERVER_FRAGMENTATION_CRON:-*/5 * * * * *}
       - SIS_DATA=/tmp
       - MANAGEMENT_TRACING_ENABLED=false
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info

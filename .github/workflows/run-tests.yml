@@ -32,7 +32,7 @@ jobs:
           - "@test-035"
           - "@test-037"
           - "@test-038"
-          # - "@test-039" BROKEN!
+          - "@test-039"
           - "@test-040"
 
     runs-on: ubuntu-latest

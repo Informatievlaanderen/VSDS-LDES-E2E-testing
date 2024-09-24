@@ -47,7 +47,7 @@ Feature: LDES Server Basic Functionality
     When I start the LDES Client LDIO workbench
     Then the sink contains 5 members in collection 'mobility-hindrances'
 
-  @test-039 @default-fragment @BROKEN
+  @test-039 @default-fragment
   Scenario: 039: Verify server puts non-fragmentable members in a default fragment
     Given context 'tests/039.default-bucket' is started
     And the LDES server is available and configured

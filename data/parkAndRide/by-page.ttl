@@ -1,0 +1,22 @@
+@prefix ldes:           <https://w3id.org/ldes#> .
+@prefix occupancy:   <http://localhost:9003/ldes/occupancy/> .
+@prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:           <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:             <http://www.w3.org/ns/shacl#> .
+@prefix terms:          <http://purl.org/dc/terms/> .
+@prefix tree:           <https://w3id.org/tree#> .
+@prefix occupancy:      <http://localhost:9003/ldes/occupancy/> .
+
+<http://localhost:9003/ldes/occupancy>
+        rdf:type            ldes:EventStream ;
+        ldes:timestampPath  terms:modified ;
+        ldes:versionOfPath  terms:isVersionOf ;
+        tree:shape          occupancy:shape ;
+        tree:view           occupancy:by-page .
+
+occupancy:by-page  rdf:type  rdfs:Resource , tree:Node ;
+        tree:relation  [ rdf:type   tree:Relation ;
+                         tree:node  <http://localhost:9003/ldes/occupancy/by-page?pageNumber=1>
+                       ] .
+
+occupancy:shape a sh:NodeShape .

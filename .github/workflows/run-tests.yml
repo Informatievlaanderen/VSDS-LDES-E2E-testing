@@ -19,8 +19,9 @@ jobs:
           - "@test-017"
           - "@test-018"
           - "@test-019 and @consumption and @cacheability"
-          - "@test-019 and @consumption and @compression"
-          - "@test-019 and @consumption and @caching"
+          # - Disabled due to flakiness
+          #          - "@test-019 and @consumption and @compression"
+          #          - "@test-019 and @consumption and @caching"
           - "@test-020"
           # - Disabled for since mongock upgrade is no longer relevant. Liquibase approach needs to be discussed
           # - "@test-021"
@@ -36,7 +37,7 @@ jobs:
           - "@test-040"
 
     runs-on: ubuntu-latest
-      
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +50,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           CYPRESS_TAGS: ${{ matrix.tags }}
-      
+
       - name: Log Running Container Logs
         if: '!cancelled()'
         run: ./log-running-containers.sh

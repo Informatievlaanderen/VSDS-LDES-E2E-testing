@@ -2,6 +2,7 @@
 docker compose up -d --wait
 
 # seed initial data and alias it
+curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d "@./../../data/parkAndRide/by-page.ttl"
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d '@simulator/alfa.ttl'
 curl -X POST http://localhost:9011/ldes -H 'Content-Type: text/turtle' -d '@simulator/beta.ttl'
 curl -X POST "http://localhost:9011/ldes?max-age=10" -H 'Content-Type: text/turtle' -d '@simulator/gamma.ttl'

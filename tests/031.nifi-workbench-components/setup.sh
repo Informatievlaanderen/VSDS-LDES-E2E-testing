@@ -23,7 +23,7 @@ LDI_PROCESSORS_BUNDLE_URI=$(echo $LDI_PROCESSORS_SNAPSHOT_INFO | jq '.data.repos
 # download and unpack the NAR files
 LDI_PROCESSORS_BUNDLE_ARCHIVE=$CWD/temp/ldi-processors-bundle.jar
 curl -s $LDI_PROCESSORS_BUNDLE_URI --output $LDI_PROCESSORS_BUNDLE_ARCHIVE
-cd $CWD/temp && unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE *.nar
+cd $CWD/temp && unzip -q -j $LDI_PROCESSORS_BUNDLE_ARCHIVE */*.nar
 rm $LDI_PROCESSORS_BUNDLE_ARCHIVE
 
 # create workflow definition from template

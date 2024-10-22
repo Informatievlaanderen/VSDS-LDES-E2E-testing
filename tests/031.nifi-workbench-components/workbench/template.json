@@ -40,7 +40,6 @@
               "POSTGRES_URL": null,
               "STREAM_TIMESTAMP_PATH_PROPERTY": "false",
               "DATA_SOURCE_URLS": "http://ldes-server:8080/observations/by-page",
-              "TIMESTAMP_PATH": "http://www.w3.org/ns/prov#generatedAtTime",
               "DATA_SOURCE_FORMAT": "text/turtle",
               "USE_VERSION_MATERIALISATION": "false",
               "DATA_DESTINATION_FORMAT": "application/n-quads",
@@ -51,7 +50,6 @@
               "RETRIES_ENABLED": "false",
               "MAX_RETRIES": "2147483647",
               "STREAM_VERSION_OF_PROPERTY": "false",
-              "VERSION_OF_PROPERTY": "http://purl.org/dc/terms/isVersionOf",
               "OAUTH_TOKEN_ENDPOINT": null,
               "RESTRICT_TO_MEMBERS": "false",
               "POSTGRES_PASSWORD": null,
@@ -82,13 +80,6 @@
               "DATA_SOURCE_URLS": {
                 "name": "DATA_SOURCE_URLS",
                 "displayName": "Data source urls",
-                "identifiesControllerService": false,
-                "sensitive": false,
-                "dynamic": false
-              },
-              "TIMESTAMP_PATH": {
-                "name": "TIMESTAMP_PATH",
-                "displayName": "Timestamp path",
                 "identifiesControllerService": false,
                 "sensitive": false,
                 "dynamic": false
@@ -159,13 +150,6 @@
               "STREAM_VERSION_OF_PROPERTY": {
                 "name": "STREAM_VERSION_OF_PROPERTY",
                 "displayName": "Stream versionOf property",
-                "identifiesControllerService": false,
-                "sensitive": false,
-                "dynamic": false
-              },
-              "VERSION_OF_PROPERTY": {
-                "name": "VERSION_OF_PROPERTY",
-                "displayName": "Version of property",
                 "identifiesControllerService": false,
                 "sensitive": false,
                 "dynamic": false

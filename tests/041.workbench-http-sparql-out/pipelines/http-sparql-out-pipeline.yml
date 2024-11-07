@@ -1,0 +1,15 @@
+name: http-sparql-out-pipeline
+description: "Simple http in, version creation, http out pipeline allowing to pause output."
+input:
+  name: Ldio:HttpIn
+  adapter:
+    name: Ldio:RdfAdapter
+outputs:
+  - name: Ldio:HttpSparqlOut
+    config:
+      endpoint: http://virtuoso:8890/sparql
+      graph: http://example.graph.com
+      replacement:
+        enabled: false
+      skolemisation:
+        skolemDomain: http://ldio-workbench:8080

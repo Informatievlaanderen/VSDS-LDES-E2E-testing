@@ -9,7 +9,5 @@ outputs:
     config:
       endpoint: http://virtuoso:8890/sparql
       graph: http://example.graph.com
-      replacement:
-        enabled: false
       skolemisation:
         skolemDomain: http://ldio-workbench:8080

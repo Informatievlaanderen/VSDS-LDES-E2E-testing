@@ -34,7 +34,7 @@ correctly in the triplestore.
    ```
    There should be 21 triples in the triplestore.
 
-6. Check if the Taylor Kennedy as given name 'Kennedy'.
+6. Check if the Taylor Kennedy as given name 'Taylor'.
    ```bash
    chmod +x ./data/check.sh
    sh ./data/check.sh

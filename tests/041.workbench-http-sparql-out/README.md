@@ -1,19 +1,18 @@
 # Materialise members to a triplestore
-This test verifies that members can be persisted to a triplestore using the RDF4JRepositorySink component.
-The test contains two components, an RDF4J repository server hosting a triple store and a workbench containing
-the RepositoryMaterialiser component. We will send data through the workbench and verify that it is stored
+This test verifies that members can be persisted to a triplestore using the HttpSparqlOut component.
+The test contains two components, a Virtuoso triple store and a workbench containing
+the HttpSparqlOut component. We will send data through the workbench and verify that it is stored
 correctly in the triplestore.
 
 ## Test setup
-1. Launch the RDF4J repository server:
+1. Launch the LDIO workbench and virtuoso triple store:
     ```bash
     docker compose up -d
     ```
 
-2. Launch the LDIO workflow:
-    ```bash
-    docker compose up ldio-workbench -d
-    while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
+2. Wait for the workbench to be fully up and running:
+    ```bash 
+   while ! docker logs $(docker ps -q -f "name=ldio-workbench$") | grep 'Started Application in' ; do sleep 1; done
     ```
 
 3. Send the first set of data to the workbench
@@ -29,7 +28,7 @@ correctly in the triplestore.
    ```
    There should be 21 triples in the triplestore.
 
-5. Check if the Taylor Kennedy as given name 'Kennedy'.
+5. Check if the Taylor Kennedy as given name 'Taylor'.
    ```bash
    chmod +x ./checks/name/check.sh
    sh ./checks/name/check.sh
@@ -57,6 +56,5 @@ correctly in the triplestore.
 ## Test teardown
 Stop data generator and new workbench, and bring all systems down:
 ```bash
-docker compose rm -s -f -v ldio-workbench
 docker compose down
 ```

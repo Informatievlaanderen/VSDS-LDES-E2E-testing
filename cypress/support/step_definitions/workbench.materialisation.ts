@@ -73,10 +73,7 @@ function expectNameToBe(name: string) {
     const fileName = `${testPartialPath()}/checks/name/query.rq`;
     cy.readFile(fileName, 'utf8')
         .then(data => queryTripleStore(url, data))
-        .then(response => {
-            console.log(response.body)
-            return expect(response.body.results.bindings[0].name.value).to.be.equal(name)
-        })
+        .then(response => expect(response.body.results.bindings[0].name.value).to.be.equal(name))
 }
 
 function expectVirtuosoSizeToBe(tripleCount: number) {

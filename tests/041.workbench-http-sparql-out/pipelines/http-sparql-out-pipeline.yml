@@ -4,10 +4,12 @@ input:
   name: Ldio:HttpIn
   adapter:
     name: Ldio:RdfAdapter
+transformers:
+  - name: Ldio:SkolemisationTransformer
+    config:
+        skolemDomain: http://ldio-workbench:8080
 outputs:
   - name: Ldio:HttpSparqlOut
     config:
       endpoint: http://virtuoso:8890/sparql
       graph: http://example.graph.com
-      skolemisation:
-        skolemDomain: http://ldio-workbench:8080

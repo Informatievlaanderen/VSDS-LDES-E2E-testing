@@ -35,6 +35,7 @@ jobs:
           - "@test-038"
           - "@test-039"
           - "@test-040"
+          - "@test-041"
 
     runs-on: ubuntu-latest
 

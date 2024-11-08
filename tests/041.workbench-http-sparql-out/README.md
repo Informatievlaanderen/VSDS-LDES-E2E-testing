@@ -5,9 +5,10 @@ the HttpSparqlOut component. We will send data through the workbench and verify 
 correctly in the triplestore.
 
 ## Test setup
-1. Launch the LDIO workbench and virtuoso triple store:
+1. To set up and start all systems:
     ```bash
-    docker compose up -d
+    clear
+   sh ./setup.sh
     ```
 
 2. Wait for the workbench to be fully up and running:
@@ -54,7 +55,7 @@ correctly in the triplestore.
    This should return only CHANGED.
 
 ## Test teardown
-Stop data generator and new workbench, and bring all systems down:
+Now to stop and remove all services
 ```bash
-docker compose down
+  sh ./teardown.sh
 ```

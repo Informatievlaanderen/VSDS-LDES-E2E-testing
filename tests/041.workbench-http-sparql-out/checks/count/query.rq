@@ -1,0 +1,6 @@
+SELECT (COUNT(*) AS ?count)
+WHERE {
+  GRAPH <http://example.graph.com> {
+    ?s ?p ?o
+  }
+}

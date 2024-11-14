@@ -1,0 +1,32 @@
+
+services:
+
+  virtuoso:
+    container_name: ${USECASE_NAME:-http-sparql-out}_virtuoso
+    image: redpencil/virtuoso:${redpencil_virtuoso_TAG:-1.2.0-rc.1}
+    environment:
+      - SPARQL_UPDATE=true
+      - DBA_PASSWORD=changeme
+    networks:
+        - ldes
+    ports:
+      - "8890:8890"
+
+
+  ldio-workbench:
+    image: ghcr.io/informatievlaanderen/ldi-orchestrator:${LDI_ORCHESTRATOR_TAG:-latest}
+    container_name: ${USECASE_NAME:-http-sparql-out}_ldio-workbench
+    networks:
+      - ldes
+    volumes:
+      - ./pipelines:/ldio/pipelines:rw
+    environment:
+      - ORCHESTRATOR_DIRECTORY=pipelines
+    ports:
+      - "8081:8080"
+    profiles:
+      - delay-started
+
+networks:
+  ldes:
+    name: ${USECASE_NAME:-ldio-repository-materialiser}_network

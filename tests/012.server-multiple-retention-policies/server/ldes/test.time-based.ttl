@@ -1,0 +1,16 @@
+@prefix ldes:     <https://w3id.org/ldes#> .
+@prefix tree:     <https://w3id.org/tree#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix example:  <http://example.org#> .
+
+</test/time-based> a tree:Node ;
+  tree:viewDescription [
+		a tree:ViewDescription ;
+    tree:fragmentationStrategy () ;
+		tree:pageSize "7"^^xsd:integer ;
+    ldes:retentionPolicy [
+      a ldes:DurationAgoPolicy ;
+      tree:value "PT90S"^^xsd:duration
+    ]
+  ]
+.

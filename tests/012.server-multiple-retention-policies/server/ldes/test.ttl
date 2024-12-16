@@ -1,0 +1,13 @@
+@prefix ldes:       <https://w3id.org/ldes#> .
+@prefix tree:       <https://w3id.org/tree#>.
+@prefix sh:         <http://www.w3.org/ns/shacl#> .
+@prefix ex:         <http://example.org#> .
+
+</test> a ldes:EventStream ;
+    ldes:timestampPath ex:modifiedAt ;
+    ldes:versionOfPath ex:isVersionOf ;
+    tree:shape [ a sh:NodeShape ] ;
+    ldes:retentionPolicy [
+      a ldes:DurationAgoPolicy ;
+      tree:value "PT5M"^^xsd:duration
+    ] .

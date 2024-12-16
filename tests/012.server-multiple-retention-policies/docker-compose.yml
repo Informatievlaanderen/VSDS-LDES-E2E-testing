@@ -1,0 +1,89 @@
+networks:
+  ldes:
+    name: ${USECASE_NAME:-basic-retention}_network
+
+
+services:
+
+  # Postgres Database
+  postgres:
+    image: postgres:${POSTGRES_TAG:-latest}
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+    shm_size: 128mb
+    expose:
+      - 5432
+    networks:
+       - ldes
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      retries: 15
+      start_period: 30s
+      timeout: 10s
+
+
+  # Postgres Database UI
+  adminer:
+    image: adminer:${ADMINER_TAG:-latest}
+    depends_on:
+      - postgres
+    ports:
+      - 8085:8080
+    networks:
+      - ldes
+
+
+  # LDES Server
+  ldes-server:
+    image: ldes/ldes-server:${LDES_SERVER_TAG:-latest}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_TASK_SCHEDULING_POOL_SIZE=5
+      - LDESSERVER_FRAGMENTATIONCRON=${LDES_SERVER_FRAGMENTATION_CRON:-*/15 * * * * *} # every 15 seconds
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=90 -XX:MinRAMPercentage=50
+      - SIS_DATA=/tmp
+      - SERVER_PORT=8080
+      - SERVER_SERVLET_CONTEXTPATH=
+      - LDESSERVER_HOSTNAME=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+      - SPRING_BATCH_JDBC_INITIALIZESCHEMA=always
+      - LDESSERVER_MAINTENANCECRON=${LDESSERVER_MAINTENANCECRON:-0 * * * * *}
+      - LDESSERVER_COMPACTIONDURATION=PT3M
+      - MANAGEMENT_TRACING_ENABLED=false
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info,prometheus
+      - MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS=always
+    # volumes:
+    #   - ./server/config.yml:/application.yml:ro
+    ports:
+      - 8080:8080
+    networks:
+      - ldes
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://ldes-server:8080/actuator/health"]
+      interval: 12s
+      timeout: 3s
+      retries: 20
+
+
+  message-generator:
+    image: ghcr.io/informatievlaanderen/test-message-generator:${MEMBER_GENERATOR_TAG:-latest}
+    depends_on:
+      ldes-server:
+        condition: service_healthy
+    environment:
+      - CRON=*/30 * * * * * # every half minute
+      - RANGE=5
+      - TEMPLATE={"@context":{"@base":"http://example.org/id/","@vocab":"http://example.org#","isVersionOf":{"@type":"@id"}},"@id":"{{index}}#{{timestamp}}","@type":["something"],"modifiedAt":[{"@value":"{{timestamp}}","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"isVersionOf":"http://example.org/id/{{index}}"}
+      - TARGETURL=http://ldes-server:8080/test
+      - MIMETYPE=application/json-ld
+    networks:
+      - ldes
+    profiles:
+      - delayed

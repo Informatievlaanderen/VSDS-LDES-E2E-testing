@@ -2,6 +2,7 @@
 @prefix tree:       <https://w3id.org/tree#>.
 @prefix sh:         <http://www.w3.org/ns/shacl#> .
 @prefix ex:         <http://example.org#> .
+@prefix xsd:        <http://www.w3.org/2001/XMLSchema#> .
 
 </test> a ldes:EventStream ;
     ldes:timestampPath ex:modifiedAt ;

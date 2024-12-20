@@ -38,7 +38,8 @@ services:
 
   # LDES Server
   ldes-server:
-    image: ldes/ldes-server:${LDES_SERVER_TAG:-latest}
+    # image: ldes/ldes-server:${LDES_SERVER_TAG:-latest}
+    image: ghcr.io/informatievlaanderen/ldes-server:20241219171605
     depends_on:
       postgres:
         condition: service_healthy

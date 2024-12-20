@@ -8,7 +8,11 @@
     ldes:timestampPath ex:modifiedAt ;
     ldes:versionOfPath ex:isVersionOf ;
     tree:shape [ a sh:NodeShape ] ;
-    ldes:retentionPolicy [
-      a ldes:DurationAgoPolicy ;
-      tree:value "PT5M"^^xsd:duration
-    ] .
+    ldes:eventSource [
+      a ldes:EventSource;
+      ldes:retentionPolicy [
+        a ldes:DurationAgoPolicy ;
+        tree:value "PT5M"^^xsd:duration
+      ]
+    ]
+  .

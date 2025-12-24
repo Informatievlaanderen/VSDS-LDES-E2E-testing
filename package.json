@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/Informatievlaanderen/VSDS-LDES-E2E-testing#readme",
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^20.0.0",
+    "@badeball/cypress-cucumber-preprocessor": "^23.1.0",
     "@cypress/webpack-preprocessor": "^6.0.1",
     "@types/jsonld": "^1.5.13",
     "@types/n3": "^1.16.4",
